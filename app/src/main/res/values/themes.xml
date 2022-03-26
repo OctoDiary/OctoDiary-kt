@@ -1,6 +1,3 @@
 <resources>
-
-    <style name="Theme.OctoDiary" parent="Theme.Material3.DynamicColors.DayNight">
-        <!-- Transparent system bars for edge-to-edge. -->
-    </style>
+    <style name="Theme.OctoDiary" parent="Theme.Material3.DayNight.NoActionBar" />
 </resources>

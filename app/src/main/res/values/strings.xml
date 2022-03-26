@@ -1,4 +1,12 @@
 <resources>
     <string name="app_name" translatable="false">OctoDiary</string>
     <string name="hello_world">Hello, World!</string>
+    <string name="log_in">Log In</string>
+    <string name="password">Password</string>
+    <string name="username">Username</string>
+    <string name="auth">Authentication</string>
+    <string name="token" translatable="false">token</string>
+    <string name="user_id" translatable="false">user_id</string>
+    <string name="auth_file_key" translatable="false">auth</string>
+    <string name="user_id_is" translatable="false">User ID: %s</string>
 </resources>
