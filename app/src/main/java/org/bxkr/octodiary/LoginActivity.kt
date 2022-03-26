@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.snackbar.Snackbar
 import org.bxkr.octodiary.databinding.ActivityLoginBinding
 import retrofit2.Call
 import retrofit2.Callback
@@ -29,20 +30,27 @@ class LoginActivity : AppCompatActivity() {
                     call: Call<NetworkService.AuthResult>,
                     response: Response<NetworkService.AuthResult>
                 ) {
-                    val sharedPref = this@LoginActivity.getSharedPreferences(
-                        getString(R.string.auth_file_key),
-                        Context.MODE_PRIVATE
-                    ) ?: return
-                    with(sharedPref.edit()) {
-                        putString(getString(R.string.user_id), response.body()?.user_id.toString())
-                        putString(getString(R.string.token), response.body()?.access_token)
-                        apply()
+                    if (response.isSuccessful) {
+                        val sharedPref = this@LoginActivity.getSharedPreferences(
+                            getString(R.string.auth_file_key),
+                            Context.MODE_PRIVATE
+                        ) ?: return
+                        with(sharedPref.edit()) {
+                            putString(
+                                getString(R.string.user_id),
+                                response.body()?.user_id.toString()
+                            )
+                            putString(getString(R.string.token), response.body()?.access_token)
+                            apply()
+                        }
+                        startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                    } else {
+                        Snackbar.make(binding.root, R.string.wrong, Snackbar.LENGTH_LONG).show()
                     }
-                    startActivity(Intent(this@LoginActivity, MainActivity::class.java))
                 }
 
                 override fun onFailure(call: Call<NetworkService.AuthResult>, t: Throwable) {
-                    Log.e(this::class.simpleName, "Retrofit error")
+                    Log.e(this::class.simpleName, getString(R.string.retrofit_error))
                 }
             })
         }

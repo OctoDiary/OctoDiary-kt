@@ -9,4 +9,6 @@
     <string name="user_id" translatable="false">user_id</string>
     <string name="auth_file_key" translatable="false">auth</string>
     <string name="user_id_is" translatable="false">User ID: %s</string>
+    <string name="retrofit_error" translatable="false">Retrofit error</string>
+    <string name="wrong">Wrong username or/and password!</string>
 </resources>
