@@ -11,4 +11,6 @@
     <string name="user_id_is" translatable="false">User ID: %s</string>
     <string name="retrofit_error" translatable="false">Retrofit error</string>
     <string name="wrong">Wrong username or/and password!</string>
+    <string name="out_of_date">Authentication data is out of date</string>
+    <string name="week_n">Week from %s to %s</string>
 </resources>

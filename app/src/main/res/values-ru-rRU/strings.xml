@@ -6,4 +6,6 @@
     <string name="password">Пароль</string>
     <string name="auth">Аутентификация</string>
     <string name="wrong">Неправильное имя пользователя и/или пароль!</string>
+    <string name="out_of_date">Аутентификационные данные устарели</string>
+    <string name="week_n">Неделя с %s по %s</string>
 </resources>
