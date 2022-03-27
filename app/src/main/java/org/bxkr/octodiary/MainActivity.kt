@@ -4,9 +4,12 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import org.bxkr.octodiary.adapters.WeeksAdapter
 import org.bxkr.octodiary.databinding.ActivityMainBinding
+import org.bxkr.octodiary.network.NetworkService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -44,6 +47,8 @@ class MainActivity : AppCompatActivity() {
             ) {
                 if (response.isSuccessful) {
                     val diaryData = response.body()!!.weeks
+                    binding.progressBar.visibility = View.GONE
+                    binding.swipeRefresh.visibility = View.VISIBLE
                     binding.weeks.layoutManager = LinearLayoutManager(this@MainActivity)
                     binding.weeks.adapter = WeeksAdapter(this@MainActivity, diaryData)
                     binding.swipeRefresh.setOnRefreshListener { createDiary() }
