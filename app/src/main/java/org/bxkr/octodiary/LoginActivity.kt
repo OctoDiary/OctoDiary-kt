@@ -7,6 +7,7 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import org.bxkr.octodiary.databinding.ActivityLoginBinding
+import org.bxkr.octodiary.network.NetworkService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

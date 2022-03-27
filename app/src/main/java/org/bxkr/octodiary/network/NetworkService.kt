@@ -1,4 +1,4 @@
-package org.bxkr.octodiary
+package org.bxkr.octodiary.network
 
 import retrofit2.Call
 import retrofit2.Retrofit

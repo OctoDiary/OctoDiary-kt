@@ -1,10 +1,13 @@
-package org.bxkr.octodiary
+package org.bxkr.octodiary.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import org.bxkr.octodiary.R
 import org.bxkr.octodiary.databinding.WeeksRecyclerItemBinding
+import org.bxkr.octodiary.network.NetworkService
 import java.text.SimpleDateFormat
 
 
@@ -22,9 +25,12 @@ class WeeksAdapter(private val context: Context, private val weeks: List<Network
             )
             val toCommon =
                 SimpleDateFormat("dd MMMM", parentContext.resources.configuration.locales[0])
-            binding.weekName.text = parentContext.getString(R.string.week_n,
+            binding.weekName.text = parentContext.getString(
+                R.string.week_n,
                 toDate.parse(week.firstWeekDayDate)?.let { toCommon.format(it) },
                 toDate.parse(week.lastWeekDayDate)?.let { toCommon.format(it) })
+            binding.days.layoutManager = LinearLayoutManager(parentContext)
+            binding.days.adapter = DaysAdapter(parentContext, week.days)
         }
     }
 
