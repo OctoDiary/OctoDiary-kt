@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.snackbar.Snackbar
 import org.bxkr.octodiary.databinding.ActivityMainBinding
 import retrofit2.Call
 import retrofit2.Callback
@@ -30,6 +29,7 @@ class MainActivity : AppCompatActivity() {
         userId = sharedPref.getString(getString(R.string.user_id), null)
         if (token == null && userId == null) {
             startActivity(Intent(this, LoginActivity::class.java))
+            finish()
         } else {
             createDiary()
         }
@@ -41,18 +41,24 @@ class MainActivity : AppCompatActivity() {
             override fun onResponse(
                 call: Call<NetworkService.Diary>,
                 response: Response<NetworkService.Diary>
-            ) = if (response.isSuccessful) {
-                val diaryData = response.body()!!.weeks
-                binding.weeks.layoutManager = LinearLayoutManager(this@MainActivity)
-                binding.weeks.adapter = WeeksAdapter(this@MainActivity, diaryData)
-                binding.swipeRefresh.setOnRefreshListener { createDiary() }
-            } else {
-                Snackbar.make(binding.root, R.string.out_of_date, Snackbar.LENGTH_LONG).show()
-                startActivity(Intent(this@MainActivity, LoginActivity::class.java))
+            ) {
+                if (response.isSuccessful) {
+                    val diaryData = response.body()!!.weeks
+                    binding.weeks.layoutManager = LinearLayoutManager(this@MainActivity)
+                    binding.weeks.adapter = WeeksAdapter(this@MainActivity, diaryData)
+                    binding.swipeRefresh.setOnRefreshListener { createDiary() }
+                } else {
+                    val intent = Intent(this@MainActivity, LoginActivity::class.java)
+                    intent.putExtra(getString(R.string.out_of_date_extra), true)
+                    startActivity(intent)
+                    finish()
+                }
+                binding.swipeRefresh.isRefreshing = false
             }
 
             override fun onFailure(call: Call<NetworkService.Diary>, t: Throwable) {
                 Log.e(this::class.simpleName, getString(R.string.retrofit_error))
+                binding.swipeRefresh.isRefreshing = false
             }
         })
     }

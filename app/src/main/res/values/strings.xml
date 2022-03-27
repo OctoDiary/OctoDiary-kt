@@ -13,4 +13,5 @@
     <string name="wrong">Wrong username or/and password!</string>
     <string name="out_of_date">Authentication data is out of date</string>
     <string name="week_n">Week from %s to %s</string>
+    <string name="out_of_date_extra" translatable="false">out_of_date</string>
 </resources>

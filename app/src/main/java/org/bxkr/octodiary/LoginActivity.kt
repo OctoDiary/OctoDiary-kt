@@ -20,39 +20,49 @@ class LoginActivity : AppCompatActivity() {
 
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.logInButton.setOnClickListener {
-            val call: Call<NetworkService.AuthResult> = NetworkService.api().auth(
-                binding.username.editText?.text.toString(),
-                binding.password.editText?.text.toString()
-            )
-            call.enqueue(object : Callback<NetworkService.AuthResult> {
-                override fun onResponse(
-                    call: Call<NetworkService.AuthResult>,
-                    response: Response<NetworkService.AuthResult>
-                ) {
-                    if (response.isSuccessful) {
-                        val sharedPref = this@LoginActivity.getSharedPreferences(
-                            getString(R.string.auth_file_key),
-                            Context.MODE_PRIVATE
-                        ) ?: return
-                        with(sharedPref.edit()) {
-                            putString(
-                                getString(R.string.user_id),
-                                response.body()?.user_id.toString()
-                            )
-                            putString(getString(R.string.token), response.body()?.access_token)
-                            apply()
-                        }
-                        startActivity(Intent(this@LoginActivity, MainActivity::class.java))
-                    } else {
-                        Snackbar.make(binding.root, R.string.wrong, Snackbar.LENGTH_LONG).show()
-                    }
-                }
-
-                override fun onFailure(call: Call<NetworkService.AuthResult>, t: Throwable) {
-                    Log.e(this::class.simpleName, getString(R.string.retrofit_error))
-                }
-            })
+        binding.password.editText?.setOnEditorActionListener { _, _, _ ->
+            logIn()
+            true
         }
+        binding.logInButton.setOnClickListener { logIn() }
+        if (intent.getBooleanExtra(getString(R.string.out_of_date_extra), false)) {
+            Snackbar.make(binding.root, R.string.out_of_date, Snackbar.LENGTH_LONG).show()
+        }
+    }
+
+    private fun logIn() {
+        val call: Call<NetworkService.AuthResult> = NetworkService.api().auth(
+            binding.username.editText?.text.toString(),
+            binding.password.editText?.text.toString()
+        )
+        call.enqueue(object : Callback<NetworkService.AuthResult> {
+            override fun onResponse(
+                call: Call<NetworkService.AuthResult>,
+                response: Response<NetworkService.AuthResult>
+            ) {
+                if (response.isSuccessful) {
+                    val sharedPref = this@LoginActivity.getSharedPreferences(
+                        getString(R.string.auth_file_key),
+                        Context.MODE_PRIVATE
+                    ) ?: return
+                    with(sharedPref.edit()) {
+                        putString(
+                            getString(R.string.user_id),
+                            response.body()?.user_id.toString()
+                        )
+                        putString(getString(R.string.token), response.body()?.access_token)
+                        apply()
+                    }
+                    startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                    finish()
+                } else {
+                    Snackbar.make(binding.root, R.string.wrong, Snackbar.LENGTH_LONG).show()
+                }
+            }
+
+            override fun onFailure(call: Call<NetworkService.AuthResult>, t: Throwable) {
+                Log.e(this::class.simpleName, getString(R.string.retrofit_error))
+            }
+        })
     }
 }
