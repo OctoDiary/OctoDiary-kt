@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="week_title">16dp</dimen>
+    <dimen name="week_margin">16dp</dimen>
+    <dimen name="day_padding">16dp</dimen>
+    <dimen name="lesson_padding">16dp</dimen>
+    <dimen name="login_field_width">350dp</dimen>
+</resources>

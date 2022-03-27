@@ -45,7 +45,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/username"
-        android:layout_width="350dp"
+        android:layout_width="@dimen/login_field_width"
         android:layout_height="wrap_content"
         android:hint="@string/username"
         app:layout_constraintBottom_toTopOf="@+id/center"
@@ -64,7 +64,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/password"
-        android:layout_width="350dp"
+        android:layout_width="@dimen/login_field_width"
         android:layout_height="wrap_content"
         android:hint="@string/password"
         app:layout_constraintEnd_toEndOf="parent"

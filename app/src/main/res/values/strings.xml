@@ -14,4 +14,10 @@
     <string name="out_of_date">Authentication data is out of date</string>
     <string name="week_n">Week from %s to %s</string>
     <string name="out_of_date_extra" translatable="false">out_of_date</string>
+    <string name="time_from_to" translatable="false">%s - %s</string>
+    <string name="free_day">Free day!</string>
+    <string name="placeholder_week" translatable="false">Week from 01 January to 07 January</string>
+    <string name="placeholder_day" translatable="false">01 January</string>
+    <string name="placeholder_lesson_name" translatable="false">Maths</string>
+    <string name="placeholder_lesson_time" translatable="false">08:30 - 09:10</string>
 </resources>
