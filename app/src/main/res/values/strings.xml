@@ -20,4 +20,6 @@
     <string name="placeholder_day" translatable="false">01 January</string>
     <string name="placeholder_lesson_name" translatable="false">Maths</string>
     <string name="placeholder_lesson_time" translatable="false">08:30 - 09:10</string>
+    <string name="diary">Diary</string>
+    <string name="profile">Profile</string>
 </resources>

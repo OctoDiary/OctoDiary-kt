@@ -9,4 +9,6 @@
     <string name="out_of_date">Аутентификационные данные устарели</string>
     <string name="week_n">Неделя с %s по %s</string>
     <string name="free_day">Свободный день!</string>
+    <string name="diary">Дневник</string>
+    <string name="profile">Профиль</string>
 </resources>
