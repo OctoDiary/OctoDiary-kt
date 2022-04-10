@@ -7,17 +7,17 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.bxkr.octodiary.databinding.DaysRecyclerItemBinding
-import org.bxkr.octodiary.network.NetworkService
+import org.bxkr.octodiary.models.Day
 import java.text.SimpleDateFormat
 
-class DaysAdapter(private val context: Context, private val days: List<NetworkService.Day>) :
+class DaysAdapter(private val context: Context, private val days: List<Day>) :
     RecyclerView.Adapter<DaysAdapter.DaysViewHolder>() {
 
     class DaysViewHolder(daysRecyclerItemBinding: DaysRecyclerItemBinding, context: Context) :
         RecyclerView.ViewHolder(daysRecyclerItemBinding.root) {
         private val binding = daysRecyclerItemBinding
         private val parentContext = context
-        fun bind(day: NetworkService.Day) {
+        fun bind(day: Day) {
             val toDate = SimpleDateFormat(
                 "yyyy-MM-dd'T'HH:mm:ss'Z'",
                 parentContext.resources.configuration.locales[0]

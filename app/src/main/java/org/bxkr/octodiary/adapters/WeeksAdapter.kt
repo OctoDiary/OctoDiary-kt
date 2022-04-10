@@ -7,18 +7,18 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.bxkr.octodiary.R
 import org.bxkr.octodiary.databinding.WeeksRecyclerItemBinding
-import org.bxkr.octodiary.network.NetworkService
+import org.bxkr.octodiary.models.Week
 import java.text.SimpleDateFormat
 
 
-class WeeksAdapter(private val context: Context, private val weeks: List<NetworkService.Week>) :
+class WeeksAdapter(private val context: Context, private val weeks: List<Week>) :
     RecyclerView.Adapter<WeeksAdapter.WeeksViewHolder>() {
 
     class WeeksViewHolder(weeksRecyclerItemBinding: WeeksRecyclerItemBinding, context: Context) :
         RecyclerView.ViewHolder(weeksRecyclerItemBinding.root) {
         private val binding = weeksRecyclerItemBinding
         private val parentContext = context
-        fun bind(week: NetworkService.Week) {
+        fun bind(week: Week) {
             val toDate = SimpleDateFormat(
                 "yyyy-MM-dd'T'HH:mm:ss'Z'",
                 parentContext.resources.configuration.locales[0]

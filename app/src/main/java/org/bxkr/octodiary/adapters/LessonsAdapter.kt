@@ -6,12 +6,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import org.bxkr.octodiary.R
 import org.bxkr.octodiary.databinding.LessonsRecyclerItemBinding
-import org.bxkr.octodiary.network.NetworkService
+import org.bxkr.octodiary.models.Lesson
 import java.text.SimpleDateFormat
 
 class LessonsAdapter(
     private val context: Context,
-    private val lessons: List<NetworkService.Lesson>
+    private val lessons: List<Lesson>
 ) :
     RecyclerView.Adapter<LessonsAdapter.LessonsViewHolder>() {
 
@@ -22,7 +22,7 @@ class LessonsAdapter(
         RecyclerView.ViewHolder(lessonsRecyclerItemBinding.root) {
         private val binding = lessonsRecyclerItemBinding
         private val parentContext = context
-        fun bind(lesson: NetworkService.Lesson) {
+        fun bind(lesson: Lesson) {
             val toDate = SimpleDateFormat(
                 "yyyy-MM-dd'T'HH:mm:ss'Z'",
                 parentContext.resources.configuration.locales[0]
