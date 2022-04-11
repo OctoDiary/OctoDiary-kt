@@ -9,7 +9,7 @@
         android:id="@+id/date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="@dimen/day_title_margin"
         android:text="@string/placeholder_day"
         android:textAppearance="?attr/textAppearanceTitleMedium"
         app:layout_constraintBottom_toTopOf="@+id/materialCardView"
