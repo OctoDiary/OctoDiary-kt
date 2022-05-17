@@ -10,6 +10,7 @@ import org.bxkr.octodiary.databinding.ActivityMainBinding
 import org.bxkr.octodiary.fragments.DiaryFragment
 import org.bxkr.octodiary.fragments.ProfileFragment
 import org.bxkr.octodiary.models.Diary
+import org.bxkr.octodiary.models.User
 import org.bxkr.octodiary.models.Week
 import org.bxkr.octodiary.network.NetworkService
 import retrofit2.Call
@@ -29,6 +30,7 @@ class MainActivity : AppCompatActivity() {
             .getString(getString(R.string.user_id), null)
 
     var diaryData: List<Week>? = null
+    var userData: User? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,7 +62,7 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavigationView.setOnItemReselectedListener { }
     }
 
-    fun createDiary() {
+    fun createDiary(listener: () -> Unit = {}) {
         val call = NetworkService.api().diary(token, userId)
         call.enqueue(object : Callback<Diary> {
             override fun onResponse(
@@ -68,11 +70,7 @@ class MainActivity : AppCompatActivity() {
             ) {
                 if (response.isSuccessful) {
                     diaryData = response.body()!!.weeks
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.fragment, DiaryFragment()).commit()
-                    binding.progressBar.visibility = View.GONE
-                    binding.fragment.visibility = View.VISIBLE
-                    binding.bottomNavigationView.visibility = View.VISIBLE
+                    getProfile(listener)
                 } else {
                     val intent = Intent(this@MainActivity, LoginActivity::class.java)
                     intent.putExtra(getString(R.string.out_of_date_extra), true)
@@ -85,5 +83,38 @@ class MainActivity : AppCompatActivity() {
                 Log.e(this::class.simpleName, getString(R.string.retrofit_error))
             }
         })
+    }
+
+    fun getProfile(listener: () -> Unit = {}) {
+        val call = NetworkService.api().user(token, userId)
+        call.enqueue(object : Callback<User> {
+            override fun onResponse(
+                call: Call<User>, response: Response<User>
+            ) {
+                if (response.isSuccessful) {
+                    userData = response.body()!!
+                    listener()
+                    allDataLoaded()
+                } else {
+                    val intent = Intent(this@MainActivity, LoginActivity::class.java)
+                    intent.putExtra(getString(R.string.out_of_date_extra), true)
+                    startActivity(intent)
+                    finish()
+                }
+            }
+
+            override fun onFailure(call: Call<User>, t: Throwable) {
+                Log.e(this::class.simpleName, getString(R.string.retrofit_error))
+            }
+        })
+    }
+
+    private fun allDataLoaded() {
+        if (supportFragmentManager.findFragmentById(R.id.fragment) == null)
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment, DiaryFragment()).commit()
+        binding.progressBar.visibility = View.GONE
+        binding.fragment.visibility = View.VISIBLE
+        binding.bottomNavigationView.visibility = View.VISIBLE
     }
 }

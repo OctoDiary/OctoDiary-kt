@@ -13,7 +13,7 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(FragmentDiaryBinding::i
         super.onViewCreated(view, savedInstanceState)
         configureRecycler()
         binding.swipeRefresh.setOnRefreshListener {
-            (activity as MainActivity).createDiary()
+            (activity as MainActivity).createDiary { binding.swipeRefresh.isRefreshing = false }
         }
     }
 

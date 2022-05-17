@@ -11,4 +11,7 @@
     <string name="free_day">Свободный день!</string>
     <string name="diary">Дневник</string>
     <string name="profile">Профиль</string>
+    <string name="settings">Настройки</string>
+    <string name="show_rating">Показать общий рейтинг</string>
+    <string name="rating_place">На <u>%s</u> месте в классе!</string>
 </resources>

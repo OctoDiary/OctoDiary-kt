@@ -1,6 +1,7 @@
 package org.bxkr.octodiary.network
 
 import org.bxkr.octodiary.models.Diary
+import org.bxkr.octodiary.models.User
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -30,6 +31,12 @@ object NetworkService {
             @Header("Access-Token") access_token: String?,
             @Header("User-ID") user_id: String?,
         ): Call<Diary>
+
+        @GET("user")
+        fun user(
+            @Header("Access-Token") access_token: String?,
+            @Header("User-ID") user_id: String?,
+        ): Call<User>
     }
 
     fun api(): API {

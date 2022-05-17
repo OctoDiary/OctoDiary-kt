@@ -6,4 +6,13 @@
     <dimen name="day_title_margin">16dp</dimen>
     <dimen name="lesson_padding">16dp</dimen>
     <dimen name="login_field_width">350dp</dimen>
+    <dimen name="avatar_size">75dp</dimen>
+    <dimen name="avatar_margin">16dp</dimen>
+    <dimen name="rating_card_margin">16dp</dimen>
+    <dimen name="goto_rating_size">30dp</dimen>
+    <dimen name="goto_rating_layout_height">48dp</dimen>
+    <dimen name="goto_rating_margin_end">8dp</dimen>
+
+    <dimen name="rating_place_text_size">20sp</dimen>
+    <dimen name="name_text_size">20sp</dimen>
 </resources>
