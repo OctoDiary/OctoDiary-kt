@@ -26,7 +26,7 @@
     <string name="placeholder_profile_name" translatable="false">Jacque Fresco</string>
     <string name="profile_name" translatable="false">%s %s</string>
     <string name="placeholder_school" translatable="false">Manhattan School of Computer Technology</string>
-    <string name="placeholder_rating" translatable="false">At the <u>1st</u> place among classmates!</string>
+    <string name="placeholder_rating" translatable="false">At the <u>1st</u> place in class!</string>
     <string name="show_rating">Show general rating</string>
     <string name="rating_place">At the <u>%s</u> place in class!</string>
 </resources>
