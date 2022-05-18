@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.bxkr.octodiary.databinding.DaysRecyclerItemBinding
-import org.bxkr.octodiary.models.Day
+import org.bxkr.octodiary.models.diary.Day
 import java.text.SimpleDateFormat
 
 class DaysAdapter(private val context: Context, private val days: List<Day>) :

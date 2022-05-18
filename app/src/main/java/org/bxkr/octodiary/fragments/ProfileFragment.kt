@@ -7,7 +7,7 @@ import com.squareup.picasso.Picasso
 import org.bxkr.octodiary.MainActivity
 import org.bxkr.octodiary.R
 import org.bxkr.octodiary.databinding.FragmentProfileBinding
-import org.bxkr.octodiary.models.User
+import org.bxkr.octodiary.models.user.User
 import java.util.*
 
 class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBinding::inflate) {
@@ -24,13 +24,15 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
     }
 
     private fun configureProfile() {
-        binding.name.text = getString(R.string.profile_name, userData.firstName, userData.lastName)
-        binding.school.text = userData.schoolName
+        binding.studentName.text =
+            getString(R.string.profile_name, userData.firstName, userData.lastName)
+        binding.schoolName.text = userData.schoolName
         binding.ratingStatus.text =
             getString(
-                R.string.rating_place, toOrdinal(userData.rankingPlace).replace(".", "")
+                R.string.rating_place,
+                toOrdinal(userData.ranking.rating.rankingPlaces[0].place).replace(".", "")
             )
-        Picasso.get().load(userData.avatarUrl).into(binding.avatar)
+        Picasso.get().load(userData.avatarUrl).into(binding.bigAvatar)
     }
 
     private fun toOrdinal(place: Int): String {

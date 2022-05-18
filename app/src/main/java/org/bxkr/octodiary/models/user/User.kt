@@ -1,4 +1,4 @@
-package org.bxkr.octodiary.models
+package org.bxkr.octodiary.models.user
 
 data class User(
     val avatarUrl: String,
@@ -10,17 +10,11 @@ data class User(
     val lastName: String,
     val middleName: String,
     val personId: Long,
-    val rankingHistory: List<RankingHistory>,
-    val rankingPlace: Int,
+    val ranking: Ranking,
     val schoolAvatarUrl: String,
     val schoolGeoPosition: List<Any>,
     val schoolId: Long,
     val schoolName: String,
     val sex: String,
     val userId: Long
-)
-
-data class RankingHistory(
-    val date: String,
-    val place: Int
 )

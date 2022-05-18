@@ -1,7 +1,7 @@
 package org.bxkr.octodiary.network
 
-import org.bxkr.octodiary.models.Diary
-import org.bxkr.octodiary.models.User
+import org.bxkr.octodiary.models.diary.Diary
+import org.bxkr.octodiary.models.user.User
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

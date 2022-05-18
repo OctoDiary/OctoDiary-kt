@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import org.bxkr.octodiary.R
 import org.bxkr.octodiary.databinding.LessonsRecyclerItemBinding
-import org.bxkr.octodiary.models.Lesson
+import org.bxkr.octodiary.models.diary.Lesson
 import java.text.SimpleDateFormat
 
 class LessonsAdapter(

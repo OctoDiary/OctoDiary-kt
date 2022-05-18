@@ -9,9 +9,9 @@ import androidx.appcompat.app.AppCompatActivity
 import org.bxkr.octodiary.databinding.ActivityMainBinding
 import org.bxkr.octodiary.fragments.DiaryFragment
 import org.bxkr.octodiary.fragments.ProfileFragment
-import org.bxkr.octodiary.models.Diary
-import org.bxkr.octodiary.models.User
-import org.bxkr.octodiary.models.Week
+import org.bxkr.octodiary.models.diary.Diary
+import org.bxkr.octodiary.models.diary.Week
+import org.bxkr.octodiary.models.user.User
 import org.bxkr.octodiary.network.NetworkService
 import retrofit2.Call
 import retrofit2.Callback

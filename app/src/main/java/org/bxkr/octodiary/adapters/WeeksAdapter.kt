@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.bxkr.octodiary.R
 import org.bxkr.octodiary.databinding.WeeksRecyclerItemBinding
-import org.bxkr.octodiary.models.Week
+import org.bxkr.octodiary.models.diary.Week
 import java.text.SimpleDateFormat
 
 
