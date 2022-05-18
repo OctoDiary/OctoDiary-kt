@@ -9,6 +9,7 @@
     <dimen name="avatar_size">75dp</dimen>
     <dimen name="avatar_margin">16dp</dimen>
     <dimen name="rating_card_margin">16dp</dimen>
+    <dimen name="rating_card_height">64dp</dimen>
     <dimen name="goto_rating_size">30dp</dimen>
     <dimen name="goto_rating_layout_height">48dp</dimen>
     <dimen name="goto_rating_margin_end">8dp</dimen>

@@ -29,4 +29,5 @@
     <string name="placeholder_rating" translatable="false">At the <u>1st</u> place in class!</string>
     <string name="show_rating">Show general rating</string>
     <string name="rating_place">At the <u>%s</u> place in class!</string>
+    <string name="content_rating_card_background">Funny image that matches your current rating</string>
 </resources>

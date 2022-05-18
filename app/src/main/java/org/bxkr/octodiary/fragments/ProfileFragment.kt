@@ -12,7 +12,7 @@ import java.util.*
 
 class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBinding::inflate) {
 
-    lateinit var userData: User
+    private lateinit var userData: User
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -30,9 +30,11 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
         binding.ratingStatus.text =
             getString(
                 R.string.rating_place,
-                toOrdinal(userData.ranking.rating.rankingPlaces[0].place).replace(".", "")
+                toOrdinal(userData.ranking.history.rankingPosition.place).replace(".", "")
             )
         Picasso.get().load(userData.avatarUrl).into(binding.bigAvatar)
+        Picasso.get().load(userData.ranking.history.rankingPosition.backgroundImageUrl)
+            .into(binding.ratingBackground)
     }
 
     private fun toOrdinal(place: Int): String {

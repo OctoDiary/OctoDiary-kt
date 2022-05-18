@@ -14,4 +14,5 @@
     <string name="settings">Настройки</string>
     <string name="show_rating">Показать общий рейтинг</string>
     <string name="rating_place">На <u>%s</u> месте в классе!</string>
+    <string name="content_rating_card_background">Весёлая картинка, которая соответствует вашему текущему рейтингу</string>
 </resources>
