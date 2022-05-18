@@ -29,7 +29,7 @@
             android:layout_height="wrap_content">
 
             <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/avatar"
+                android:id="@+id/big_avatar"
                 android:layout_width="@dimen/avatar_size"
                 android:layout_height="@dimen/avatar_size"
                 android:layout_margin="@dimen/avatar_margin"
@@ -40,31 +40,31 @@
                 tools:srcCompat="@tools:sample/avatars" />
 
             <TextView
-                android:id="@+id/name"
+                android:id="@+id/student_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/avatar_margin"
                 android:text="@string/placeholder_profile_name"
                 android:textSize="@dimen/name_text_size"
                 app:layout_constraintBottom_toTopOf="@+id/space"
-                app:layout_constraintStart_toEndOf="@+id/avatar" />
+                app:layout_constraintStart_toEndOf="@+id/big_avatar" />
 
             <TextView
-                android:id="@+id/school"
+                android:id="@+id/school_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/avatar_margin"
                 android:text="@string/placeholder_school"
-                app:layout_constraintStart_toEndOf="@+id/avatar"
+                app:layout_constraintStart_toEndOf="@+id/big_avatar"
                 app:layout_constraintTop_toBottomOf="@+id/space" />
 
             <Space
                 android:id="@+id/space"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="@+id/avatar"
-                app:layout_constraintStart_toEndOf="@+id/avatar"
-                app:layout_constraintTop_toTopOf="@+id/avatar" />
+                app:layout_constraintBottom_toBottomOf="@+id/big_avatar"
+                app:layout_constraintStart_toEndOf="@+id/big_avatar"
+                app:layout_constraintTop_toTopOf="@+id/big_avatar" />
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/materialCardView2"
@@ -121,7 +121,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/avatar" />
+                app:layout_constraintTop_toBottomOf="@+id/big_avatar" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
