@@ -1,7 +1,7 @@
 # OctoDiary-kt
 Android-клиент для [OctoDiary-API](https://github.com/octodiary/octodiary-api).  
 Использует Material 3 и Dynamic Colors.  
-Android 7.0+, target: Android 12.1
+Android 7.0+, target: Android 13.0
 ## Сборка
 
 Windows: ```gradlew assembleDebug```  
