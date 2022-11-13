@@ -5,19 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/topAppBar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:menu="@menu/profile_top_app_bar"
-            app:title="@string/profile" />
-
-    </com.google.android.material.appbar.AppBarLayout>
-
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefresh"
         android:layout_width="match_parent"
@@ -50,7 +37,7 @@
                 app:layout_constraintStart_toEndOf="@+id/big_avatar" />
 
             <TextView
-                android:id="@+id/school_name"
+                android:id="@+id/data_under_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/avatar_margin"
@@ -73,6 +60,7 @@
                 android:layout_height="@dimen/rating_card_height"
                 android:layout_margin="@dimen/rating_card_margin"
                 app:layout_constraintTop_toBottomOf="@+id/space2"
+                android:visibility="gone"
                 tools:layout_editor_absoluteX="16dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -109,7 +97,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="@dimen/goto_rating_layout_height"
                         android:layout_marginEnd="@dimen/goto_rating_margin_end"
-                        android:contentDescription="@string/show_rating"
+                        android:contentDescription="@string/content_show_rating"
                         android:insetLeft="0dp"
                         android:insetTop="0dp"
                         android:insetRight="0dp"

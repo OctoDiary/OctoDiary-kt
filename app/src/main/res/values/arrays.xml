@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="under_name_data_keys">
+        <item>school</item>
+        <item>class_name</item>
+        <item>middle_name</item>
+        <item>lessons_tomorrow</item>
+    </string-array>
+    <string-array name="under_name_data_values">
+        <item>@string/school</item>
+        <item>@string/class_name</item>
+        <item>@string/middle_name</item>
+        <item>@string/lessons_tomorrow_key</item>
+    </string-array>
+</resources>

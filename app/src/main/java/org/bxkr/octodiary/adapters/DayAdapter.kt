@@ -6,14 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import org.bxkr.octodiary.databinding.DaysRecyclerItemBinding
+import org.bxkr.octodiary.databinding.ItemDayBinding
 import org.bxkr.octodiary.models.diary.Day
 import java.text.SimpleDateFormat
 
-class DaysAdapter(private val context: Context, private val days: List<Day>) :
-    RecyclerView.Adapter<DaysAdapter.DaysViewHolder>() {
+class DayAdapter(private val context: Context, private val days: List<Day>) :
+    RecyclerView.Adapter<DayAdapter.DaysViewHolder>() {
 
-    class DaysViewHolder(daysRecyclerItemBinding: DaysRecyclerItemBinding, context: Context) :
+    class DaysViewHolder(daysRecyclerItemBinding: ItemDayBinding, context: Context) :
         RecyclerView.ViewHolder(daysRecyclerItemBinding.root) {
         private val binding = daysRecyclerItemBinding
         private val parentContext = context
@@ -25,16 +25,16 @@ class DaysAdapter(private val context: Context, private val days: List<Day>) :
             val toCommon =
                 SimpleDateFormat("dd MMMM", parentContext.resources.configuration.locales[0])
             binding.date.text = toDate.parse(day.date)?.let { toCommon.format(it) }
+            binding.lessonsRecycler.layoutManager = LinearLayoutManager(parentContext)
+            binding.lessonsRecycler.adapter = LessonsAdapter(parentContext, day.lessons)
             if (day.lessons.isEmpty()) {
                 binding.freeDay.visibility = View.VISIBLE
             }
-            binding.lessons.layoutManager = LinearLayoutManager(parentContext)
-            binding.lessons.adapter = LessonsAdapter(parentContext, day.lessons)
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DaysViewHolder {
-        val binding = DaysRecyclerItemBinding.inflate(LayoutInflater.from(context), parent, false)
+        val binding = ItemDayBinding.inflate(LayoutInflater.from(context), parent, false)
         return DaysViewHolder(binding, context)
     }
 

@@ -27,7 +27,29 @@
     <string name="profile_name" translatable="false">%s %s</string>
     <string name="placeholder_school" translatable="false">Manhattan School of Computer Technology</string>
     <string name="placeholder_rating" translatable="false">At the <u>1st</u> place in class!</string>
-    <string name="show_rating">Show general rating</string>
+    <string name="content_show_rating">Show general rating</string>
     <string name="rating_place">At the <u>%s</u> place in class!</string>
     <string name="content_rating_card_background">Funny image that matches your current rating</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="show_rating">Rating in profile</string>
+    <string name="rating">Rating</string>
+    <string name="rating_background_info">Image, provided by external resource</string>
+    <string name="show_rating_background">Show rating background</string>
+    <string name="data_under_name">Info under student\'s name</string>
+    <string name="school">School</string>
+    <string name="class_name">Class name</string>
+    <string name="middle_name">Middle name</string>
+    <string name="lessons_tomorrow_key">Lessons tomorrow count</string>
+    <string name="lessons_tomorrow_template">{0,choice,0#No lessons tomorrow|1#One lesson tomorrow|1&lt;{0} lessons tomorrow}</string>
+    <string name="add_week_before">Add week before</string>
+    <string name="add_week_after">Add week after</string>
+    <string name="week_slider">Week slider</string>
+    <string name="day_slider">Day slider</string>
+    <string name="weeks">Weeks</string>
+    <string name="days">Days</string>
+    <string name="week_dates" translatable="false">%s-%s</string>
+    <string name="saved_data_key" translatable="false">saved_data</string>
+    <string name="user_data_key" translatable="false">user_data</string>
+    <string name="diary_data_key" translatable="false">diary_data</string>
+    <string name="data_age_key" translatable="false">data_age</string>
 </resources>

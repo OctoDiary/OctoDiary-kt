@@ -6,6 +6,7 @@
         <entry key="..\:/projects/OctoDiary-kt/app/src/main/res/drawable/ic_launcher.xml" value="0.1925" />
         <entry key="..\:/projects/OctoDiary-kt/app/src/main/res/drawable/ic_launcher_background.xml" value="0.3635" />
         <entry key="..\:/projects/OctoDiary-kt/app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.1935" />
+        <entry key="..\:/projects/OctoDiary-kt/app/src/main/res/drawable/ic_round_arrow_back_24.xml" value="0.1935" />
         <entry key="..\:/projects/OctoDiary-kt/app/src/main/res/drawable/ic_round_filter_list_24.xml" value="0.3635" />
         <entry key="..\:/projects/OctoDiary-kt/app/src/main/res/drawable/ic_round_login_24.xml" value="0.3635" />
         <entry key="..\:/projects/OctoDiary-kt/app/src/main/res/drawable/ic_round_settings_24.xml" value="0.3635" />
@@ -20,6 +21,7 @@
         <entry key="..\:/projects/OctoDiary-kt/app/src/main/res/layout/fragment_profile.xml" value="0.33" />
         <entry key="..\:/projects/OctoDiary-kt/app/src/main/res/layout/fragment_second.xml" value="0.3625" />
         <entry key="..\:/projects/OctoDiary-kt/app/src/main/res/layout/lessons_recycler_item.xml" value="0.3614583333333333" />
+        <entry key="..\:/projects/OctoDiary-kt/app/src/main/res/layout/settings_activity.xml" value="0.3625" />
         <entry key="..\:/projects/OctoDiary-kt/app/src/main/res/layout/weeks_recycler_item.xml" value="0.3614583333333333" />
         <entry key="..\:/projects/OctoDiary-kt/app/src/main/res/menu/bottom_navigation_menu.xml" value="0.3614583333333333" />
         <entry key="..\:/projects/OctoDiary-kt/app/src/main/res/menu/profile_top_app_bar.xml" value="0.3614583333333333" />
@@ -27,6 +29,7 @@
         <entry key="..\:/projects/OctoDiary-kt/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1935" />
         <entry key="..\:/projects/OctoDiary-kt/app/src/main/res/mipmap/ic_launcher.xml" value="0.1935" />
         <entry key="..\:/projects/OctoDiary-kt/app/src/main/res/mipmap/ic_launcher_round.xml" value="0.1935" />
+        <entry key="..\:/projects/OctoDiary-kt/app/src/main/res/xml/root_preferences.xml" value="0.3625" />
       </map>
     </option>
   </component>

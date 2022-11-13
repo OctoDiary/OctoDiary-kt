@@ -4,8 +4,15 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.edit
+import androidx.fragment.app.Fragment
+import androidx.preference.PreferenceManager
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import org.bxkr.octodiary.databinding.ActivityMainBinding
 import org.bxkr.octodiary.fragments.DiaryFragment
 import org.bxkr.octodiary.fragments.ProfileFragment
@@ -29,8 +36,70 @@ class MainActivity : AppCompatActivity() {
         get() = this.getSharedPreferences(getString(R.string.auth_file_key), Context.MODE_PRIVATE)
             .getString(getString(R.string.user_id), null)
 
-    var diaryData: List<Week>? = null
-    var userData: User? = null
+    var diaryData: List<Week>?
+        get() {
+            val dataAge = this.getSharedPreferences(
+                getString(R.string.saved_data_key),
+                Context.MODE_PRIVATE
+            ).getLong(getString(R.string.data_age_key), (-1).toLong())
+
+            if (dataAge == (-1).toLong() || ((System.currentTimeMillis() - dataAge) >= 3600000)) {
+                return null
+            }
+
+            val jsonEncoded = this.getSharedPreferences(
+                getString(R.string.saved_data_key),
+                Context.MODE_PRIVATE
+            ).getString(getString(R.string.diary_data_key), null)
+            if (jsonEncoded != null) {
+                return Gson().fromJson<List<Week>>(
+                    jsonEncoded,
+                    object : TypeToken<List<Week>>() {}.type
+                )
+            }
+            return null
+        }
+        set(value) {
+            val jsonEncoded = Gson().toJson(value)
+            this.getSharedPreferences(
+                getString(R.string.saved_data_key),
+                Context.MODE_PRIVATE
+            ).edit {
+                putString(getString(R.string.diary_data_key), jsonEncoded)
+                putLong(getString(R.string.data_age_key), System.currentTimeMillis())
+            }
+        }
+
+    var userData: User?
+        get() {
+            val dataAge = this.getSharedPreferences(
+                getString(R.string.saved_data_key),
+                Context.MODE_PRIVATE
+            ).getLong(getString(R.string.data_age_key), (-1).toLong())
+
+            if (dataAge == (-1).toLong() || ((System.currentTimeMillis() - dataAge) >= 3600000)) {
+                return null
+            }
+
+            val jsonEncoded = this.getSharedPreferences(
+                getString(R.string.saved_data_key),
+                Context.MODE_PRIVATE
+            ).getString(getString(R.string.user_data_key), null)
+            if (jsonEncoded != null) {
+                return Gson().fromJson<User>(jsonEncoded, object : TypeToken<User>() {}.type)
+            }
+            return null
+        }
+        set(value) {
+            val jsonEncoded = Gson().toJson(value)
+            this.getSharedPreferences(
+                getString(R.string.saved_data_key),
+                Context.MODE_PRIVATE
+            ).edit {
+                putString(getString(R.string.user_data_key), jsonEncoded)
+                putLong(getString(R.string.data_age_key), System.currentTimeMillis())
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +110,8 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
         } else createDiary()
+
+        PreferenceManager.setDefaultValues(this, R.xml.root_preferences, false)
 
         binding.bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
@@ -63,6 +134,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun createDiary(listener: () -> Unit = {}) {
+        if (diaryData != null && userData != null) {
+            allDataLoaded()
+        }
         val call = NetworkService.api().diary(token, userId)
         call.enqueue(object : Callback<Diary> {
             override fun onResponse(
@@ -110,11 +184,29 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun allDataLoaded() {
+
         if (supportFragmentManager.findFragmentById(R.id.fragment) == null)
             supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment, DiaryFragment()).commit()
         binding.progressBar.visibility = View.GONE
         binding.fragment.visibility = View.VISIBLE
         binding.bottomNavigationView.visibility = View.VISIBLE
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        if (binding.fragment.getFragment<Fragment>() is ProfileFragment) {
+            menuInflater.inflate(R.menu.profile_top_app_bar, menu)
+        }
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.settings -> {
+                startActivity(Intent(this@MainActivity, SettingsActivity::class.java))
+                finish()
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

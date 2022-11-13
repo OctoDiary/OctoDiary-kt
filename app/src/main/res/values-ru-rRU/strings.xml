@@ -12,7 +12,24 @@
     <string name="diary">Дневник</string>
     <string name="profile">Профиль</string>
     <string name="settings">Настройки</string>
-    <string name="show_rating">Показать общий рейтинг</string>
+    <string name="content_show_rating">Показать общий рейтинг</string>
     <string name="rating_place">На <u>%s</u> месте в классе!</string>
     <string name="content_rating_card_background">Весёлая картинка, которая соответствует вашему текущему рейтингу</string>
+    <string name="title_activity_settings">Настройки</string>
+    <string name="show_rating">Рейтинг в профиле</string>
+    <string name="rating">Рейтинг</string>
+    <string name="rating_background_info">Картинка из внешнего ресурса</string>
+    <string name="show_rating_background">Показывать фон рейтинга</string>
+    <string name="data_under_name">Данные под именем ученика</string>
+    <string name="school">Школа</string>
+    <string name="class_name">Класс</string>
+    <string name="middle_name">Отчество</string>
+    <string name="lessons_tomorrow_key">Количество уроков завтра</string>
+    <string name="lessons_tomorrow_template">{0,choice,0#Нет уроков завтра|1#1 урок завтра|1&lt;{0} урока(-ов) завтра}</string>
+    <string name="add_week_before">Добавить неделю ранее</string>
+    <string name="add_week_after">Добавить неделю после</string>
+    <string name="week_slider">Слайдер выбора недели</string>
+    <string name="day_slider">Слайдер выбора дня недели</string>
+    <string name="weeks">Недели</string>
+    <string name="days">Дни</string>
 </resources>
