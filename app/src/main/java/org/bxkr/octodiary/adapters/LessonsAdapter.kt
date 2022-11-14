@@ -2,7 +2,11 @@ package org.bxkr.octodiary.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.RelativeLayout
+import androidx.core.view.setMargins
 import androidx.recyclerview.widget.RecyclerView
 import org.bxkr.octodiary.R
 import org.bxkr.octodiary.databinding.LessonsRecyclerItemBinding
@@ -34,6 +38,17 @@ class LessonsAdapter(
                 R.string.time_from_to,
                 toDate.parse(lesson.startDateTime)?.let { toCommon.format(it) },
                 toDate.parse(lesson.endDateTime)?.let { toCommon.format(it) })
+            if (lesson.homework != null) {
+                binding.lessonDesc.text = lesson.homework.text
+            } else {
+                binding.lessonDesc.visibility = View.GONE
+                val newLayoutParams = RelativeLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                )
+                newLayoutParams.setMargins(parentContext.resources.getDimensionPixelSize(R.dimen.lesson_padding))
+                binding.lessonName.layoutParams = newLayoutParams
+            }
         }
     }
 

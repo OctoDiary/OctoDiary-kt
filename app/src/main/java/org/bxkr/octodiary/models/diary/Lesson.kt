@@ -5,7 +5,7 @@ data class Lesson(
     val endDateTime: String,
     val group: Group,
     val hasAttachment: Boolean,
-    val homework: Homework,
+    val homework: Homework?,
     val id: Long,
     val importantWorks: List<String>,
     val isCanceled: Boolean,

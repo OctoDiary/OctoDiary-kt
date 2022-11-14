@@ -3,7 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/day_padding">
+    android:paddingStart="@dimen/day_padding"
+    android:paddingTop="@dimen/day_padding"
+    android:paddingEnd="@dimen/day_padding">
 
     <TextView
         android:id="@+id/date"
@@ -13,17 +15,33 @@
         android:layout_marginBottom="@dimen/day_title_margin"
         android:text="@string/placeholder_day" />
 
-    <com.google.android.material.card.MaterialCardView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_below="@id/date">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/lessonsRecycler"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:listitem="@layout/lessons_recycler_item" />
-    </com.google.android.material.card.MaterialCardView>
+            android:layout_below="@id/date"
+            android:orientation="vertical">
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/lessonsRecycler"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:listitem="@layout/lessons_recycler_item" />
+            </com.google.android.material.card.MaterialCardView>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/lesson_padding" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
     <TextView
         android:id="@+id/free_day"

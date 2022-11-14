@@ -6,13 +6,13 @@
 
     <TextView
         android:id="@+id/lessonName"
+        style="@style/TextAppearance.Material3.BodyMedium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_marginStart="@dimen/lesson_padding"
         android:layout_marginTop="@dimen/lesson_padding"
         android:layout_marginEnd="@dimen/lesson_padding"
-        android:layout_marginBottom="@dimen/lesson_padding"
         android:layout_toStartOf="@id/lessonTime"
         android:text="@string/placeholder_lesson_name"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,13 +23,32 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:layout_margin="@dimen/lesson_padding"
+        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="false"
+        android:layout_marginStart="@dimen/lesson_padding"
+        android:layout_marginTop="@dimen/lesson_padding"
+        android:layout_marginEnd="@dimen/lesson_padding"
+        android:layout_marginBottom="@dimen/lesson_padding"
         android:text="@string/placeholder_lesson_time"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.divider.MaterialDivider
+    <TextView
+        android:id="@+id/lessonDesc"
+        style="@style/TextAppearance.Material3.BodySmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/lessonName" />
+        android:layout_below="@id/lessonName"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="@dimen/lesson_padding"
+        android:layout_marginEnd="@dimen/lesson_padding"
+        android:layout_marginBottom="@dimen/lesson_padding"
+        android:layout_toStartOf="@id/lessonTime"
+        android:text="@string/placeholder_lesson_desc" />
+
+    <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/divider"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/lessonDesc" />
 </RelativeLayout>
