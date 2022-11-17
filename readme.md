@@ -7,4 +7,4 @@ Android 7.0+, target: Android 13.0
 Windows: ```gradlew assembleDebug```  
 Mac/Linux: ```./gradlew assembleDebug```
 ## Скачать
-GitHub Releases: [поседний релиз](https://github.com/octodiary/octodiary-kt/releases)
+GitHub Releases: [поседний релиз](https://github.com/octodiary/octodiary-kt/releases/latest)
