@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import org.bxkr.octodiary.R
 import org.bxkr.octodiary.databinding.ItemDayBinding
 import org.bxkr.octodiary.models.diary.Day
 import java.text.SimpleDateFormat
@@ -24,7 +25,12 @@ class DayAdapter(private val context: Context, private val days: List<Day>) :
             )
             val toCommon =
                 SimpleDateFormat("dd MMMM", parentContext.resources.configuration.locales[0])
-            binding.date.text = toDate.parse(day.date)?.let { toCommon.format(it) }
+            val toWeekday =
+                SimpleDateFormat("EEEE", parentContext.resources.configuration.locales[0])
+            binding.date.text = parentContext.getString(
+                R.string.date_weekday,
+                toDate.parse(day.date)?.let { toCommon.format(it) },
+                toDate.parse(day.date)?.let { toWeekday.format(it) })
             binding.lessonsRecycler.layoutManager = LinearLayoutManager(parentContext)
             binding.lessonsRecycler.adapter = LessonsAdapter(parentContext, day.lessons)
             if (day.lessons.isEmpty()) {
