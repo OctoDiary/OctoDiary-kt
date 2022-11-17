@@ -185,7 +185,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun allDataLoaded() {
 
-        if (supportFragmentManager.findFragmentById(R.id.fragment) == null)
+        if (supportFragmentManager.findFragmentById(R.id.fragment) == null && !supportFragmentManager.isDestroyed)
             supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment, DiaryFragment()).commit()
         binding.progressBar.visibility = View.GONE
