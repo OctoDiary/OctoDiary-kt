@@ -1,5 +1,15 @@
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <PreferenceCategory app:title="@string/diary">
+        <ListPreference
+            app:defaultValue="homework"
+            app:entries="@array/lesson_description_values"
+            app:entryValues="@array/lesson_description_keys"
+            app:key="lesson_description"
+            app:title="@string/lesson_description"
+            app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
+
     <PreferenceCategory app:title="@string/profile">
         <ListPreference
             app:defaultValue="school"

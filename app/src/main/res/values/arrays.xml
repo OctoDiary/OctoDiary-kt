@@ -12,4 +12,14 @@
         <item>@string/middle_name</item>
         <item>@string/lessons_tomorrow_key</item>
     </string-array>
+
+    <string-array name="lesson_description_keys">
+        <item>homework</item>
+        <item>lesson_topic</item>
+    </string-array>
+
+    <string-array name="lesson_description_values">
+        <item>@string/homework</item>
+        <item>@string/lesson_topic</item>
+    </string-array>
 </resources>

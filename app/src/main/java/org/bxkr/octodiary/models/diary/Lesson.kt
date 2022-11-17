@@ -15,6 +15,6 @@ data class Lesson(
     val startDateTime: String,
     val subject: Subject,
     val teacher: Teacher,
-    val theme: String,
+    val theme: String?,
     val workMarks: List<WorkMark>
 )

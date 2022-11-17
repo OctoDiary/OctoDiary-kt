@@ -32,4 +32,7 @@
     <string name="day_slider">Слайдер выбора дня недели</string>
     <string name="weeks">Недели</string>
     <string name="days">Дни</string>
+    <string name="lesson_description">Описание урока в дневнике</string>
+    <string name="homework">Домашнее задание</string>
+    <string name="lesson_topic">Тема урока</string>
 </resources>

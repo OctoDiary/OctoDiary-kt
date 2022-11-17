@@ -7,7 +7,9 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import androidx.core.view.setMargins
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
+import org.bxkr.octodiary.MainActivity
 import org.bxkr.octodiary.R
 import org.bxkr.octodiary.databinding.LessonsRecyclerItemBinding
 import org.bxkr.octodiary.models.diary.Lesson
@@ -38,8 +40,14 @@ class LessonsAdapter(
                 R.string.time_from_to,
                 toDate.parse(lesson.startDateTime)?.let { toCommon.format(it) },
                 toDate.parse(lesson.endDateTime)?.let { toCommon.format(it) })
-            if (lesson.homework != null) {
-                binding.lessonDesc.text = lesson.homework.text
+            val description: String? =
+                when (PreferenceManager.getDefaultSharedPreferences(parentContext as MainActivity)
+                    .getString("lesson_description", "homework")) {
+                    "lesson_topic" -> lesson.theme
+                    else -> lesson.homework?.text
+                }
+            if (description != null) {
+                binding.lessonDesc.text = description
             } else {
                 binding.lessonDesc.visibility = View.GONE
                 val newLayoutParams = RelativeLayout.LayoutParams(

@@ -53,4 +53,7 @@
     <string name="diary_data_key" translatable="false">diary_data</string>
     <string name="data_age_key" translatable="false">data_age</string>
     <string name="placeholder_lesson_desc" translatable="false">Paragraph 1, exercise 23</string>
+    <string name="lesson_description">Lesson description in diary</string>
+    <string name="homework">Homework</string>
+    <string name="lesson_topic">Lesson topic</string>
 </resources>
