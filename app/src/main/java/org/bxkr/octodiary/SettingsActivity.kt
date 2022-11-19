@@ -4,10 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.preference.PreferenceCategory
 import androidx.preference.PreferenceFragmentCompat
-import androidx.preference.SwitchPreferenceCompat
-import androidx.preference.children
 import org.bxkr.octodiary.databinding.SettingsActivityBinding
 
 
@@ -33,14 +30,6 @@ class SettingsActivity : AppCompatActivity() {
 
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey)
-            for (child in preferenceScreen.children) {
-                for (preference in (child as PreferenceCategory).children) {
-                    if (preference is SwitchPreferenceCompat) {
-                        findPreference<SwitchPreferenceCompat>(preference.key)?.widgetLayoutResource =
-                            R.layout.switch_preference
-                    }
-                }
-            }
         }
 
     }
