@@ -1,6 +1,7 @@
 package org.bxkr.octodiary.adapters
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,7 @@ import android.widget.RelativeLayout
 import androidx.core.view.setMargins
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
+import org.bxkr.octodiary.LessonActivity
 import org.bxkr.octodiary.MainActivity
 import org.bxkr.octodiary.R
 import org.bxkr.octodiary.databinding.LessonsRecyclerItemBinding
@@ -56,6 +58,10 @@ class LessonsAdapter(
                 )
                 newLayoutParams.setMargins(parentContext.resources.getDimensionPixelSize(R.dimen.lesson_padding))
                 binding.lessonName.layoutParams = newLayoutParams
+            }
+            binding.root.setOnClickListener {
+                val intent = Intent(parentContext, LessonActivity::class.java)
+                parentContext.startActivity(intent)
             }
         }
     }

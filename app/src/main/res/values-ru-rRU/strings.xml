@@ -35,4 +35,7 @@
     <string name="lesson_description">Описание урока в дневнике</string>
     <string name="homework">Домашнее задание</string>
     <string name="lesson_topic">Тема урока</string>
+    <string name="teacher">Учитель</string>
+    <string name="topic">Тема</string>
+    <string name="lesson">Урок</string>
 </resources>

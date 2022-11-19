@@ -13,6 +13,10 @@
     <dimen name="goto_rating_size">30dp</dimen>
     <dimen name="goto_rating_layout_height">48dp</dimen>
     <dimen name="goto_rating_margin_end">8dp</dimen>
+    <dimen name="lesson_activity_padding">16dp</dimen>
+    <dimen name="lesson_activity_topic_card_padding">16dp</dimen>
+    <dimen name="lesson_activity_card_background_offset">24dp</dimen>
+    <dimen name="lesson_activity_card_background_small_offset">16dp</dimen>
 
     <dimen name="rating_place_text_size">20sp</dimen>
     <dimen name="name_text_size">20sp</dimen>

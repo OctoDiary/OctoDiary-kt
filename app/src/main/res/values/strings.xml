@@ -57,4 +57,10 @@
     <string name="homework">Homework</string>
     <string name="lesson_topic">Lesson topic</string>
     <string name="date_weekday" translatable="false">%s, %s</string>
+    <string name="placeholder_lesson_topic" translatable="false">Functions \'x=a^2\'</string>
+    <string name="placeholder_teacher" translatable="false">Gordon Freeman</string>
+    <string name="placeholder_lesson_number" translatable="false">1st lesson</string>
+    <string name="teacher">Teacher</string>
+    <string name="topic">Topic</string>
+    <string name="lesson">Lesson</string>
 </resources>
