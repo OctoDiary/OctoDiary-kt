@@ -15,6 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.OctoDiary"
         android:localeConfig="@xml/locales_config"
+        android:enableOnBackInvokedCallback="true"
         tools:targetApi="tiramisu">
         <activity
             android:name=".SettingsActivity"
