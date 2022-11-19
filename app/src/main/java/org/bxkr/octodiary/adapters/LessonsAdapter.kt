@@ -10,6 +10,7 @@ import android.widget.RelativeLayout
 import androidx.core.view.setMargins
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
 import org.bxkr.octodiary.LessonActivity
 import org.bxkr.octodiary.MainActivity
 import org.bxkr.octodiary.R
@@ -61,6 +62,7 @@ class LessonsAdapter(
             }
             binding.root.setOnClickListener {
                 val intent = Intent(parentContext, LessonActivity::class.java)
+                intent.putExtra("lesson_data", Gson().toJson(lesson))
                 parentContext.startActivity(intent)
             }
         }

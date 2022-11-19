@@ -33,15 +33,17 @@
 
             <TextView
                 android:id="@+id/lessonTopic"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/lessonName"
                 android:text="@string/placeholder_lesson_topic"
                 android:textAppearance="?attr/textAppearanceTitleSmall"
+                app:layout_constraintEnd_toStartOf="@id/topicImageBarrier"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/lessonName" />
 
             <ImageView
+                android:id="@+id/topicImage"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_alignParentTop="true"
@@ -57,6 +59,14 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_round_menu_book_24"
                 app:tint="?attr/colorAccent" />
+
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/topicImageBarrier"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="left"
+                app:constraint_referenced_ids="topicImage" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 
@@ -88,11 +98,12 @@
 
             <TextView
                 android:id="@+id/lessonTeacher"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/lessonTime"
                 android:text="@string/placeholder_teacher"
                 android:textAppearance="?attr/textAppearanceTitleMedium"
+                app:layout_constraintEnd_toStartOf="@id/teacherImageBarrier"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/lessonTime" />
 
@@ -107,6 +118,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/lessonTeacher" />
 
             <ImageView
+                android:id="@+id/teacherImage"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_below="@id/lessonNumber"
@@ -123,6 +135,14 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_round_person_24"
                 app:tint="?attr/colorAccent" />
+
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/teacherImageBarrier"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="left"
+                app:constraint_referenced_ids="teacherImage" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 

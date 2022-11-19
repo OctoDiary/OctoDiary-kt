@@ -63,4 +63,6 @@
     <string name="teacher">Teacher</string>
     <string name="topic">Topic</string>
     <string name="lesson">Lesson</string>
+    <string name="teacher_name_template" translatable="false">%s %s %s</string>
+    <string name="lesson_n">%s lesson</string>
 </resources>
