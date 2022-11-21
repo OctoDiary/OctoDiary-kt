@@ -1,12 +1,20 @@
 package org.bxkr.octodiary
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.MenuItem
+import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import org.bxkr.octodiary.databinding.ActivityLessonBinding
+import org.bxkr.octodiary.databinding.ItemHomeworkAttachmentBinding
 import org.bxkr.octodiary.models.diary.Lesson
+import org.bxkr.octodiary.models.lesson.Attachment
 import java.text.SimpleDateFormat
 
 class LessonActivity : AppCompatActivity() {
@@ -48,6 +56,9 @@ class LessonActivity : AppCompatActivity() {
                     teacher.middleName
                 )
                 lessonNumber.text = getString(R.string.lesson_n, number.toString())
+                homeworkText.text = homework?.text
+                attachmentsRecyclerView.adapter =
+                    homework?.attachments?.let { AttachmentsAdapter(this@LessonActivity, it) }
             }
 
         }
@@ -62,5 +73,42 @@ class LessonActivity : AppCompatActivity() {
 
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    class AttachmentsAdapter(
+        private val context: Context,
+        private val attachments: List<Attachment>
+    ) :
+        RecyclerView.Adapter<AttachmentsAdapter.AttachmentsViewHolder>() {
+
+        class AttachmentsViewHolder(
+            attachmentBinding: ItemHomeworkAttachmentBinding,
+            context: Context
+        ) :
+            RecyclerView.ViewHolder(attachmentBinding.root) {
+            private val binding = attachmentBinding
+            private val parentContext = context
+            fun bind(attachment: Attachment) {
+                binding.root.text = attachment.fileName
+                binding.root.setOnClickListener {
+                    val intent = Intent(Intent.ACTION_VIEW)
+                    intent.data = Uri.parse(attachment.fileDownloadLink)
+                    parentContext.startActivity(intent)
+                }
+            }
+        }
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AttachmentsViewHolder {
+            val binding =
+                ItemHomeworkAttachmentBinding.inflate(LayoutInflater.from(context), parent, false)
+            return AttachmentsViewHolder(binding, context)
+        }
+
+        override fun onBindViewHolder(holder: AttachmentsViewHolder, positon: Int) {
+            val attachments = attachments[positon]
+            holder.bind(attachments)
+        }
+
+        override fun getItemCount(): Int = attachments.size
     }
 }
