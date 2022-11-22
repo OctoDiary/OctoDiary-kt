@@ -66,4 +66,8 @@
     <string name="teacher_name_template" translatable="false">%s %s %s</string>
     <string name="lesson_n">%s lesson</string>
     <string name="placeholder_homework_attachment" translatable="false">Physics, 11th class. Basics</string>
+    <string name="demousername" translatable="false">demousername</string>
+    <string name="demopassword" translatable="false">demopassword</string>
+    <string name="demo_user_id" translatable="false">-1</string>
+    <string name="demo_token" translatable="false">DEMO_TOKEN</string>
 </resources>

@@ -32,6 +32,24 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun logIn() {
+        if (binding.username.editText?.text.toString() == getString(R.string.demousername) &&
+            binding.password.editText?.text.toString() == getString(R.string.demopassword)
+        ) {
+            val sharedPref = this@LoginActivity.getSharedPreferences(
+                getString(R.string.auth_file_key),
+                Context.MODE_PRIVATE
+            ) ?: return
+            with(sharedPref.edit()) {
+                putString(
+                    getString(R.string.user_id),
+                    getString(R.string.demo_user_id)
+                )
+                putString(getString(R.string.token), getString(R.string.demo_token))
+                apply()
+            }
+            startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+            finish()
+        }
         val call: Call<NetworkService.AuthResult> = NetworkService.api().auth(
             binding.username.editText?.text.toString(),
             binding.password.editText?.text.toString()

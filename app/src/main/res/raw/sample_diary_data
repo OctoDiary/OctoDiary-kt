@@ -1,0 +1,2894 @@
+[
+  {
+    "id": "2022-05-16",
+    "homeworksCount": 29,
+    "firstWeekDayDate": "2022-05-16T00:00:00Z",
+    "lastWeekDayDate": "2022-05-22T00:00:00Z",
+    "days": [
+      {
+        "date": "2022-05-16T00:00:00Z",
+        "hasImportantWork": true,
+        "dayHomeworksProgress": {
+          "totalLessonsWithHomeworksCount": 7,
+          "completedLessonsWithHomeworksCount": 0
+        },
+        "lessons": [
+          {
+            "id": 1917903442944620935,
+            "number": 1,
+            "place": null,
+            "startDateTime": "2022-05-16T08:30:00Z",
+            "endDateTime": "2022-05-16T09:10:00Z",
+            "isCanceled": false,
+            "theme": "Класс Млекопитающие",
+            "subject": {
+              "id": 2675661918877403,
+              "name": "Биология",
+              "knowledgeArea": "NaturalScience",
+              "subjectMood": null
+            },
+            "importantWorks": [
+              "Самостоятельная работа"
+            ],
+            "homework": {
+              "workIsAttachRequired": false,
+              "attachments": [],
+              "text": "пар.24, стр.186 вопрос 3 письменно, знать материал",
+              "isCompleted": false
+            },
+            "hasAttachment": false,
+            "workMarks": [],
+            "isEmpty": null,
+            "comment": null,
+            "teacher": {
+              "personId": 0,
+              "firstName": "Андрей",
+              "middleName": "Владимирович",
+              "lastName": "Ильин",
+              "avatarUrl": "https://au1.school.mosreg.ru/get.aspx/46/e8992022afab48e18bc7b6cb198bab2c.jpg?d=20200901103157"
+            },
+            "group": {
+              "id": 1844821503501552360,
+              "parentId": null,
+              "name": "7в",
+              "parentName": null
+            }
+          },
+          {
+            "id": 1917903442944621025,
+            "number": 2,
+            "place": null,
+            "startDateTime": "2022-05-16T09:20:00Z",
+            "endDateTime": "2022-05-16T10:00:00Z",
+            "isCanceled": false,
+            "theme": "Повторение по теме «Больше обо мне». Чтение комикса «Розовый котенок».",
+            "subject": {
+              "id": 2675722048419559,
+              "name": "Иностр.яз(немецкий)",
+              "knowledgeArea": "Philology",
+              "subjectMood": null
+            },
+            "importantWorks": [],
+            "homework": {
+              "workIsAttachRequired": false,
+              "attachments": [],
+              "text": "выучить правило (фото сделали)",
+              "isCompleted": false
+            },
+            "hasAttachment": false,
+            "workMarks": [],
+            "isEmpty": null,
+            "comment": null,
+            "teacher": {
+              "personId": 0,
+              "firstName": "Светлана",
+              "middleName": "Викторовна",
+              "lastName": "Барраева",
+              "avatarUrl": "https://au1.school.mosreg.ru/get.aspx/46/7156d2c8c0644c9f8f8d8a2c5c3cbd02.png"
+            },
+            "group": {
+              "id": 1844821503501552360,
+              "parentId": null,
+              "name": "7в",
+              "parentName": null
+            }
+          },
+          {
+            "id": 1917903442944621256,
+            "number": 3,
+            "place": null,
+            "startDateTime": "2022-05-16T10:10:00Z",
+            "endDateTime": "2022-05-16T10:50:00Z",
+            "isCanceled": false,
+            "theme": "Народы России в XVII в. Сословный быт и картина мира русского человека в XVII в. Повседневная жизнь народов Украины, Поволжья, Сибири и Северного Кавказа в XVII  в.",
+            "subject": {
+              "id": 1312684276821941034,
+              "name": "Ист.России. Вс.ист-я",
+              "knowledgeArea": "SocialStudies",
+              "subjectMood": null
+            },
+            "importantWorks": [],
+            "homework": {
+              "workIsAttachRequired": false,
+              "attachments": [],
+              "text": "Параграф №26, учить пересказ, отвечать на вопросы в конце параграфа письменно на отдельных листочках",
+              "isCompleted": false
+            },
+            "hasAttachment": false,
+            "workMarks": [],
+            "isEmpty": null,
+            "comment": null,
+            "teacher": {
+              "personId": 0,
+              "firstName": "Дмитрий",
+              "middleName": "Николаевич",
+              "lastName": "Перышков",
+              "avatarUrl": null
+            },
+            "group": {
+              "id": 1844821503501552360,
+              "parentId": null,
+              "name": "7в",
+              "parentName": null
+            }
+          },
+          {
+            "id": 1917903442944621277,
+            "number": 4,
+            "place": null,
+            "startDateTime": "2022-05-16T11:05:00Z",
+            "endDateTime": "2022-05-16T11:45:00Z",
+            "isCanceled": false,
+            "theme": "Язык художественной литературы. Притча",
+            "subject": {
+              "id": 1581761632864232706,
+              "name": "Родной язык",
+              "knowledgeArea": "Philology",
+              "subjectMood": null
+            },
+            "importantWorks": [],
+            "homework": {
+              "workIsAttachRequired": false,
+              "attachments": [],
+              "text": "Просмотреть в ютубе видеоурок о публицистическом стиле публицистический стиль 7 класс видеоурок",
+              "isCompleted": false
+            },
+            "hasAttachment": false,
+            "workMarks": [
+              {
+                "workId": 1917905955500459194,
+                "marks": [
+                  {
+                    "id": 1948099880534040808,
+                    "value": "5",
+                    "mood": "Good"
+                  }
+                ]
+              }
+            ],
+            "isEmpty": null,
+            "comment": null,
+            "teacher": {
+              "personId": 0,
+              "firstName": "Ирина",
+              "middleName": "Владимировна",
+              "lastName": "Шеина",
+              "avatarUrl": ""
+            },
+            "group": {
+              "id": 1844821503501552360,
+              "parentId": null,
+              "name": "7в",
+              "parentName": null
+            }
+          },
+          {
+            "id": 1917903442944620926,
+            "number": 5,
+            "place": null,
+            "startDateTime": "2022-05-16T11:55:00Z",
+            "endDateTime": "2022-05-16T12:35:00Z",
+            "isCanceled": false,
+            "theme": "Промежуточная аттестация . Решение  задач  с помощью систем  уравнений.",
+            "subject": {
+              "id": 2675653328942809,
+              "name": "Алгебра",
+              "knowledgeArea": "Mathematics",
+              "subjectMood": null
+            },
+            "importantWorks": [],
+            "homework": {
+              "workIsAttachRequired": false,
+              "attachments": [],
+              "text": "№ 1071,1072, 998; повторить формулы сокращенного  умножения",
+              "isCompleted": false
+            },
+            "hasAttachment": false,
+            "workMarks": [
+              {
+                "workId": 1917905891075949665,
+                "marks": [
+                  {
+                    "id": 1950664989622038046,
+                    "value": "5",
+                    "mood": "Good"
+                  }
+                ]
+              }
+            ],
+            "isEmpty": null,
+            "comment": null,
+            "teacher": {
+              "personId": 0,
+              "firstName": "Татьяна",
+              "middleName": "Вячеславовна",
+              "lastName": "Безлепкина",
+              "avatarUrl": null
+            },
+            "group": {
+              "id": 1844821503501552360,
+              "parentId": null,
+              "name": "7в",
+              "parentName": null
+            }
+          },
+          {
+            "id": 1917903442944620944,
+            "number": 6,
+            "place": null,
+            "startDateTime": "2022-05-16T12:50:00Z",
+            "endDateTime": "2022-05-16T13:30:00Z",
+            "isCanceled": false,
+            "theme": "Путешествие по Азии.",
+            "subject": {
+              "id": 2675670508811997,
+              "name": "География",
+              "knowledgeArea": "SocialStudies",
+              "subjectMood": null
+            },
+            "importantWorks": [],
+            "homework": {
+              "workIsAttachRequired": false,
+              "attachments": [],
+              "text": "пар.53, вопросы устно",
+              "isCompleted": false
+            },
+            "hasAttachment": false,
+            "workMarks": [],
+            "isEmpty": null,
+            "comment": null,
+            "teacher": {
+              "personId": 0,
+              "firstName": "Андрей",
+              "middleName": "Владимирович",
+              "lastName": "Ильин",
+              "avatarUrl": "https://au1.school.mosreg.ru/get.aspx/46/e8992022afab48e18bc7b6cb198bab2c.jpg?d=20200901103157"
+            },
+            "group": {
+              "id": 1844821503501552360,
+              "parentId": null,
+              "name": "7в",
+              "parentName": null
+            }
+          },
+          {
+            "id": 1917903442944621016,
+            "number": 7,
+            "place": null,
+            "startDateTime": "2022-05-16T13:45:00Z",
+            "endDateTime": "2022-05-16T14:25:00Z",
+            "isCanceled": false,
+            "theme": "Популярные хиты из мюзиклов и рок – опер.",
+            "subject": {
+              "id": 2675717753452262,
+              "name": "Музыка",
+              "knowledgeArea": "Art",
+              "subjectMood": null
+            },
+            "importantWorks": [],
+            "homework": {
+              "workIsAttachRequired": false,
+              "attachments": [],
+              "text": "Стр. 108 - 111. Ответить на вопросы. Подобрать одну песню о Великой Отечественной войне и рассказать историю ее создания.",
+              "isCompleted": false
+            },
+            "hasAttachment": false,
+            "workMarks": [
+              {
+                "workId": 1919579158794869287,
+                "marks": [
+                  {
+                    "id": 1948125826431464127,
+                    "value": "5",
+                    "mood": "Good"
+                  }
+                ]
+              }
+            ],
+            "isEmpty": null,
+            "comment": null,
+            "teacher": {
+              "personId": 0,
+              "firstName": "Татьяна",
+              "middleName": "Анатольевна",
+              "lastName": "Гаподченко",
+              "avatarUrl": null
+            },
+            "group": {
+              "id": 1844821503501552360,
+              "parentId": null,
+              "name": "7в",
+              "parentName": null
+            }
+          }
+        ],
+        "messengerEntryPoint": null
+      },
+      {
+        "date": "2022-05-17T00:00:00Z",
+        "hasImportantWork": false,
+        "dayHomeworksProgress": {
+          "totalLessonsWithHomeworksCount": 6,
+          "completedLessonsWithHomeworksCount": 0
+        },
+        "lessons": [
+          {
+            "id": 1917903442944620965,
+            "number": 1,
+            "place": null,
+            "startDateTime": "2022-05-17T08:30:00Z",
+            "endDateTime": "2022-05-17T09:10:00Z",
+            "isCanceled": false,
+            "theme": "Повторение. Параллельные прямые",
+            "subject": {
+              "id": 2675674803779294,
+              "name": "Геометрия",
+              "knowledgeArea": "Mathematics",
+              "subjectMood": null
+            },
+            "importantWorks": [],
+            "homework": {
+              "workIsAttachRequired": false,
+              "attachments": [],
+              "text": "повторить правило 4 главы № 298,299",
+              "isCompleted": false
+            },
+            "hasAttachment": false,
+            "workMarks": [],
+            "isEmpty": null,
+            "comment": null,
+            "teacher": {
+              "personId": 0,
+              "firstName": "Татьяна",
+              "middleName": "Вячеславовна",
+              "lastName": "Безлепкина",
+              "avatarUrl": null
+            },
+            "group": {
+              "id": 1844821503501552360,
+              "parentId": null,
+              "name": "7в",
+              "parentName": null
+            }
+          },
+          {
+            "id": 1917903442944621172,
+            "number": 2,
+            "place": null,
+            "startDateTime": "2022-05-17T09:20:00Z",
+            "endDateTime": "2022-05-17T10:00:00Z",
+            "isCanceled": false,
+            "theme": "Подготовка кормов к скармливанию и раздача животным",
+            "subject": {
+              "id": 3043276759676663,
+              "name": "Технология",
+              "knowledgeArea": "Technology",
+              "subjectMood": null
+            },
+            "importantWorks": [],
+            "homework": {
+              "workIsAttachRequired": false,
+              "attachments": [],
+              "text": "п11.1",
+              "isCompleted": false
+            },
+            "hasAttachment": false,
+            "workMarks": [],
+            "isEmpty": null,
+            "comment": null,
+            "teacher": {
+              "personId": 0,
+              "firstName": "Лидия",
+              "middleName": "Алексеевна",
+              "lastName": "Чивилева",
+              "avatarUrl": null
+            },
+            "group": {
+              "id": 1844821503501552360,
+              "parentId": null,
+              "name": "7в",
+              "parentName": null
+            }
+          },
+          {
+            "id": 1917903442944621181,
+            "number": 3,
+            "place": null,
+            "startDateTime": "2022-05-17T10:10:00Z",
+            "endDateTime": "2022-05-17T10:50:00Z",
+            "isCanceled": false,
+            "theme": "Назначение социальных исследований",
+            "subject": {
+              "id": 3043276759676663,
+              "name": "Технология",
+              "knowledgeArea": "Technology",
+              "subjectMood": null
+            },
+            "importantWorks": [],
+            "homework": null,
+            "hasAttachment": false,
+            "workMarks": [],
+            "isEmpty": null,
+            "comment": null,
+            "teacher": {
+              "personId": 0,
+              "firstName": "Лидия",
+              "middleName": "Алексеевна",
+              "lastName": "Чивилева",
+              "avatarUrl": null
+            },
+            "group": {
+              "id": 1844821503501552360,
+              "parentId": null,
+              "name": "7в",
+              "parentName": null
+            }
+          },
+          {
+            "id": 1917903442944621202,
+            "number": 4,
+            "place": null,
+            "startDateTime": "2022-05-17T11:05:00Z",
+            "endDateTime": "2022-05-17T11:45:00Z",
+            "isCanceled": false,
+            "theme": "Вопросы здоровья. Перенос лексико-грамматического материала в ситуации речевого общения на материал о родной стране.",
+            "subject": {
+              "id": 1176632945678935697,
+              "name": "Иностр.яз(английск)",
+              "knowledgeArea": "Philology",
+              "subjectMood": null
+            },
+            "importantWorks": [],
+            "homework": {
+              "workIsAttachRequired": false,
+              "attachments": [],
+              "text": "проверочная работа - неправильные глаголы (1 столбец)",
+              "isCompleted": false
+            },
+            "hasAttachment": false,
+            "workMarks": [],
+            "isEmpty": null,
+            "comment": null,
+            "teacher": {
+              "personId": 0,
+              "firstName": "Татьяна",
+              "middleName": "Васильевна",
+              "lastName": "Клабукова",
+              "avatarUrl": null
+            },
+            "group": {
+              "id": 1844821503501552361,
+              "parentId": 1844821503501552360,
+              "name": "группа 1",
+              "parentName": "7в"
+            }
+          },
+          {
+            "id": 1917903442944620998,
+            "number": 5,
+            "place": null,
+            "startDateTime": "2022-05-17T11:55:00Z",
+            "endDateTime": "2022-05-17T12:35:00Z",
+            "isCanceled": false,
+            "theme": "Технология мультимедиа. Компьютерные презентации",
+            "subject": {
+              "id": 2675696278615778,
+              "name": "Информатика",
+              "knowledgeArea": "Mathematics",
+              "subjectMood": null
+            },
+            "importantWorks": [],
+            "homework": {
+              "workIsAttachRequired": false,
+              "attachments": [],
+              "text": "повторить параграфы 4.1-4.4, параграф 4.6, упр.5-10 письменно на отдельном листе  с дано и решением и ответом!!! параграф 5.1 учить",
+              "isCompleted": false
+            },
+            "hasAttachment": false,
+            "workMarks": [],
+            "isEmpty": null,
+            "comment": null,
+            "teacher": {
+              "personId": 0,
+              "firstName": "Виктория",
+              "middleName": "Викторовна",
+              "lastName": "Лидовская",
+              "avatarUrl": null
+            },
+            "group": {
+              "id": 1844821503501552361,
+              "parentId": 1844821503501552360,
+              "name": "группа 1",
+              "parentName": "7в"
+            }
+          },
+          {
+            "id": 1917903442944621094,
+            "number": 6,
+            "place": null,
+            "startDateTime": "2022-05-17T12:50:00Z",
+            "endDateTime": "2022-05-17T13:30:00Z",
+            "isCanceled": false,
+            "theme": "Частица ни, приставка ни, союз ни — ни. Повторение по теме «Частица». Тест",
+            "subject": {
+              "id": 2675756408157934,
+              "name": "Русский язык",
+              "knowledgeArea": "Philology",
+              "subjectMood": null
+            },
+            "importantWorks": [],
+            "homework": {
+              "workIsAttachRequired": false,
+              "attachments": [],
+              "text": " п.72. с.84 учить упр.461(по заданию, выполнить разборы под цифрами, учить разборы!)",
+              "isCompleted": false
+            },
+            "hasAttachment": false,
+            "workMarks": [
+              {
+                "workId": 1919862231499461082,
+                "marks": [
+                  {
+                    "id": 1951752273477936089,
+                    "value": "5",
+                    "mood": "Good"
+                  }
+                ]
+              }
+            ],
+            "isEmpty": null,
+            "comment": null,
+            "teacher": {
+              "personId": 0,
+              "firstName": "Ирина",
+              "middleName": "Владимировна",
+              "lastName": "Шеина",
+              "avatarUrl": ""
+            },
+            "group": {
+              "id": 1844821503501552360,
+              "parentId": null,
+              "name": "7в",
+              "parentName": null
+            }
+          },
+          {
+            "id": 1917903442944621139,
+            "number": 7,
+            "place": null,
+            "startDateTime": "2022-05-17T13:45:00Z",
+            "endDateTime": "2022-05-17T14:25:00Z",
+            "isCanceled": false,
+            "theme": "Медленный бег до 6 минут. Тренажеры. Игры.        Бег 500 м.",
+            "subject": {
+              "id": 2675764998092528,
+              "name": "Физическая культура",
+              "knowledgeArea": "PhysicalCulture",
+              "subjectMood": null
+            },
+            "importantWorks": [],
+            "homework": {
+              "workIsAttachRequired": false,
+              "attachments": [],
+              "text": "п.6 стр 79-80",
+              "isCompleted": false
+            },
+            "hasAttachment": false,
+            "workMarks": [],
+            "isEmpty": null,
+            "comment": null,
+            "teacher": {
+              "personId": 0,
+              "firstName": "Николай",
+              "middleName": "Прокофьевич",
+              "lastName": "Синий",
+              "avatarUrl": "https://b2.csdnevnik.ru/user-avatar/cbdbc2757b77473ba9dc2ada597e8b74.jpg"
+            },
+            "group": {
+              "id": 1844821503501552360,
+              "parentId": null,
+              "name": "7в",
+              "parentName": null
+            }
+          }
+        ],
+        "messengerEntryPoint": null
+      },
+      {
+        "date": "2022-05-18T00:00:00Z",
+        "hasImportantWork": true,
+        "dayHomeworksProgress": {
+          "totalLessonsWithHomeworksCount": 6,
+          "completedLessonsWithHomeworksCount": 0
+        },
+        "lessons": [
+          {
+            "id": 1917903442944620977,
+            "number": 1,
+            "place": null,
+            "startDateTime": "2022-05-18T08:30:00Z",
+            "endDateTime": "2022-05-18T09:10:00Z",
+            "isCanceled": false,
+            "theme": "Повторение. Параллельные прямые",
+            "subject": {
+              "id": 2675674803779294,
+              "name": "Геометрия",
+              "knowledgeArea": "Mathematics",
+              "subjectMood": null
+            },
+            "importantWorks": [],
+            "homework": {
+              "workIsAttachRequired": false,
+              "attachments": [],
+              "text": "313,314,315",
+              "isCompleted": false
+            },
+            "hasAttachment": false,
+            "workMarks": [],
+            "isEmpty": null,
+            "comment": null,
+            "teacher": {
+              "personId": 0,
+              "firstName": "Татьяна",
+              "middleName": "Вячеславовна",
+              "lastName": "Безлепкина",
+              "avatarUrl": null
+            },
+            "group": {
+              "id": 1844821503501552360,
+              "parentId": null,
+              "name": "7в",
+              "parentName": null
+            }
+          },
+          {
+            "id": 1917903442944621106,
+            "number": 2,
+            "place": null,
+            "startDateTime": "2022-05-18T09:20:00Z",
+            "endDateTime": "2022-05-18T10:00:00Z",
+            "isCanceled": false,
+            "theme": "Контрольная работа №4 «Работа и мощность. Энергия».",
+            "subject": {
+              "id": 2675760703125231,
+              "name": "Физика",
+              "knowledgeArea": "NaturalScience",
+              "subjectMood": null
+            },
+            "importantWorks": [
+              "Контрольная"
+            ],
+            "homework": {
+              "workIsAttachRequired": false,
+              "attachments": [],
+              "text": "п68-69.. подготовка к контр работе сделать тест,ответы- в таблицу,задачи решить",
+              "isCompleted": false
+            },
+            "hasAttachment": true,
+            "workMarks": [
+              {
+                "workId": 1949136015624402600,
+                "marks": [
+                  {
+                    "id": 1949136642689608989,
+                    "value": "5",
+                    "mood": "Good"
+                  }
+                ]
+              }
+            ],
+            "isEmpty": null,
+            "comment": null,
+            "teacher": {
+              "personId": 0,
+              "firstName": "Валентина",
+              "middleName": "Ивановна",
+              "lastName": "Голованева",
+              "avatarUrl": ""
+            },
+            "group": {
+              "id": 1844821503501552360,
+              "parentId": null,
+              "name": "7в",
+              "parentName": null
+            }
+          },
+          {
+            "id": 1917903442944621151,
+            "number": 3,
+            "place": null,
+            "startDateTime": "2022-05-18T10:10:00Z",
+            "endDateTime": "2022-05-18T10:50:00Z",
+            "isCanceled": false,
+            "theme": "Японские хокку (хайку). Особенности жанра",
+            "subject": {
+              "id": 3043268169742070,
+              "name": "Литература",
+              "knowledgeArea": "Philology",
+              "subjectMood": null
+            },
+            "importantWorks": [],
+            "homework": {
+              "workIsAttachRequired": false,
+              "attachments": [],
+              "text": "читать рассказ Брэдбери \"Каникулы\"",
+              "isCompleted": false
+            },
+            "hasAttachment": false,
+            "workMarks": [
+              {
+                "workId": 1919499753439521398,
+                "marks": [
+                  {
+                    "id": 1948761842368550603,
+                    "value": "5",
+                    "mood": "Good"
+                  }
+                ]
+              }
+            ],
+            "isEmpty": null,
+            "comment": null,
+            "teacher": {
+              "personId": 0,
+              "firstName": "Ирина",
+              "middleName": "Владимировна",
+              "lastName": "Шеина",
+              "avatarUrl": ""
+            },
+            "group": {
+              "id": 1844821503501552360,
+              "parentId": null,
+              "name": "7в",
+              "parentName": null
+            }
+          },
+          {
+            "id": 1917903442944621214,
+            "number": 4,
+            "place": null,
+            "startDateTime": "2022-05-18T11:05:00Z",
+            "endDateTime": "2022-05-18T11:45:00Z",
+            "isCanceled": false,
+            "theme": "Повторение по темам «Образ жизни» и «Время рассказов». Написание личного письма по темам Повторение по темам «Внешность и характер» и «Об этом говорят и пишут». Составление рассказов по темам",
+            "subject": {
+              "id": 1176632945678935697,
+              "name": "Иностр.яз(английск)",
+              "knowledgeArea": "Philology",
+              "subjectMood": null
+            },
+            "importantWorks": [
+              "Самостоятельная работа"
+            ],
+            "homework": {
+              "workIsAttachRequired": false,
+              "attachments": [],
+              "text": "проверочная работа - неправильные глаголы (1 столбец)",
+              "isCompleted": false
+            },
+            "hasAttachment": false,
+            "workMarks": [
+              {
+                "workId": 1917905929730655375,
+                "marks": [
+                  {
+                    "id": 1948776797444690638,
+                    "value": "4",
+                    "mood": "Good"
+                  }
+                ]
+              }
+            ],
+            "isEmpty": null,
+            "comment": null,
+            "teacher": {
+              "personId": 0,
+              "firstName": "Татьяна",
+              "middleName": "Васильевна",
+              "lastName": "Клабукова",
+              "avatarUrl": null
+            },
+            "group": {
+              "id": 1844821503501552361,
+              "parentId": 1844821503501552360,
+              "name": "группа 1",
+              "parentName": "7в"
+            }
+          },
+          {
+            "id": 1917903442944621268,
+            "number": 5,
+            "place": null,
+            "startDateTime": "2022-05-18T11:55:00Z",
+            "endDateTime": "2022-05-18T12:35:00Z",
+            "isCanceled": false,
+            "theme": "Народы России в XVII в. Сословный быт и картина мира русского человека в XVII в. Повседневная жизнь народов Украины, Поволжья, Сибири и Северного Кавказа в XVII  в.",
+            "subject": {
+              "id": 1312684276821941034,
+              "name": "Ист.России. Вс.ист-я",
+              "knowledgeArea": "SocialStudies",
+              "subjectMood": null
+            },
+            "importantWorks": [],
+            "homework": {
+              "workIsAttachRequired": false,
+              "attachments": [],
+              "text": "параграф №27",
+              "isCompleted": false
+            },
+            "hasAttachment": false,
+            "workMarks": [
+              {
+                "workId": 1919427104067704513,
+                "marks": [
+                  {
+                    "id": 1952157301778831334,
+                    "value": "5",
+                    "mood": "Good"
+                  }
+                ]
+              }
+            ],
+            "isEmpty": null,
+            "comment": null,
+            "teacher": {
+              "personId": 0,
+              "firstName": "Дмитрий",
+              "middleName": "Николаевич",
+              "lastName": "Перышков",
+              "avatarUrl": null
+            },
+            "group": {
+              "id": 1844821503501552360,
+              "parentId": null,
+              "name": "7в",
+              "parentName": null
+            }
+          },
+          {
+            "id": 1917903442944620989,
+            "number": 6,
+            "place": null,
+            "startDateTime": "2022-05-18T12:50:00Z",
+            "endDateTime": "2022-05-18T13:30:00Z",
+            "isCanceled": false,
+            "theme": "Автопортрет на каждый день. Грим и причёска в практике дизайна.",
+            "subject": {
+              "id": 2675683393713888,
+              "name": "ИЗО",
+              "knowledgeArea": "Art",
+              "subjectMood": null
+            },
+            "importantWorks": [],
+            "homework": {
+              "workIsAttachRequired": false,
+              "attachments": [],
+              "text": "читать стр. 158-161",
+              "isCompleted": false
+            },
+            "hasAttachment": false,
+            "workMarks": [],
+            "isEmpty": null,
+            "comment": null,
+            "teacher": {
+              "personId": 0,
+              "firstName": "Лариса",
+              "middleName": "Николаевна",
+              "lastName": "Кузнецова",
+              "avatarUrl": "https://au1.school.mosreg.ru/get.aspx/46/d1dab2ae09bd4951a00edeb7c88df015.png"
+            },
+            "group": {
+              "id": 1844821503501552360,
+              "parentId": null,
+              "name": "7в",
+              "parentName": null
+            }
+          }
+        ],
+        "messengerEntryPoint": null
+      },
+      {
+        "date": "2022-05-19T00:00:00Z",
+        "hasImportantWork": true,
+        "dayHomeworksProgress": {
+          "totalLessonsWithHomeworksCount": 4,
+          "completedLessonsWithHomeworksCount": 0
+        },
+        "lessons": [
+          {
+            "id": 1917903442944620905,
+            "number": 1,
+            "place": null,
+            "startDateTime": "2022-05-19T08:30:00Z",
+            "endDateTime": "2022-05-19T09:10:00Z",
+            "isCanceled": false,
+            "theme": "Степень  с  натуральным  показателем  Решение  задач  с помощью систем  уравнений.",
+            "subject": {
+              "id": 2675653328942809,
+              "name": "Алгебра",
+              "knowledgeArea": "Mathematics",
+              "subjectMood": null
+            },
+            "importantWorks": [],
+            "homework": {
+              "workIsAttachRequired": false,
+              "attachments": [],
+              "text": "задача № 1( стр 219) дорешать , записать в тетрадь задачу № 2( стр 220) и решить , № 1099,1103,1102",
+              "isCompleted": false
+            },
+            "hasAttachment": false,
+            "workMarks": [],
+            "isEmpty": null,
+            "comment": null,
+            "teacher": {
+              "personId": 0,
+              "firstName": "Татьяна",
+              "middleName": "Вячеславовна",
+              "lastName": "Безлепкина",
+              "avatarUrl": null
+            },
+            "group": {
+              "id": 1844821503501552360,
+              "parentId": null,
+              "name": "7в",
+              "parentName": null
+            }
+          },
+          {
+            "id": 1917903442944621118,
+            "number": 2,
+            "place": null,
+            "startDateTime": "2022-05-19T09:20:00Z",
+            "endDateTime": "2022-05-19T10:00:00Z",
+            "isCanceled": false,
+            "theme": "Превращение одного вида механической энергии в другой.Обобщение по теме Раота,мощность,энергия",
+            "subject": {
+              "id": 2675760703125231,
+              "name": "Физика",
+              "knowledgeArea": "NaturalScience",
+              "subjectMood": null
+            },
+            "importantWorks": [],
+            "homework": {
+              "workIsAttachRequired": false,
+              "attachments": [],
+              "text": "повт главу 2.выписать формулы,знать определения и правила",
+              "isCompleted": false
+            },
+            "hasAttachment": false,
+            "workMarks": [],
+            "isEmpty": null,
+            "comment": null,
+            "teacher": {
+              "personId": 0,
+              "firstName": "Татьяна",
+              "middleName": "Вячеславовна",
+              "lastName": "Безлепкина",
+              "avatarUrl": null
+            },
+            "group": {
+              "id": 1844821503501552360,
+              "parentId": null,
+              "name": "7в",
+              "parentName": null
+            }
+          },
+          {
+            "id": 1917903442944620917,
+            "number": 3,
+            "place": null,
+            "startDateTime": "2022-05-19T10:10:00Z",
+            "endDateTime": "2022-05-19T10:50:00Z",
+            "isCanceled": false,
+            "theme": "Решение  задач  с помощью систем  уравнений.",
+            "subject": {
+              "id": 2675653328942809,
+              "name": "Алгебра",
+              "knowledgeArea": "Mathematics",
+              "subjectMood": null
+            },
+            "importantWorks": [],
+            "homework": null,
+            "hasAttachment": false,
+            "workMarks": [],
+            "isEmpty": null,
+            "comment": null,
+            "teacher": {
+              "personId": 0,
+              "firstName": "Татьяна",
+              "middleName": "Вячеславовна",
+              "lastName": "Безлепкина",
+              "avatarUrl": null
+            },
+            "group": {
+              "id": 1844821503501552360,
+              "parentId": null,
+              "name": "7в",
+              "parentName": null
+            }
+          },
+          {
+            "id": 1917903442944621061,
+            "number": 4,
+            "place": null,
+            "startDateTime": "2022-05-19T11:05:00Z",
+            "endDateTime": "2022-05-19T11:45:00Z",
+            "isCanceled": false,
+            "theme": "Междометие Междометие как часть речи.  Дефис в междометиях. Знаки препинания при междометиях (1ч.)",
+            "subject": {
+              "id": 2675756408157934,
+              "name": "Русский язык",
+              "knowledgeArea": "Philology",
+              "subjectMood": null
+            },
+            "importantWorks": [],
+            "homework": {
+              "workIsAttachRequired": false,
+              "attachments": [],
+              "text": "п.73 учить, упр.469(орфограммы)",
+              "isCompleted": false
+            },
+            "hasAttachment": false,
+            "workMarks": [],
+            "isEmpty": null,
+            "comment": null,
+            "teacher": {
+              "personId": 0,
+              "firstName": "Ирина",
+              "middleName": "Владимировна",
+              "lastName": "Шеина",
+              "avatarUrl": ""
+            },
+            "group": {
+              "id": 1844821503501552360,
+              "parentId": null,
+              "name": "7в",
+              "parentName": null
+            }
+          },
+          {
+            "id": 1917903442944621085,
+            "number": 5,
+            "place": null,
+            "startDateTime": "2022-05-19T11:55:00Z",
+            "endDateTime": "2022-05-19T12:35:00Z",
+            "isCanceled": false,
+            "theme": "Повторение изученного в 7 классе  Разделы науки о русском языке. Текст. Стили речи. Фонетика. Графика. Лексика. Фразеология.",
+            "subject": {
+              "id": 2675756408157934,
+              "name": "Русский язык",
+              "knowledgeArea": "Philology",
+              "subjectMood": null
+            },
+            "importantWorks": [],
+            "homework": null,
+            "hasAttachment": false,
+            "workMarks": [
+              {
+                "workId": 1919862231499461074,
+                "marks": [
+                  {
+                    "id": 1951752294952772670,
+                    "value": "4",
+                    "mood": "Good"
+                  }
+                ]
+              }
+            ],
+            "isEmpty": null,
+            "comment": null,
+            "teacher": {
+              "personId": 0,
+              "firstName": "Ирина",
+              "middleName": "Владимировна",
+              "lastName": "Шеина",
+              "avatarUrl": ""
+            },
+            "group": {
+              "id": 1844821503501552360,
+              "parentId": null,
+              "name": "7в",
+              "parentName": null
+            }
+          },
+          {
+            "id": 1917903442944621037,
+            "number": 6,
+            "place": null,
+            "startDateTime": "2022-05-19T12:50:00Z",
+            "endDateTime": "2022-05-19T13:30:00Z",
+            "isCanceled": false,
+            "theme": "Контрольная работа №4",
+            "subject": {
+              "id": 2675722048419559,
+              "name": "Иностр.яз(немецкий)",
+              "knowledgeArea": "Philology",
+              "subjectMood": null
+            },
+            "importantWorks": [
+              "Контрольная"
+            ],
+            "homework": {
+              "workIsAttachRequired": false,
+              "attachments": [],
+              "text": "повторить к Контрольной работе (стр. 56 в рамке с артиклем ein - окончание прилагательных,  стр. 64  порядковые числительные после Датива - предложения  с годами рождения, образцы есть на стр. 64 в рамке и над рамкой)",
+              "isCompleted": false
+            },
+            "hasAttachment": false,
+            "workMarks": [
+              {
+                "workId": 1918364911410784893,
+                "marks": [
+                  {
+                    "id": 1951734651227111081,
+                    "value": "5",
+                    "mood": "Good"
+                  }
+                ]
+              }
+            ],
+            "isEmpty": null,
+            "comment": null,
+            "teacher": {
+              "personId": 0,
+              "firstName": "Светлана",
+              "middleName": "Викторовна",
+              "lastName": "Барраева",
+              "avatarUrl": "https://au1.school.mosreg.ru/get.aspx/46/7156d2c8c0644c9f8f8d8a2c5c3cbd02.png"
+            },
+            "group": {
+              "id": 1844821503501552360,
+              "parentId": null,
+              "name": "7в",
+              "parentName": null
+            }
+          }
+        ],
+        "messengerEntryPoint": null
+      },
+      {
+        "date": "2022-05-20T00:00:00Z",
+        "hasImportantWork": false,
+        "dayHomeworksProgress": {
+          "totalLessonsWithHomeworksCount": 6,
+          "completedLessonsWithHomeworksCount": 0
+        },
+        "lessons": [
+          {
+            "id": 1917903442944621130,
+            "number": 1,
+            "place": null,
+            "startDateTime": "2022-05-20T08:30:00Z",
+            "endDateTime": "2022-05-20T09:10:00Z",
+            "isCanceled": false,
+            "theme": "Бег 1000 метров. Игры. Тренажеры.",
+            "subject": {
+              "id": 2675764998092528,
+              "name": "Физическая культура",
+              "knowledgeArea": "PhysicalCulture",
+              "subjectMood": null
+            },
+            "importantWorks": [],
+            "homework": {
+              "workIsAttachRequired": false,
+              "attachments": [],
+              "text": "ОРУ.Беговые упр-я",
+              "isCompleted": false
+            },
+            "hasAttachment": false,
+            "workMarks": [],
+            "isEmpty": null,
+            "comment": null,
+            "teacher": {
+              "personId": 0,
+              "firstName": "Николай",
+              "middleName": "Прокофьевич",
+              "lastName": "Синий",
+              "avatarUrl": "https://b2.csdnevnik.ru/user-avatar/cbdbc2757b77473ba9dc2ada597e8b74.jpg"
+            },
+            "group": {
+              "id": 1844821503501552360,
+              "parentId": null,
+              "name": "7в",
+              "parentName": null
+            }
+          },
+          {
+            "id": 1917903442944621193,
+            "number": 2,
+            "place": null,
+            "startDateTime": "2022-05-20T09:20:00Z",
+            "endDateTime": "2022-05-20T10:00:00Z",
+            "isCanceled": false,
+            "theme": "Повторение по темам «Что ждет нас в будущем?» и «Развлечения». Составление диалогов по темам",
+            "subject": {
+              "id": 1176632945678935697,
+              "name": "Иностр.яз(английск)",
+              "knowledgeArea": "Philology",
+              "subjectMood": null
+            },
+            "importantWorks": [],
+            "homework": {
+              "workIsAttachRequired": false,
+              "attachments": [],
+              "text": "..",
+              "isCompleted": false
+            },
+            "hasAttachment": false,
+            "workMarks": [],
+            "isEmpty": null,
+            "comment": null,
+            "teacher": {
+              "personId": 0,
+              "firstName": "Татьяна",
+              "middleName": "Васильевна",
+              "lastName": "Клабукова",
+              "avatarUrl": null
+            },
+            "group": {
+              "id": 1844821503501552361,
+              "parentId": 1844821503501552360,
+              "name": "группа 1",
+              "parentName": "7в"
+            }
+          },
+          {
+            "id": 1917903442944621049,
+            "number": 3,
+            "place": null,
+            "startDateTime": "2022-05-20T10:10:00Z",
+            "endDateTime": "2022-05-20T10:50:00Z",
+            "isCanceled": false,
+            "theme": "Итоговое повторение",
+            "subject": {
+              "id": 2675730638354153,
+              "name": "Обществознание",
+              "knowledgeArea": "SocialStudies",
+              "subjectMood": null
+            },
+            "importantWorks": [],
+            "homework": {
+              "workIsAttachRequired": false,
+              "attachments": [],
+              "text": "Повторить записи в тетради",
+              "isCompleted": false
+            },
+            "hasAttachment": false,
+            "workMarks": [],
+            "isEmpty": null,
+            "comment": null,
+            "teacher": {
+              "personId": 0,
+              "firstName": "Дмитрий",
+              "middleName": "Николаевич",
+              "lastName": "Перышков",
+              "avatarUrl": null
+            },
+            "group": {
+              "id": 1844821503501552360,
+              "parentId": null,
+              "name": "7в",
+              "parentName": null
+            }
+          },
+          {
+            "id": 1917903442944621073,
+            "number": 4,
+            "place": null,
+            "startDateTime": "2022-05-20T11:05:00Z",
+            "endDateTime": "2022-05-20T11:45:00Z",
+            "isCanceled": false,
+            "theme": "Морфемика.Словообразование. РРПодготовка к сочинению",
+            "subject": {
+              "id": 2675756408157934,
+              "name": "Русский язык",
+              "knowledgeArea": "Philology",
+              "subjectMood": null
+            },
+            "importantWorks": [],
+            "homework": {
+              "workIsAttachRequired": false,
+              "attachments": [],
+              "text": "упр.476(орфограммы)+дополнить развернутым ответом на вопрос: \" Любите ли вы природу. Какое время года для вас особенно красиво и почему\"; п.74 с.93 учить теорию, упр.479 (у), упр.480(п), п.75 учить разбор, п.76 учить правило",
+              "isCompleted": false
+            },
+            "hasAttachment": false,
+            "workMarks": [],
+            "isEmpty": null,
+            "comment": null,
+            "teacher": {
+              "personId": 0,
+              "firstName": "Ирина",
+              "middleName": "Владимировна",
+              "lastName": "Шеина",
+              "avatarUrl": ""
+            },
+            "group": {
+              "id": 1844821503501552360,
+              "parentId": null,
+              "name": "7в",
+              "parentName": null
+            }
+          },
+          {
+            "id": 1917903442944621163,
+            "number": 5,
+            "place": null,
+            "startDateTime": "2022-05-20T11:55:00Z",
+            "endDateTime": "2022-05-20T12:35:00Z",
+            "isCanceled": false,
+            "theme": "Нравственные проблемы в произведениях зарубежных писателей. О. Генри. Слово о писателе. «Дары волхвов». ",
+            "subject": {
+              "id": 3043268169742070,
+              "name": "Литература",
+              "knowledgeArea": "Philology",
+              "subjectMood": null
+            },
+            "importantWorks": [],
+            "homework": {
+              "workIsAttachRequired": false,
+              "attachments": [],
+              "text": "ЧИТ.С.245-264 РАССКАЗ кОНАН дОЙЛА-ДЕТЕКТИВ \"гОЛУБОЙ КАРБУНКУЛ\"(ИНТЕРЕСНЫЙ111)",
+              "isCompleted": false
+            },
+            "hasAttachment": false,
+            "workMarks": [],
+            "isEmpty": null,
+            "comment": null,
+            "teacher": {
+              "personId": 0,
+              "firstName": "Ирина",
+              "middleName": "Владимировна",
+              "lastName": "Шеина",
+              "avatarUrl": ""
+            },
+            "group": {
+              "id": 1844821503501552360,
+              "parentId": null,
+              "name": "7в",
+              "parentName": null
+            }
+          },
+          {
+            "id": 1917903442944620956,
+            "number": 6,
+            "place": null,
+            "startDateTime": "2022-05-20T12:50:00Z",
+            "endDateTime": "2022-05-20T13:30:00Z",
+            "isCanceled": false,
+            "theme": "Китай.",
+            "subject": {
+              "id": 2675670508811997,
+              "name": "География",
+              "knowledgeArea": "SocialStudies",
+              "subjectMood": null
+            },
+            "importantWorks": [],
+            "homework": {
+              "workIsAttachRequired": false,
+              "attachments": [],
+              "text": "пар.54, 55 устно",
+              "isCompleted": false
+            },
+            "hasAttachment": false,
+            "workMarks": [
+              {
+                "workId": 1952141238601184942,
+                "marks": [
+                  {
+                    "id": 1952141547838821364,
+                    "value": "5",
+                    "mood": "Good"
+                  }
+                ]
+              }
+            ],
+            "isEmpty": null,
+            "comment": null,
+            "teacher": {
+              "personId": 0,
+              "firstName": "Андрей",
+              "middleName": "Владимирович",
+              "lastName": "Ильин",
+              "avatarUrl": "https://au1.school.mosreg.ru/get.aspx/46/e8992022afab48e18bc7b6cb198bab2c.jpg?d=20200901103157"
+            },
+            "group": {
+              "id": 1844821503501552360,
+              "parentId": null,
+              "name": "7в",
+              "parentName": null
+            }
+          }
+        ],
+        "messengerEntryPoint": null
+      },
+      {
+        "date": "2022-05-21T00:00:00Z",
+        "hasImportantWork": false,
+        "dayHomeworksProgress": null,
+        "lessons": [],
+        "messengerEntryPoint": null
+      },
+      {
+        "date": "2022-05-22T00:00:00Z",
+        "hasImportantWork": false,
+        "dayHomeworksProgress": null,
+        "lessons": [],
+        "messengerEntryPoint": null
+      }
+    ]
+  },
+  {
+    "id": "2022-05-23",
+    "homeworksCount": 29,
+    "firstWeekDayDate": "2022-05-23T00:00:00Z",
+    "lastWeekDayDate": "2022-05-29T00:00:00Z",
+    "days": [
+      {
+        "date": "2022-05-23T00:00:00Z",
+        "hasImportantWork": true,
+        "dayHomeworksProgress": {
+          "totalLessonsWithHomeworksCount": 7,
+          "completedLessonsWithHomeworksCount": 0
+        },
+        "lessons": [
+          {
+            "id": 1917903442944620936,
+            "number": 1,
+            "place": null,
+            "startDateTime": "2022-05-23T08:30:00Z",
+            "endDateTime": "2022-05-23T09:10:00Z",
+            "isCanceled": false,
+            "theme": "..",
+            "subject": {
+              "id": 2675661918877403,
+              "name": "Биология",
+              "knowledgeArea": "NaturalScience",
+              "subjectMood": null
+            },
+            "importantWorks": [],
+            "homework": {
+              "workIsAttachRequired": false,
+              "attachments": [],
+              "text": "...",
+              "isCompleted": false
+            },
+            "hasAttachment": false,
+            "workMarks": [],
+            "isEmpty": null,
+            "comment": null,
+            "teacher": {
+              "personId": 0,
+              "firstName": "Андрей",
+              "middleName": "Владимирович",
+              "lastName": "Ильин",
+              "avatarUrl": "https://au1.school.mosreg.ru/get.aspx/46/e8992022afab48e18bc7b6cb198bab2c.jpg?d=20200901103157"
+            },
+            "group": {
+              "id": 1844821503501552360,
+              "parentId": null,
+              "name": "7в",
+              "parentName": null
+            }
+          },
+          {
+            "id": 1917903442944621026,
+            "number": 2,
+            "place": null,
+            "startDateTime": "2022-05-23T09:20:00Z",
+            "endDateTime": "2022-05-23T10:00:00Z",
+            "isCanceled": false,
+            "theme": "Интервью с немецкими школьниками. Аудирование",
+            "subject": {
+              "id": 2675722048419559,
+              "name": "Иностр.яз(немецкий)",
+              "knowledgeArea": "Philology",
+              "subjectMood": null
+            },
+            "importantWorks": [],
+            "homework": {
+              "workIsAttachRequired": false,
+              "attachments": [],
+              "text": "выполнить работу  и прислать в личку (в ватсап) - подписать фамилию",
+              "isCompleted": false
+            },
+            "hasAttachment": false,
+            "workMarks": [],
+            "isEmpty": null,
+            "comment": null,
+            "teacher": {
+              "personId": 0,
+              "firstName": "Светлана",
+              "middleName": "Викторовна",
+              "lastName": "Барраева",
+              "avatarUrl": "https://au1.school.mosreg.ru/get.aspx/46/7156d2c8c0644c9f8f8d8a2c5c3cbd02.png"
+            },
+            "group": {
+              "id": 1844821503501552360,
+              "parentId": null,
+              "name": "7в",
+              "parentName": null
+            }
+          },
+          {
+            "id": 1917903442944621257,
+            "number": 3,
+            "place": null,
+            "startDateTime": "2022-05-23T10:10:00Z",
+            "endDateTime": "2022-05-23T10:50:00Z",
+            "isCanceled": false,
+            "theme": "Повторительно-обобщающие уроки по теме «Смутное время. Россия при первых Романовых».",
+            "subject": {
+              "id": 1312684276821941034,
+              "name": "Ист.России. Вс.ист-я",
+              "knowledgeArea": "SocialStudies",
+              "subjectMood": null
+            },
+            "importantWorks": [],
+            "homework": {
+              "workIsAttachRequired": false,
+              "attachments": [],
+              "text": "Повторить записи в тетради",
+              "isCompleted": false
+            },
+            "hasAttachment": false,
+            "workMarks": [],
+            "isEmpty": null,
+            "comment": null,
+            "teacher": {
+              "personId": 0,
+              "firstName": "Дмитрий",
+              "middleName": "Николаевич",
+              "lastName": "Перышков",
+              "avatarUrl": null
+            },
+            "group": {
+              "id": 1844821503501552360,
+              "parentId": null,
+              "name": "7в",
+              "parentName": null
+            }
+          },
+          {
+            "id": 1917905663442714853,
+            "number": 4,
+            "place": null,
+            "startDateTime": "2022-05-23T11:05:00Z",
+            "endDateTime": "2022-05-23T11:45:00Z",
+            "isCanceled": false,
+            "theme": "Е.Носов. «Трудный хлеб». Уроки нравственности в рассказе.",
+            "subject": {
+              "id": 1581762045181093127,
+              "name": "Родная литература",
+              "knowledgeArea": "Philology",
+              "subjectMood": null
+            },
+            "importantWorks": [],
+            "homework": {
+              "workIsAttachRequired": false,
+              "attachments": [],
+              "text": "читать рассказ Шукшина \"Критики\"",
+              "isCompleted": false
+            },
+            "hasAttachment": false,
+            "workMarks": [
+              {
+                "workId": 1917905981270262986,
+                "marks": [
+                  {
+                    "id": 1950643403116434803,
+                    "value": "5",
+                    "mood": "Good"
+                  }
+                ]
+              }
+            ],
+            "isEmpty": null,
+            "comment": null,
+            "teacher": {
+              "personId": 0,
+              "firstName": "Ирина",
+              "middleName": "Владимировна",
+              "lastName": "Шеина",
+              "avatarUrl": ""
+            },
+            "group": {
+              "id": 1844821503501552360,
+              "parentId": null,
+              "name": "7в",
+              "parentName": null
+            }
+          },
+          {
+            "id": 1917903442944620927,
+            "number": 5,
+            "place": null,
+            "startDateTime": "2022-05-23T11:55:00Z",
+            "endDateTime": "2022-05-23T12:35:00Z",
+            "isCanceled": false,
+            "theme": "Контрольная работа №9 «Системы линейных уравнений»",
+            "subject": {
+              "id": 2675653328942809,
+              "name": "Алгебра",
+              "knowledgeArea": "Mathematics",
+              "subjectMood": null
+            },
+            "importantWorks": [
+              "Контрольная"
+            ],
+            "homework": {
+              "workIsAttachRequired": false,
+              "attachments": [],
+              "text": "повторить правило....; повторить правило..",
+              "isCompleted": false
+            },
+            "hasAttachment": false,
+            "workMarks": [
+              {
+                "workId": 1950671569511945259,
+                "marks": [
+                  {
+                    "id": 1951757625007207112,
+                    "value": "5",
+                    "mood": "Good"
+                  }
+                ]
+              }
+            ],
+            "isEmpty": null,
+            "comment": null,
+            "teacher": {
+              "personId": 0,
+              "firstName": "Татьяна",
+              "middleName": "Вячеславовна",
+              "lastName": "Безлепкина",
+              "avatarUrl": null
+            },
+            "group": {
+              "id": 1844821503501552360,
+              "parentId": null,
+              "name": "7в",
+              "parentName": null
+            }
+          },
+          {
+            "id": 1917903442944620945,
+            "number": 6,
+            "place": null,
+            "startDateTime": "2022-05-23T12:50:00Z",
+            "endDateTime": "2022-05-23T13:30:00Z",
+            "isCanceled": false,
+            "theme": "Индия. Пр.р. № 15 «Составление по картам сравнительного географического описания стран (по выбору)».",
+            "subject": {
+              "id": 2675670508811997,
+              "name": "География",
+              "knowledgeArea": "SocialStudies",
+              "subjectMood": null
+            },
+            "importantWorks": [],
+            "homework": {
+              "workIsAttachRequired": false,
+              "attachments": [],
+              "text": "пар.56, вопросы устно ; пар.56 повторять",
+              "isCompleted": false
+            },
+            "hasAttachment": false,
+            "workMarks": [],
+            "isEmpty": null,
+            "comment": null,
+            "teacher": {
+              "personId": 0,
+              "firstName": "Андрей",
+              "middleName": "Владимирович",
+              "lastName": "Ильин",
+              "avatarUrl": "https://au1.school.mosreg.ru/get.aspx/46/e8992022afab48e18bc7b6cb198bab2c.jpg?d=20200901103157"
+            },
+            "group": {
+              "id": 1844821503501552360,
+              "parentId": null,
+              "name": "7в",
+              "parentName": null
+            }
+          },
+          {
+            "id": 1917903442944621017,
+            "number": 7,
+            "place": null,
+            "startDateTime": "2022-05-23T13:45:00Z",
+            "endDateTime": "2022-05-23T14:25:00Z",
+            "isCanceled": false,
+            "theme": "Исследовательский проект.",
+            "subject": {
+              "id": 2675717753452262,
+              "name": "Музыка",
+              "knowledgeArea": "Art",
+              "subjectMood": null
+            },
+            "importantWorks": [],
+            "homework": {
+              "workIsAttachRequired": false,
+              "attachments": [],
+              "text": "Стр. 112 - 114. Знать Гимн РФ. Выучить песню \"Служить России\"",
+              "isCompleted": false
+            },
+            "hasAttachment": true,
+            "workMarks": [],
+            "isEmpty": null,
+            "comment": null,
+            "teacher": {
+              "personId": 0,
+              "firstName": "Татьяна",
+              "middleName": "Анатольевна",
+              "lastName": "Гаподченко",
+              "avatarUrl": null
+            },
+            "group": {
+              "id": 1844821503501552360,
+              "parentId": null,
+              "name": "7в",
+              "parentName": null
+            }
+          }
+        ],
+        "messengerEntryPoint": null
+      },
+      {
+        "date": "2022-05-24T00:00:00Z",
+        "hasImportantWork": true,
+        "dayHomeworksProgress": {
+          "totalLessonsWithHomeworksCount": 6,
+          "completedLessonsWithHomeworksCount": 0
+        },
+        "lessons": [
+          {
+            "id": 1917903442944620966,
+            "number": 1,
+            "place": null,
+            "startDateTime": "2022-05-24T08:30:00Z",
+            "endDateTime": "2022-05-24T09:10:00Z",
+            "isCanceled": false,
+            "theme": "Повторение. Решение задач по теме «Соотношения между сторонами и углами треугольника»",
+            "subject": {
+              "id": 2675674803779294,
+              "name": "Геометрия",
+              "knowledgeArea": "Mathematics",
+              "subjectMood": null
+            },
+            "importantWorks": [
+              "Самостоятельная работа"
+            ],
+            "homework": {
+              "workIsAttachRequired": false,
+              "attachments": [],
+              "text": "повторить правило",
+              "isCompleted": false
+            },
+            "hasAttachment": false,
+            "workMarks": [],
+            "isEmpty": null,
+            "comment": null,
+            "teacher": {
+              "personId": 0,
+              "firstName": "Татьяна",
+              "middleName": "Вячеславовна",
+              "lastName": "Безлепкина",
+              "avatarUrl": null
+            },
+            "group": {
+              "id": 1844821503501552360,
+              "parentId": null,
+              "name": "7в",
+              "parentName": null
+            }
+          },
+          {
+            "id": 1917903442944621173,
+            "number": 2,
+            "place": null,
+            "startDateTime": "2022-05-24T09:20:00Z",
+            "endDateTime": "2022-05-24T10:00:00Z",
+            "isCanceled": false,
+            "theme": "Технологии опроса: анкетирование",
+            "subject": {
+              "id": 3043276759676663,
+              "name": "Технология",
+              "knowledgeArea": "Technology",
+              "subjectMood": null
+            },
+            "importantWorks": [],
+            "homework": {
+              "workIsAttachRequired": false,
+              "attachments": [],
+              "text": "п11.2 , п 12.1",
+              "isCompleted": false
+            },
+            "hasAttachment": false,
+            "workMarks": [],
+            "isEmpty": null,
+            "comment": null,
+            "teacher": {
+              "personId": 0,
+              "firstName": "Лидия",
+              "middleName": "Алексеевна",
+              "lastName": "Чивилева",
+              "avatarUrl": null
+            },
+            "group": {
+              "id": 1844821503501552360,
+              "parentId": null,
+              "name": "7в",
+              "parentName": null
+            }
+          },
+          {
+            "id": 1917903442944621182,
+            "number": 3,
+            "place": null,
+            "startDateTime": "2022-05-24T10:10:00Z",
+            "endDateTime": "2022-05-24T10:50:00Z",
+            "isCanceled": false,
+            "theme": "Практическая работа: Разработать анкету для изучения успеваемости учащихся вашего класса.",
+            "subject": {
+              "id": 3043276759676663,
+              "name": "Технология",
+              "knowledgeArea": "Technology",
+              "subjectMood": null
+            },
+            "importantWorks": [],
+            "homework": null,
+            "hasAttachment": false,
+            "workMarks": [],
+            "isEmpty": null,
+            "comment": null,
+            "teacher": {
+              "personId": 0,
+              "firstName": "Лидия",
+              "middleName": "Алексеевна",
+              "lastName": "Чивилева",
+              "avatarUrl": null
+            },
+            "group": {
+              "id": 1844821503501552360,
+              "parentId": null,
+              "name": "7в",
+              "parentName": null
+            }
+          },
+          {
+            "id": 1917903442944621203,
+            "number": 4,
+            "place": null,
+            "startDateTime": "2022-05-24T11:05:00Z",
+            "endDateTime": "2022-05-24T11:45:00Z",
+            "isCanceled": false,
+            "theme": "Повторение по темам «В центре внимания» и «Проблемы экологии». Монологическое высказывание по темам",
+            "subject": {
+              "id": 1176632945678935697,
+              "name": "Иностр.яз(английск)",
+              "knowledgeArea": "Philology",
+              "subjectMood": null
+            },
+            "importantWorks": [],
+            "homework": {
+              "workIsAttachRequired": false,
+              "attachments": [],
+              "text": "проверочная работа - неправильные глаголы (2 столбец)",
+              "isCompleted": false
+            },
+            "hasAttachment": false,
+            "workMarks": [],
+            "isEmpty": null,
+            "comment": null,
+            "teacher": {
+              "personId": 0,
+              "firstName": "Татьяна",
+              "middleName": "Васильевна",
+              "lastName": "Клабукова",
+              "avatarUrl": null
+            },
+            "group": {
+              "id": 1844821503501552361,
+              "parentId": 1844821503501552360,
+              "name": "группа 1",
+              "parentName": "7в"
+            }
+          },
+          {
+            "id": 1917903442944620999,
+            "number": 5,
+            "place": null,
+            "startDateTime": "2022-05-24T11:55:00Z",
+            "endDateTime": "2022-05-24T12:35:00Z",
+            "isCanceled": false,
+            "theme": "Создание мультимедийной презентации. Обобщение и систематизация основных понятий главы «Мультимедиа».",
+            "subject": {
+              "id": 2675696278615778,
+              "name": "Информатика",
+              "knowledgeArea": "Mathematics",
+              "subjectMood": null
+            },
+            "importantWorks": [],
+            "homework": {
+              "workIsAttachRequired": false,
+              "attachments": [],
+              "text": "..",
+              "isCompleted": false
+            },
+            "hasAttachment": false,
+            "workMarks": [],
+            "isEmpty": null,
+            "comment": null,
+            "teacher": {
+              "personId": 0,
+              "firstName": "Виктория",
+              "middleName": "Викторовна",
+              "lastName": "Лидовская",
+              "avatarUrl": null
+            },
+            "group": {
+              "id": 1844821503501552361,
+              "parentId": 1844821503501552360,
+              "name": "группа 1",
+              "parentName": "7в"
+            }
+          },
+          {
+            "id": 1917903442944621095,
+            "number": 6,
+            "place": null,
+            "startDateTime": "2022-05-24T12:50:00Z",
+            "endDateTime": "2022-05-24T13:30:00Z",
+            "isCanceled": false,
+            "theme": "РР Написание сочинения. ",
+            "subject": {
+              "id": 2675756408157934,
+              "name": "Русский язык",
+              "knowledgeArea": "Philology",
+              "subjectMood": null
+            },
+            "importantWorks": [],
+            "homework": {
+              "workIsAttachRequired": false,
+              "attachments": [],
+              "text": "п.77-81 повторить теорию упр.491(орфограммы, пунктограммы отработать), произвести разборы из упр.491: морфологический-разорванной(тучи), фонетический- клочьях, перелетных-морфемный и словообразовательный",
+              "isCompleted": false
+            },
+            "hasAttachment": false,
+            "workMarks": [
+              {
+                "workId": 1919862231499461083,
+                "marks": [
+                  {
+                    "id": 1951752277772903422,
+                    "value": "5",
+                    "mood": "Good"
+                  }
+                ]
+              }
+            ],
+            "isEmpty": null,
+            "comment": null,
+            "teacher": {
+              "personId": 0,
+              "firstName": "Ирина",
+              "middleName": "Владимировна",
+              "lastName": "Шеина",
+              "avatarUrl": ""
+            },
+            "group": {
+              "id": 1844821503501552360,
+              "parentId": null,
+              "name": "7в",
+              "parentName": null
+            }
+          },
+          {
+            "id": 1917903442944621140,
+            "number": 7,
+            "place": null,
+            "startDateTime": "2022-05-24T13:45:00Z",
+            "endDateTime": "2022-05-24T14:25:00Z",
+            "isCanceled": false,
+            "theme": "Бег 1500 метров. Тренажеры. Спортигры.",
+            "subject": {
+              "id": 2675764998092528,
+              "name": "Физическая культура",
+              "knowledgeArea": "PhysicalCulture",
+              "subjectMood": null
+            },
+            "importantWorks": [],
+            "homework": {
+              "workIsAttachRequired": false,
+              "attachments": [],
+              "text": "п.25 стр 193=196",
+              "isCompleted": false
+            },
+            "hasAttachment": false,
+            "workMarks": [],
+            "isEmpty": null,
+            "comment": null,
+            "teacher": {
+              "personId": 0,
+              "firstName": "Николай",
+              "middleName": "Прокофьевич",
+              "lastName": "Синий",
+              "avatarUrl": "https://b2.csdnevnik.ru/user-avatar/cbdbc2757b77473ba9dc2ada597e8b74.jpg"
+            },
+            "group": {
+              "id": 1844821503501552360,
+              "parentId": null,
+              "name": "7в",
+              "parentName": null
+            }
+          }
+        ],
+        "messengerEntryPoint": null
+      },
+      {
+        "date": "2022-05-25T00:00:00Z",
+        "hasImportantWork": false,
+        "dayHomeworksProgress": {
+          "totalLessonsWithHomeworksCount": 6,
+          "completedLessonsWithHomeworksCount": 0
+        },
+        "lessons": [
+          {
+            "id": 1917903442944620978,
+            "number": 1,
+            "place": null,
+            "startDateTime": "2022-05-25T08:30:00Z",
+            "endDateTime": "2022-05-25T09:10:00Z",
+            "isCanceled": false,
+            "theme": "Повторение. Решение задач по теме «Соотношения между сторонами и углами треугольника»",
+            "subject": {
+              "id": 2675674803779294,
+              "name": "Геометрия",
+              "knowledgeArea": "Mathematics",
+              "subjectMood": null
+            },
+            "importantWorks": [],
+            "homework": {
+              "workIsAttachRequired": false,
+              "attachments": [],
+              "text": "повторить правило",
+              "isCompleted": false
+            },
+            "hasAttachment": false,
+            "workMarks": [],
+            "isEmpty": null,
+            "comment": null,
+            "teacher": {
+              "personId": 0,
+              "firstName": "Татьяна",
+              "middleName": "Вячеславовна",
+              "lastName": "Безлепкина",
+              "avatarUrl": null
+            },
+            "group": {
+              "id": 1844821503501552360,
+              "parentId": null,
+              "name": "7в",
+              "parentName": null
+            }
+          },
+          {
+            "id": 1917903442944621107,
+            "number": 2,
+            "place": null,
+            "startDateTime": "2022-05-25T09:20:00Z",
+            "endDateTime": "2022-05-25T10:00:00Z",
+            "isCanceled": false,
+            "theme": "Повторение пройденного материала.7 класс",
+            "subject": {
+              "id": 2675760703125231,
+              "name": "Физика",
+              "knowledgeArea": "NaturalScience",
+              "subjectMood": null
+            },
+            "importantWorks": [],
+            "homework": {
+              "workIsAttachRequired": false,
+              "attachments": [],
+              "text": "повт гл2,принести задание за 12.05",
+              "isCompleted": false
+            },
+            "hasAttachment": false,
+            "workMarks": [],
+            "isEmpty": null,
+            "comment": null,
+            "teacher": {
+              "personId": 0,
+              "firstName": "Валентина",
+              "middleName": "Ивановна",
+              "lastName": "Голованева",
+              "avatarUrl": ""
+            },
+            "group": {
+              "id": 1844821503501552360,
+              "parentId": null,
+              "name": "7в",
+              "parentName": null
+            }
+          },
+          {
+            "id": 1917903442944621152,
+            "number": 3,
+            "place": null,
+            "startDateTime": "2022-05-25T10:10:00Z",
+            "endDateTime": "2022-05-25T10:50:00Z",
+            "isCanceled": false,
+            "theme": "Вн.Чт.. Р. Д. Брэдбери. «Каникулы». Фантастический рассказ – предупреждение. Мечта о победе добра. Детективная литература.",
+            "subject": {
+              "id": 3043268169742070,
+              "name": "Литература",
+              "knowledgeArea": "Philology",
+              "subjectMood": null
+            },
+            "importantWorks": [],
+            "homework": {
+              "workIsAttachRequired": false,
+              "attachments": [],
+              "text": "С.217-222 (ЯПОНСКИЕ ТРЕХСТИШИЯ), ЧИТАТЬ",
+              "isCompleted": false
+            },
+            "hasAttachment": false,
+            "workMarks": [],
+            "isEmpty": null,
+            "comment": null,
+            "teacher": {
+              "personId": 0,
+              "firstName": "Ирина",
+              "middleName": "Владимировна",
+              "lastName": "Шеина",
+              "avatarUrl": ""
+            },
+            "group": {
+              "id": 1844821503501552360,
+              "parentId": null,
+              "name": "7в",
+              "parentName": null
+            }
+          },
+          {
+            "id": 1917903442944621215,
+            "number": 4,
+            "place": null,
+            "startDateTime": "2022-05-25T11:05:00Z",
+            "endDateTime": "2022-05-25T11:45:00Z",
+            "isCanceled": false,
+            "theme": "Повторение по темам «Время покупок» и «В здоровом теле здоровый дух» Написание эссе по темам",
+            "subject": {
+              "id": 1176632945678935697,
+              "name": "Иностр.яз(английск)",
+              "knowledgeArea": "Philology",
+              "subjectMood": null
+            },
+            "importantWorks": [],
+            "homework": {
+              "workIsAttachRequired": false,
+              "attachments": [],
+              "text": "..",
+              "isCompleted": false
+            },
+            "hasAttachment": false,
+            "workMarks": [],
+            "isEmpty": null,
+            "comment": null,
+            "teacher": {
+              "personId": 0,
+              "firstName": "Татьяна",
+              "middleName": "Васильевна",
+              "lastName": "Клабукова",
+              "avatarUrl": null
+            },
+            "group": {
+              "id": 1844821503501552361,
+              "parentId": 1844821503501552360,
+              "name": "группа 1",
+              "parentName": "7в"
+            }
+          },
+          {
+            "id": 1917903442944621269,
+            "number": 5,
+            "place": null,
+            "startDateTime": "2022-05-25T11:55:00Z",
+            "endDateTime": "2022-05-25T12:35:00Z",
+            "isCanceled": false,
+            "theme": "Повторительно-обобщающий урок по всеобщей истории и истории России",
+            "subject": {
+              "id": 1312684276821941034,
+              "name": "Ист.России. Вс.ист-я",
+              "knowledgeArea": "SocialStudies",
+              "subjectMood": null
+            },
+            "importantWorks": [],
+            "homework": {
+              "workIsAttachRequired": false,
+              "attachments": [],
+              "text": "повторить записи в тетради",
+              "isCompleted": false
+            },
+            "hasAttachment": false,
+            "workMarks": [
+              {
+                "workId": 1952156863692209996,
+                "marks": [
+                  {
+                    "id": 1952157314663733268,
+                    "value": "5",
+                    "mood": "Good"
+                  }
+                ]
+              }
+            ],
+            "isEmpty": null,
+            "comment": null,
+            "teacher": {
+              "personId": 0,
+              "firstName": "Дмитрий",
+              "middleName": "Николаевич",
+              "lastName": "Перышков",
+              "avatarUrl": null
+            },
+            "group": {
+              "id": 1844821503501552360,
+              "parentId": null,
+              "name": "7в",
+              "parentName": null
+            }
+          },
+          {
+            "id": 1917903442944620990,
+            "number": 6,
+            "place": null,
+            "startDateTime": "2022-05-25T12:50:00Z",
+            "endDateTime": "2022-05-25T13:30:00Z",
+            "isCanceled": false,
+            "theme": "Человек и мода. Создание своего имиджа",
+            "subject": {
+              "id": 2675683393713888,
+              "name": "ИЗО",
+              "knowledgeArea": "Art",
+              "subjectMood": null
+            },
+            "importantWorks": [],
+            "homework": {
+              "workIsAttachRequired": false,
+              "attachments": [],
+              "text": "читать стр. 169-173",
+              "isCompleted": false
+            },
+            "hasAttachment": false,
+            "workMarks": [],
+            "isEmpty": null,
+            "comment": null,
+            "teacher": {
+              "personId": 0,
+              "firstName": "Лариса",
+              "middleName": "Николаевна",
+              "lastName": "Кузнецова",
+              "avatarUrl": "https://au1.school.mosreg.ru/get.aspx/46/d1dab2ae09bd4951a00edeb7c88df015.png"
+            },
+            "group": {
+              "id": 1844821503501552360,
+              "parentId": null,
+              "name": "7в",
+              "parentName": null
+            }
+          }
+        ],
+        "messengerEntryPoint": null
+      },
+      {
+        "date": "2022-05-26T00:00:00Z",
+        "hasImportantWork": false,
+        "dayHomeworksProgress": {
+          "totalLessonsWithHomeworksCount": 4,
+          "completedLessonsWithHomeworksCount": 0
+        },
+        "lessons": [
+          {
+            "id": 1917903442944620906,
+            "number": 1,
+            "place": null,
+            "startDateTime": "2022-05-26T08:30:00Z",
+            "endDateTime": "2022-05-26T09:10:00Z",
+            "isCanceled": false,
+            "theme": "Формулы сокращенного  умножения. Решение  задач  с помощью систем  уравнений",
+            "subject": {
+              "id": 2675653328942809,
+              "name": "Алгебра",
+              "knowledgeArea": "Mathematics",
+              "subjectMood": null
+            },
+            "importantWorks": [],
+            "homework": {
+              "workIsAttachRequired": false,
+              "attachments": [],
+              "text": "№ 1097,1098,1092",
+              "isCompleted": false
+            },
+            "hasAttachment": false,
+            "workMarks": [],
+            "isEmpty": null,
+            "comment": null,
+            "teacher": {
+              "personId": 0,
+              "firstName": "Татьяна",
+              "middleName": "Вячеславовна",
+              "lastName": "Безлепкина",
+              "avatarUrl": null
+            },
+            "group": {
+              "id": 1844821503501552360,
+              "parentId": null,
+              "name": "7в",
+              "parentName": null
+            }
+          },
+          {
+            "id": 1917903442944621119,
+            "number": 2,
+            "place": null,
+            "startDateTime": "2022-05-26T09:20:00Z",
+            "endDateTime": "2022-05-26T10:00:00Z",
+            "isCanceled": false,
+            "theme": "Повторение пройденного материала. ",
+            "subject": {
+              "id": 2675760703125231,
+              "name": "Физика",
+              "knowledgeArea": "NaturalScience",
+              "subjectMood": null
+            },
+            "importantWorks": [],
+            "homework": {
+              "workIsAttachRequired": false,
+              "attachments": [],
+              "text": " повт гл2,принести задание за 12.05",
+              "isCompleted": false
+            },
+            "hasAttachment": false,
+            "workMarks": [],
+            "isEmpty": null,
+            "comment": null,
+            "teacher": {
+              "personId": 0,
+              "firstName": "Татьяна",
+              "middleName": "Вячеславовна",
+              "lastName": "Безлепкина",
+              "avatarUrl": null
+            },
+            "group": {
+              "id": 1844821503501552360,
+              "parentId": null,
+              "name": "7в",
+              "parentName": null
+            }
+          },
+          {
+            "id": 1917903442944620918,
+            "number": 3,
+            "place": null,
+            "startDateTime": "2022-05-26T10:10:00Z",
+            "endDateTime": "2022-05-26T10:50:00Z",
+            "isCanceled": false,
+            "theme": "Степень  с  натуральным  показателем",
+            "subject": {
+              "id": 2675653328942809,
+              "name": "Алгебра",
+              "knowledgeArea": "Mathematics",
+              "subjectMood": null
+            },
+            "importantWorks": [],
+            "homework": null,
+            "hasAttachment": false,
+            "workMarks": [],
+            "isEmpty": null,
+            "comment": null,
+            "teacher": {
+              "personId": 0,
+              "firstName": "Татьяна",
+              "middleName": "Вячеславовна",
+              "lastName": "Безлепкина",
+              "avatarUrl": null
+            },
+            "group": {
+              "id": 1844821503501552360,
+              "parentId": null,
+              "name": "7в",
+              "parentName": null
+            }
+          },
+          {
+            "id": 1917903442944621062,
+            "number": 4,
+            "place": null,
+            "startDateTime": "2022-05-26T11:05:00Z",
+            "endDateTime": "2022-05-26T11:45:00Z",
+            "isCanceled": false,
+            "theme": "Морфология. Орфография. Синтаксис. Пунктуация",
+            "subject": {
+              "id": 2675756408157934,
+              "name": "Русский язык",
+              "knowledgeArea": "Philology",
+              "subjectMood": null
+            },
+            "importantWorks": [],
+            "homework": {
+              "workIsAttachRequired": false,
+              "attachments": [],
+              "text": "п.п.79,80,81 повт.разделы языка, упр.506(орфограммы, пунктограммы), упр.507-по составу и словообразовательный разбор(слово выписать дважды для разных разборов!)",
+              "isCompleted": false
+            },
+            "hasAttachment": false,
+            "workMarks": [],
+            "isEmpty": null,
+            "comment": null,
+            "teacher": {
+              "personId": 0,
+              "firstName": "Ирина",
+              "middleName": "Владимировна",
+              "lastName": "Шеина",
+              "avatarUrl": ""
+            },
+            "group": {
+              "id": 1844821503501552360,
+              "parentId": null,
+              "name": "7в",
+              "parentName": null
+            }
+          },
+          {
+            "id": 1917903442944621086,
+            "number": 5,
+            "place": null,
+            "startDateTime": "2022-05-26T11:55:00Z",
+            "endDateTime": "2022-05-26T12:35:00Z",
+            "isCanceled": false,
+            "theme": "Итоговый контрольный диктант№ 6",
+            "subject": {
+              "id": 2675756408157934,
+              "name": "Русский язык",
+              "knowledgeArea": "Philology",
+              "subjectMood": null
+            },
+            "importantWorks": [],
+            "homework": null,
+            "hasAttachment": false,
+            "workMarks": [
+              {
+                "workId": 1919862231499461075,
+                "marks": [
+                  {
+                    "id": 1948543447576502106,
+                    "value": "5",
+                    "mood": "Good"
+                  },
+                  {
+                    "id": 1948543447576502107,
+                    "value": "5",
+                    "mood": "Good"
+                  }
+                ]
+              }
+            ],
+            "isEmpty": null,
+            "comment": null,
+            "teacher": {
+              "personId": 0,
+              "firstName": "Ирина",
+              "middleName": "Владимировна",
+              "lastName": "Шеина",
+              "avatarUrl": ""
+            },
+            "group": {
+              "id": 1844821503501552360,
+              "parentId": null,
+              "name": "7в",
+              "parentName": null
+            }
+          },
+          {
+            "id": 1917903442944621038,
+            "number": 6,
+            "place": null,
+            "startDateTime": "2022-05-26T12:50:00Z",
+            "endDateTime": "2022-05-26T13:30:00Z",
+            "isCanceled": false,
+            "theme": "Elfchen – стихотворение из 11 слов. Пишем стихи",
+            "subject": {
+              "id": 2675722048419559,
+              "name": "Иностр.яз(немецкий)",
+              "knowledgeArea": "Philology",
+              "subjectMood": null
+            },
+            "importantWorks": [],
+            "homework": {
+              "workIsAttachRequired": false,
+              "attachments": [],
+              "text": "повторить слова",
+              "isCompleted": false
+            },
+            "hasAttachment": false,
+            "workMarks": [],
+            "isEmpty": null,
+            "comment": null,
+            "teacher": {
+              "personId": 0,
+              "firstName": "Светлана",
+              "middleName": "Викторовна",
+              "lastName": "Барраева",
+              "avatarUrl": "https://au1.school.mosreg.ru/get.aspx/46/7156d2c8c0644c9f8f8d8a2c5c3cbd02.png"
+            },
+            "group": {
+              "id": 1844821503501552360,
+              "parentId": null,
+              "name": "7в",
+              "parentName": null
+            }
+          }
+        ],
+        "messengerEntryPoint": null
+      },
+      {
+        "date": "2022-05-27T00:00:00Z",
+        "hasImportantWork": false,
+        "dayHomeworksProgress": {
+          "totalLessonsWithHomeworksCount": 6,
+          "completedLessonsWithHomeworksCount": 0
+        },
+        "lessons": [
+          {
+            "id": 1917903442944621131,
+            "number": 1,
+            "place": null,
+            "startDateTime": "2022-05-27T08:30:00Z",
+            "endDateTime": "2022-05-27T09:10:00Z",
+            "isCanceled": false,
+            "theme": "Круговая тренировка по станциям. Спортигры.",
+            "subject": {
+              "id": 2675764998092528,
+              "name": "Физическая культура",
+              "knowledgeArea": "PhysicalCulture",
+              "subjectMood": null
+            },
+            "importantWorks": [],
+            "homework": {
+              "workIsAttachRequired": false,
+              "attachments": [],
+              "text": "п.6 стр 82-84",
+              "isCompleted": false
+            },
+            "hasAttachment": false,
+            "workMarks": [],
+            "isEmpty": null,
+            "comment": null,
+            "teacher": {
+              "personId": 0,
+              "firstName": "Николай",
+              "middleName": "Прокофьевич",
+              "lastName": "Синий",
+              "avatarUrl": "https://b2.csdnevnik.ru/user-avatar/cbdbc2757b77473ba9dc2ada597e8b74.jpg"
+            },
+            "group": {
+              "id": 1844821503501552360,
+              "parentId": null,
+              "name": "7в",
+              "parentName": null
+            }
+          },
+          {
+            "id": 1917903442944621194,
+            "number": 2,
+            "place": null,
+            "startDateTime": "2022-05-27T09:20:00Z",
+            "endDateTime": "2022-05-27T10:00:00Z",
+            "isCanceled": false,
+            "theme": "Обобщающий урок. Игра     на повторение изученного лексического материала.",
+            "subject": {
+              "id": 1176632945678935697,
+              "name": "Иностр.яз(английск)",
+              "knowledgeArea": "Philology",
+              "subjectMood": null
+            },
+            "importantWorks": [],
+            "homework": {
+              "workIsAttachRequired": false,
+              "attachments": [],
+              "text": "проверочная работа - неправильные глаголы (2 столбец)",
+              "isCompleted": false
+            },
+            "hasAttachment": false,
+            "workMarks": [],
+            "isEmpty": null,
+            "comment": null,
+            "teacher": {
+              "personId": 0,
+              "firstName": "Татьяна",
+              "middleName": "Васильевна",
+              "lastName": "Клабукова",
+              "avatarUrl": null
+            },
+            "group": {
+              "id": 1844821503501552361,
+              "parentId": 1844821503501552360,
+              "name": "группа 1",
+              "parentName": "7в"
+            }
+          },
+          {
+            "id": 1917903442944621050,
+            "number": 3,
+            "place": null,
+            "startDateTime": "2022-05-27T10:10:00Z",
+            "endDateTime": "2022-05-27T10:50:00Z",
+            "isCanceled": false,
+            "theme": "Итоговое повторение",
+            "subject": {
+              "id": 2675730638354153,
+              "name": "Обществознание",
+              "knowledgeArea": "SocialStudies",
+              "subjectMood": null
+            },
+            "importantWorks": [],
+            "homework": {
+              "workIsAttachRequired": false,
+              "attachments": [],
+              "text": "Повторить записи в тетради",
+              "isCompleted": false
+            },
+            "hasAttachment": false,
+            "workMarks": [
+              {
+                "workId": 1952151490688121857,
+                "marks": [
+                  {
+                    "id": 1952151838580418642,
+                    "value": "5",
+                    "mood": "Good"
+                  }
+                ]
+              }
+            ],
+            "isEmpty": null,
+            "comment": null,
+            "teacher": {
+              "personId": 0,
+              "firstName": "Дмитрий",
+              "middleName": "Николаевич",
+              "lastName": "Перышков",
+              "avatarUrl": null
+            },
+            "group": {
+              "id": 1844821503501552360,
+              "parentId": null,
+              "name": "7в",
+              "parentName": null
+            }
+          },
+          {
+            "id": 1917903442944621074,
+            "number": 4,
+            "place": null,
+            "startDateTime": "2022-05-27T11:05:00Z",
+            "endDateTime": "2022-05-27T11:45:00Z",
+            "isCanceled": false,
+            "theme": "Анализ контрольного диктанта, работа над ошибками, допущенными в диктанте. Итоговый урок.",
+            "subject": {
+              "id": 2675756408157934,
+              "name": "Русский язык",
+              "knowledgeArea": "Philology",
+              "subjectMood": null
+            },
+            "importantWorks": [],
+            "homework": {
+              "workIsAttachRequired": false,
+              "attachments": [],
+              "text": "повторить изученное; п.82, 83,84 повторить теорию, упр.517(орфограммы, пунктограммы отработать в",
+              "isCompleted": false
+            },
+            "hasAttachment": false,
+            "workMarks": [],
+            "isEmpty": null,
+            "comment": null,
+            "teacher": {
+              "personId": 0,
+              "firstName": "Ирина",
+              "middleName": "Владимировна",
+              "lastName": "Шеина",
+              "avatarUrl": ""
+            },
+            "group": {
+              "id": 1844821503501552360,
+              "parentId": null,
+              "name": "7в",
+              "parentName": null
+            }
+          },
+          {
+            "id": 1917903442944621164,
+            "number": 5,
+            "place": null,
+            "startDateTime": "2022-05-27T11:55:00Z",
+            "endDateTime": "2022-05-27T12:35:00Z",
+            "isCanceled": false,
+            "theme": "Выявление уровня литературного развития учащихся 7 класса. Контрольное тестирование.  Итоги года и задание на лето",
+            "subject": {
+              "id": 3043268169742070,
+              "name": "Литература",
+              "knowledgeArea": "Philology",
+              "subjectMood": null
+            },
+            "importantWorks": [],
+            "homework": {
+              "workIsAttachRequired": false,
+              "attachments": [],
+              "text": "с.265(вопросы), с.285-299(справочная литература, термины-подготовиться к ответам на вопросы)",
+              "isCompleted": false
+            },
+            "hasAttachment": false,
+            "workMarks": [
+              {
+                "workId": 1919499753439521411,
+                "marks": [
+                  {
+                    "id": 1952140358132877652,
+                    "value": "5",
+                    "mood": "Good"
+                  }
+                ]
+              }
+            ],
+            "isEmpty": null,
+            "comment": null,
+            "teacher": {
+              "personId": 0,
+              "firstName": "Ирина",
+              "middleName": "Владимировна",
+              "lastName": "Шеина",
+              "avatarUrl": ""
+            },
+            "group": {
+              "id": 1844821503501552360,
+              "parentId": null,
+              "name": "7в",
+              "parentName": null
+            }
+          },
+          {
+            "id": 1917903442944620957,
+            "number": 6,
+            "place": null,
+            "startDateTime": "2022-05-27T12:50:00Z",
+            "endDateTime": "2022-05-27T13:30:00Z",
+            "isCanceled": false,
+            "theme": "Многообразие стран  - обобщение знаний",
+            "subject": {
+              "id": 2675670508811997,
+              "name": "География",
+              "knowledgeArea": "SocialStudies",
+              "subjectMood": null
+            },
+            "importantWorks": [],
+            "homework": {
+              "workIsAttachRequired": false,
+              "attachments": [],
+              "text": "..",
+              "isCompleted": false
+            },
+            "hasAttachment": false,
+            "workMarks": [],
+            "isEmpty": null,
+            "comment": null,
+            "teacher": {
+              "personId": 0,
+              "firstName": "Андрей",
+              "middleName": "Владимирович",
+              "lastName": "Ильин",
+              "avatarUrl": "https://au1.school.mosreg.ru/get.aspx/46/e8992022afab48e18bc7b6cb198bab2c.jpg?d=20200901103157"
+            },
+            "group": {
+              "id": 1844821503501552360,
+              "parentId": null,
+              "name": "7в",
+              "parentName": null
+            }
+          }
+        ],
+        "messengerEntryPoint": null
+      },
+      {
+        "date": "2022-05-28T00:00:00Z",
+        "hasImportantWork": false,
+        "dayHomeworksProgress": null,
+        "lessons": [],
+        "messengerEntryPoint": null
+      },
+      {
+        "date": "2022-05-29T00:00:00Z",
+        "hasImportantWork": false,
+        "dayHomeworksProgress": null,
+        "lessons": [],
+        "messengerEntryPoint": null
+      }
+    ]
+  },
+  {
+    "id": "2022-05-30",
+    "homeworksCount": 0,
+    "firstWeekDayDate": "2022-05-30T00:00:00Z",
+    "lastWeekDayDate": "2022-06-05T00:00:00Z",
+    "days": [
+      {
+        "date": "2022-05-30T00:00:00Z",
+        "hasImportantWork": false,
+        "dayHomeworksProgress": null,
+        "lessons": [],
+        "messengerEntryPoint": null
+      },
+      {
+        "date": "2022-05-31T00:00:00Z",
+        "hasImportantWork": false,
+        "dayHomeworksProgress": null,
+        "lessons": [],
+        "messengerEntryPoint": null
+      },
+      {
+        "date": "2022-06-01T00:00:00Z",
+        "hasImportantWork": false,
+        "dayHomeworksProgress": null,
+        "lessons": [],
+        "messengerEntryPoint": null
+      },
+      {
+        "date": "2022-06-02T00:00:00Z",
+        "hasImportantWork": false,
+        "dayHomeworksProgress": null,
+        "lessons": [],
+        "messengerEntryPoint": null
+      },
+      {
+        "date": "2022-06-03T00:00:00Z",
+        "hasImportantWork": false,
+        "dayHomeworksProgress": null,
+        "lessons": [],
+        "messengerEntryPoint": null
+      },
+      {
+        "date": "2022-06-04T00:00:00Z",
+        "hasImportantWork": false,
+        "dayHomeworksProgress": null,
+        "lessons": [],
+        "messengerEntryPoint": null
+      },
+      {
+        "date": "2022-06-05T00:00:00Z",
+        "hasImportantWork": false,
+        "dayHomeworksProgress": null,
+        "lessons": [],
+        "messengerEntryPoint": null
+      }
+    ]
+  }
+]

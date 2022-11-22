@@ -109,6 +109,19 @@ class MainActivity : AppCompatActivity() {
         if (token == null && userId == null) {
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
+        } else if (token == getString(R.string.demo_token) && userId == getString(R.string.demo_user_id)) {
+            val raw = resources.openRawResource(R.raw.sample_diary_data)
+            val byteArray = ByteArray(raw.available())
+            raw.read(byteArray)
+            userData = Gson().fromJson<User>(
+                getString(R.string.sample_user_data),
+                object : TypeToken<User>() {}.type
+            )
+            diaryData = Gson().fromJson<List<Week>>(
+                String(byteArray),
+                object : TypeToken<List<Week>>() {}.type
+            )
+            allDataLoaded()
         } else createDiary()
 
         PreferenceManager.setDefaultValues(this, R.xml.root_preferences, false)
