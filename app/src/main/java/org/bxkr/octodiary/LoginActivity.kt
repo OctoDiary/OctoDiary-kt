@@ -44,22 +44,30 @@ class LoginActivity : AppCompatActivity() {
                     getString(R.string.user_id),
                     getString(R.string.demo_user_id)
                 )
-                putString(getString(R.string.token), getString(R.string.demo_token))
+                putString(
+                    getString(R.string.token),
+                    getString(R.string.demo_token)
+                )
                 apply()
             }
             startActivity(Intent(this@LoginActivity, MainActivity::class.java))
             finish()
         }
         val call: Call<NetworkService.AuthResult> = NetworkService.api().auth(
-            binding.username.editText?.text.toString(),
-            binding.password.editText?.text.toString()
+            NetworkService.AuthRequestBody(
+                binding.username.editText?.text.toString(),
+                binding.password.editText?.text.toString(),
+                getString(R.string.client_id),
+                getString(R.string.client_secret),
+                getString(R.string.default_scope),
+            )
         )
         call.enqueue(object : Callback<NetworkService.AuthResult> {
             override fun onResponse(
                 call: Call<NetworkService.AuthResult>,
                 response: Response<NetworkService.AuthResult>
             ) {
-                if (response.isSuccessful) {
+                if (response.isSuccessful && (response.body()?.credentials != null)) {
                     val sharedPref = this@LoginActivity.getSharedPreferences(
                         getString(R.string.auth_file_key),
                         Context.MODE_PRIVATE
@@ -67,9 +75,12 @@ class LoginActivity : AppCompatActivity() {
                     with(sharedPref.edit()) {
                         putString(
                             getString(R.string.user_id),
-                            response.body()?.user_id.toString()
+                            response.body()?.credentials?.userId.toString()
                         )
-                        putString(getString(R.string.token), response.body()?.access_token)
+                        putString(
+                            getString(R.string.token),
+                            response.body()?.credentials?.accessToken
+                        )
                         apply()
                     }
                     startActivity(Intent(this@LoginActivity, MainActivity::class.java))
@@ -80,7 +91,7 @@ class LoginActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<NetworkService.AuthResult>, t: Throwable) {
-                Log.e(this::class.simpleName, getString(R.string.retrofit_error))
+                Log.e(this::class.simpleName, getString(R.string.retrofit_error, t.message))
             }
         })
     }

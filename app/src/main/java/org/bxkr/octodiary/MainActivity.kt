@@ -18,6 +18,7 @@ import org.bxkr.octodiary.fragments.DiaryFragment
 import org.bxkr.octodiary.fragments.ProfileFragment
 import org.bxkr.octodiary.models.diary.Diary
 import org.bxkr.octodiary.models.diary.Week
+import org.bxkr.octodiary.models.rating.RatingClass
 import org.bxkr.octodiary.models.user.User
 import org.bxkr.octodiary.network.NetworkService
 import retrofit2.Call
@@ -101,25 +102,71 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+    var ratingData: RatingClass?
+        get() {
+            val dataAge = this.getSharedPreferences(
+                getString(R.string.saved_data_key),
+                Context.MODE_PRIVATE
+            ).getLong(getString(R.string.data_age_key), (-1).toLong())
+
+            if (dataAge == (-1).toLong() || ((System.currentTimeMillis() - dataAge) >= 3600000)) {
+                return null
+            }
+
+            val jsonEncoded = this.getSharedPreferences(
+                getString(R.string.saved_data_key),
+                Context.MODE_PRIVATE
+            ).getString(getString(R.string.rating_data_key), null)
+            if (jsonEncoded != null) {
+                return Gson().fromJson<RatingClass>(
+                    jsonEncoded,
+                    object : TypeToken<RatingClass>() {}.type
+                )
+            }
+            return null
+        }
+        set(value) {
+            val jsonEncoded = Gson().toJson(value)
+            this.getSharedPreferences(
+                getString(R.string.saved_data_key),
+                Context.MODE_PRIVATE
+            ).edit {
+                putString(getString(R.string.rating_data_key), jsonEncoded)
+                putLong(getString(R.string.data_age_key), System.currentTimeMillis())
+            }
+        }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        println(token)
+        println(userId)
         if (token == null && userId == null) {
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
         } else if (token == getString(R.string.demo_token) && userId == getString(R.string.demo_user_id)) {
-            val raw = resources.openRawResource(R.raw.sample_diary_data)
-            val byteArray = ByteArray(raw.available())
-            raw.read(byteArray)
+            val diaryRaw = resources.openRawResource(R.raw.sample_diary_data)
+            val userRaw = resources.openRawResource(R.raw.sample_user_data)
+            val ratingRaw = resources.openRawResource(R.raw.sample_rating_data)
+            val diaryByteArray = ByteArray(diaryRaw.available())
+            val userByteArray = ByteArray(userRaw.available())
+            val ratingByteArray = ByteArray(ratingRaw.available())
+            diaryRaw.read(diaryByteArray)
+            userRaw.read(userByteArray)
+            ratingRaw.read(ratingByteArray)
             userData = Gson().fromJson<User>(
-                getString(R.string.sample_user_data),
+                String(userByteArray),
                 object : TypeToken<User>() {}.type
             )
             diaryData = Gson().fromJson<List<Week>>(
-                String(byteArray),
+                String(diaryByteArray),
                 object : TypeToken<List<Week>>() {}.type
+            )
+            ratingData = Gson().fromJson<RatingClass>(
+                String(ratingByteArray),
+                object : TypeToken<RatingClass>() {}.type
             )
             allDataLoaded()
         } else createDiary()
@@ -150,38 +197,14 @@ class MainActivity : AppCompatActivity() {
         if (diaryData != null && userData != null) {
             allDataLoaded()
         }
-        val call = NetworkService.api().diary(token, userId)
-        call.enqueue(object : Callback<Diary> {
-            override fun onResponse(
-                call: Call<Diary>, response: Response<Diary>
-            ) {
-                if (response.isSuccessful) {
-                    diaryData = response.body()!!.weeks
-                    getProfile(listener)
-                } else {
-                    val intent = Intent(this@MainActivity, LoginActivity::class.java)
-                    intent.putExtra(getString(R.string.out_of_date_extra), true)
-                    startActivity(intent)
-                    finish()
-                }
-            }
-
-            override fun onFailure(call: Call<Diary>, t: Throwable) {
-                Log.e(this::class.simpleName, getString(R.string.retrofit_error))
-            }
-        })
-    }
-
-    fun getProfile(listener: () -> Unit = {}) {
-        val call = NetworkService.api().user(token, userId)
-        call.enqueue(object : Callback<User> {
+        val call = userId?.toLong()?.let { NetworkService.api().user(it, token) }
+        call?.enqueue(object : Callback<User> {
             override fun onResponse(
                 call: Call<User>, response: Response<User>
             ) {
                 if (response.isSuccessful) {
                     userData = response.body()!!
-                    listener()
-                    allDataLoaded()
+                    getRating(listener)
                 } else {
                     val intent = Intent(this@MainActivity, LoginActivity::class.java)
                     intent.putExtra(getString(R.string.out_of_date_extra), true)
@@ -194,6 +217,62 @@ class MainActivity : AppCompatActivity() {
                 Log.e(this::class.simpleName, getString(R.string.retrofit_error))
             }
         })
+
+    }
+
+    fun getRating(listener: () -> Unit = {}) {
+        with(userData!!) {
+            val call = NetworkService.api().rating(
+                info.personId, contextPersons[0].group.id, token
+            )
+            call.enqueue(object : Callback<RatingClass> {
+                override fun onResponse(
+                    call: Call<RatingClass>, response: Response<RatingClass>
+                ) {
+                    if (response.isSuccessful) {
+                        ratingData = response.body()!!
+                        getDiary(listener)
+                    } else {
+                        val intent = Intent(this@MainActivity, LoginActivity::class.java)
+                        intent.putExtra(getString(R.string.out_of_date_extra), true)
+                        startActivity(intent)
+                        finish()
+                    }
+                }
+
+                override fun onFailure(call: Call<RatingClass>, t: Throwable) {
+                    Log.e(this::class.simpleName, getString(R.string.retrofit_error))
+                }
+            })
+        }
+    }
+
+    fun getDiary(listener: () -> Unit = {}) {
+        with(userData!!) {
+            val call = NetworkService.api().diary(
+                info.personId, contextPersons[0].school.id, contextPersons[0].group.id, token
+            )
+            call.enqueue(object : Callback<Diary> {
+                override fun onResponse(
+                    call: Call<Diary>, response: Response<Diary>
+                ) {
+                    if (response.isSuccessful) {
+                        diaryData = response.body()!!.weeks
+                        listener()
+                        allDataLoaded()
+                    } else {
+                        val intent = Intent(this@MainActivity, LoginActivity::class.java)
+                        intent.putExtra(getString(R.string.out_of_date_extra), true)
+                        startActivity(intent)
+                        finish()
+                    }
+                }
+
+                override fun onFailure(call: Call<Diary>, t: Throwable) {
+                    Log.e(this::class.simpleName, getString(R.string.retrofit_error))
+                }
+            })
+        }
     }
 
     private fun allDataLoaded() {

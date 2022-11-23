@@ -9,20 +9,24 @@ import com.squareup.picasso.Picasso
 import org.bxkr.octodiary.MainActivity
 import org.bxkr.octodiary.databinding.FragmentProfileBinding
 import org.bxkr.octodiary.models.diary.Week
+import org.bxkr.octodiary.models.rating.RatingClass
 import org.bxkr.octodiary.models.user.User
-import java.util.*
+import java.util.Calendar
+import java.util.Locale
 
 
 class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBinding::inflate) {
 
     private lateinit var userData: User
     private lateinit var diaryData: List<Week>
+    private lateinit var ratingData: RatingClass
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         (activity as MainActivity).title = getString(org.bxkr.octodiary.R.string.profile)
         super.onViewCreated(view, savedInstanceState)
         userData = (activity as MainActivity).userData!!
         diaryData = (activity as MainActivity).diaryData!!
+        ratingData = (activity as MainActivity).ratingData!!
         configureProfile()
         binding.swipeRefresh.setOnRefreshListener {
             (activity as MainActivity).createDiary { binding.swipeRefresh.isRefreshing = false }
@@ -35,10 +39,10 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
         binding.studentName.text =
             getString(
                 org.bxkr.octodiary.R.string.profile_name,
-                userData.firstName,
-                userData.lastName
+                userData.info.firstName,
+                userData.info.lastName
             )
-        Picasso.get().load(userData.avatarUrl).into(binding.bigAvatar)
+        Picasso.get().load(userData.info.avatarUrl).into(binding.bigAvatar)
     }
 
     private fun refreshPreferences(preferences: SharedPreferences) {
@@ -46,9 +50,9 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
         val showRatingBackground = preferences.getBoolean("show_rating_background", true)
 
         when (preferences.getString("data_under_name", "school")) {
-            "school" -> binding.dataUnderName.text = userData.schoolName
-            "class_name" -> binding.dataUnderName.text = userData.className
-            "middle_name" -> binding.dataUnderName.text = userData.middleName
+            "school" -> binding.dataUnderName.text = userData.contextPersons[0].school.name
+            "class_name" -> binding.dataUnderName.text = userData.contextPersons[0].group.name
+            "middle_name" -> binding.dataUnderName.text = userData.info.middleName
             "lessons_tomorrow" -> binding.dataUnderName.text = java.text.MessageFormat.format(
                 getString(org.bxkr.octodiary.R.string.lessons_tomorrow_template),
                 diaryData[1].days[Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1].lessons.size
@@ -60,11 +64,11 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
             binding.ratingStatus.text =
                 getString(
                     org.bxkr.octodiary.R.string.rating_place,
-                    toOrdinal(userData.ranking.history.rankingPosition.place).replace(".", "")
+                    toOrdinal(ratingData.history.rankingPosition.place).replace(".", "")
                 )
             if (showRatingBackground) {
                 binding.ratingBackground.visibility = View.VISIBLE
-                Picasso.get().load(userData.ranking.history.rankingPosition.backgroundImageUrl)
+                Picasso.get().load(ratingData.history.rankingPosition.backgroundImageUrl)
                     .into(binding.ratingBackground)
             } else binding.ratingBackground.visibility = View.INVISIBLE
         } else binding.ratingCard.visibility = View.GONE

@@ -1,8 +1,8 @@
-package org.bxkr.octodiary.models.user
+package org.bxkr.octodiary.models.rating
 
 data class Subject(
     val id: Long,
-    val knowledgeArea: String,
     val name: String,
+    val knowledgeArea: String,
     val subjectMood: String
 )

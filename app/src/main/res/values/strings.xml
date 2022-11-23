@@ -9,7 +9,7 @@
     <string name="user_id" translatable="false">user_id</string>
     <string name="auth_file_key" translatable="false">auth</string>
     <string name="user_id_is" translatable="false">User ID: %s</string>
-    <string name="retrofit_error" translatable="false">Retrofit error</string>
+    <string name="retrofit_error" translatable="false">Retrofit error: %s</string>
     <string name="wrong">Wrong username or/and password!</string>
     <string name="out_of_date">Authentication data is out of date</string>
     <string name="week_n">Week from %s to %s</string>
@@ -70,4 +70,5 @@
     <string name="demopassword" translatable="false">demopassword</string>
     <string name="demo_user_id" translatable="false">-1</string>
     <string name="demo_token" translatable="false">DEMO_TOKEN</string>
+    <string name="rating_data_key" translatable="false">rating_data</string>
 </resources>
