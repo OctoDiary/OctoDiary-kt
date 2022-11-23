@@ -1,0 +1,291 @@
+{
+  "history": {
+    "rankingPosition": {
+      "trendDescription": "Ваш рейтинг стабилен",
+      "placeTrend": "Equal",
+      "place": 1,
+      "description": "Посмотрите на средние баллы одноклассников и узнайте, как сохранить высокую позицию в рейтинге класса",
+      "backgroundImageUrl": "https://static.school.mosreg.ru/images/studentrating/background/1.png"
+    },
+    "historyItems": [
+      {
+        "place": 1,
+        "date": "сегодня"
+      },
+      {
+        "place": 1,
+        "date": "вчера"
+      },
+      {
+        "place": 1,
+        "date": "ноя.21"
+      },
+      {
+        "place": 1,
+        "date": "ноя.20"
+      },
+      {
+        "place": 1,
+        "date": "ноя.19"
+      },
+      {
+        "place": 1,
+        "date": "ноя.18"
+      },
+      {
+        "place": 1,
+        "date": "ноя.17"
+      }
+    ]
+  },
+  "rating": {
+    "rankingPlaces": [
+      {
+        "place": 1,
+        "imageUrl": "https://au1.school.mosreg.ru/get.aspx/46/54e7b4636061487bbfe82d22e8c0fbb0.png?d=20210923013650",
+        "averageMark": "4.77",
+        "isContextUser": true,
+        "trend": "Equal"
+      },
+      {
+        "place": 2,
+        "imageUrl": "https://static.school.mosreg.ru/images/studentrating/animalrating/3.png",
+        "averageMark": "4.75",
+        "isContextUser": false,
+        "trend": "Equal"
+      },
+      {
+        "place": 3,
+        "imageUrl": "https://static.school.mosreg.ru/images/studentrating/animalrating/10.png",
+        "averageMark": "4.74",
+        "isContextUser": false,
+        "trend": "Equal"
+      },
+      {
+        "place": 4,
+        "imageUrl": "https://static.school.mosreg.ru/images/studentrating/animalrating/6.png",
+        "averageMark": "4.68",
+        "isContextUser": false,
+        "trend": "Equal"
+      },
+      {
+        "place": 5,
+        "imageUrl": "https://static.school.mosreg.ru/images/studentrating/animalrating/16.png",
+        "averageMark": "4.59",
+        "isContextUser": false,
+        "trend": "Equal"
+      },
+      {
+        "place": 6,
+        "imageUrl": "https://static.school.mosreg.ru/images/studentrating/animalrating/21.png",
+        "averageMark": "4.49",
+        "isContextUser": false,
+        "trend": "Equal"
+      },
+      {
+        "place": 7,
+        "imageUrl": "https://static.school.mosreg.ru/images/studentrating/animalrating/25.png",
+        "averageMark": "4.45",
+        "isContextUser": false,
+        "trend": "Equal"
+      },
+      {
+        "place": 8,
+        "imageUrl": "https://static.school.mosreg.ru/images/studentrating/animalrating/5.png",
+        "averageMark": "4.44",
+        "isContextUser": false,
+        "trend": "Equal"
+      },
+      {
+        "place": 9,
+        "imageUrl": "https://static.school.mosreg.ru/images/studentrating/animalrating/13.png",
+        "averageMark": "4.40",
+        "isContextUser": false,
+        "trend": "Equal"
+      },
+      {
+        "place": 9,
+        "imageUrl": "https://static.school.mosreg.ru/images/studentrating/animalrating/24.png",
+        "averageMark": "4.40",
+        "isContextUser": false,
+        "trend": "Equal"
+      },
+      {
+        "place": 11,
+        "imageUrl": "https://static.school.mosreg.ru/images/studentrating/animalrating/12.png",
+        "averageMark": "4.30",
+        "isContextUser": false,
+        "trend": "Equal"
+      },
+      {
+        "place": 12,
+        "imageUrl": "https://static.school.mosreg.ru/images/studentrating/animalrating/4.png",
+        "averageMark": "4.23",
+        "isContextUser": false,
+        "trend": "Equal"
+      },
+      {
+        "place": 13,
+        "imageUrl": "https://static.school.mosreg.ru/images/studentrating/animalrating/8.png",
+        "averageMark": "4.22",
+        "isContextUser": false,
+        "trend": "Equal"
+      },
+      {
+        "place": 14,
+        "imageUrl": "https://static.school.mosreg.ru/images/studentrating/animalrating/19.png",
+        "averageMark": "4.21",
+        "isContextUser": false,
+        "trend": "Equal"
+      },
+      {
+        "place": 15,
+        "imageUrl": "https://static.school.mosreg.ru/images/studentrating/animalrating/26.png",
+        "averageMark": "4.19",
+        "isContextUser": false,
+        "trend": "Equal"
+      },
+      {
+        "place": 16,
+        "imageUrl": "https://static.school.mosreg.ru/images/studentrating/animalrating/17.png",
+        "averageMark": "4.11",
+        "isContextUser": false,
+        "trend": "Equal"
+      },
+      {
+        "place": 17,
+        "imageUrl": "https://static.school.mosreg.ru/images/studentrating/animalrating/7.png",
+        "averageMark": "4.10",
+        "isContextUser": false,
+        "trend": "Equal"
+      },
+      {
+        "place": 18,
+        "imageUrl": "https://static.school.mosreg.ru/images/studentrating/animalrating/11.png",
+        "averageMark": "3.93",
+        "isContextUser": false,
+        "trend": "Equal"
+      },
+      {
+        "place": 19,
+        "imageUrl": "https://static.school.mosreg.ru/images/studentrating/animalrating/18.png",
+        "averageMark": "3.84",
+        "isContextUser": false,
+        "trend": "Equal"
+      },
+      {
+        "place": 20,
+        "imageUrl": "https://static.school.mosreg.ru/images/studentrating/animalrating/14.png",
+        "averageMark": "3.82",
+        "isContextUser": false,
+        "trend": "Equal"
+      },
+      {
+        "place": 21,
+        "imageUrl": "https://static.school.mosreg.ru/images/studentrating/animalrating/20.png",
+        "averageMark": "3.73",
+        "isContextUser": false,
+        "trend": "Equal"
+      },
+      {
+        "place": 22,
+        "imageUrl": "https://static.school.mosreg.ru/images/studentrating/animalrating/27.png",
+        "averageMark": "3.72",
+        "isContextUser": false,
+        "trend": "Equal"
+      },
+      {
+        "place": 23,
+        "imageUrl": "https://static.school.mosreg.ru/images/studentrating/animalrating/2.png",
+        "averageMark": "3.67",
+        "isContextUser": false,
+        "trend": "Equal"
+      },
+      {
+        "place": 23,
+        "imageUrl": "https://static.school.mosreg.ru/images/studentrating/animalrating/15.png",
+        "averageMark": "3.67",
+        "isContextUser": false,
+        "trend": "Equal"
+      },
+      {
+        "place": 25,
+        "imageUrl": "https://static.school.mosreg.ru/images/studentrating/animalrating/28.png",
+        "averageMark": "3.55",
+        "isContextUser": false,
+        "trend": "Equal"
+      },
+      {
+        "place": 26,
+        "imageUrl": "https://static.school.mosreg.ru/images/studentrating/animalrating/1.png",
+        "averageMark": "3.54",
+        "isContextUser": false,
+        "trend": "Equal"
+      },
+      {
+        "place": 27,
+        "imageUrl": "https://static.school.mosreg.ru/images/studentrating/animalrating/23.png",
+        "averageMark": "3.52",
+        "isContextUser": false,
+        "trend": "Equal"
+      },
+      {
+        "place": 28,
+        "imageUrl": "https://static.school.mosreg.ru/images/studentrating/animalrating/29.png",
+        "averageMark": "3.51",
+        "isContextUser": false,
+        "trend": "Equal"
+      },
+      {
+        "place": 29,
+        "imageUrl": "https://static.school.mosreg.ru/images/studentrating/animalrating/22.png",
+        "averageMark": "3.42",
+        "isContextUser": false,
+        "trend": "Equal"
+      }
+    ]
+  },
+  "subjectTop": {
+    "subjects": [
+      {
+        "place": 1,
+        "subject": {
+          "id": 2675674803779294,
+          "name": "Геометрия",
+          "knowledgeArea": "Mathematics",
+          "subjectMood": "NotSet"
+        },
+        "trend": "Equal",
+        "averageMark": "4.70"
+      },
+      {
+        "place": 1,
+        "subject": {
+          "id": 2675696278615778,
+          "name": "Информатика",
+          "knowledgeArea": "Mathematics",
+          "subjectMood": "NotSet"
+        },
+        "trend": "Equal",
+        "averageMark": "4.80"
+      },
+      {
+        "place": 1,
+        "subject": {
+          "id": 2675717753452262,
+          "name": "Музыка",
+          "knowledgeArea": "Art",
+          "subjectMood": "NotSet"
+        },
+        "trend": "Equal",
+        "averageMark": "5.00"
+      }
+    ]
+  },
+  "ratingDescription": {
+    "body": "На основе среднего балла по всем предметам за 1 триместр"
+  },
+  "type": "Success",
+  "description": "Success",
+  "mobileSubscriptionStatus": "NotActive"
+}

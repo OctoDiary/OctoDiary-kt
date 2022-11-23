@@ -1,0 +1,89 @@
+{
+  "info": {
+    "sex": "Male",
+    "userId": 1,
+    "personId": 1,
+    "firstName": "Jacque",
+    "middleName": "Genius",
+    "lastName": "Fresco",
+    "avatarUrl": "https://au1.school.mosreg.ru/get.aspx/46/54e7b4636061487bbfe82d22e8c0fbb0.png?d=20210923013650",
+    "currentCultureCode": "ru-RU"
+  },
+  "contextPersons": [
+    {
+      "sex": "Male",
+      "userId": 1,
+      "personId": 1,
+      "firstName": "Jacque",
+      "middleName": "Genius",
+      "lastName": "Fresco",
+      "avatarUrl": "https://au1.school.mosreg.ru/get.aspx/46/54e7b4636061487bbfe82d22e8c0fbb0.png?d=20210923013650",
+      "school": {
+        "id": 1,
+        "name": "Genius school",
+        "type": "Regular",
+        "avatarUrl": "https://b2.csdnevnik.ru/socialnetwork-avatar/0aaa8dd4c8e6e11188dc2c768a4f6f66.jpg",
+        "radius": null,
+        "latitude": null,
+        "longitude": null
+      },
+      "group": {
+        "id": 1,
+        "name": "11C"
+      },
+      "reportingPeriodGroup": {
+        "id": 1,
+        "type": "Trimester",
+        "periods": [
+          {
+            "id": 1,
+            "number": 0,
+            "type": "Trimester",
+            "dateStart": 1,
+            "dateFinish": 1,
+            "studyYear": 2022,
+            "isCurrent": true
+          },
+          {
+            "id": 1,
+            "number": 1,
+            "type": "Trimester",
+            "dateStart": 1,
+            "dateFinish": 1,
+            "studyYear": 2022,
+            "isCurrent": false
+          },
+          {
+            "id": 1,
+            "number": 2,
+            "type": "Trimester",
+            "dateStart": 1,
+            "dateFinish": 1,
+            "studyYear": 2022,
+            "isCurrent": false
+          }
+        ]
+      }
+    }
+  ],
+  "experiments": {
+    "notes": false,
+    "withoutSupportButton": false,
+    "mobileChatExperiment": true,
+    "kidTrackerValueTest": false,
+    "fullDataLocalValidationExperiment": true,
+    "ratingsTurnOffExperiment": false,
+    "weekViewLessonListExperiment": false,
+    "blockerLessonsListExperiment": false,
+    "blockerMarkExperiment": false,
+    "homeworkPushMobileExperiment": false,
+    "messengerMongooseMobileTeacherExperiment": false,
+    "communityInvitationExperiment": false
+  },
+  "firebaseExperiments": [],
+  "onboarding": null,
+  "fullScreenBanner": null,
+  "type": "Success",
+  "description": "Success",
+  "mobileSubscriptionStatus": "NotActive"
+}
