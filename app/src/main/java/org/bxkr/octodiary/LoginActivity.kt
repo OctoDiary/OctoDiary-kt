@@ -3,14 +3,11 @@ package org.bxkr.octodiary
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import org.bxkr.octodiary.databinding.ActivityLoginBinding
 import org.bxkr.octodiary.network.NetworkService
 import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class LoginActivity : AppCompatActivity() {
 
@@ -62,37 +59,30 @@ class LoginActivity : AppCompatActivity() {
                 getString(R.string.default_scope),
             )
         )
-        call.enqueue(object : Callback<NetworkService.AuthResult> {
-            override fun onResponse(
-                call: Call<NetworkService.AuthResult>,
-                response: Response<NetworkService.AuthResult>
-            ) {
-                if (response.isSuccessful && (response.body()?.credentials != null)) {
+        call.enqueue(object : BaseCallback<NetworkService.AuthResult>(
+            this@LoginActivity,
+            binding.root,
+            R.string.wrong,
+            {
+                if ((it.body()?.credentials != null)) {
                     val sharedPref = this@LoginActivity.getSharedPreferences(
                         getString(R.string.auth_file_key),
                         Context.MODE_PRIVATE
-                    ) ?: return
+                    )
                     with(sharedPref.edit()) {
                         putString(
                             getString(R.string.user_id),
-                            response.body()?.credentials?.userId.toString()
+                            it.body()?.credentials?.userId.toString()
                         )
                         putString(
                             getString(R.string.token),
-                            response.body()?.credentials?.accessToken
+                            it.body()?.credentials?.accessToken
                         )
                         apply()
                     }
-                    startActivity(Intent(this@LoginActivity, MainActivity::class.java))
-                    finish()
-                } else {
-                    Snackbar.make(binding.root, R.string.wrong, Snackbar.LENGTH_LONG).show()
                 }
-            }
-
-            override fun onFailure(call: Call<NetworkService.AuthResult>, t: Throwable) {
-                Log.e(this::class.simpleName, getString(R.string.retrofit_error, t.message))
-            }
-        })
+                startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                finish()
+            }) {})
     }
 }

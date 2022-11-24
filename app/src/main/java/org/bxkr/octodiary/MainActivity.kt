@@ -3,7 +3,6 @@ package org.bxkr.octodiary
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -21,9 +20,6 @@ import org.bxkr.octodiary.models.diary.Week
 import org.bxkr.octodiary.models.rating.RatingClass
 import org.bxkr.octodiary.models.user.User
 import org.bxkr.octodiary.network.NetworkService
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
 
@@ -198,26 +194,15 @@ class MainActivity : AppCompatActivity() {
             allDataLoaded()
         }
         val call = userId?.toLong()?.let { NetworkService.api().user(it, token) }
-        call?.enqueue(object : Callback<User> {
-            override fun onResponse(
-                call: Call<User>, response: Response<User>
-            ) {
-                if (response.isSuccessful) {
-                    userData = response.body()!!
-                    getRating(listener)
-                } else {
-                    val intent = Intent(this@MainActivity, LoginActivity::class.java)
-                    intent.putExtra(getString(R.string.out_of_date_extra), true)
-                    startActivity(intent)
-                    finish()
-                }
-            }
-
-            override fun onFailure(call: Call<User>, t: Throwable) {
-                Log.e(this::class.simpleName, getString(R.string.retrofit_error))
-            }
-        })
-
+        call?.enqueue(object : BaseCallback<User>(this, function = {
+            userData = it.body()!!
+            getRating(listener)
+        }, errorFunction = {
+            val intent = Intent(this@MainActivity, LoginActivity::class.java)
+            intent.putExtra(getString(R.string.out_of_date_extra), true)
+            startActivity(intent)
+            finish()
+        }) {})
     }
 
     fun getRating(listener: () -> Unit = {}) {
@@ -225,25 +210,15 @@ class MainActivity : AppCompatActivity() {
             val call = NetworkService.api().rating(
                 info.personId, contextPersons[0].group.id, token
             )
-            call.enqueue(object : Callback<RatingClass> {
-                override fun onResponse(
-                    call: Call<RatingClass>, response: Response<RatingClass>
-                ) {
-                    if (response.isSuccessful) {
-                        ratingData = response.body()!!
-                        getDiary(listener)
-                    } else {
-                        val intent = Intent(this@MainActivity, LoginActivity::class.java)
-                        intent.putExtra(getString(R.string.out_of_date_extra), true)
-                        startActivity(intent)
-                        finish()
-                    }
-                }
-
-                override fun onFailure(call: Call<RatingClass>, t: Throwable) {
-                    Log.e(this::class.simpleName, getString(R.string.retrofit_error))
-                }
-            })
+            call.enqueue(object : BaseCallback<RatingClass>(this@MainActivity, function = {
+                ratingData = it.body()!!
+                getDiary(listener)
+            }, errorFunction = {
+                val intent = Intent(this@MainActivity, LoginActivity::class.java)
+                intent.putExtra(getString(R.string.out_of_date_extra), true)
+                startActivity(intent)
+                finish()
+            }) {})
         }
     }
 
@@ -252,26 +227,16 @@ class MainActivity : AppCompatActivity() {
             val call = NetworkService.api().diary(
                 info.personId, contextPersons[0].school.id, contextPersons[0].group.id, token
             )
-            call.enqueue(object : Callback<Diary> {
-                override fun onResponse(
-                    call: Call<Diary>, response: Response<Diary>
-                ) {
-                    if (response.isSuccessful) {
-                        diaryData = response.body()!!.weeks
-                        listener()
-                        allDataLoaded()
-                    } else {
-                        val intent = Intent(this@MainActivity, LoginActivity::class.java)
-                        intent.putExtra(getString(R.string.out_of_date_extra), true)
-                        startActivity(intent)
-                        finish()
-                    }
-                }
-
-                override fun onFailure(call: Call<Diary>, t: Throwable) {
-                    Log.e(this::class.simpleName, getString(R.string.retrofit_error))
-                }
-            })
+            call.enqueue(object : BaseCallback<Diary>(this@MainActivity, function = {
+                diaryData = it.body()!!.weeks
+                listener()
+                allDataLoaded()
+            }, errorFunction = {
+                val intent = Intent(this@MainActivity, LoginActivity::class.java)
+                intent.putExtra(getString(R.string.out_of_date_extra), true)
+                startActivity(intent)
+                finish()
+            }) {})
         }
     }
 
