@@ -23,27 +23,26 @@ class LoginActivity : AppCompatActivity() {
             true
         }
         binding.logInButton.setOnClickListener { logIn() }
+        binding.demoButton.setOnClickListener { logIn(demo = true) }
         if (intent.getBooleanExtra(getString(R.string.out_of_date_extra), false)) {
             Snackbar.make(binding.root, R.string.out_of_date, Snackbar.LENGTH_LONG).show()
         }
     }
 
-    private fun logIn() {
-        if (binding.username.editText?.text.toString() == getString(R.string.demousername) &&
-            binding.password.editText?.text.toString() == getString(R.string.demopassword)
+    private fun logIn(demo: Boolean = false) {
+        if ((binding.username.editText?.text.toString() == getString(R.string.demousername) && binding.password.editText?.text.toString() == getString(
+                R.string.demopassword
+            )) || demo
         ) {
             val sharedPref = this@LoginActivity.getSharedPreferences(
-                getString(R.string.auth_file_key),
-                Context.MODE_PRIVATE
+                getString(R.string.auth_file_key), Context.MODE_PRIVATE
             ) ?: return
             with(sharedPref.edit()) {
                 putString(
-                    getString(R.string.user_id),
-                    getString(R.string.demo_user_id)
+                    getString(R.string.user_id), getString(R.string.demo_user_id)
                 )
                 putString(
-                    getString(R.string.token),
-                    getString(R.string.demo_token)
+                    getString(R.string.token), getString(R.string.demo_token)
                 )
                 apply()
             }
@@ -66,17 +65,14 @@ class LoginActivity : AppCompatActivity() {
             {
                 if ((it.body()?.credentials != null)) {
                     val sharedPref = this@LoginActivity.getSharedPreferences(
-                        getString(R.string.auth_file_key),
-                        Context.MODE_PRIVATE
+                        getString(R.string.auth_file_key), Context.MODE_PRIVATE
                     )
                     with(sharedPref.edit()) {
                         putString(
-                            getString(R.string.user_id),
-                            it.body()?.credentials?.userId.toString()
+                            getString(R.string.user_id), it.body()?.credentials?.userId.toString()
                         )
                         putString(
-                            getString(R.string.token),
-                            it.body()?.credentials?.accessToken
+                            getString(R.string.token), it.body()?.credentials?.accessToken
                         )
                         apply()
                     }
