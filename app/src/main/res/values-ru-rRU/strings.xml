@@ -39,4 +39,5 @@
     <string name="topic">Тема</string>
     <string name="lesson">Урок</string>
     <string name="lesson_n">%s урок</string>
+    <string name="log_out">Выйти из аккаунта</string>
 </resources>

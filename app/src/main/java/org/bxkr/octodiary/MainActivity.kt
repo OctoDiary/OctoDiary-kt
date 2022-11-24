@@ -25,13 +25,27 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
-    val token: String?
+    var token: String?
         get() = this.getSharedPreferences(getString(R.string.auth_file_key), Context.MODE_PRIVATE)
             .getString(getString(R.string.token), null)
+        set(value) {
+            val prefs =
+                this.getSharedPreferences(getString(R.string.auth_file_key), Context.MODE_PRIVATE)
+            prefs.edit {
+                putString(getString(R.string.token), value)
+            }
+        }
 
-    val userId: String?
+    var userId: String?
         get() = this.getSharedPreferences(getString(R.string.auth_file_key), Context.MODE_PRIVATE)
             .getString(getString(R.string.user_id), null)
+        set(value) {
+            val prefs =
+                this.getSharedPreferences(getString(R.string.auth_file_key), Context.MODE_PRIVATE)
+            prefs.edit {
+                putString(getString(R.string.user_id), value)
+            }
+        }
 
     var diaryData: List<Week>?
         get() {
@@ -261,6 +275,16 @@ class MainActivity : AppCompatActivity() {
         when (item.itemId) {
             R.id.settings -> {
                 startActivity(Intent(this@MainActivity, SettingsActivity::class.java))
+                finish()
+            }
+
+            R.id.log_out -> {
+                userData = null
+                diaryData = null
+                ratingData = null
+                token = null
+                userId = null
+                startActivity(Intent(this@MainActivity, LoginActivity::class.java))
                 finish()
             }
         }

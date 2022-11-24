@@ -71,4 +71,5 @@
     <string name="demo_user_id" translatable="false">-1</string>
     <string name="demo_token" translatable="false">DEMO_TOKEN</string>
     <string name="rating_data_key" translatable="false">rating_data</string>
+    <string name="log_out">Log out</string>
 </resources>
