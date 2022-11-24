@@ -1,7 +1,7 @@
 package org.bxkr.octodiary.models.lesson
 
-data class Attachment(
+data class Attachments(
     val fileName: String,
     val fileLink: String,
-    val fileDownloadLink: String,
+    val fileDownloadLink: String
 )

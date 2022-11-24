@@ -1,0 +1,60 @@
+{
+  "status": "Started",
+  "subject": {
+    "id": 0,
+    "name": "Иностр.яз(английск)",
+    "knowledgeArea": "Philology",
+    "subjectMood": null
+  },
+  "startTime": 1668592200,
+  "endTime": 1668594600,
+  "hours": {
+    "startHour": "12",
+    "startMinute": "50",
+    "endHour": "13",
+    "endMinute": "30"
+  },
+  "number": 6,
+  "place": null,
+  "theme": "Словообразование. Фразовый глагол bring. Предлоги. Отработка лексических навыков.",
+  "teacher": {
+    "firstName": "Татьяна",
+    "middleName": "Васильевна",
+    "lastName": "Гений",
+    "avatarUrl": null,
+    "role": "Педагог",
+    "jid": "admin@github.com"
+  },
+  "importantWorks": [],
+  "averageMarks": {
+    "averageMark": "4.73",
+    "averageMarkByImportantWork": "4.33",
+    "weightedAverageMark": null
+  },
+  "summativeMarks": null,
+  "forecastText": null,
+  "lessonDetailsMarks": [],
+  "homework": {
+    "workIsAttachRequired": false,
+    "attachments": [],
+    "text": "Read the attached document and share it to friend!",
+    "isCompleted": false
+  },
+  "attachments": [
+    {
+      "fileName": "11th class Past Tenses",
+      "fileLink": "https://raw.githubusercontent.com/OctoDiary/OctoDiary-kt/stable/readme.md",
+      "fileDownloadLink": "https://raw.githubusercontent.com/OctoDiary/OctoDiary-kt/stable/readme.md"
+    },
+    {
+      "fileName": "May test paper",
+      "fileLink": "https://raw.githubusercontent.com/OctoDiary/OctoDiary-kt/stable/readme.md",
+      "fileDownloadLink": "https://raw.githubusercontent.com/OctoDiary/OctoDiary-kt/stable/readme.md"
+    }
+  ],
+  "comment": null,
+  "lessonDescription": "",
+  "type": "Success",
+  "description": "Success",
+  "mobileSubscriptionStatus": "NotActive"
+}

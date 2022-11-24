@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     android:padding="@dimen/lesson_activity_padding">
 
     <com.google.android.material.card.MaterialCardView
@@ -47,6 +48,8 @@
                 android:layout_height="0dp"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentBottom="false"
+                android:maxWidth="@dimen/lesson_activity_card_background_image_max_width"
+                app:layout_constrainedWidth="true"
                 android:layout_centerInParent="true"
                 android:adjustViewBounds="true"
                 android:alpha="0.7"
@@ -125,6 +128,8 @@
                 android:alpha="0.7"
                 android:contentDescription="@string/teacher"
                 android:scaleType="fitCenter"
+                android:maxWidth="@dimen/lesson_activity_card_background_image_max_width"
+                app:layout_constrainedWidth="true"
                 android:translationX="@dimen/lesson_activity_card_background_offset"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -178,6 +183,20 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/homeworkTitle" />
 
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:id="@+id/progressBar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/lesson_activity_topic_card_padding"
+                android:layout_marginEnd="@dimen/lesson_activity_topic_card_padding"
+                android:indeterminate="true"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/homeworkImageBarrier"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/homeworkText"
+                tools:visibility="visible" />
+
             <ImageView
                 android:id="@+id/homeworkImage"
                 android:layout_width="wrap_content"
@@ -188,6 +207,8 @@
                 android:adjustViewBounds="true"
                 android:alpha="0.7"
                 android:contentDescription="@string/homework"
+                android:maxWidth="@dimen/lesson_activity_card_background_image_max_width"
+                app:layout_constrainedWidth="true"
                 android:scaleType="fitCenter"
                 android:translationX="@dimen/lesson_activity_card_background_offset"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -211,7 +232,8 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/homeworkText"
                 tools:itemCount="1"
-                tools:listitem="@layout/item_homework_attachment" />
+                tools:listitem="@layout/item_homework_attachment"
+                tools:visibility="gone" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

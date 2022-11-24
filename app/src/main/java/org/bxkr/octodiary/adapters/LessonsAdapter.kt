@@ -63,6 +63,13 @@ class LessonsAdapter(
             binding.root.setOnClickListener {
                 val intent = Intent(parentContext, LessonActivity::class.java)
                 intent.putExtra("lesson_data", Gson().toJson(lesson))
+                intent.putExtra("person_id", parentContext.userData?.info?.personId)
+                parentContext.userData?.contextPersons?.get(0)?.group?.let { it1 ->
+                    intent.putExtra(
+                        "group_id",
+                        it1.id
+                    )
+                }
                 parentContext.startActivity(intent)
             }
         }

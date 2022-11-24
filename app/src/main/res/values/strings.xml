@@ -73,4 +73,5 @@
     <string name="rating_data_key" translatable="false">rating_data</string>
     <string name="log_out">Log out</string>
     <string name="demo_mode">Demo mode</string>
+    <string name="unexpected_error">Unexpected error</string>
 </resources>

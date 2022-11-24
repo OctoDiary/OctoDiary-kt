@@ -1,6 +1,7 @@
 package org.bxkr.octodiary.network
 
 import org.bxkr.octodiary.models.diary.Diary
+import org.bxkr.octodiary.models.lesson.Lesson
 import org.bxkr.octodiary.models.rating.RatingClass
 import org.bxkr.octodiary.models.user.User
 import retrofit2.Call
@@ -62,6 +63,14 @@ object NetworkService {
             @Path("group_id") groupId: Long,
             @Header("Access-Token") accessToken: String?,
         ): Call<RatingClass>
+
+        @GET("persons/{person_id}/groups/{group_id}/lessons/{lesson_id}/lessonDetails")
+        fun lessonDetails(
+            @Path("person_id") personId: Long,
+            @Path("group_id") groupId: Long,
+            @Path("lesson_id") lessonId: Long,
+            @Header("Access-Token") accessToken: String?,
+        ): Call<Lesson>
     }
 
     fun api(): API {

@@ -151,8 +151,6 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        println(token)
-        println(userId)
         if (token == null && userId == null) {
             startActivity(Intent(this, LoginActivity::class.java))
             finish()

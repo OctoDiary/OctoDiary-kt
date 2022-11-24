@@ -18,6 +18,7 @@
         android:enableOnBackInvokedCallback="true"
         tools:targetApi="tiramisu">
         <activity
+            android:parentActivityName=".MainActivity"
             android:name=".LessonActivity"
             android:exported="false"
             android:label="@string/lesson" />
