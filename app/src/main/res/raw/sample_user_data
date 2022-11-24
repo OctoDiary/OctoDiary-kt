@@ -22,7 +22,7 @@
         "id": 1,
         "name": "Genius school",
         "type": "Regular",
-        "avatarUrl": "https://b2.csdnevnik.ru/socialnetwork-avatar/0aaa8dd4c8e6e11188dc2c768a4f6f66.jpg",
+        "avatarUrl": "https://raw.githubusercontent.com/google/material-design-icons/master/png/social/face_6/materialiconsround/48dp/2x/round_face_6_black_48dp.png",
         "radius": null,
         "latitude": null,
         "longitude": null
