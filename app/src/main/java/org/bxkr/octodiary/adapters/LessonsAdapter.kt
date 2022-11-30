@@ -81,8 +81,8 @@ class LessonsAdapter(
         return LessonsViewHolder(binding, context)
     }
 
-    override fun onBindViewHolder(holder: LessonsViewHolder, positon: Int) {
-        val lesson = lessons[positon]
+    override fun onBindViewHolder(holder: LessonsViewHolder, position: Int) {
+        val lesson = lessons[position]
         holder.bind(lesson)
     }
 

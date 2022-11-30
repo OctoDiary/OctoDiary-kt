@@ -44,8 +44,8 @@ class DayAdapter(private val context: Context, private val days: List<Day>) :
         return DaysViewHolder(binding, context)
     }
 
-    override fun onBindViewHolder(holder: DaysViewHolder, positon: Int) {
-        val day = days[positon]
+    override fun onBindViewHolder(holder: DaysViewHolder, position: Int) {
+        val day = days[position]
         holder.bind(day)
     }
 
