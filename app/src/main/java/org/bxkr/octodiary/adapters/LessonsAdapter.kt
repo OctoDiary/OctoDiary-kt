@@ -14,7 +14,7 @@ import com.google.gson.Gson
 import org.bxkr.octodiary.LessonActivity
 import org.bxkr.octodiary.MainActivity
 import org.bxkr.octodiary.R
-import org.bxkr.octodiary.databinding.LessonsRecyclerItemBinding
+import org.bxkr.octodiary.databinding.ItemLessonsRecyclerBinding
 import org.bxkr.octodiary.models.diary.Lesson
 import java.text.SimpleDateFormat
 
@@ -25,11 +25,11 @@ class LessonsAdapter(
     RecyclerView.Adapter<LessonsAdapter.LessonsViewHolder>() {
 
     class LessonsViewHolder(
-        lessonsRecyclerItemBinding: LessonsRecyclerItemBinding,
+        ItemLessonsRecyclerBinding: ItemLessonsRecyclerBinding,
         context: Context
     ) :
-        RecyclerView.ViewHolder(lessonsRecyclerItemBinding.root) {
-        private val binding = lessonsRecyclerItemBinding
+        RecyclerView.ViewHolder(ItemLessonsRecyclerBinding.root) {
+        private val binding = ItemLessonsRecyclerBinding
         private val parentContext = context
         fun bind(lesson: Lesson) {
             val toDate = SimpleDateFormat(
@@ -77,7 +77,7 @@ class LessonsAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LessonsViewHolder {
         val binding =
-            LessonsRecyclerItemBinding.inflate(LayoutInflater.from(context), parent, false)
+            ItemLessonsRecyclerBinding.inflate(LayoutInflater.from(context), parent, false)
         return LessonsViewHolder(binding, context)
     }
 

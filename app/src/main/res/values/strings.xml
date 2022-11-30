@@ -74,4 +74,6 @@
     <string name="log_out">Log out</string>
     <string name="demo_mode">Demo mode</string>
     <string name="unexpected_error">Unexpected error</string>
+    <string name="placeholder_rating_place" translatable="false">1</string>
+    <string name="placeholder_main_rating_average" translatable="false">4.67</string>
 </resources>

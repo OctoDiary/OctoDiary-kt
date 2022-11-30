@@ -34,7 +34,7 @@
                     android:id="@+id/lessonsRecycler"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    tools:listitem="@layout/lessons_recycler_item" />
+                    tools:listitem="@layout/item_lessons_recycler" />
             </com.google.android.material.card.MaterialCardView>
 
             <View
