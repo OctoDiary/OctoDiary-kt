@@ -5,9 +5,6 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.RelativeLayout
-import androidx.core.view.setMargins
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -55,12 +52,6 @@ class LessonsAdapter(
                 binding.lessonDesc.text = description
             } else {
                 binding.lessonDesc.visibility = View.GONE
-                val newLayoutParams = RelativeLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT
-                )
-                newLayoutParams.setMargins(parentContext.resources.getDimensionPixelSize(R.dimen.lesson_padding))
-                binding.lessonName.layoutParams = newLayoutParams
             }
             binding.root.setOnClickListener {
                 val intent = Intent(parentContext, LessonActivity::class.java)
