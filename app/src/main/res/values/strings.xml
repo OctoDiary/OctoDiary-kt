@@ -11,9 +11,9 @@
     <string name="user_id_is" translatable="false">User ID: %s</string>
     <string name="retrofit_error" translatable="false">Retrofit error: %s</string>
     <string name="wrong">Wrong username or/and password!</string>
-    <string name="out_of_date">Authentication data is out of date</string>
+    <string name="auth_out_of_date">Authentication data is out of date</string>
     <string name="week_n">Week from %s to %s</string>
-    <string name="out_of_date_extra" translatable="false">out_of_date</string>
+    <string name="auth_out_of_date_extra" translatable="false">auth_out_of_date</string>
     <string name="time_from_to" translatable="false">%s - %s</string>
     <string name="free_day">Free day!</string>
     <string name="placeholder_week" translatable="false">Week from 01 January to 07 January</string>
@@ -76,4 +76,6 @@
     <string name="unexpected_error">Unexpected error</string>
     <string name="placeholder_rating_place" translatable="false">1</string>
     <string name="placeholder_main_rating_average" translatable="false">4.67</string>
+    <string name="school_out_of_date">Updating school data…</string>
+    <string name="school_out_of_date_extra" translatable="false">school_out_of_date</string>
 </resources>

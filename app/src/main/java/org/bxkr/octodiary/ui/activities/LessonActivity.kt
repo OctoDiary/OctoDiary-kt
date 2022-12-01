@@ -1,4 +1,4 @@
-package org.bxkr.octodiary
+package org.bxkr.octodiary.ui.activities
 
 import android.content.Context
 import android.content.Intent
@@ -13,10 +13,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import org.bxkr.octodiary.R
 import org.bxkr.octodiary.databinding.ActivityLessonBinding
 import org.bxkr.octodiary.databinding.ItemHomeworkAttachmentBinding
 import org.bxkr.octodiary.models.diary.Lesson
 import org.bxkr.octodiary.models.lesson.Attachments
+import org.bxkr.octodiary.network.BaseCallback
 import org.bxkr.octodiary.network.NetworkService
 import java.text.SimpleDateFormat
 

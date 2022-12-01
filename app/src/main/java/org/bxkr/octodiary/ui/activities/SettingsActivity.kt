@@ -1,4 +1,4 @@
-package org.bxkr.octodiary
+package org.bxkr.octodiary.ui.activities
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,6 +6,7 @@ import android.view.MenuItem
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceFragmentCompat
+import org.bxkr.octodiary.R
 import org.bxkr.octodiary.databinding.SettingsActivityBinding
 
 

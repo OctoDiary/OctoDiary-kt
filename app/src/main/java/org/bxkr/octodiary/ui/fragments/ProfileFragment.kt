@@ -1,42 +1,57 @@
-package org.bxkr.octodiary.fragments
+package org.bxkr.octodiary.ui.fragments
 
 import android.content.SharedPreferences
-import android.icu.text.MessageFormat
 import android.os.Bundle
 import android.view.View
 import androidx.preference.PreferenceManager
 import com.squareup.picasso.Picasso
-import org.bxkr.octodiary.MainActivity
 import org.bxkr.octodiary.R
-import org.bxkr.octodiary.RatingBottomSheet
+import org.bxkr.octodiary.Utils
+import org.bxkr.octodiary.Utils.toOrdinal
 import org.bxkr.octodiary.databinding.FragmentProfileBinding
 import org.bxkr.octodiary.models.diary.Week
 import org.bxkr.octodiary.models.rating.RatingClass
 import org.bxkr.octodiary.models.user.User
+import org.bxkr.octodiary.ui.activities.MainActivity
+import org.bxkr.octodiary.ui.dialogs.RatingBottomSheet
 import java.util.Calendar
-import java.util.Locale
 
 
 class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBinding::inflate) {
 
+    private lateinit var mainActivity: MainActivity
     private lateinit var userData: User
     private lateinit var diaryData: List<Week>
     private lateinit var ratingData: RatingClass
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        (activity as MainActivity).title = getString(R.string.profile)
+        mainActivity = activity as MainActivity
+        mainActivity.title = getString(R.string.profile)
         super.onViewCreated(view, savedInstanceState)
-        userData = (activity as MainActivity).userData!!
-        diaryData = (activity as MainActivity).diaryData!!
-        ratingData = (activity as MainActivity).ratingData!!
+
+        if (Utils.isSchoolDataOutOfDate(mainActivity)) {
+            binding.studentName.text = null
+            binding.dataUnderName.text = null
+            mainActivity.createDiary {
+                binding.swipeRefresh.isRefreshing = false
+                onViewCreated(view, savedInstanceState)
+            }
+            binding.swipeRefresh.isRefreshing = true
+            return
+        } else {
+            userData = mainActivity.userData!!
+            diaryData = mainActivity.diaryData!!
+            ratingData = mainActivity.ratingData!!
+        }
+
         configureProfile()
         binding.swipeRefresh.setOnRefreshListener {
-            (activity as MainActivity).createDiary { binding.swipeRefresh.isRefreshing = false }
+            mainActivity.createDiary { binding.swipeRefresh.isRefreshing = false }
         }
     }
 
     private fun configureProfile() {
-        val preferences = PreferenceManager.getDefaultSharedPreferences(activity as MainActivity)
+        val preferences = PreferenceManager.getDefaultSharedPreferences(mainActivity)
         refreshPreferences(preferences)
         binding.studentName.text =
             getString(
@@ -80,10 +95,5 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
             binding.ratingButton.setOnClickListener(openBottomSheet)
             binding.ratingCard.setOnClickListener(openBottomSheet)
         } else binding.ratingCard.visibility = View.GONE
-    }
-
-    private fun toOrdinal(place: Int): String {
-        val formatter = MessageFormat("{0,ordinal}", Locale.getDefault())
-        return formatter.format(arrayOf(place))
     }
 }

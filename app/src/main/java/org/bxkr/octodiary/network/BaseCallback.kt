@@ -1,9 +1,10 @@
-package org.bxkr.octodiary
+package org.bxkr.octodiary.network
 
 import android.content.Context
 import android.util.Log
 import android.view.View
 import com.google.android.material.snackbar.Snackbar
+import org.bxkr.octodiary.R
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

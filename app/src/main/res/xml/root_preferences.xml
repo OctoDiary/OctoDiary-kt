@@ -18,12 +18,12 @@
             app:key="data_under_name"
             app:title="@string/data_under_name"
             app:useSimpleSummaryProvider="true" />
-        <org.bxkr.octodiary.MaterialSwitchPreference
+        <org.bxkr.octodiary.ui.MaterialSwitchPreference
             app:allowDividerAbove="false"
             app:defaultValue="true"
             app:key="show_rating"
             app:title="@string/show_rating" />
-        <org.bxkr.octodiary.MaterialSwitchPreference
+        <org.bxkr.octodiary.ui.MaterialSwitchPreference
             app:allowDividerAbove="false"
             app:defaultValue="true"
             app:dependency="show_rating"

@@ -1,4 +1,4 @@
-package org.bxkr.octodiary
+package org.bxkr.octodiary.ui.dialogs
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,8 +7,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import org.bxkr.octodiary.adapters.RatingMemberAdapter
+import org.bxkr.octodiary.R
 import org.bxkr.octodiary.models.rating.Rating
+import org.bxkr.octodiary.ui.adapters.RatingMemberAdapter
 
 class RatingBottomSheet(val rating: Rating) : BottomSheetDialogFragment() {
     override fun onCreateView(

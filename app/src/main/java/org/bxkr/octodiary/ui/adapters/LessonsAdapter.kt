@@ -1,4 +1,4 @@
-package org.bxkr.octodiary.adapters
+package org.bxkr.octodiary.ui.adapters
 
 import android.content.Context
 import android.content.Intent
@@ -11,11 +11,11 @@ import androidx.core.view.setMargins
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
-import org.bxkr.octodiary.LessonActivity
-import org.bxkr.octodiary.MainActivity
 import org.bxkr.octodiary.R
 import org.bxkr.octodiary.databinding.ItemLessonsRecyclerBinding
 import org.bxkr.octodiary.models.diary.Lesson
+import org.bxkr.octodiary.ui.activities.LessonActivity
+import org.bxkr.octodiary.ui.activities.MainActivity
 import java.text.SimpleDateFormat
 
 class LessonsAdapter(

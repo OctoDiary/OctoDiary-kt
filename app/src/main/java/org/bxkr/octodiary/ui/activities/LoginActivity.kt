@@ -1,11 +1,13 @@
-package org.bxkr.octodiary
+package org.bxkr.octodiary.ui.activities
 
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
+import org.bxkr.octodiary.R
 import org.bxkr.octodiary.databinding.ActivityLoginBinding
+import org.bxkr.octodiary.network.BaseCallback
 import org.bxkr.octodiary.network.NetworkService
 import retrofit2.Call
 
@@ -24,8 +26,8 @@ class LoginActivity : AppCompatActivity() {
         }
         binding.logInButton.setOnClickListener { logIn() }
         binding.demoButton.setOnClickListener { logIn(demo = true) }
-        if (intent.getBooleanExtra(getString(R.string.out_of_date_extra), false)) {
-            Snackbar.make(binding.root, R.string.out_of_date, Snackbar.LENGTH_LONG).show()
+        if (intent.getBooleanExtra(getString(R.string.auth_out_of_date_extra), false)) {
+            Snackbar.make(binding.root, R.string.auth_out_of_date, Snackbar.LENGTH_LONG).show()
         }
     }
 

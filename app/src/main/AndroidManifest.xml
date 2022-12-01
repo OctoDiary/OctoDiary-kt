@@ -18,19 +18,19 @@
         android:enableOnBackInvokedCallback="true"
         tools:targetApi="tiramisu">
         <activity
-            android:parentActivityName=".MainActivity"
-            android:name=".LessonActivity"
+            android:name=".ui.activities.LessonActivity"
+            android:parentActivityName=".ui.activities.MainActivity"
             android:exported="false"
             android:label="@string/lesson" />
         <activity
-            android:name=".SettingsActivity"
+            android:name=".ui.activities.SettingsActivity"
             android:exported="false"
             android:label="@string/title_activity_settings" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".ui.activities.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.activities.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

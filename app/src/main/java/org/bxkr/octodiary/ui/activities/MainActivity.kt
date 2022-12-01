@@ -1,4 +1,4 @@
-package org.bxkr.octodiary
+package org.bxkr.octodiary.ui.activities
 
 import android.content.Context
 import android.content.Intent
@@ -12,14 +12,16 @@ import androidx.fragment.app.Fragment
 import androidx.preference.PreferenceManager
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import org.bxkr.octodiary.R
 import org.bxkr.octodiary.databinding.ActivityMainBinding
-import org.bxkr.octodiary.fragments.DiaryFragment
-import org.bxkr.octodiary.fragments.ProfileFragment
 import org.bxkr.octodiary.models.diary.Diary
 import org.bxkr.octodiary.models.diary.Week
 import org.bxkr.octodiary.models.rating.RatingClass
 import org.bxkr.octodiary.models.user.User
+import org.bxkr.octodiary.network.BaseCallback
 import org.bxkr.octodiary.network.NetworkService
+import org.bxkr.octodiary.ui.fragments.DiaryFragment
+import org.bxkr.octodiary.ui.fragments.ProfileFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -202,7 +204,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun createDiary(listener: () -> Unit = {}) {
-        if (diaryData != null && userData != null) {
+        if ((diaryData != null) && (userData != null)) {
             allDataLoaded()
         }
         val call = userId?.toLong()?.let { NetworkService.api().user(it, token) }
@@ -211,7 +213,7 @@ class MainActivity : AppCompatActivity() {
             getRating(listener)
         }, errorFunction = {
             val intent = Intent(this@MainActivity, LoginActivity::class.java)
-            intent.putExtra(getString(R.string.out_of_date_extra), true)
+            intent.putExtra(getString(R.string.auth_out_of_date_extra), true)
             startActivity(intent)
             finish()
         }) {})
@@ -227,7 +229,7 @@ class MainActivity : AppCompatActivity() {
                 getDiary(listener)
             }, errorFunction = {
                 val intent = Intent(this@MainActivity, LoginActivity::class.java)
-                intent.putExtra(getString(R.string.out_of_date_extra), true)
+                intent.putExtra(getString(R.string.auth_out_of_date_extra), true)
                 startActivity(intent)
                 finish()
             }) {})
@@ -245,7 +247,7 @@ class MainActivity : AppCompatActivity() {
                 allDataLoaded()
             }, errorFunction = {
                 val intent = Intent(this@MainActivity, LoginActivity::class.java)
-                intent.putExtra(getString(R.string.out_of_date_extra), true)
+                intent.putExtra(getString(R.string.auth_out_of_date_extra), true)
                 startActivity(intent)
                 finish()
             }) {})

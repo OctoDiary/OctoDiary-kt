@@ -1,4 +1,4 @@
-package org.bxkr.octodiary.fragments
+package org.bxkr.octodiary.ui.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
-import org.bxkr.octodiary.MainActivity
+import org.bxkr.octodiary.ui.activities.MainActivity
 
 abstract class BaseFragment<VB : ViewBinding>(
     private val inflate: (LayoutInflater, ViewGroup?, Boolean) -> VB
