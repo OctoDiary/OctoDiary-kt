@@ -4,14 +4,17 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.picasso.Picasso
+import org.bxkr.octodiary.R
 import org.bxkr.octodiary.databinding.ItemRatingMemberBinding
 import org.bxkr.octodiary.models.rating.RankingPlaces
 
 class RatingMemberAdapter(private val context: Context, private val members: List<RankingPlaces>) :
     RecyclerView.Adapter<RatingMemberAdapter.RatingMemberViewHolder>() {
 
-    class RatingMemberViewHolder(ratingMemberBinding: ItemRatingMemberBinding) :
+    class RatingMemberViewHolder(ratingMemberBinding: ItemRatingMemberBinding, context: Context) :
         RecyclerView.ViewHolder(ratingMemberBinding.root) {
+        private val parentContext = context
         private val binding = ratingMemberBinding
         fun bind(member: RankingPlaces, itemCount: Int) {
             with(binding) {
@@ -19,13 +22,18 @@ class RatingMemberAdapter(private val context: Context, private val members: Lis
                 averageMark.text = member.averageMark
                 progressBar.max = itemCount
                 progressBar.progress = itemCount - member.place + 1
+                Picasso.get().load(member.imageUrl).into(avatar)
+                if (member.isContextUser) {
+                    card.strokeWidth =
+                        parentContext.resources.getDimensionPixelSize(R.dimen.card_stroke_width)
+                }
             }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RatingMemberViewHolder {
         val binding = ItemRatingMemberBinding.inflate(LayoutInflater.from(context), parent, false)
-        return RatingMemberViewHolder(binding)
+        return RatingMemberViewHolder(binding, context)
     }
 
     override fun onBindViewHolder(holder: RatingMemberViewHolder, position: Int) {
