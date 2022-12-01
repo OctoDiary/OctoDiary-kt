@@ -9,11 +9,13 @@ import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import androidx.core.view.setMargins
 import androidx.preference.PreferenceManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import org.bxkr.octodiary.R
 import org.bxkr.octodiary.databinding.ItemLessonsRecyclerBinding
 import org.bxkr.octodiary.models.diary.Lesson
+import org.bxkr.octodiary.models.diary.Mark
 import org.bxkr.octodiary.ui.activities.LessonActivity
 import org.bxkr.octodiary.ui.activities.MainActivity
 import java.text.SimpleDateFormat
@@ -71,6 +73,17 @@ class LessonsAdapter(
                     )
                 }
                 parentContext.startActivity(intent)
+            }
+
+            val marks = mutableListOf<Mark>()
+            for (workMark in lesson.workMarks) {
+                marks.addAll(workMark.marks)
+            }
+            if (marks.size > 0) {
+                binding.markRecyclerView.visibility = View.VISIBLE
+                binding.markRecyclerView.layoutManager =
+                    LinearLayoutManager(parentContext, LinearLayoutManager.HORIZONTAL, false)
+                binding.markRecyclerView.adapter = MarkDiaryAdapter(parentContext, marks)
             }
         }
     }

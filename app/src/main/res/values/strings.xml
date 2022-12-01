@@ -78,4 +78,5 @@
     <string name="placeholder_main_rating_average" translatable="false">4.67</string>
     <string name="school_out_of_date">Updating school data…</string>
     <string name="school_out_of_date_extra" translatable="false">school_out_of_date</string>
+    <string name="placeholder_mark_value" translatable="false">5</string>
 </resources>
