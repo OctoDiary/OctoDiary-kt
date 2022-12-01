@@ -13,6 +13,6 @@ object Utils {
 
     fun toOrdinal(place: Int): String {
         val formatter = MessageFormat("{0,ordinal}", Locale.getDefault())
-        return formatter.format(arrayOf(place))
+        return formatter.format(arrayOf(place)).replace(".", "")
     }
 }

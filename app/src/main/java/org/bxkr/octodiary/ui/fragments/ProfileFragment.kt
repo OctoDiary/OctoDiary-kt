@@ -81,7 +81,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
             binding.ratingStatus.text =
                 getString(
                     R.string.rating_place,
-                    toOrdinal(ratingData.history.rankingPosition.place).replace(".", "")
+                    toOrdinal(ratingData.history.rankingPosition.place)
                 )
             if (showRatingBackground) {
                 binding.ratingBackground.visibility = View.VISIBLE

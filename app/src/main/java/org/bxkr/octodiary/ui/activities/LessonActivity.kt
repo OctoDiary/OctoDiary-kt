@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import org.bxkr.octodiary.R
+import org.bxkr.octodiary.Utils.toOrdinal
 import org.bxkr.octodiary.databinding.ActivityLessonBinding
 import org.bxkr.octodiary.databinding.ItemHomeworkAttachmentBinding
 import org.bxkr.octodiary.models.diary.Lesson
@@ -103,7 +104,7 @@ class LessonActivity : AppCompatActivity() {
                     teacher.firstName,
                     teacher.middleName
                 )
-                lessonNumber.text = getString(R.string.lesson_n, number.toString())
+                lessonNumber.text = getString(R.string.lesson_n, toOrdinal(number))
                 if (homework?.text == null) {
                     homeworkCard.visibility = View.GONE
                 } else homeworkText.text = homework.text
