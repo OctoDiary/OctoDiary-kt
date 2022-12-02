@@ -13,6 +13,7 @@ import androidx.preference.PreferenceManager
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import org.bxkr.octodiary.R
+import org.bxkr.octodiary.Utils.getJsonRaw
 import org.bxkr.octodiary.databinding.ActivityMainBinding
 import org.bxkr.octodiary.models.diary.Diary
 import org.bxkr.octodiary.models.diary.Week
@@ -157,28 +158,12 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
         } else if (token == getString(R.string.demo_token) && userId == getString(R.string.demo_user_id)) {
-            val diaryRaw = resources.openRawResource(R.raw.sample_diary_data)
-            val userRaw = resources.openRawResource(R.raw.sample_user_data)
-            val ratingRaw = resources.openRawResource(R.raw.sample_rating_data)
-            val diaryByteArray = ByteArray(diaryRaw.available())
-            val userByteArray = ByteArray(userRaw.available())
-            val ratingByteArray = ByteArray(ratingRaw.available())
-            diaryRaw.read(diaryByteArray)
-            userRaw.read(userByteArray)
-            ratingRaw.read(ratingByteArray)
-            userData = Gson().fromJson<User>(
-                String(userByteArray),
-                object : TypeToken<User>() {}.type
-            )
-            diaryData = Gson().fromJson<List<Week>>(
-                String(diaryByteArray),
-                object : TypeToken<List<Week>>() {}.type
-            )
-            ratingData = Gson().fromJson<RatingClass>(
-                String(ratingByteArray),
-                object : TypeToken<RatingClass>() {}.type
-            )
-            allDataLoaded()
+            with(resources) {
+                userData = getJsonRaw<User>(openRawResource(R.raw.sample_user_data))
+                diaryData = getJsonRaw<List<Week>>(openRawResource(R.raw.sample_diary_data))
+                ratingData = getJsonRaw<RatingClass>(openRawResource(R.raw.sample_rating_data))
+                allDataLoaded()
+            }
         } else createDiary()
 
         PreferenceManager.setDefaultValues(this, R.xml.root_preferences, false)

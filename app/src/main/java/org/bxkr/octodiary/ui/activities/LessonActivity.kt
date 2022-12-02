@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import org.bxkr.octodiary.R
+import org.bxkr.octodiary.Utils.getJsonRaw
 import org.bxkr.octodiary.Utils.toOrdinal
 import org.bxkr.octodiary.databinding.ActivityLessonBinding
 import org.bxkr.octodiary.databinding.ItemHomeworkAttachmentBinding
@@ -43,13 +44,8 @@ class LessonActivity : AppCompatActivity() {
         if (prefs.getString(getString(R.string.token), null) == getString(R.string.demo_token) &&
             prefs.getString(getString(R.string.user_id), null) == getString(R.string.demo_user_id)
         ) {
-            val raw = resources.openRawResource(R.raw.sample_lesson_details_data)
-            val byteArray = ByteArray(raw.available())
-            raw.read(byteArray)
-            val lessonRaw = Gson().fromJson<org.bxkr.octodiary.models.lesson.Lesson>(
-                String(byteArray),
-                object : TypeToken<org.bxkr.octodiary.models.lesson.Lesson>() {}.type
-            )
+            val lessonRaw =
+                getJsonRaw<org.bxkr.octodiary.models.lesson.Lesson>(resources.openRawResource(R.raw.sample_lesson_details_data))
             binding.attachmentsRecyclerView.layoutManager = LinearLayoutManager(this)
             binding.attachmentsRecyclerView.adapter =
                 AttachmentsAdapter(this, lessonRaw.attachments)
