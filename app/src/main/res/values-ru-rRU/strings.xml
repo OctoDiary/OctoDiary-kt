@@ -43,4 +43,5 @@
     <string name="demo_mode">Демо-режим</string>
     <string name="unexpected_error">Непредвиденная ошибка</string>
     <string name="school_out_of_date">Обновление школьных данных…</string>
+    <string name="mark">Оценка</string>
 </resources>
