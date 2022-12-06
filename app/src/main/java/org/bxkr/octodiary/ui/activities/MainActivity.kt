@@ -204,6 +204,7 @@ class MainActivity : AppCompatActivity() {
             userData = it.body()!!
             getRating(listener)
         }, errorFunction = {
+            println(server)
             val intent = Intent(this@MainActivity, LoginActivity::class.java)
             intent.putExtra(getString(R.string.auth_out_of_date_extra), true)
             startActivity(intent)

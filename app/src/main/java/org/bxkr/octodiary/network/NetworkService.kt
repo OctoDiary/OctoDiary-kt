@@ -22,22 +22,30 @@ object NetworkService {
     enum class Server(
         @StringRes val serverName: Int,
         @DrawableRes val drawableRes: Int,
-        val url: String
+        val url: String,
+        @StringRes val clientId: Int,
+        @StringRes val clientSecret: Int
     ) {
-        SCHOOL_MOSREG(
-            R.string.school_mosreg_name,
-            R.drawable.ic_round_location_city_24,
-            "https://api.school.mosreg.ru/mobile/v6.0/"
-        ),
         DNEVNIK_RU(
             R.string.dnevnik_ru,
             R.drawable.ic_round_waving_hand_24,
-            "https://api.dnevnik.ru/mobile/v6.0/"
+            "https://api.dnevnik.ru/mobile/v6.0/",
+            R.string.dnevnik_ru_client_id,
+            R.string.dnevnik_ru_client_secret
+        ),
+        SCHOOL_MOSREG(
+            R.string.school_mosreg_name,
+            R.drawable.ic_round_location_city_24,
+            "https://api.school.mosreg.ru/mobile/v6.0/",
+            R.string.school_mosreg_client_id,
+            R.string.school_mosreg_client_secret
         )
     }
 
     data class AuthResult(
         val credentials: AuthResultCredentials,
+        val reason: String,
+        val type: String
     )
 
     data class AuthResultCredentials(

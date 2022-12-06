@@ -84,4 +84,7 @@
     <string name="dnevnik_ru">Dnevnik.ru</string>
     <string name="select_server">Diary</string>
     <string name="server_key" translatable="false">server</string>
+    <string name="have_not_active_memberships_error_reason" translatable="false">HaveNotActiveMemberships</string>
+    <string name="have_not_active_memberships_message">Student doesn\'t have an active membership in any school</string>
+    <string name="error_type" translatable="false">Error</string>
 </resources>

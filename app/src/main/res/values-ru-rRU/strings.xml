@@ -47,4 +47,5 @@
     <string name="school_mosreg_name">Школьный Портал МО</string>
     <string name="dnevnik_ru">Дневник.ру</string>
     <string name="select_server">Дневник</string>
+    <string name="have_not_active_memberships_message">Ребёнок не участвует в учебном процессе</string>
 </resources>

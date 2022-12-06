@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="client_id" translatable="false">594df05c-fea3-4e66-9949-60ae72a2150d</string>
-    <string name="client_secret" translatable="false">2436e132-8103-417b-ab63-5e89dcf6fba9</string>
+    <string name="school_mosreg_client_id" translatable="false">594df05c-fea3-4e66-9949-60ae72a2150d</string>
+    <string name="school_mosreg_client_secret" translatable="false">2436e132-8103-417b-ab63-5e89dcf6fba9</string>
+    <string name="dnevnik_ru_client_id" translatable="false">1d7bd105-4cd1-4f6c-9ecc-394e400b53bd</string>
+    <string name="dnevnik_ru_client_secret" translatable="false">5dcb5237-b5d3-406b-8fee-4441c3a66c99</string>
     <string name="default_scope" translatable="false">CommonInfo,EducationalInfo</string>
 </resources>

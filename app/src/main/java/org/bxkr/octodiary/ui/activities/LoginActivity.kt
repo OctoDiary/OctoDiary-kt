@@ -33,7 +33,12 @@ class LoginActivity : AppCompatActivity() {
             )
         }, SelectServerArrayAdapter(this, servers)))
         (binding.server.editText as? AutoCompleteTextView)?.setText(
-            getString(servers[serverPosition].serverName),
+            getString(
+                servers[getSharedPreferences(
+                    getString(R.string.auth_file_key),
+                    Context.MODE_PRIVATE
+                ).getInt(getString(R.string.server_key), 0)].serverName
+            ),
             false
         )
         (binding.server.editText as? AutoCompleteTextView)?.setOnItemClickListener { _, _, position, _ ->
@@ -78,8 +83,8 @@ class LoginActivity : AppCompatActivity() {
             NetworkService.AuthRequestBody(
                 binding.username.editText?.text.toString(),
                 binding.password.editText?.text.toString(),
-                getString(R.string.client_id),
-                getString(R.string.client_secret),
+                getString(server.clientId),
+                getString(server.clientSecret),
                 getString(R.string.default_scope),
             )
         )
@@ -101,9 +106,17 @@ class LoginActivity : AppCompatActivity() {
                         )
                         apply()
                     }
+                    startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                    finish()
+                } else if (it.body()?.reason == getString(R.string.have_not_active_memberships_error_reason)) {
+                    Snackbar.make(
+                        binding.root,
+                        R.string.have_not_active_memberships_message,
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+                } else if (it.body()?.type == getString(R.string.error_type)) {
+                    Snackbar.make(binding.root, R.string.wrong, Snackbar.LENGTH_SHORT).show()
                 }
-                startActivity(Intent(this@LoginActivity, MainActivity::class.java))
-                finish()
             }) {})
     }
 }
