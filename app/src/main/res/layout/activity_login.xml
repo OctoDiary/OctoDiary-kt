@@ -7,17 +7,6 @@
     tools:context=".ui.activities.LoginActivity">
 
     <androidx.constraintlayout.widget.Group
-        android:id="@+id/center"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.5" />
-
-    <androidx.constraintlayout.widget.Group
         android:id="@+id/bottomCenter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -25,7 +14,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/center" />
+        app:layout_constraintTop_toBottomOf="@+id/password" />
 
     <Button
         android:id="@+id/log_in_button"
@@ -43,7 +32,7 @@
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:contentDescription="@string/log_in"
-        app:layout_constraintBottom_toTopOf="@+id/center"
+        app:layout_constraintBottom_toTopOf="@+id/server"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -53,14 +42,36 @@
         tools:ignore="ImageContrastCheck" />
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/server"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:layout_width="@dimen/login_field_width"
+        android:layout_height="wrap_content"
+        android:hint="@string/select_server"
+        app:layout_constraintBottom_toTopOf="@+id/username"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <AutoCompleteTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/select_server"
+            android:inputType="none"
+            android:textColorHint="@color/material_dynamic_neutral70"
+            tools:ignore="TextContrastCheck" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/username"
         android:layout_width="@dimen/login_field_width"
         android:layout_height="wrap_content"
         android:hint="@string/username"
-        app:layout_constraintBottom_toTopOf="@+id/center"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
@@ -79,7 +90,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/center"
+        app:layout_constraintTop_toBottomOf="@+id/username"
         app:passwordToggleEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText

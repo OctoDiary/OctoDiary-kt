@@ -56,7 +56,12 @@ class LessonActivity : AppCompatActivity() {
             val personId = intent.getLongExtra("person_id", 0)
             val groupId = intent.getLongExtra("group_id", 0)
 
-            val call = NetworkService.api().lessonDetails(
+            val call = NetworkService.api(
+                NetworkService.Server.values()[prefs.getInt(
+                    getString(R.string.server_key),
+                    0
+                )]
+            ).lessonDetails(
                 personId,
                 groupId,
                 lesson.id,

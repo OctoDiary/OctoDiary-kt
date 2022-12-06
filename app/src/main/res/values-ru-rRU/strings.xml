@@ -44,4 +44,7 @@
     <string name="unexpected_error">Непредвиденная ошибка</string>
     <string name="school_out_of_date">Обновление школьных данных…</string>
     <string name="mark">Оценка</string>
+    <string name="school_mosreg_name">Школьный Портал МО</string>
+    <string name="dnevnik_ru">Дневник.ру</string>
+    <string name="select_server">Дневник</string>
 </resources>

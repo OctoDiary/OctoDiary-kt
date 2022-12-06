@@ -149,6 +149,12 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+    val server: Int
+        get() = this.getSharedPreferences(
+            getString(R.string.auth_file_key),
+            Context.MODE_PRIVATE
+        ).getInt(getString(R.string.server_key), 0)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -192,7 +198,8 @@ class MainActivity : AppCompatActivity() {
         if ((diaryData != null) && (userData != null)) {
             allDataLoaded()
         }
-        val call = userId?.toLong()?.let { NetworkService.api().user(it, token) }
+        val call = userId?.toLong()
+            ?.let { NetworkService.api(NetworkService.Server.values()[server]).user(it, token) }
         call?.enqueue(object : BaseCallback<User>(this, function = {
             userData = it.body()!!
             getRating(listener)
@@ -206,7 +213,7 @@ class MainActivity : AppCompatActivity() {
 
     fun getRating(listener: () -> Unit = {}) {
         with(userData!!) {
-            val call = NetworkService.api().rating(
+            val call = NetworkService.api(NetworkService.Server.values()[server]).rating(
                 info.personId, contextPersons[0].group.id, token
             )
             call.enqueue(object : BaseCallback<RatingClass>(this@MainActivity, function = {
@@ -223,7 +230,7 @@ class MainActivity : AppCompatActivity() {
 
     fun getDiary(listener: () -> Unit = {}) {
         with(userData!!) {
-            val call = NetworkService.api().diary(
+            val call = NetworkService.api(NetworkService.Server.values()[server]).diary(
                 info.personId, contextPersons[0].school.id, contextPersons[0].group.id, token
             )
             call.enqueue(object : BaseCallback<Diary>(this@MainActivity, function = {

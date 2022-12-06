@@ -3,23 +3,45 @@ package org.bxkr.octodiary.ui.activities
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.widget.AutoCompleteTextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.edit
 import com.google.android.material.snackbar.Snackbar
 import org.bxkr.octodiary.R
 import org.bxkr.octodiary.databinding.ActivityLoginBinding
 import org.bxkr.octodiary.network.BaseCallback
 import org.bxkr.octodiary.network.NetworkService
+import org.bxkr.octodiary.network.NetworkService.Server
+import org.bxkr.octodiary.ui.adapters.RecyclerBaseAdapter
+import org.bxkr.octodiary.ui.adapters.SelectServerArrayAdapter
 import retrofit2.Call
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
+    private var serverPosition = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        val servers = Server.values()
+        (binding.server.editText as? AutoCompleteTextView)?.setAdapter(RecyclerBaseAdapter(servers.map {
+            getString(
+                it.serverName
+            )
+        }, SelectServerArrayAdapter(this, servers)))
+        (binding.server.editText as? AutoCompleteTextView)?.setText(
+            getString(servers[serverPosition].serverName),
+            false
+        )
+        (binding.server.editText as? AutoCompleteTextView)?.setOnItemClickListener { _, _, position, _ ->
+            serverPosition = position
+            val prefs =
+                getSharedPreferences(getString(R.string.auth_file_key), Context.MODE_PRIVATE)
+            prefs.edit { putInt(getString(R.string.server_key), position) }
+        }
         binding.password.editText?.setOnEditorActionListener { _, _, _ ->
             logIn()
             true
@@ -51,7 +73,8 @@ class LoginActivity : AppCompatActivity() {
             startActivity(Intent(this@LoginActivity, MainActivity::class.java))
             finish()
         }
-        val call: Call<NetworkService.AuthResult> = NetworkService.api().auth(
+        val server = Server.values()[serverPosition]
+        val call: Call<NetworkService.AuthResult> = NetworkService.api(server).auth(
             NetworkService.AuthRequestBody(
                 binding.username.editText?.text.toString(),
                 binding.password.editText?.text.toString(),

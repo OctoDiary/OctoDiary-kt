@@ -1,5 +1,8 @@
 package org.bxkr.octodiary.network
 
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
+import org.bxkr.octodiary.R
 import org.bxkr.octodiary.models.diary.Diary
 import org.bxkr.octodiary.models.lesson.Lesson
 import org.bxkr.octodiary.models.mark.MarkDetails
@@ -16,8 +19,22 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 object NetworkService {
-    private const val apiUrl =
-        "https://api.school.mosreg.ru/mobile/v6.0/"
+    enum class Server(
+        @StringRes val serverName: Int,
+        @DrawableRes val drawableRes: Int,
+        val url: String
+    ) {
+        SCHOOL_MOSREG(
+            R.string.school_mosreg_name,
+            R.drawable.ic_round_location_city_24,
+            "https://api.school.mosreg.ru/mobile/v6.0/"
+        ),
+        DNEVNIK_RU(
+            R.string.dnevnik_ru,
+            R.drawable.ic_round_waving_hand_24,
+            "https://api.dnevnik.ru/mobile/v6.0/"
+        )
+    }
 
     data class AuthResult(
         val credentials: AuthResultCredentials,
@@ -82,9 +99,9 @@ object NetworkService {
         ): Call<MarkDetails>
     }
 
-    fun api(): API {
+    fun api(server: Server): API {
         val retrofit = Retrofit.Builder()
-            .baseUrl(apiUrl)
+            .baseUrl(server.url)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         return retrofit.create(API::class.java)
