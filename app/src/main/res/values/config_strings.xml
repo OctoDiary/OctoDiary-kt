@@ -5,4 +5,7 @@
     <string name="dnevnik_ru_client_id" translatable="false">1d7bd105-4cd1-4f6c-9ecc-394e400b53bd</string>
     <string name="dnevnik_ru_client_secret" translatable="false">5dcb5237-b5d3-406b-8fee-4441c3a66c99</string>
     <string name="default_scope" translatable="false">CommonInfo,EducationalInfo</string>
+    <string name="api_git_host" translatable="false">https://api.github.com/</string>
+    <string name="repo_owner" translatable="false">OctoDiary</string>
+    <string name="repo_name" translatable="false">OctoDiary-kt</string>
 </resources>

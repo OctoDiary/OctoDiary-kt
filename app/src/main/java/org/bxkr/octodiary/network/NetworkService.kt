@@ -2,11 +2,13 @@ package org.bxkr.octodiary.network
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import okhttp3.ResponseBody
 import org.bxkr.octodiary.R
 import org.bxkr.octodiary.models.diary.Diary
 import org.bxkr.octodiary.models.lesson.Lesson
 import org.bxkr.octodiary.models.mark.MarkDetails
 import org.bxkr.octodiary.models.rating.RatingClass
+import org.bxkr.octodiary.models.release.Release
 import org.bxkr.octodiary.models.user.User
 import retrofit2.Call
 import retrofit2.Retrofit
@@ -17,6 +19,8 @@ import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
+import retrofit2.http.Streaming
+import retrofit2.http.Url
 
 object NetworkService {
     enum class Server(
@@ -107,11 +111,33 @@ object NetworkService {
         ): Call<MarkDetails>
     }
 
+    interface GitHubAPI {
+        @GET("repos/{owner}/{repo}/releases/latest")
+        fun getLatestRelease(
+            @Path("owner") owner: String,
+            @Path("repo") repo: String,
+        ): Call<Release>
+
+        @GET
+        @Streaming
+        fun download(
+            @Url fileUrl: String
+        ): Call<ResponseBody>
+    }
+
     fun api(server: Server): API {
         val retrofit = Retrofit.Builder()
             .baseUrl(server.url)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         return retrofit.create(API::class.java)
+    }
+
+    fun updateApi(gitUrl: String): GitHubAPI {
+        val retrofit = Retrofit.Builder()
+            .baseUrl(gitUrl)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+        return retrofit.create(GitHubAPI::class.java)
     }
 }

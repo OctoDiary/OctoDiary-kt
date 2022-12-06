@@ -87,4 +87,9 @@
     <string name="have_not_active_memberships_error_reason" translatable="false">HaveNotActiveMemberships</string>
     <string name="have_not_active_memberships_message">Student doesn\'t have an active membership in any school</string>
     <string name="error_type" translatable="false">Error</string>
+    <string name="update_available">Update %s available!</string>
+    <string name="update_available_message">Found an update: %s. Want to download and install it?</string>
+    <string name="changes">Changes</string>
+    <string name="later">Later</string>
+    <string name="yes">Yes</string>
 </resources>

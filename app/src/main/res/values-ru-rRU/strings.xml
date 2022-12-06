@@ -48,4 +48,9 @@
     <string name="dnevnik_ru">Дневник.ру</string>
     <string name="select_server">Дневник</string>
     <string name="have_not_active_memberships_message">Ребёнок не участвует в учебном процессе</string>
+    <string name="update_available">Доступно обновление %s!</string>
+    <string name="update_available_message">Найдено обновление: %s. Хотите загрузить и установить его?</string>
+    <string name="changes">Что нового</string>
+    <string name="later">Позже</string>
+    <string name="yes">Да</string>
 </resources>
