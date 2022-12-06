@@ -11,7 +11,7 @@ data class Lesson(
     val teacher: Teacher,
     val importantWorks: List<String>,
     val averageMarks: AverageMarks,
-    val lessonDetailsMarks: List<String>,
+    val lessonDetailsMarks: List<LessonDetailsMarks>,
     val homework: Homework,
     val attachments: List<Attachments>,
     val lessonDescription: String,
