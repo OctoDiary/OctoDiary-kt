@@ -92,4 +92,6 @@
     <string name="changes">Changes</string>
     <string name="later">Later</string>
     <string name="yes">Yes</string>
+    <string name="placeholder_work_type" translatable="false">Test Paper</string>
+    <string name="goto_lesson">Go to lesson page</string>
 </resources>

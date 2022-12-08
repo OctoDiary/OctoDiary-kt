@@ -53,4 +53,5 @@
     <string name="changes">Что нового</string>
     <string name="later">Позже</string>
     <string name="yes">Да</string>
+    <string name="goto_lesson">На страницу урока</string>
 </resources>
