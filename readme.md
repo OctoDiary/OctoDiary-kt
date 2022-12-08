@@ -1,9 +1,8 @@
 # OctoDiary-kt
 
-Android-клиент для [OctoDiary-API](https://github.com/octodiary/octodiary-api)  
-Разрабатывается в качестве альтернативы
-официальному [Школьному Порталу](https://school.mosreg.ru/about/project).  
-Использует Material 3 и Dynamic Colors.  
+Android-клиент [Дневник.ру](https://dnevnik.ru/)
+и [Школьного Портала](https://school.mosreg.ru/about/project).  
+Использует UI Material 3 и Dynamic Colors.  
 Android 7.0+, target: Android 13.0
 
 &nbsp;
