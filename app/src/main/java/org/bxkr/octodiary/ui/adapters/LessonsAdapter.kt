@@ -5,6 +5,7 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -50,6 +51,17 @@ class LessonsAdapter(
                 }
             if (description != null) {
                 binding.lessonDesc.text = description
+                if (lesson.hasAttachment) {
+                    binding.lessonDesc.setCompoundDrawablesWithIntrinsicBounds(
+                        null,
+                        null,
+                        AppCompatResources.getDrawable(
+                            parentContext,
+                            R.drawable.ic_round_attachment_24
+                        ),
+                        null
+                    )
+                }
             } else {
                 binding.lessonDesc.visibility = View.GONE
             }
