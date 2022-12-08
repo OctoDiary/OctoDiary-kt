@@ -38,6 +38,8 @@ class LessonActivity : AppCompatActivity() {
             object : TypeToken<Lesson>() {}.type
         )
 
+        setContentView(binding.root)
+
         val prefs =
             this.getSharedPreferences(getString(R.string.auth_file_key), Context.MODE_PRIVATE)
 
@@ -80,8 +82,6 @@ class LessonActivity : AppCompatActivity() {
 
             binding.progressBar.visibility = View.GONE
         }
-
-        setContentView(binding.root)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val toDate = SimpleDateFormat(
