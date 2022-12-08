@@ -4,8 +4,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/bigProgressBar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/big_progress_bar_margin"
+        android:layout_marginEnd="@dimen/big_progress_bar_margin"
+        android:indeterminate="true"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/markValue"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/mark_margin"
@@ -13,14 +26,15 @@
         android:gravity="center"
         android:text="@string/placeholder_mark_value"
         android:textAppearance="@style/TextAppearance.Material3.DisplayLarge"
-        app:layout_constraintBottom_toBottomOf="@+id/card"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/markInfoCard"
         app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintEnd_toStartOf="@+id/card"
+        app:layout_constraintEnd_toStartOf="@+id/markInfoCard"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/card"
+        android:id="@+id/markInfoCard"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/mark_rating_margin"
@@ -28,8 +42,9 @@
         android:layout_marginEnd="@dimen/mark_rating_margin"
         android:clickable="true"
         android:focusable="true"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView"
+        app:layout_constraintStart_toEndOf="@+id/markValue"
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout

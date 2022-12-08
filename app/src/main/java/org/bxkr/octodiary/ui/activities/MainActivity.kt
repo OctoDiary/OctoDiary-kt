@@ -20,6 +20,7 @@ import org.bxkr.octodiary.BuildConfig
 import org.bxkr.octodiary.R
 import org.bxkr.octodiary.Utils.checkUpdate
 import org.bxkr.octodiary.Utils.getJsonRaw
+import org.bxkr.octodiary.Utils.isDemo
 import org.bxkr.octodiary.databinding.ActivityMainBinding
 import org.bxkr.octodiary.models.diary.Diary
 import org.bxkr.octodiary.models.diary.Week
@@ -171,7 +172,7 @@ class MainActivity : AppCompatActivity() {
         if (token == null && userId == null) {
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
-        } else if (token == getString(R.string.demo_token) && userId == getString(R.string.demo_user_id)) {
+        } else if (isDemo(this)) {
             with(resources) {
                 userData = getJsonRaw<User>(openRawResource(R.raw.sample_user_data))
                 diaryData = getJsonRaw<List<Week>>(openRawResource(R.raw.sample_diary_data))
@@ -311,6 +312,9 @@ class MainActivity : AppCompatActivity() {
                 ratingData = null
                 token = null
                 userId = null
+                val prefs =
+                    getSharedPreferences(getString(R.string.auth_file_key), Context.MODE_PRIVATE)
+                prefs.edit { putInt(getString(R.string.server_key), 0) }
                 startActivity(Intent(this@MainActivity, LoginActivity::class.java))
                 finish()
             }

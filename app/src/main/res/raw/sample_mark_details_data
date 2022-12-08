@@ -1,0 +1,592 @@
+{
+  "date": 1669593600,
+  "lessonId": 0,
+  "period": {
+    "id": 0,
+    "number": 1,
+    "type": "Trimester",
+    "dateStart": 1669593600,
+    "dateFinish": 1676764800,
+    "studyYear": 2022,
+    "isCurrent": true
+  },
+  "markDetails": {
+    "isImportant": false,
+    "isFinal": false,
+    "markType": "Mark",
+    "markTypeText": "Домашняя работа",
+    "marks": [
+      {
+        "id": 0,
+        "value": "5",
+        "mood": "Good"
+      }
+    ]
+  },
+  "subject": {
+    "id": 0,
+    "name": "Алгебра",
+    "knowledgeArea": "Mathematics",
+    "subjectMood": null
+  },
+  "averageMarks": {
+    "averageMarkTrend": "Equal",
+    "averageMarkMood": "Good",
+    "averagemarkByImportantWorkTrend": "Equal",
+    "weightedAverageMarkTrend": "NotSet",
+    "indicator": null,
+    "averageMark": "5.00",
+    "averageMarkByImportantWork": null,
+    "weightedAverageMark": null
+  },
+  "reportsPlot": {
+    "knowledgeAreaGroup": "MathematicsAndTechnology",
+    "knowledgeAreaGroupName": "Математика и технология",
+    "subject": {
+      "id": 0,
+      "name": "Алгебра",
+      "knowledgeArea": "Mathematics",
+      "subjectMood": null
+    },
+    "averageMarks": {
+      "averageMark": "5.00",
+      "weightedAverageMark": null,
+      "averageMarkTrend": "Equal",
+      "weightedAverageMarkTrend": "Equal",
+      "averageMarkMood": "Good"
+    },
+    "plotOptions": {
+      "yAxis": [
+        {
+          "value": "4.00",
+          "mood": "Good"
+        },
+        {
+          "value": "5.00",
+          "mood": "Good"
+        }
+      ]
+    },
+    "reportingPeriodsReports": [
+      {
+        "periodId": 0,
+        "periodNumber": 0,
+        "periodType": "Trimester",
+        "isCurrent": false,
+        "weekAverages": [
+          {
+            "number": 0,
+            "value": null,
+            "isCurrentWeek": false
+          },
+          {
+            "number": 1,
+            "value": "5.00",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 2,
+            "value": "5.00",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 3,
+            "value": "4.33",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 4,
+            "value": "4.25",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 5,
+            "value": "4.25",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 6,
+            "value": "4.25",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 7,
+            "value": "4.57",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 8,
+            "value": "4.56",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 9,
+            "value": "4.56",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 10,
+            "value": "4.50",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 11,
+            "value": "4.50",
+            "isCurrentWeek": false
+          }
+        ]
+      },
+      {
+        "periodId": 0,
+        "periodNumber": 1,
+        "periodType": "Trimester",
+        "isCurrent": true,
+        "weekAverages": [
+          {
+            "number": 0,
+            "value": null,
+            "isCurrentWeek": false
+          },
+          {
+            "number": 1,
+            "value": "5.00",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 2,
+            "value": "5.00",
+            "isCurrentWeek": true
+          },
+          {
+            "number": 3,
+            "value": null,
+            "isCurrentWeek": false
+          },
+          {
+            "number": 4,
+            "value": null,
+            "isCurrentWeek": false
+          },
+          {
+            "number": 5,
+            "value": null,
+            "isCurrentWeek": false
+          },
+          {
+            "number": 6,
+            "value": null,
+            "isCurrentWeek": false
+          },
+          {
+            "number": 7,
+            "value": null,
+            "isCurrentWeek": false
+          },
+          {
+            "number": 8,
+            "value": null,
+            "isCurrentWeek": false
+          },
+          {
+            "number": 9,
+            "value": null,
+            "isCurrentWeek": false
+          },
+          {
+            "number": 10,
+            "value": null,
+            "isCurrentWeek": false
+          },
+          {
+            "number": 11,
+            "value": null,
+            "isCurrentWeek": false
+          },
+          {
+            "number": 12,
+            "value": null,
+            "isCurrentWeek": false
+          }
+        ]
+      },
+      {
+        "periodId": 0,
+        "periodNumber": 2,
+        "periodType": "Trimester",
+        "isCurrent": false,
+        "weekAverages": [
+          {
+            "number": 0,
+            "value": null,
+            "isCurrentWeek": false
+          },
+          {
+            "number": 1,
+            "value": null,
+            "isCurrentWeek": false
+          },
+          {
+            "number": 2,
+            "value": null,
+            "isCurrentWeek": false
+          },
+          {
+            "number": 3,
+            "value": null,
+            "isCurrentWeek": false
+          },
+          {
+            "number": 4,
+            "value": null,
+            "isCurrentWeek": false
+          },
+          {
+            "number": 5,
+            "value": null,
+            "isCurrentWeek": false
+          },
+          {
+            "number": 6,
+            "value": null,
+            "isCurrentWeek": false
+          },
+          {
+            "number": 7,
+            "value": null,
+            "isCurrentWeek": false
+          },
+          {
+            "number": 8,
+            "value": null,
+            "isCurrentWeek": false
+          },
+          {
+            "number": 9,
+            "value": null,
+            "isCurrentWeek": false
+          },
+          {
+            "number": 10,
+            "value": null,
+            "isCurrentWeek": false
+          },
+          {
+            "number": 11,
+            "value": null,
+            "isCurrentWeek": false
+          },
+          {
+            "number": 12,
+            "value": null,
+            "isCurrentWeek": false
+          },
+          {
+            "number": 13,
+            "value": null,
+            "isCurrentWeek": false
+          },
+          {
+            "number": 14,
+            "value": null,
+            "isCurrentWeek": false
+          }
+        ]
+      }
+    ]
+  },
+  "summativeMarks": null,
+  "studentPlace": {
+    "place": 1,
+    "imageUrl": null
+  },
+  "categories": [
+    {
+      "mood": "Good",
+      "percent": 10.714,
+      "studentCount": 3,
+      "markNumber": 0,
+      "value": "5"
+    },
+    {
+      "mood": "Good",
+      "percent": 42.857,
+      "studentCount": 12,
+      "markNumber": 0,
+      "value": "4"
+    },
+    {
+      "mood": "Bad",
+      "percent": 17.857,
+      "studentCount": 5,
+      "markNumber": 0,
+      "value": "2"
+    },
+    {
+      "mood": "Average",
+      "percent": 28.571,
+      "studentCount": 8,
+      "markNumber": 0,
+      "value": "3"
+    }
+  ],
+  "groupReportsPlot": {
+    "knowledgeAreaGroup": "MathematicsAndTechnology",
+    "knowledgeAreaGroupName": "Математика и технология",
+    "subject": {
+      "id": 0,
+      "name": "Алгебра",
+      "knowledgeArea": "Mathematics",
+      "subjectMood": null
+    },
+    "averageMarks": {
+      "averageMark": "3.61",
+      "averageMarkTrend": "Up",
+      "weightedAverageMark": null,
+      "weightedAverageMarkTrend": "Up",
+      "averageMarkMood": "NotSet",
+      "indicator": null
+    },
+    "plotOptions": {
+      "yAxis": [
+        {
+          "value": "3.00",
+          "mood": "Average"
+        },
+        {
+          "value": "4.00",
+          "mood": "Good"
+        }
+      ]
+    },
+    "reportingPeriodsReports": [
+      {
+        "periodId": 0,
+        "periodNumber": 0,
+        "periodType": "Trimester",
+        "isCurrent": false,
+        "weekAverages": [
+          {
+            "number": 0,
+            "value": null,
+            "isCurrentWeek": false
+          },
+          {
+            "number": 1,
+            "value": "3.67",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 2,
+            "value": "3.49",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 3,
+            "value": "3.44",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 4,
+            "value": "3.37",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 5,
+            "value": "3.40",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 6,
+            "value": "3.41",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 7,
+            "value": "3.40",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 8,
+            "value": "3.35",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 9,
+            "value": "3.37",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 10,
+            "value": "3.36",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 11,
+            "value": "3.41",
+            "isCurrentWeek": false
+          }
+        ]
+      },
+      {
+        "periodId": 0,
+        "periodNumber": 1,
+        "periodType": "Trimester",
+        "isCurrent": true,
+        "weekAverages": [
+          {
+            "number": 0,
+            "value": null,
+            "isCurrentWeek": false
+          },
+          {
+            "number": 1,
+            "value": "3.52",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 2,
+            "value": "3.61",
+            "isCurrentWeek": true
+          },
+          {
+            "number": 3,
+            "value": null,
+            "isCurrentWeek": false
+          },
+          {
+            "number": 4,
+            "value": null,
+            "isCurrentWeek": false
+          },
+          {
+            "number": 5,
+            "value": null,
+            "isCurrentWeek": false
+          },
+          {
+            "number": 6,
+            "value": null,
+            "isCurrentWeek": false
+          },
+          {
+            "number": 7,
+            "value": null,
+            "isCurrentWeek": false
+          },
+          {
+            "number": 8,
+            "value": null,
+            "isCurrentWeek": false
+          },
+          {
+            "number": 9,
+            "value": null,
+            "isCurrentWeek": false
+          },
+          {
+            "number": 10,
+            "value": null,
+            "isCurrentWeek": false
+          },
+          {
+            "number": 11,
+            "value": null,
+            "isCurrentWeek": false
+          },
+          {
+            "number": 12,
+            "value": null,
+            "isCurrentWeek": false
+          }
+        ]
+      },
+      {
+        "periodId": 0,
+        "periodNumber": 2,
+        "periodType": "Trimester",
+        "isCurrent": false,
+        "weekAverages": [
+          {
+            "number": 0,
+            "value": null,
+            "isCurrentWeek": false
+          },
+          {
+            "number": 1,
+            "value": null,
+            "isCurrentWeek": false
+          },
+          {
+            "number": 2,
+            "value": null,
+            "isCurrentWeek": false
+          },
+          {
+            "number": 3,
+            "value": null,
+            "isCurrentWeek": false
+          },
+          {
+            "number": 4,
+            "value": null,
+            "isCurrentWeek": false
+          },
+          {
+            "number": 5,
+            "value": null,
+            "isCurrentWeek": false
+          },
+          {
+            "number": 6,
+            "value": null,
+            "isCurrentWeek": false
+          },
+          {
+            "number": 7,
+            "value": null,
+            "isCurrentWeek": false
+          },
+          {
+            "number": 8,
+            "value": null,
+            "isCurrentWeek": false
+          },
+          {
+            "number": 9,
+            "value": null,
+            "isCurrentWeek": false
+          },
+          {
+            "number": 10,
+            "value": null,
+            "isCurrentWeek": false
+          },
+          {
+            "number": 11,
+            "value": null,
+            "isCurrentWeek": false
+          },
+          {
+            "number": 12,
+            "value": null,
+            "isCurrentWeek": false
+          },
+          {
+            "number": 13,
+            "value": null,
+            "isCurrentWeek": false
+          },
+          {
+            "number": 14,
+            "value": null,
+            "isCurrentWeek": false
+          }
+        ]
+      }
+    ]
+  },
+  "messengerEntryPoint": null,
+  "type": "Success",
+  "description": "Success",
+  "mobileSubscriptionStatus": "NotActive"
+}

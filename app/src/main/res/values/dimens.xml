@@ -24,6 +24,7 @@
     <dimen name="mark_rating_margin">16dp</dimen>
     <dimen name="mark_rating_padding">16dp</dimen>
     <dimen name="mark_margin">16dp</dimen>
+    <dimen name="big_progress_bar_margin">48dp</dimen>
 
     <dimen name="rating_place_text_size">20sp</dimen>
     <dimen name="name_text_size">20sp</dimen>

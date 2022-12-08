@@ -24,13 +24,10 @@ object Utils {
         return formatter.format(arrayOf(place)).replace(".", "")
     }
 
-    fun <T> getJsonRaw(rawResource: InputStream): T {
+    inline fun <reified T> getJsonRaw(rawResource: InputStream): T {
         val byteArray = ByteArray(rawResource.available())
         rawResource.read(byteArray)
-        return Gson().fromJson(
-            String(byteArray),
-            object : TypeToken<T>() {}.type
-        )
+        return Gson().fromJson(String(byteArray), object : TypeToken<T>() {}.type)
     }
 
     fun checkUpdate(context: Context, onResponse: (Response<Release>) -> Unit) {
@@ -40,5 +37,22 @@ object Utils {
                 context.getString(R.string.repo_name)
             )
         call.enqueue(object : BaseCallback<Release>(context, function = onResponse) {})
+    }
+
+    fun isDemo(context: Context): Boolean {
+        val prefs =
+            context.getSharedPreferences(
+                context.getString(R.string.auth_file_key),
+                Context.MODE_PRIVATE
+            )
+
+        return (prefs.getString(
+            context.getString(R.string.token),
+            null
+        ) == context.getString(R.string.demo_token) &&
+                prefs.getString(
+                    context.getString(R.string.user_id),
+                    null
+                ) == context.getString(R.string.demo_user_id))
     }
 }

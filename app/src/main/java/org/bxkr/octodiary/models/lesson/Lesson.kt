@@ -12,7 +12,7 @@ data class Lesson(
     val importantWorks: List<String>,
     val averageMarks: AverageMarks,
     val lessonDetailsMarks: List<LessonDetailsMarks>,
-    val homework: Homework,
+    val homework: Homework?,
     val attachments: List<Attachments>,
     val lessonDescription: String,
     val type: String,

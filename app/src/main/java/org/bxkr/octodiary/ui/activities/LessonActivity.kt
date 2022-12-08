@@ -15,6 +15,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import org.bxkr.octodiary.R
 import org.bxkr.octodiary.Utils.getJsonRaw
+import org.bxkr.octodiary.Utils.isDemo
 import org.bxkr.octodiary.Utils.toOrdinal
 import org.bxkr.octodiary.databinding.ActivityLessonBinding
 import org.bxkr.octodiary.databinding.ItemHomeworkAttachmentBinding
@@ -23,29 +24,26 @@ import org.bxkr.octodiary.models.lesson.Attachments
 import org.bxkr.octodiary.network.BaseCallback
 import org.bxkr.octodiary.network.NetworkService
 import java.text.SimpleDateFormat
+import java.util.Date
 
 class LessonActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLessonBinding
-    private lateinit var lesson: Lesson
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityLessonBinding.inflate(layoutInflater)
-        lesson = Gson().fromJson(
-            intent.getStringExtra("lesson_data"),
-            object : TypeToken<Lesson>() {}.type
-        )
+
 
         setContentView(binding.root)
 
         val prefs =
             this.getSharedPreferences(getString(R.string.auth_file_key), Context.MODE_PRIVATE)
+        val personId = intent.getLongExtra("person_id", 0)
+        val groupId = intent.getLongExtra("group_id", 0)
 
-        if (prefs.getString(getString(R.string.token), null) == getString(R.string.demo_token) &&
-            prefs.getString(getString(R.string.user_id), null) == getString(R.string.demo_user_id)
-        ) {
+        if (isDemo(this)) {
             val lessonRaw =
                 getJsonRaw<org.bxkr.octodiary.models.lesson.Lesson>(resources.openRawResource(R.raw.sample_lesson_details_data))
             binding.attachmentsRecyclerView.layoutManager = LinearLayoutManager(this)
@@ -53,35 +51,7 @@ class LessonActivity : AppCompatActivity() {
                 AttachmentsAdapter(this, lessonRaw.attachments)
         }
 
-        if (lesson.hasAttachment) {
-            binding.progressBar.visibility = View.VISIBLE
-            val personId = intent.getLongExtra("person_id", 0)
-            val groupId = intent.getLongExtra("group_id", 0)
 
-            val call = NetworkService.api(
-                NetworkService.Server.values()[prefs.getInt(
-                    getString(R.string.server_key),
-                    0
-                )]
-            ).lessonDetails(
-                personId,
-                groupId,
-                lesson.id,
-                prefs.getString(getString(R.string.token), null)
-            )
-
-            call.enqueue(object : BaseCallback<org.bxkr.octodiary.models.lesson.Lesson>(
-                this,
-                binding.root,
-                R.string.unexpected_error,
-                {
-                    binding.attachmentsRecyclerView.layoutManager = LinearLayoutManager(this)
-                    binding.attachmentsRecyclerView.adapter =
-                        AttachmentsAdapter(this, it.body()!!.attachments)
-                }) {})
-
-            binding.progressBar.visibility = View.GONE
-        }
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val toDate = SimpleDateFormat(
@@ -91,25 +61,114 @@ class LessonActivity : AppCompatActivity() {
         val toCommon =
             SimpleDateFormat("HH:mm", resources.configuration.locales[0])
 
-        with(lesson) {
-            with(binding) {
-                lessonName.text = subject.name
-                lessonTopic.text = theme
-                lessonTime.text = getString(
-                    R.string.time_from_to,
-                    toDate.parse(lesson.startDateTime)?.let { toCommon.format(it) },
-                    toDate.parse(lesson.endDateTime)?.let { toCommon.format(it) })
-                lessonTeacher.text = getString(
-                    R.string.teacher_name_template,
-                    teacher.lastName,
-                    teacher.firstName,
-                    teacher.middleName
+        if (!intent.getBooleanExtra("full_request", false)) {
+            val lesson = Gson().fromJson<Lesson>(
+                intent.getStringExtra("lesson_data"),
+                object : TypeToken<Lesson>() {}.type
+            )
+
+            binding.bigProgressBar.visibility = View.GONE
+            binding.topicCard.visibility = View.VISIBLE
+            binding.infoCard.visibility = View.VISIBLE
+            binding.homeworkCard.visibility = View.VISIBLE
+
+            if (lesson.hasAttachment) {
+                binding.attachmentsProgressBar.visibility = View.VISIBLE
+
+                val call = NetworkService.api(
+                    NetworkService.Server.values()[prefs.getInt(
+                        getString(R.string.server_key),
+                        0
+                    )]
+                ).lessonDetails(
+                    personId,
+                    groupId,
+                    lesson.id,
+                    prefs.getString(getString(R.string.token), null)
                 )
-                lessonNumber.text = getString(R.string.lesson_n, toOrdinal(number))
-                if (homework?.text == null) {
-                    homeworkCard.visibility = View.GONE
-                } else homeworkText.text = homework.text
+
+                call.enqueue(object : BaseCallback<org.bxkr.octodiary.models.lesson.Lesson>(
+                    this,
+                    binding.root,
+                    R.string.unexpected_error,
+                    {
+                        binding.attachmentsProgressBar.visibility = View.GONE
+                        binding.attachmentsRecyclerView.layoutManager = LinearLayoutManager(this)
+                        binding.attachmentsRecyclerView.adapter =
+                            AttachmentsAdapter(this, it.body()!!.attachments)
+                    }) {})
             }
+
+            with(lesson) {
+                with(binding) {
+                    lessonName.text = subject.name
+                    lessonTopic.text = theme
+                    lessonTime.text = getString(
+                        R.string.time_from_to,
+                        toDate.parse(lesson.startDateTime)?.let { toCommon.format(it) },
+                        toDate.parse(lesson.endDateTime)?.let { toCommon.format(it) })
+                    lessonTeacher.text = getString(
+                        R.string.teacher_name_template,
+                        teacher.lastName,
+                        teacher.firstName,
+                        teacher.middleName
+                    )
+                    lessonNumber.text = getString(R.string.lesson_n, toOrdinal(number))
+                    if (homework?.text == null) {
+                        homeworkCard.visibility = View.GONE
+                    } else homeworkText.text = homework.text
+                }
+            }
+        } else {
+            val lessonId = intent.getLongExtra("lesson_id", 0)
+            val call = NetworkService.api(
+                NetworkService.Server.values()[prefs.getInt(
+                    getString(R.string.server_key),
+                    0
+                )]
+            ).lessonDetails(
+                personId,
+                groupId,
+                lessonId,
+                prefs.getString(getString(R.string.token), null)
+            )
+
+            call.enqueue(object : BaseCallback<org.bxkr.octodiary.models.lesson.Lesson>(
+                this,
+                binding.root,
+                R.string.unexpected_error,
+                { response ->
+                    if (response.body() != null) {
+                        val lesson = response.body()!!
+                        with(binding) {
+                            bigProgressBar.visibility = View.GONE
+                            topicCard.visibility = View.VISIBLE
+                            infoCard.visibility = View.VISIBLE
+                            homeworkCard.visibility = View.VISIBLE
+                            lessonName.text = lesson.subject.name
+                            lessonTopic.text = lesson.theme
+                            lessonTime.text = getString(
+                                R.string.time_from_to,
+                                Date(lesson.startTime.toLong()).let { toCommon.format(it) },
+                                Date(lesson.endTime.toLong()).let { toCommon.format(it) })
+                            lessonTeacher.text = getString(
+                                R.string.teacher_name_template,
+                                lesson.teacher.lastName,
+                                lesson.teacher.firstName,
+                                lesson.teacher.middleName
+                            )
+                            lessonNumber.text =
+                                getString(R.string.lesson_n, toOrdinal(lesson.number))
+                            if (lesson.homework?.text == null) {
+                                homeworkCard.visibility = View.GONE
+                            } else homeworkText.text = lesson.homework.text
+                            attachmentsRecyclerView.layoutManager =
+                                LinearLayoutManager(this@LessonActivity)
+                            attachmentsRecyclerView.adapter =
+                                AttachmentsAdapter(this@LessonActivity, lesson.attachments)
+                        }
+                    }
+                }) {})
         }
     }
 

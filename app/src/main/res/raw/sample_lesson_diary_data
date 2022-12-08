@@ -1,0 +1,41 @@
+{
+  "id": 1917903442944620935,
+  "number": 1,
+  "place": null,
+  "startDateTime": "2022-05-16T08:30:00Z",
+  "endDateTime": "2022-05-16T09:10:00Z",
+  "isCanceled": false,
+  "theme": "Класс Млекопитающие",
+  "subject": {
+    "id": 2675661918877403,
+    "name": "Биология",
+    "knowledgeArea": "NaturalScience",
+    "subjectMood": null
+  },
+  "importantWorks": [
+    "Самостоятельная работа"
+  ],
+  "homework": {
+    "workIsAttachRequired": false,
+    "attachments": [],
+    "text": "пар.24, стр.186 вопрос 3 письменно, знать материал",
+    "isCompleted": false
+  },
+  "hasAttachment": false,
+  "workMarks": [],
+  "isEmpty": null,
+  "comment": null,
+  "teacher": {
+    "personId": 0,
+    "firstName": "Андрей",
+    "middleName": "Владимирович",
+    "lastName": "Гений",
+    "avatarUrl": "https://raw.githubusercontent.com/google/material-design-icons/master/png/social/face_6/materialiconsround/48dp/2x/round_face_6_black_48dp.png"
+  },
+  "group": {
+    "id": 1844821503501552360,
+    "parentId": null,
+    "name": "7в",
+    "parentName": null
+  }
+}

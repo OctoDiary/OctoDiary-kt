@@ -102,7 +102,7 @@ object NetworkService {
             @Header("Access-Token") accessToken: String?,
         ): Call<Lesson>
 
-        @GET("persons/{person_id}/groups/{group_id}/marks/{lesson_id}/markDetails")
+        @GET("persons/{person_id}/groups/{group_id}/marks/{mark_id}/markDetails")
         fun markDetails(
             @Path("person_id") personId: Long,
             @Path("group_id") groupId: Long,
