@@ -149,8 +149,8 @@ class LessonActivity : AppCompatActivity() {
                             lessonTopic.text = lesson.theme
                             lessonTime.text = getString(
                                 R.string.time_from_to,
-                                Date(lesson.startTime.toLong()).let { toCommon.format(it) },
-                                Date(lesson.endTime.toLong()).let { toCommon.format(it) })
+                                Date(lesson.startTime.toLong() * 1000).let { toCommon.format(it) },
+                                Date(lesson.endTime.toLong() * 1000).let { toCommon.format(it) })
                             lessonTeacher.text = getString(
                                 R.string.teacher_name_template,
                                 lesson.teacher.lastName,
