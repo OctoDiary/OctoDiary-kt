@@ -95,4 +95,5 @@
     <string name="placeholder_work_type" translatable="false">Test Paper</string>
     <string name="goto_lesson">Go to lesson page</string>
     <string name="works">Important works</string>
+    <string name="marks">Marks</string>
 </resources>

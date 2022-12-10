@@ -1,329 +1,395 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:animateLayoutChanges="true"
-    android:padding="@dimen/lesson_activity_padding">
+    android:animateLayoutChanges="true">
 
     <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/bigProgressBar"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:layout_marginStart="@dimen/big_progress_bar_margin"
         android:layout_marginEnd="@dimen/big_progress_bar_margin"
         android:indeterminate="true"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:visibility="gone" />
+        android:visibility="visible" />
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/topicCard"
+    <ScrollView
+        android:id="@+id/contentScrollView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:visibility="visible">
+        android:layout_height="match_parent"
+        android:visibility="gone">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingStart="@dimen/lesson_activity_topic_card_padding"
-            android:paddingTop="@dimen/lesson_activity_topic_card_padding"
-            android:paddingBottom="@dimen/lesson_activity_topic_card_padding"
-            tools:ignore="RtlSymmetry">
+            android:layout_height="wrap_content"
+            android:padding="@dimen/lesson_activity_padding">
 
-            <TextView
-                android:id="@+id/lessonName"
-                android:layout_width="wrap_content"
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/topicCard"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/placeholder_lesson_name"
-                android:textAppearance="?attr/textAppearanceTitleLarge"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/lessonTopic"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/placeholder_lesson_topic"
-                android:textAppearance="?attr/textAppearanceTitleSmall"
-                app:layout_constraintEnd_toStartOf="@id/topicImageBarrier"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/lessonName" />
-
-            <ImageView
-                android:id="@+id/topicImage"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentBottom="false"
-                android:layout_centerInParent="true"
-                android:adjustViewBounds="true"
-                android:alpha="0.7"
-                android:contentDescription="@string/teacher"
-                android:maxWidth="@dimen/lesson_activity_card_background_image_max_width"
-                android:scaleType="fitCenter"
-                android:translationX="@dimen/lesson_activity_card_background_small_offset"
-                app:layout_constrainedWidth="true"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_round_menu_book_24"
-                app:tint="?attr/colorAccent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.constraintlayout.widget.Barrier
-                android:id="@+id/topicImageBarrier"
-                android:layout_width="wrap_content"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingStart="@dimen/lesson_activity_topic_card_padding"
+                    android:paddingTop="@dimen/lesson_activity_topic_card_padding"
+                    android:paddingBottom="@dimen/lesson_activity_topic_card_padding"
+                    tools:ignore="RtlSymmetry">
+
+                    <TextView
+                        android:id="@+id/lessonName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/placeholder_lesson_name"
+                        android:textAppearance="?attr/textAppearanceTitleLarge"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/lessonTopic"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/placeholder_lesson_topic"
+                        android:textAppearance="?attr/textAppearanceTitleSmall"
+                        app:layout_constraintEnd_toStartOf="@id/topicImageBarrier"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/lessonName" />
+
+                    <ImageView
+                        android:id="@+id/topicImage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentBottom="false"
+                        android:layout_centerInParent="true"
+                        android:adjustViewBounds="true"
+                        android:alpha="0.7"
+                        android:contentDescription="@string/teacher"
+                        android:maxWidth="@dimen/lesson_activity_card_background_image_max_width"
+                        android:scaleType="fitCenter"
+                        android:translationX="@dimen/lesson_activity_card_background_small_offset"
+                        app:layout_constrainedWidth="true"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_round_menu_book_24"
+                        app:tint="?attr/colorAccent" />
+
+                    <androidx.constraintlayout.widget.Barrier
+                        android:id="@+id/topicImageBarrier"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:barrierDirection="left"
+                        app:constraint_referenced_ids="topicImage" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/infoCard"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:barrierDirection="left"
-                app:constraint_referenced_ids="topicImage" />
+                android:layout_marginTop="@dimen/lesson_activity_padding"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/topicCard">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingStart="@dimen/lesson_activity_topic_card_padding"
+                    android:paddingTop="@dimen/lesson_activity_topic_card_padding"
+                    android:paddingBottom="@dimen/lesson_activity_topic_card_padding"
+                    tools:ignore="RtlSymmetry">
+
+                    <TextView
+                        android:id="@+id/lessonTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/placeholder_lesson_time"
+                        android:textAppearance="?attr/textAppearanceTitleLarge"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/lessonTeacher"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/placeholder_teacher"
+                        android:textAppearance="?attr/textAppearanceTitleMedium"
+                        app:layout_constraintEnd_toStartOf="@id/teacherImageBarrier"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/lessonTime" />
+
+                    <TextView
+                        android:id="@+id/lessonNumber"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/placeholder_lesson_number"
+                        android:textAppearance="?attr/textAppearanceTitleSmall"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/lessonTeacher" />
+
+                    <ImageView
+                        android:id="@+id/teacherImage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentBottom="false"
+                        android:layout_centerInParent="true"
+                        android:adjustViewBounds="true"
+                        android:alpha="0.7"
+                        android:contentDescription="@string/teacher"
+                        android:maxWidth="@dimen/lesson_activity_card_background_image_max_width"
+                        android:scaleType="fitCenter"
+                        android:translationX="@dimen/lesson_activity_card_background_offset"
+                        app:layout_constrainedWidth="true"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_round_person_24"
+                        app:tint="?attr/colorAccent" />
+
+                    <androidx.constraintlayout.widget.Barrier
+                        android:id="@+id/teacherImageBarrier"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:barrierDirection="left"
+                        app:constraint_referenced_ids="teacherImage" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/homeworkCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/lesson_activity_padding"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/infoCard">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingStart="@dimen/lesson_activity_topic_card_padding"
+                    android:paddingTop="@dimen/lesson_activity_topic_card_padding"
+                    android:paddingBottom="@dimen/lesson_activity_topic_card_padding"
+                    tools:ignore="RtlSymmetry">
+
+                    <TextView
+                        android:id="@+id/homeworkTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/homework"
+                        android:textAppearance="?attr/textAppearanceTitleLarge"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/homeworkText"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/placeholder_lesson_desc"
+                        android:textAppearance="?attr/textAppearanceTitleSmall"
+                        app:layout_constraintEnd_toStartOf="@id/homeworkImageBarrier"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/homeworkTitle" />
+
+                    <com.google.android.material.progressindicator.LinearProgressIndicator
+                        android:id="@+id/attachmentsProgressBar"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/lesson_activity_topic_card_padding"
+                        android:layout_marginEnd="@dimen/lesson_activity_topic_card_padding"
+                        android:indeterminate="true"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/homeworkImageBarrier"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/homeworkText"
+                        tools:visibility="visible" />
+
+                    <ImageView
+                        android:id="@+id/homeworkImage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentBottom="false"
+                        android:layout_centerInParent="true"
+                        android:adjustViewBounds="true"
+                        android:alpha="0.7"
+                        android:contentDescription="@string/homework"
+                        android:maxWidth="@dimen/lesson_activity_card_background_image_max_width"
+                        android:scaleType="fitCenter"
+                        android:translationX="@dimen/lesson_activity_card_background_offset"
+                        app:layout_constrainedWidth="true"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_round_home_24"
+                        app:tint="?attr/colorAccent" />
+
+                    <androidx.constraintlayout.widget.Barrier
+                        android:id="@+id/homeworkImageBarrier"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:barrierDirection="left"
+                        app:constraint_referenced_ids="homeworkImage" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/attachmentsRecyclerView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toStartOf="@id/homeworkImageBarrier"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/homeworkText"
+                        tools:itemCount="1"
+                        tools:listitem="@layout/item_homework_attachment"
+                        tools:visibility="gone" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/worksCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/lesson_activity_padding"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/homeworkCard">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingStart="@dimen/lesson_activity_topic_card_padding"
+                    android:paddingTop="@dimen/lesson_activity_topic_card_padding"
+                    android:paddingBottom="@dimen/lesson_activity_topic_card_padding"
+                    tools:ignore="RtlSymmetry">
+
+                    <TextView
+                        android:id="@+id/worksTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/works"
+                        android:textAppearance="?attr/textAppearanceTitleLarge"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/worksRecyclerView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/worksTitle"
+                        tools:itemCount="2"
+                        tools:listitem="@layout/item_important_work" />
+
+                    <ImageView
+                        android:id="@+id/worksImage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentBottom="false"
+                        android:layout_centerInParent="true"
+                        android:adjustViewBounds="true"
+                        android:alpha="0.7"
+                        android:contentDescription="@string/works"
+                        android:maxWidth="@dimen/lesson_activity_card_background_image_max_width"
+                        android:scaleType="fitCenter"
+                        android:translationX="@dimen/lesson_activity_card_background_small_offset"
+                        app:layout_constrainedWidth="true"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_round_history_edu_24"
+                        app:tint="?attr/colorAccent" />
+
+                    <androidx.constraintlayout.widget.Barrier
+                        android:id="@+id/worksImageBarrier"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:barrierDirection="left"
+                        app:constraint_referenced_ids="worksImage" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/marksCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/lesson_activity_padding"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/worksCard">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingStart="@dimen/lesson_activity_topic_card_padding"
+                    android:paddingTop="@dimen/lesson_activity_topic_card_padding"
+                    android:paddingBottom="@dimen/lesson_activity_topic_card_padding"
+                    tools:ignore="RtlSymmetry">
+
+                    <TextView
+                        android:id="@+id/marksTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/marks"
+                        android:textAppearance="?attr/textAppearanceTitleLarge"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/marksRecyclerView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/marksTitle"
+                        tools:itemCount="1"
+                        tools:listitem="@layout/item_mark" />
+
+                    <ImageView
+                        android:id="@+id/marksImage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentBottom="false"
+                        android:layout_centerInParent="true"
+                        android:adjustViewBounds="true"
+                        android:alpha="0.7"
+                        android:contentDescription="@string/marks"
+                        android:maxWidth="@dimen/lesson_activity_card_background_image_max_width"
+                        android:scaleType="fitCenter"
+                        android:translationX="@dimen/lesson_activity_card_background_small_offset"
+                        app:layout_constrainedWidth="true"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_round_emoji_events_24"
+                        app:tint="?attr/colorAccent" />
+
+                    <androidx.constraintlayout.widget.Barrier
+                        android:id="@+id/marksImageBarrier"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:barrierDirection="left"
+                        app:constraint_referenced_ids="marksImage" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </com.google.android.material.card.MaterialCardView>
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/infoCard"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/lesson_activity_padding"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/topicCard"
-        tools:visibility="visible">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingStart="@dimen/lesson_activity_topic_card_padding"
-            android:paddingTop="@dimen/lesson_activity_topic_card_padding"
-            android:paddingBottom="@dimen/lesson_activity_topic_card_padding"
-            tools:ignore="RtlSymmetry">
-
-            <TextView
-                android:id="@+id/lessonTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/placeholder_lesson_time"
-                android:textAppearance="?attr/textAppearanceTitleLarge"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/lessonTeacher"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/placeholder_teacher"
-                android:textAppearance="?attr/textAppearanceTitleMedium"
-                app:layout_constraintEnd_toStartOf="@id/teacherImageBarrier"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/lessonTime" />
-
-            <TextView
-                android:id="@+id/lessonNumber"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/placeholder_lesson_number"
-                android:textAppearance="?attr/textAppearanceTitleSmall"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/lessonTeacher" />
-
-            <ImageView
-                android:id="@+id/teacherImage"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentBottom="false"
-                android:layout_centerInParent="true"
-                android:adjustViewBounds="true"
-                android:alpha="0.7"
-                android:contentDescription="@string/teacher"
-                android:maxWidth="@dimen/lesson_activity_card_background_image_max_width"
-                android:scaleType="fitCenter"
-                android:translationX="@dimen/lesson_activity_card_background_offset"
-                app:layout_constrainedWidth="true"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_round_person_24"
-                app:tint="?attr/colorAccent" />
-
-            <androidx.constraintlayout.widget.Barrier
-                android:id="@+id/teacherImageBarrier"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:barrierDirection="left"
-                app:constraint_referenced_ids="teacherImage" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </com.google.android.material.card.MaterialCardView>
-
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/homeworkCard"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/lesson_activity_padding"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/infoCard"
-        tools:visibility="visible">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingStart="@dimen/lesson_activity_topic_card_padding"
-            android:paddingTop="@dimen/lesson_activity_topic_card_padding"
-            android:paddingBottom="@dimen/lesson_activity_topic_card_padding"
-            tools:ignore="RtlSymmetry">
-
-            <TextView
-                android:id="@+id/homeworkTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/homework"
-                android:textAppearance="?attr/textAppearanceTitleLarge"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/homeworkText"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/placeholder_lesson_desc"
-                android:textAppearance="?attr/textAppearanceTitleSmall"
-                app:layout_constraintEnd_toStartOf="@id/homeworkImageBarrier"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/homeworkTitle" />
-
-            <com.google.android.material.progressindicator.LinearProgressIndicator
-                android:id="@+id/attachmentsProgressBar"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/lesson_activity_topic_card_padding"
-                android:layout_marginEnd="@dimen/lesson_activity_topic_card_padding"
-                android:indeterminate="true"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/homeworkImageBarrier"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/homeworkText"
-                tools:visibility="visible" />
-
-            <ImageView
-                android:id="@+id/homeworkImage"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentBottom="false"
-                android:layout_centerInParent="true"
-                android:adjustViewBounds="true"
-                android:alpha="0.7"
-                android:contentDescription="@string/homework"
-                android:maxWidth="@dimen/lesson_activity_card_background_image_max_width"
-                android:scaleType="fitCenter"
-                android:translationX="@dimen/lesson_activity_card_background_offset"
-                app:layout_constrainedWidth="true"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_round_home_24"
-                app:tint="?attr/colorAccent" />
-
-            <androidx.constraintlayout.widget.Barrier
-                android:id="@+id/homeworkImageBarrier"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:barrierDirection="left"
-                app:constraint_referenced_ids="homeworkImage" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/attachmentsRecyclerView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toStartOf="@id/homeworkImageBarrier"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/homeworkText"
-                tools:itemCount="1"
-                tools:listitem="@layout/item_homework_attachment"
-                tools:visibility="gone" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </com.google.android.material.card.MaterialCardView>
-
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/worksCard"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/lesson_activity_padding"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/homeworkCard"
-        tools:visibility="visible">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingStart="@dimen/lesson_activity_topic_card_padding"
-            android:paddingTop="@dimen/lesson_activity_topic_card_padding"
-            android:paddingBottom="@dimen/lesson_activity_topic_card_padding"
-            tools:ignore="RtlSymmetry">
-
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/works"
-                android:textAppearance="?attr/textAppearanceTitleLarge"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/worksRecyclerView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView"
-                tools:itemCount="2"
-                tools:listitem="@layout/item_important_work" />
-
-            <ImageView
-                android:id="@+id/worksImage"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentBottom="false"
-                android:layout_centerInParent="true"
-                android:adjustViewBounds="true"
-                android:alpha="0.7"
-                android:contentDescription="@string/works"
-                android:maxWidth="@dimen/lesson_activity_card_background_image_max_width"
-                android:scaleType="fitCenter"
-                android:translationX="@dimen/lesson_activity_card_background_small_offset"
-                app:layout_constrainedWidth="true"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_round_history_edu_24"
-                app:tint="?attr/colorAccent" />
-
-            <androidx.constraintlayout.widget.Barrier
-                android:id="@+id/worksImageBarrier"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:barrierDirection="left"
-                app:constraint_referenced_ids="worksImage" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </com.google.android.material.card.MaterialCardView>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</androidx.appcompat.widget.LinearLayoutCompat>

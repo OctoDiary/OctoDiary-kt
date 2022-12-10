@@ -59,7 +59,7 @@
         android:layout_toStartOf="@id/lessonTime"
         android:visibility="gone"
         tools:itemCount="2"
-        tools:listitem="@layout/item_diary_mark"
+        tools:listitem="@layout/item_mark"
         tools:visibility="visible">
 
     </androidx.recyclerview.widget.RecyclerView>

@@ -37,7 +37,47 @@
   },
   "summativeMarks": null,
   "forecastText": null,
-  "lessonDetailsMarks": [],
+  "lessonDetailsMarks": [
+    {
+      "isImportant": false,
+      "isFinal": false,
+      "markType": "Mark",
+      "markTypeText": "Проверочная работа",
+      "markShortTypeText": "К/Д",
+      "periodType": "Trimester",
+      "periodId": 0,
+      "periodNumber": 1,
+      "marks": [
+        {
+          "id": 0,
+          "value": "3",
+          "mood": "Good"
+        },
+        {
+          "id": 0,
+          "value": "2",
+          "mood": "Good"
+        }
+      ]
+    },
+    {
+      "isImportant": false,
+      "isFinal": false,
+      "markType": "Mark",
+      "markTypeText": "Ответ на уроке",
+      "markShortTypeText": "ОТВ",
+      "periodType": "Trimester",
+      "periodId": 0,
+      "periodNumber": 1,
+      "marks": [
+        {
+          "id": 0,
+          "value": "5",
+          "mood": "Good"
+        }
+      ]
+    }
+  ],
   "homework": {
     "workIsAttachRequired": false,
     "attachments": [],

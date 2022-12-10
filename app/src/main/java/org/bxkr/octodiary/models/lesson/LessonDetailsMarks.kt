@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.models.lesson
 
+import org.bxkr.octodiary.models.shared.Mark
+
 data class LessonDetailsMarks(
     val isFinal: Boolean,
     val isImportant: Boolean,

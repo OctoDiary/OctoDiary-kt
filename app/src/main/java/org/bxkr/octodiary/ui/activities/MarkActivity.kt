@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import com.google.gson.Gson
 import org.bxkr.octodiary.R
 import org.bxkr.octodiary.Utils.getJsonRaw
 import org.bxkr.octodiary.Utils.isDemo
@@ -29,10 +28,7 @@ class MarkActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         if (isDemo(this)) {
-            configureMark(
-                getJsonRaw(resources.openRawResource(R.raw.sample_mark_details_data)),
-                true
-            )
+            configureMark(getJsonRaw(resources.openRawResource(R.raw.sample_mark_details_data)))
         } else {
             val prefs =
                 this.getSharedPreferences(getString(R.string.auth_file_key), Context.MODE_PRIVATE)
@@ -79,7 +75,7 @@ class MarkActivity : AppCompatActivity() {
         }
     }
 
-    private fun configureMark(mark: MarkDetails, demo: Boolean = false) {
+    private fun configureMark(mark: MarkDetails) {
 
         val toCommon =
             SimpleDateFormat("dd MMMM", this.resources.configuration.locales[0])
@@ -99,23 +95,9 @@ class MarkActivity : AppCompatActivity() {
             workName.text = mark.markDetails.markTypeText
             markInfoCard.setOnClickListener {
                 val intent = Intent(this@MarkActivity, LessonActivity::class.java)
-                if (demo) {
-                    intent.putExtra(
-                        "lesson_data",
-                        Gson().toJson(
-                            getJsonRaw<org.bxkr.octodiary.models.diary.Lesson>(
-                                resources.openRawResource(
-                                    R.raw.sample_lesson_diary_data
-                                )
-                            )
-                        )
-                    )
-                } else {
-                    intent.putExtra("full_request", true)
-                    intent.putExtra("lesson_id", mark.lessonId)
-                    intent.putExtra("person_id", personId)
-                    intent.putExtra("group_id", groupId)
-                }
+                intent.putExtra("lesson_id", mark.lessonId)
+                intent.putExtra("person_id", personId)
+                intent.putExtra("group_id", groupId)
                 this@MarkActivity.startActivity(intent)
             }
         }

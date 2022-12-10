@@ -28,4 +28,5 @@
 
     <dimen name="rating_place_text_size">20sp</dimen>
     <dimen name="name_text_size">20sp</dimen>
+    <dimen name="mark_name_margin">16dp</dimen>
 </resources>

@@ -9,38 +9,31 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.gson.Gson
 import org.bxkr.octodiary.R
 import org.bxkr.octodiary.databinding.ItemLessonsRecyclerBinding
 import org.bxkr.octodiary.models.diary.Lesson
-import org.bxkr.octodiary.models.diary.Mark
+import org.bxkr.octodiary.models.shared.Mark
 import org.bxkr.octodiary.ui.activities.LessonActivity
 import org.bxkr.octodiary.ui.activities.MainActivity
 import java.text.SimpleDateFormat
 
 class LessonsAdapter(
-    private val context: Context,
-    private val lessons: List<Lesson>
-) :
-    RecyclerView.Adapter<LessonsAdapter.LessonsViewHolder>() {
+    private val context: Context, private val lessons: List<Lesson>
+) : RecyclerView.Adapter<LessonsAdapter.LessonsViewHolder>() {
 
     class LessonsViewHolder(
-        ItemLessonsRecyclerBinding: ItemLessonsRecyclerBinding,
-        context: Context
-    ) :
-        RecyclerView.ViewHolder(ItemLessonsRecyclerBinding.root) {
+        ItemLessonsRecyclerBinding: ItemLessonsRecyclerBinding, context: Context
+    ) : RecyclerView.ViewHolder(ItemLessonsRecyclerBinding.root) {
         private val binding = ItemLessonsRecyclerBinding
         private val parentContext = context
         fun bind(lesson: Lesson) {
             val toDate = SimpleDateFormat(
-                "yyyy-MM-dd'T'HH:mm:ss'Z'",
-                parentContext.resources.configuration.locales[0]
+                "yyyy-MM-dd'T'HH:mm:ss'Z'", parentContext.resources.configuration.locales[0]
             )
             val toCommon =
                 SimpleDateFormat("HH:mm", parentContext.resources.configuration.locales[0])
             binding.lessonName.text = lesson.subject.name
-            binding.lessonTime.text = parentContext.getString(
-                R.string.time_from_to,
+            binding.lessonTime.text = parentContext.getString(R.string.time_from_to,
                 toDate.parse(lesson.startDateTime)?.let { toCommon.format(it) },
                 toDate.parse(lesson.endDateTime)?.let { toCommon.format(it) })
             val description: String? =
@@ -65,16 +58,13 @@ class LessonsAdapter(
             } else {
                 binding.lessonDesc.visibility = View.GONE
             }
+            val personId = parentContext.userData?.info?.personId!!
+            val groupId = parentContext.userData?.contextPersons?.get(0)?.group?.id!!
             binding.root.setOnClickListener {
                 val intent = Intent(parentContext, LessonActivity::class.java)
-                intent.putExtra("lesson_data", Gson().toJson(lesson))
-                intent.putExtra("person_id", parentContext.userData?.info?.personId)
-                parentContext.userData?.contextPersons?.get(0)?.group?.let { it1 ->
-                    intent.putExtra(
-                        "group_id",
-                        it1.id
-                    )
-                }
+                intent.putExtra("lesson_id", lesson.id)
+                intent.putExtra("person_id", personId)
+                intent.putExtra("group_id", groupId)
                 parentContext.startActivity(intent)
             }
 
@@ -86,7 +76,8 @@ class LessonsAdapter(
                 binding.markRecyclerView.visibility = View.VISIBLE
                 binding.markRecyclerView.layoutManager =
                     LinearLayoutManager(parentContext, LinearLayoutManager.HORIZONTAL, false)
-                binding.markRecyclerView.adapter = MarkDiaryAdapter(parentContext, marks)
+                binding.markRecyclerView.adapter =
+                    MarkAdapter(parentContext, null, false, personId, groupId, marks)
             }
         }
     }
