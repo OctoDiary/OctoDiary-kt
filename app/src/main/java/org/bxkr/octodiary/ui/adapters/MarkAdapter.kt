@@ -34,22 +34,33 @@ class MarkAdapter(
                 Mark(namedMark!!.id, null, namedMark.value)
             } else simpleMark
             binding.iconButton.text = mark!!.value
-            if (mark.value.matches(Regex("""\d"""))) {
-                binding.iconButton.setOnClickListener {
-                    val intent = Intent(parentContext, MarkActivity::class.java)
-                    intent.putExtra("person_id", personId)
-                    intent.putExtra("group_id", groupId)
-                    intent.putExtra("mark_id", mark.id)
-                    parentContext.startActivity(intent)
+            val makeIconButtonNotClickable = {
+                binding.iconButton.let {
+                    it.isFocusable = false
+                    it.isClickable = false
                 }
-            } else {
-                binding.iconButton.isClickable = false
-                binding.iconButton.isFocusable = false
             }
+            if (mark.value.matches(Regex("""\d"""))) {
+                binding.iconButton.setOnClickListener { goToMark(mark) }
+            } else makeIconButtonNotClickable()
             if (extended) {
+                makeIconButtonNotClickable()
+                binding.root.let {
+                    it.isFocusable = true
+                    it.isClickable = true
+                    it.setOnClickListener { goToMark(mark) }
+                }
                 binding.workType.visibility = View.VISIBLE
                 binding.workType.text = namedMark!!.name
             }
+        }
+
+        private fun goToMark(mark: Mark) {
+            val intent = Intent(parentContext, MarkActivity::class.java)
+            intent.putExtra("person_id", personId)
+            intent.putExtra("group_id", groupId)
+            intent.putExtra("mark_id", mark.id)
+            parentContext.startActivity(intent)
         }
     }
 
