@@ -2,33 +2,37 @@
   "status": "Started",
   "subject": {
     "id": 0,
-    "name": "Иностр.яз(английск)",
+    "name": "Русский язык",
     "knowledgeArea": "Philology",
     "subjectMood": null
   },
-  "startTime": 1668592200,
-  "endTime": 1668594600,
+  "startTime": 1669789200,
+  "endTime": 1669791600,
   "hours": {
-    "startHour": "12",
-    "startMinute": "50",
-    "endHour": "13",
-    "endMinute": "30"
+    "startHour": "9",
+    "startMinute": "20",
+    "endHour": "10",
+    "endMinute": "00"
   },
-  "number": 6,
+  "number": 2,
   "place": null,
-  "theme": "Словообразование. Фразовый глагол bring. Предлоги. Отработка лексических навыков.",
+  "theme": "Приложение",
   "teacher": {
-    "firstName": "Татьяна",
-    "middleName": "Васильевна",
+    "firstName": "Светлана",
+    "middleName": "Анатольевна",
     "lastName": "Гений",
     "avatarUrl": null,
     "role": "Педагог",
     "jid": "admin@github.com"
   },
-  "importantWorks": [],
+  "importantWorks": [
+    {
+      "workTypeName": "Проверочная работа"
+    }
+  ],
   "averageMarks": {
-    "averageMark": "4.73",
-    "averageMarkByImportantWork": "4.33",
+    "averageMark": null,
+    "averageMarkByImportantWork": null,
     "weightedAverageMark": null
   },
   "summativeMarks": null,
@@ -37,7 +41,7 @@
   "homework": {
     "workIsAttachRequired": false,
     "attachments": [],
-    "text": "Read the attached document and share it to friend!",
+    "text": "п.19 упр.194, 195",
     "isCompleted": false
   },
   "attachments": [

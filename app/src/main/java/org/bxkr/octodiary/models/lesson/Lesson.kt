@@ -9,7 +9,7 @@ data class Lesson(
     val number: Int,
     val theme: String,
     val teacher: Teacher,
-    val importantWorks: List<String>,
+    val importantWorks: List<ImportantWork>,
     val averageMarks: AverageMarks,
     val lessonDetailsMarks: List<LessonDetailsMarks>,
     val homework: Homework?,

@@ -23,6 +23,7 @@ import org.bxkr.octodiary.models.diary.Lesson
 import org.bxkr.octodiary.models.lesson.Attachments
 import org.bxkr.octodiary.network.BaseCallback
 import org.bxkr.octodiary.network.NetworkService
+import org.bxkr.octodiary.ui.adapters.ImportantWorkAdapter
 import java.text.SimpleDateFormat
 import java.util.Date
 
@@ -71,6 +72,7 @@ class LessonActivity : AppCompatActivity() {
             binding.topicCard.visibility = View.VISIBLE
             binding.infoCard.visibility = View.VISIBLE
             binding.homeworkCard.visibility = View.VISIBLE
+            binding.worksCard.visibility = View.VISIBLE
 
             if (lesson.hasAttachment) {
                 binding.attachmentsProgressBar.visibility = View.VISIBLE
@@ -117,6 +119,11 @@ class LessonActivity : AppCompatActivity() {
                     if (homework?.text == null) {
                         homeworkCard.visibility = View.GONE
                     } else homeworkText.text = homework.text
+                    if (importantWorks.isNotEmpty()) {
+                        worksRecyclerView.layoutManager = LinearLayoutManager(this@LessonActivity)
+                        worksRecyclerView.adapter =
+                            ImportantWorkAdapter(this@LessonActivity, importantWorks)
+                    } else worksCard.visibility = View.GONE
                 }
             }
         } else {
@@ -145,6 +152,7 @@ class LessonActivity : AppCompatActivity() {
                             topicCard.visibility = View.VISIBLE
                             infoCard.visibility = View.VISIBLE
                             homeworkCard.visibility = View.VISIBLE
+                            worksCard.visibility = View.VISIBLE
                             lessonName.text = lesson.subject.name
                             lessonTopic.text = lesson.theme
                             lessonTime.text = getString(
@@ -166,6 +174,14 @@ class LessonActivity : AppCompatActivity() {
                                 LinearLayoutManager(this@LessonActivity)
                             attachmentsRecyclerView.adapter =
                                 AttachmentsAdapter(this@LessonActivity, lesson.attachments)
+                            if (lesson.importantWorks.isNotEmpty()) {
+                                worksRecyclerView.layoutManager =
+                                    LinearLayoutManager(this@LessonActivity)
+                                worksRecyclerView.adapter =
+                                    ImportantWorkAdapter(
+                                        this@LessonActivity,
+                                        lesson.importantWorks.map { it.workTypeName })
+                            } else worksCard.visibility = View.GONE
                         }
                     }
                 }) {})
