@@ -84,8 +84,7 @@ class MarkActivity : AppCompatActivity() {
 
         with(binding) {
             bigProgressBar.visibility = View.GONE
-            markValue.visibility = View.VISIBLE
-            markInfoCard.visibility = View.VISIBLE
+            contentScrollView.visibility = View.VISIBLE
             markValue.text = mark.markDetails.marks[0].value
             lessonDate.text = this@MarkActivity.getString(
                 R.string.date_weekday,

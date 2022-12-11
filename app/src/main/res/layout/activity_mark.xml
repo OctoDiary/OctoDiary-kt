@@ -19,76 +19,85 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:visibility="gone" />
 
-    <TextView
-        android:id="@+id/markValue"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/mark_margin"
-        android:layout_marginTop="@dimen/mark_margin"
-        android:gravity="center"
-        android:text="@string/placeholder_mark_value"
-        android:textAppearance="@style/TextAppearance.Material3.DisplayLarge"
+    <ScrollView
+        android:id="@+id/contentScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/markInfoCard"
-        app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintEnd_toStartOf="@+id/markInfoCard"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:visibility="visible" />
-
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/markInfoCard"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/mark_rating_margin"
-        android:layout_marginTop="@dimen/mark_rating_margin"
-        android:layout_marginEnd="@dimen/mark_rating_margin"
-        android:clickable="true"
-        android:focusable="true"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/markValue"
-        app:layout_constraintTop_toTopOf="parent"
         tools:visibility="visible">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="@dimen/mark_rating_padding">
+            android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/lessonName"
-                android:layout_width="wrap_content"
+                android:id="@+id/markValue"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/placeholder_lesson_name"
+                android:layout_marginStart="@dimen/mark_margin"
+                android:layout_marginTop="@dimen/mark_margin"
+                android:gravity="center"
+                android:text="@string/placeholder_mark_value"
+                android:textAppearance="@style/TextAppearance.Material3.DisplayLarge"
+                app:layout_constraintBottom_toBottomOf="@+id/markInfoCard"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toStartOf="@+id/markInfoCard"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/workName"
-                android:layout_width="wrap_content"
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/markInfoCard"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/placeholder_work_type"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/lessonName" />
-
-            <TextView
-                android:id="@+id/lessonDate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/placeholder_day"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/workName" />
-
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:contentDescription="@string/goto_lesson"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginStart="@dimen/mark_rating_margin"
+                android:layout_marginTop="@dimen/mark_rating_margin"
+                android:layout_marginEnd="@dimen/mark_rating_margin"
+                android:clickable="true"
+                android:focusable="true"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_round_keyboard_arrow_right_24" />
+                app:layout_constraintStart_toEndOf="@+id/markValue"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="@dimen/mark_rating_padding">
+
+                    <TextView
+                        android:id="@+id/lessonName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/placeholder_lesson_name"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/workName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/placeholder_work_type"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/lessonName" />
+
+                    <TextView
+                        android:id="@+id/lessonDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/placeholder_day"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/workName" />
+
+                    <ImageView
+                        android:id="@+id/imageView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:contentDescription="@string/goto_lesson"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_round_keyboard_arrow_right_24" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </com.google.android.material.card.MaterialCardView>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
