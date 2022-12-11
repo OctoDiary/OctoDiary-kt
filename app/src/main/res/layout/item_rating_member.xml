@@ -43,9 +43,10 @@
                 app:layout_constraintStart_toEndOf="@id/avatar"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <ProgressBar
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                app:trackCornerRadius="@dimen/rating_member_bar_corner_radius"
+                app:trackThickness="@dimen/rating_member_bar_thickness"
                 android:id="@+id/progressBar"
-                style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/rating_member_padding"
