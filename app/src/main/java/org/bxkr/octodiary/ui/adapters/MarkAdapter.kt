@@ -41,15 +41,15 @@ class MarkAdapter(
                 }
             }
             if (mark.value.matches(Regex("""\d"""))) {
-                binding.iconButton.setOnClickListener { goToMark(mark) }
-            } else makeIconButtonNotClickable()
-            if (extended) {
-                makeIconButtonNotClickable()
                 binding.root.let {
                     it.isFocusable = true
                     it.isClickable = true
                     it.setOnClickListener { goToMark(mark) }
                 }
+                binding.iconButton.setOnClickListener { goToMark(mark) }
+            } else makeIconButtonNotClickable()
+            if (extended) {
+                makeIconButtonNotClickable()
                 binding.workType.visibility = View.VISIBLE
                 binding.workType.text = namedMark!!.name
             }
