@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import org.bxkr.octodiary.R
 import org.bxkr.octodiary.Utils.getJsonRaw
 import org.bxkr.octodiary.Utils.isDemo
@@ -13,6 +14,7 @@ import org.bxkr.octodiary.databinding.ActivityMarkBinding
 import org.bxkr.octodiary.models.mark.MarkDetails
 import org.bxkr.octodiary.network.BaseCallback
 import org.bxkr.octodiary.network.NetworkService
+import org.bxkr.octodiary.ui.adapters.MarkRatingMemberAdapter
 import java.text.SimpleDateFormat
 import java.util.Date
 
@@ -99,6 +101,10 @@ class MarkActivity : AppCompatActivity() {
                 intent.putExtra("group_id", groupId)
                 this@MarkActivity.startActivity(intent)
             }
+            markRatingRecyclerView.layoutManager = LinearLayoutManager(this@MarkActivity)
+            markRatingRecyclerView.adapter = MarkRatingMemberAdapter(
+                this@MarkActivity,
+                mark.categories.sortedByDescending { it.value })
         }
     }
 }

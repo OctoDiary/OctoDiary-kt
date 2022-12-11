@@ -7,8 +7,8 @@
     <Button
         android:id="@+id/iconButton"
         style="?attr/materialIconButtonFilledTonalStyle"
-        android:layout_width="@dimen/diary_mark_size"
-        android:layout_height="@dimen/diary_mark_size"
+        android:layout_width="@dimen/item_mark_size"
+        android:layout_height="@dimen/item_mark_size"
         android:text="@string/placeholder_mark_value" />
 
     <TextView

@@ -22,7 +22,7 @@
     <dimen name="rating_member_bar_thickness">8dp</dimen>
     <dimen name="rating_member_bar_corner_radius">4dp</dimen>
     <dimen name="card_stroke_width">1dp</dimen>
-    <dimen name="diary_mark_size">48dp</dimen>
+    <dimen name="item_mark_size">48dp</dimen>
     <dimen name="mark_rating_margin">16dp</dimen>
     <dimen name="mark_rating_padding">16dp</dimen>
     <dimen name="mark_margin">16dp</dimen>
@@ -32,4 +32,6 @@
     <dimen name="name_text_size">20sp</dimen>
     <dimen name="mark_name_margin">16dp</dimen>
     <dimen name="mark_rating_bar_thickness">16dp</dimen>
+    <dimen name="mark_rating_bar_corner_radius">8dp</dimen>
+    <dimen name="mark_rating_member_padding">8dp</dimen>
 </resources>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="student_count">
+        <item quantity="one">%1$d ученик</item>
+        <item quantity="few">%1$d ученика</item>
+        <item quantity="many">%1$d учеников</item>
+    </plurals>
+</resources>

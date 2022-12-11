@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/markRatingMember"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp">
+
+    <TextView
+        android:id="@+id/markRatingValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_centerInParent="true"
+        android:layout_marginEnd="@dimen/mark_rating_member_padding"
+        android:text="@string/placeholder_mark_value" />
+
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/markRatingProgress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginEnd="@dimen/mark_rating_member_padding"
+        android:layout_toStartOf="@id/markRatingPersons"
+        android:layout_toEndOf="@id/markRatingValue"
+        android:max="100"
+        android:progress="42"
+        app:trackCornerRadius="@dimen/mark_rating_bar_corner_radius"
+        app:trackThickness="@dimen/mark_rating_bar_thickness" />
+
+    <TextView
+        android:id="@+id/markRatingPersons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerInParent="true"
+        android:text="@string/placeholder_mark_rating_persons" />
+</RelativeLayout>
