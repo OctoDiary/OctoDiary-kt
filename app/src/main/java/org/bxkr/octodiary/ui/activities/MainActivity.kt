@@ -35,7 +35,7 @@ import java.io.FileOutputStream
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
+    lateinit var binding: ActivityMainBinding
 
     var token: String?
         get() = this.getSharedPreferences(getString(R.string.auth_file_key), Context.MODE_PRIVATE)
@@ -288,7 +288,10 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment, DiaryFragment()).commit()
         binding.progressBar.visibility = View.GONE
-        binding.fragment.visibility = View.VISIBLE
+        binding.swipeRefresh.visibility = View.VISIBLE
+        binding.swipeRefresh.setOnRefreshListener {
+            createDiary { binding.swipeRefresh.isRefreshing = false }
+        }
         binding.bottomNavigationView.visibility = View.VISIBLE
     }
 

@@ -33,10 +33,10 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
             binding.studentName.text = null
             binding.dataUnderName.text = null
             mainActivity.createDiary {
-                binding.swipeRefresh.isRefreshing = false
+                mainActivity.binding.swipeRefresh.isRefreshing = false
                 onViewCreated(view, savedInstanceState)
             }
-            binding.swipeRefresh.isRefreshing = true
+            mainActivity.binding.swipeRefresh.isRefreshing = true
             return
         } else {
             userData = mainActivity.userData!!
@@ -45,9 +45,6 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
         }
 
         configureProfile()
-        binding.swipeRefresh.setOnRefreshListener {
-            mainActivity.createDiary { binding.swipeRefresh.isRefreshing = false }
-        }
     }
 
     private fun configureProfile() {

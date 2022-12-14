@@ -24,6 +24,11 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(FragmentDiaryBinding::i
         mainActivity.onCreateOptionsMenu(null)
         mainActivity.title = getString(R.string.diary)
         if (Utils.isSchoolDataOutOfDate(mainActivity)) {
+            mainActivity.createDiary {
+                mainActivity.binding.swipeRefresh.isRefreshing = false
+                onViewCreated(view, savedInstanceState)
+            }
+            mainActivity.binding.swipeRefresh.isRefreshing = true
             val snackBar =
                 Snackbar.make(binding.root, R.string.school_out_of_date, Snackbar.LENGTH_INDEFINITE)
             snackBar.show()
