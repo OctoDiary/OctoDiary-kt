@@ -245,26 +245,29 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }) {})
+        if (userData != null) {
+            getRating(listener)
+        }
     }
 
-    fun getRating(listener: () -> Unit = {}) {
+    private fun getRating(listener: () -> Unit = {}) {
         with(userData!!) {
             val call = NetworkService.api(NetworkService.Server.values()[server]).rating(
                 info.personId, contextPersons[0].group.id, token
             )
             call.enqueue(object : BaseCallback<RatingClass>(this@MainActivity, function = {
                 ratingData = it.body()!!
-                getDiary(listener)
             }, errorFunction = {
                 val intent = Intent(this@MainActivity, LoginActivity::class.java)
                 intent.putExtra(getString(R.string.auth_out_of_date_extra), true)
                 startActivity(intent)
                 finish()
             }) {})
+            getDiary(listener)
         }
     }
 
-    fun getDiary(listener: () -> Unit = {}) {
+    private fun getDiary(listener: () -> Unit = {}) {
         with(userData!!) {
             val call = NetworkService.api(NetworkService.Server.values()[server]).diary(
                 info.personId, contextPersons[0].school.id, contextPersons[0].group.id, token
@@ -315,6 +318,12 @@ class MainActivity : AppCompatActivity() {
                 ratingData = null
                 token = null
                 userId = null
+                this.getSharedPreferences(
+                    getString(R.string.saved_data_key),
+                    Context.MODE_PRIVATE
+                ).edit {
+                    putLong(getString(R.string.data_age_key), -1L)
+                }
                 val prefs =
                     getSharedPreferences(getString(R.string.auth_file_key), Context.MODE_PRIVATE)
                 prefs.edit { putInt(getString(R.string.server_key), 0) }
