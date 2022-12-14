@@ -32,15 +32,6 @@ class LoginActivity : AppCompatActivity() {
                 it.serverName
             )
         }, SelectServerArrayAdapter(this, servers)))
-        (binding.server.editText as? AutoCompleteTextView)?.setText(
-            getString(
-                servers[getSharedPreferences(
-                    getString(R.string.auth_file_key),
-                    Context.MODE_PRIVATE
-                ).getInt(getString(R.string.server_key), 0)].serverName
-            ),
-            false
-        )
         (binding.server.editText as? AutoCompleteTextView)?.setOnItemClickListener { _, _, position, _ ->
             serverPosition = position
             val prefs =

@@ -55,7 +55,7 @@
         <AutoCompleteTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/select_server"
+            android:hint="@string/select_server_hint"
             android:inputType="none"
             android:textColorHint="@color/material_dynamic_neutral70"
             tools:ignore="TextContrastCheck" />

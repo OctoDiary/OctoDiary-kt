@@ -56,4 +56,5 @@
     <string name="goto_lesson">На страницу урока</string>
     <string name="works">Работы</string>
     <string name="marks">Оценки</string>
+    <string name="select_server_hint">Выберите дневник</string>
 </resources>
