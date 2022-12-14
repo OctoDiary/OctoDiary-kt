@@ -31,6 +31,14 @@
             app:key="show_rating_background"
             app:summary="@string/rating_background_info"
             app:title="@string/show_rating_background" />
+        <org.bxkr.octodiary.ui.MaterialSwitchPreference
+            app:allowDividerAbove="false"
+            app:defaultValue="true"
+            app:dependency="show_rating"
+            app:enabled="true"
+            app:key="show_rating_images"
+            app:summary="@string/show_rating_images_info"
+            app:title="@string/show_rating_images_name" />
     </PreferenceCategory>
 
 </PreferenceScreen>

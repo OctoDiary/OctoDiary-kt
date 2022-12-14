@@ -19,7 +19,7 @@
     <string name="show_rating">Рейтинг в профиле</string>
     <string name="rating">Рейтинг</string>
     <string name="rating_background_info">Картинка из внешнего ресурса</string>
-    <string name="show_rating_background">Показывать фон рейтинга</string>
+    <string name="show_rating_background">Фон рейтинга</string>
     <string name="data_under_name">Данные под именем ученика</string>
     <string name="school">Школа</string>
     <string name="class_name">Класс</string>
@@ -59,4 +59,6 @@
     <string name="select_server_hint">Выберите дневник</string>
     <string name="download_started">Скачивание началось…</string>
     <string name="update">Обновление %s</string>
+    <string name="show_rating_images_info">Картинки, используемые вместо аватарок учеников</string>
+    <string name="show_rating_images_name">Аватарки в рейтинге</string>
 </resources>

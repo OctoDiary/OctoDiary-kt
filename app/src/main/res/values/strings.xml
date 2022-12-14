@@ -34,7 +34,7 @@
     <string name="show_rating">Rating in profile</string>
     <string name="rating">Rating</string>
     <string name="rating_background_info">Image, provided by external resource</string>
-    <string name="show_rating_background">Show rating background</string>
+    <string name="show_rating_background">Rating background</string>
     <string name="data_under_name">Info under student\'s name</string>
     <string name="school">School</string>
     <string name="class_name">Class name</string>
@@ -101,4 +101,6 @@
     <string name="update">Update %s</string>
     <string name="download_started">Download started…</string>
     <string name="update_file_name" translatable="false">%s-%s.apk</string>
+    <string name="show_rating_images_info">Pictures used instead of student avatars</string>
+    <string name="show_rating_images_name">Avatars in rating</string>
 </resources>

@@ -2,7 +2,9 @@ package org.bxkr.octodiary.ui.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import org.bxkr.octodiary.R
@@ -22,11 +24,14 @@ class RatingMemberAdapter(private val context: Context, private val members: Lis
                 averageMark.text = member.averageMark
                 progressBar.max = itemCount
                 progressBar.progress = itemCount - member.place + 1
-                Picasso.get().load(member.imageUrl).into(avatar)
-                if (member.isContextUser) {
-                    card.strokeWidth =
-                        parentContext.resources.getDimensionPixelSize(R.dimen.card_stroke_width)
-                }
+                val preferences = PreferenceManager.getDefaultSharedPreferences(parentContext)
+                if (preferences.getBoolean("show_rating_images", true)) {
+                    Picasso.get().load(member.imageUrl).into(avatar)
+                    if (member.isContextUser) {
+                        card.strokeWidth =
+                            parentContext.resources.getDimensionPixelSize(R.dimen.card_stroke_width)
+                    }
+                } else avatar.visibility = View.GONE
             }
         }
     }
