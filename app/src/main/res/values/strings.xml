@@ -98,4 +98,7 @@
     <string name="marks">Marks</string>
     <string name="placeholder_mark_rating_persons" translatable="false">10 students</string>
     <string name="select_server_hint">Select diary</string>
+    <string name="update">Update %s</string>
+    <string name="download_started">Download started…</string>
+    <string name="update_file_name" translatable="false">%s-%s.apk</string>
 </resources>

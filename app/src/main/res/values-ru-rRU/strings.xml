@@ -57,4 +57,6 @@
     <string name="works">Работы</string>
     <string name="marks">Оценки</string>
     <string name="select_server_hint">Выберите дневник</string>
+    <string name="download_started">Скачивание началось…</string>
+    <string name="update">Обновление %s</string>
 </resources>

@@ -1,21 +1,24 @@
 package org.bxkr.octodiary.ui.activities
 
+import android.app.DownloadManager
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.FileProvider
 import androidx.core.content.edit
 import androidx.fragment.app.Fragment
 import androidx.preference.PreferenceManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import okhttp3.ResponseBody
 import org.bxkr.octodiary.BuildConfig
 import org.bxkr.octodiary.R
 import org.bxkr.octodiary.Utils.checkUpdate
@@ -30,8 +33,7 @@ import org.bxkr.octodiary.network.BaseCallback
 import org.bxkr.octodiary.network.NetworkService
 import org.bxkr.octodiary.ui.fragments.DiaryFragment
 import org.bxkr.octodiary.ui.fragments.ProfileFragment
-import java.io.File
-import java.io.FileOutputStream
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -158,7 +160,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-    val server: Int
+    private val server: Int
         get() = this.getSharedPreferences(
             getString(R.string.auth_file_key),
             Context.MODE_PRIVATE
@@ -225,7 +227,12 @@ class MainActivity : AppCompatActivity() {
                             dialog.dismiss()
                         }
                         .setPositiveButton(R.string.yes) { _, _ ->
-                            downloadUpdate(assets[0].browser_download_url)
+                            downloadUpdate(assets[0].browser_download_url, tag_name)
+                            Snackbar.make(
+                                binding.root,
+                                R.string.download_started,
+                                Snackbar.LENGTH_LONG
+                            ).show()
                         }
                         .show()
                 }
@@ -334,29 +341,26 @@ class MainActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun downloadUpdate(url: String) {
-        NetworkService.updateApi(getString(R.string.api_git_host)).download(url)
-            .enqueue(object : BaseCallback<ResponseBody>(this, function = { response ->
-                val file = Uri.parse(url).lastPathSegment?.let { File(cacheDir, it) }
-                response.body()?.byteStream()?.use {
-                    FileOutputStream(file).use { targetOutputStream ->
-                        val uri = file?.let { it1 ->
-                            FileProvider.getUriForFile(
-                                this, BuildConfig.APPLICATION_ID + ".provider",
-                                it1
-                            )
-                        }
-                        it.copyTo(targetOutputStream)
-                        val install = Intent(Intent.ACTION_VIEW)
-                        install.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
-                        install.setDataAndType(
-                            uri,
-                            "application/vnd.android.package-archive"
-                        )
-                        startActivity(install)
-                        finish()
-                    }
-                } ?: throw RuntimeException("Failed to download: $url")
-            }) {})
+    private fun downloadUpdate(url: String, name: String) {
+        val request = DownloadManager.Request(Uri.parse(url))
+            .setTitle(getString(R.string.update, name))
+            .setDestinationInExternalPublicDir(
+                Environment.DIRECTORY_DOWNLOADS,
+                getString(R.string.update_file_name, getString(R.string.app_name), name)
+            )
+        val downloadManager = getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+        val downloadId = downloadManager.enqueue(request)
+        registerReceiver(object : BroadcastReceiver() {
+            override fun onReceive(context: Context?, intent: Intent?) {
+                val install = Intent(Intent.ACTION_VIEW)
+                install.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+                install.setDataAndType(
+                    downloadManager.getUriForDownloadedFile(downloadId),
+                    "application/vnd.android.package-archive"
+                )
+                startActivity(install)
+                finish()
+            }
+        }, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
     }
 }
