@@ -47,15 +47,17 @@
         android:layout_width="@dimen/login_field_width"
         android:layout_height="wrap_content"
         android:hint="@string/select_server"
+        android:labelFor="@+id/select_server_text_view"
+        app:placeholderText="@string/select_server_hint"
         app:layout_constraintBottom_toTopOf="@+id/username"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent">
 
         <AutoCompleteTextView
+            android:id="@+id/select_server_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/select_server_hint"
             android:inputType="none"
             android:textColorHint="@color/material_dynamic_neutral70"
             tools:ignore="TextContrastCheck" />
