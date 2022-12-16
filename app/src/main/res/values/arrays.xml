@@ -22,4 +22,14 @@
         <item>@string/homework</item>
         <item>@string/lesson_topic</item>
     </string-array>
+
+    <string-array name="default_screen_keys">
+        <item>diary</item>
+        <item>profile</item>
+    </string-array>
+
+    <string-array name="default_screen_values">
+        <item>@string/diary</item>
+        <item>@string/profile</item>
+    </string-array>
 </resources>

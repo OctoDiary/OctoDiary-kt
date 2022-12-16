@@ -1,5 +1,13 @@
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <ListPreference
+        app:defaultValue="diary"
+        app:entries="@array/default_screen_values"
+        app:entryValues="@array/default_screen_keys"
+        app:key="default_screen"
+        app:title="@string/screen_when_opening"
+        app:useSimpleSummaryProvider="true" />
+
     <PreferenceCategory app:title="@string/diary">
         <ListPreference
             app:defaultValue="homework"

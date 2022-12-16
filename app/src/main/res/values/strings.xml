@@ -103,4 +103,5 @@
     <string name="update_file_name" translatable="false">%s-%s.apk</string>
     <string name="show_rating_images_info">Pictures used instead of student avatars</string>
     <string name="show_rating_images_name">Avatars in rating</string>
+    <string name="screen_when_opening">Screen when opening</string>
 </resources>

@@ -61,4 +61,5 @@
     <string name="update">Обновление %s</string>
     <string name="show_rating_images_info">Картинки, используемые вместо аватарок учеников</string>
     <string name="show_rating_images_name">Аватарки в рейтинге</string>
+    <string name="screen_when_opening">Экран при открытии</string>
 </resources>

@@ -294,9 +294,30 @@ class MainActivity : AppCompatActivity() {
 
     private fun allDataLoaded() {
 
-        if (supportFragmentManager.findFragmentById(R.id.fragment) == null && !supportFragmentManager.isDestroyed)
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment, DiaryFragment()).commit()
+        val defaultScreen =
+            PreferenceManager.getDefaultSharedPreferences(this).getString("default_screen", "diary")
+
+        if (supportFragmentManager.findFragmentById(R.id.fragment) == null && !supportFragmentManager.isDestroyed) {
+
+            var fragToOpen: Fragment? = null
+
+            when (defaultScreen) {
+                "diary" -> {
+                    fragToOpen = DiaryFragment()
+                    binding.bottomNavigationView.selectedItemId = R.id.diaryPage
+                }
+
+                "profile" -> {
+                    fragToOpen = ProfileFragment()
+                    binding.bottomNavigationView.selectedItemId = R.id.profilePage
+                }
+            }
+
+            if (fragToOpen != null) {
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragment, fragToOpen).commit()
+            }
+        }
         binding.progressBar.visibility = View.GONE
         binding.swipeRefresh.visibility = View.VISIBLE
         binding.swipeRefresh.setOnRefreshListener {
