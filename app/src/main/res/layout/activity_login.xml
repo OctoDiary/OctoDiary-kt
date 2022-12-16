@@ -38,7 +38,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_round_login_24"
-        app:tint="@color/material_dynamic_primary80"
         tools:ignore="ImageContrastCheck" />
 
     <com.google.android.material.textfield.TextInputLayout
@@ -59,7 +58,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="none"
-            android:textColorHint="@color/material_dynamic_neutral70"
             tools:ignore="TextContrastCheck" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -79,7 +77,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
-            android:textColorHint="@color/material_dynamic_neutral70"
             tools:ignore="TextContrastCheck" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -99,7 +96,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
-            android:textColorHint="@color/material_dynamic_neutral70"
             tools:ignore="TextContrastCheck" />
 
     </com.google.android.material.textfield.TextInputLayout>
