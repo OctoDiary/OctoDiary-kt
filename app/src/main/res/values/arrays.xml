@@ -25,11 +25,13 @@
 
     <string-array name="default_screen_keys">
         <item>diary</item>
+        <item>dashboard</item>
         <item>profile</item>
     </string-array>
 
     <string-array name="default_screen_values">
         <item>@string/diary</item>
+        <item>@string/dashboard</item>
         <item>@string/profile</item>
     </string-array>
 </resources>

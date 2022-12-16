@@ -6,6 +6,10 @@
         android:icon="@drawable/ic_round_menu_book_24"
         android:title="@string/diary" />
     <item
+        android:id="@+id/dashboardPage"
+        android:icon="@drawable/ic_round_dashboard_24"
+        android:title="@string/dashboard" />
+    <item
         android:id="@+id/profilePage"
         android:icon="@drawable/ic_round_account_circle_24"
         android:title="@string/profile" />

@@ -7,13 +7,11 @@ import androidx.preference.PreferenceManager
 import com.squareup.picasso.Picasso
 import org.bxkr.octodiary.R
 import org.bxkr.octodiary.Utils
-import org.bxkr.octodiary.Utils.toOrdinal
 import org.bxkr.octodiary.databinding.FragmentProfileBinding
 import org.bxkr.octodiary.models.diary.Week
 import org.bxkr.octodiary.models.rating.RatingClass
 import org.bxkr.octodiary.models.user.User
 import org.bxkr.octodiary.ui.activities.MainActivity
-import org.bxkr.octodiary.ui.dialogs.RatingBottomSheet
 import java.util.Calendar
 
 
@@ -39,9 +37,9 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
             mainActivity.binding.swipeRefresh.isRefreshing = true
             return
         } else {
-            userData = mainActivity.userData!!
-            diaryData = mainActivity.diaryData!!
-            ratingData = mainActivity.ratingData!!
+            userData = mainActivity.userData ?: return
+            diaryData = mainActivity.diaryData ?: return
+            ratingData = mainActivity.ratingData ?: return
         }
 
         configureProfile()
@@ -60,9 +58,6 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
     }
 
     private fun refreshPreferences(preferences: SharedPreferences) {
-        val showRating = preferences.getBoolean("show_rating", true)
-        val showRatingBackground = preferences.getBoolean("show_rating_background", true)
-
         when (preferences.getString("data_under_name", "school")) {
             "school" -> binding.dataUnderName.text = userData.contextPersons[0].school.name
             "class_name" -> binding.dataUnderName.text = userData.contextPersons[0].group.name
@@ -72,25 +67,5 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
                 diaryData[1].days[Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1].lessons.size
             )
         }
-
-        if (showRating) {
-            binding.ratingCard.visibility = View.VISIBLE
-            binding.ratingStatus.text =
-                getString(
-                    R.string.rating_place,
-                    toOrdinal(ratingData.history.rankingPosition.place)
-                )
-            if (showRatingBackground) {
-                binding.ratingBackground.visibility = View.VISIBLE
-                Picasso.get().load(ratingData.history.rankingPosition.backgroundImageUrl)
-                    .into(binding.ratingBackground)
-            } else binding.ratingBackground.visibility = View.INVISIBLE
-            val openBottomSheet = { _: View ->
-                val bottomSheet = RatingBottomSheet(ratingData.rating)
-                bottomSheet.show(parentFragmentManager, null)
-            }
-            binding.ratingButton.setOnClickListener(openBottomSheet)
-            binding.ratingCard.setOnClickListener(openBottomSheet)
-        } else binding.ratingCard.visibility = View.GONE
     }
 }

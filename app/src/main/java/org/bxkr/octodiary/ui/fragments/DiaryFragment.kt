@@ -38,7 +38,7 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(FragmentDiaryBinding::i
             }
             return
         } else {
-            val diaryData = mainActivity.diaryData!!
+            val diaryData = mainActivity.diaryData ?: return
             binding.dayViewPager.adapter =
                 DayAdapter(binding.root.context, diaryData[binding.weekSlider.value.toInt()].days)
             binding.dayViewPager.offscreenPageLimit = 7

@@ -17,10 +17,9 @@ import androidx.fragment.app.Fragment
 import androidx.preference.PreferenceManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import org.bxkr.octodiary.BuildConfig
 import org.bxkr.octodiary.R
+import org.bxkr.octodiary.Utils.agedData
 import org.bxkr.octodiary.Utils.checkUpdate
 import org.bxkr.octodiary.Utils.getJsonRaw
 import org.bxkr.octodiary.Utils.isDemo
@@ -31,6 +30,7 @@ import org.bxkr.octodiary.models.rating.RatingClass
 import org.bxkr.octodiary.models.user.User
 import org.bxkr.octodiary.network.BaseCallback
 import org.bxkr.octodiary.network.NetworkService
+import org.bxkr.octodiary.ui.fragments.DashboardFragment
 import org.bxkr.octodiary.ui.fragments.DiaryFragment
 import org.bxkr.octodiary.ui.fragments.ProfileFragment
 
@@ -43,122 +43,33 @@ class MainActivity : AppCompatActivity() {
         get() = this.getSharedPreferences(getString(R.string.auth_file_key), Context.MODE_PRIVATE)
             .getString(getString(R.string.token), null)
         set(value) {
-            val prefs =
-                this.getSharedPreferences(getString(R.string.auth_file_key), Context.MODE_PRIVATE)
-            prefs.edit {
-                putString(getString(R.string.token), value)
-            }
+            this.getSharedPreferences(getString(R.string.auth_file_key), Context.MODE_PRIVATE)
+                .edit {
+                    putString(getString(R.string.token), value)
+                }
         }
 
     var userId: String?
         get() = this.getSharedPreferences(getString(R.string.auth_file_key), Context.MODE_PRIVATE)
             .getString(getString(R.string.user_id), null)
         set(value) {
-            val prefs =
-                this.getSharedPreferences(getString(R.string.auth_file_key), Context.MODE_PRIVATE)
-            prefs.edit {
-                putString(getString(R.string.user_id), value)
-            }
+            this.getSharedPreferences(getString(R.string.auth_file_key), Context.MODE_PRIVATE)
+                .edit {
+                    putString(getString(R.string.user_id), value)
+                }
         }
 
     var diaryData: List<Week>?
-        get() {
-            val dataAge = this.getSharedPreferences(
-                getString(R.string.saved_data_key),
-                Context.MODE_PRIVATE
-            ).getLong(getString(R.string.data_age_key), (-1).toLong())
-
-            if (dataAge == (-1).toLong() || ((System.currentTimeMillis() - dataAge) >= 3600000)) {
-                return null
-            }
-
-            val jsonEncoded = this.getSharedPreferences(
-                getString(R.string.saved_data_key),
-                Context.MODE_PRIVATE
-            ).getString(getString(R.string.diary_data_key), null)
-            if (jsonEncoded != null) {
-                return Gson().fromJson<List<Week>>(
-                    jsonEncoded,
-                    object : TypeToken<List<Week>>() {}.type
-                )
-            }
-            return null
-        }
-        set(value) {
-            val jsonEncoded = Gson().toJson(value)
-            this.getSharedPreferences(
-                getString(R.string.saved_data_key),
-                Context.MODE_PRIVATE
-            ).edit {
-                putString(getString(R.string.diary_data_key), jsonEncoded)
-                putLong(getString(R.string.data_age_key), System.currentTimeMillis())
-            }
-        }
+        get() = agedData(this, R.string.diary_data_key)
+        set(value) = agedData(this, R.string.diary_data_key, value)
 
     var userData: User?
-        get() {
-            val dataAge = this.getSharedPreferences(
-                getString(R.string.saved_data_key),
-                Context.MODE_PRIVATE
-            ).getLong(getString(R.string.data_age_key), (-1).toLong())
-
-            if (dataAge == (-1).toLong() || ((System.currentTimeMillis() - dataAge) >= 3600000)) {
-                return null
-            }
-
-            val jsonEncoded = this.getSharedPreferences(
-                getString(R.string.saved_data_key),
-                Context.MODE_PRIVATE
-            ).getString(getString(R.string.user_data_key), null)
-            if (jsonEncoded != null) {
-                return Gson().fromJson<User>(jsonEncoded, object : TypeToken<User>() {}.type)
-            }
-            return null
-        }
-        set(value) {
-            val jsonEncoded = Gson().toJson(value)
-            this.getSharedPreferences(
-                getString(R.string.saved_data_key),
-                Context.MODE_PRIVATE
-            ).edit {
-                putString(getString(R.string.user_data_key), jsonEncoded)
-                putLong(getString(R.string.data_age_key), System.currentTimeMillis())
-            }
-        }
+        get() = agedData(this, R.string.user_data_key)
+        set(value) = agedData(this, R.string.user_data_key, value)
 
     var ratingData: RatingClass?
-        get() {
-            val dataAge = this.getSharedPreferences(
-                getString(R.string.saved_data_key),
-                Context.MODE_PRIVATE
-            ).getLong(getString(R.string.data_age_key), (-1).toLong())
-
-            if (dataAge == (-1).toLong() || ((System.currentTimeMillis() - dataAge) >= 3600000)) {
-                return null
-            }
-
-            val jsonEncoded = this.getSharedPreferences(
-                getString(R.string.saved_data_key),
-                Context.MODE_PRIVATE
-            ).getString(getString(R.string.rating_data_key), null)
-            if (jsonEncoded != null) {
-                return Gson().fromJson<RatingClass>(
-                    jsonEncoded,
-                    object : TypeToken<RatingClass>() {}.type
-                )
-            }
-            return null
-        }
-        set(value) {
-            val jsonEncoded = Gson().toJson(value)
-            this.getSharedPreferences(
-                getString(R.string.saved_data_key),
-                Context.MODE_PRIVATE
-            ).edit {
-                putString(getString(R.string.rating_data_key), jsonEncoded)
-                putLong(getString(R.string.data_age_key), System.currentTimeMillis())
-            }
-        }
+        get() = agedData<RatingClass>(this, R.string.rating_data_key)
+        set(value) = agedData(this, R.string.rating_data_key, value)
 
     private val server: Int
         get() = this.getSharedPreferences(
@@ -188,16 +99,20 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.diaryPage -> {
-                    val transaction = supportFragmentManager.beginTransaction()
-                        .replace(R.id.fragment, DiaryFragment())
-                    transaction.commit()
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.fragment, DiaryFragment()).commit()
+                    true
+                }
+
+                R.id.dashboardPage -> {
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.fragment, DashboardFragment()).commit()
                     true
                 }
 
                 R.id.profilePage -> {
-                    val transaction = supportFragmentManager.beginTransaction()
-                        .replace(R.id.fragment, ProfileFragment())
-                    transaction.commit()
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.fragment, ProfileFragment()).commit()
                     true
                 }
 
@@ -305,6 +220,11 @@ class MainActivity : AppCompatActivity() {
                 "diary" -> {
                     fragToOpen = DiaryFragment()
                     binding.bottomNavigationView.selectedItemId = R.id.diaryPage
+                }
+
+                "dashboard" -> {
+                    fragToOpen = DashboardFragment()
+                    binding.bottomNavigationView.selectedItemId = R.id.dashboardPage
                 }
 
                 "profile" -> {
