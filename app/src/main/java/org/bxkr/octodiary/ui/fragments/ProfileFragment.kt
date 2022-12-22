@@ -4,6 +4,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import androidx.preference.PreferenceManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.squareup.picasso.Picasso
 import org.bxkr.octodiary.R
 import org.bxkr.octodiary.Utils
@@ -11,9 +12,12 @@ import org.bxkr.octodiary.databinding.FragmentProfileBinding
 import org.bxkr.octodiary.models.diary.Week
 import org.bxkr.octodiary.models.rating.RatingClass
 import org.bxkr.octodiary.models.user.User
+import org.bxkr.octodiary.models.userfeed.Feed
+import org.bxkr.octodiary.models.userfeed.UsedFeedTypes
+import org.bxkr.octodiary.models.userfeed.UserFeed
 import org.bxkr.octodiary.ui.activities.MainActivity
+import org.bxkr.octodiary.ui.adapters.UserFeedAdapter
 import java.util.Calendar
-
 
 class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBinding::inflate) {
 
@@ -21,6 +25,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
     private lateinit var userData: User
     private lateinit var diaryData: List<Week>
     private lateinit var ratingData: RatingClass
+    private lateinit var userFeedData: UserFeed
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         mainActivity = activity as MainActivity
@@ -40,6 +45,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
             userData = mainActivity.userData ?: return
             diaryData = mainActivity.diaryData ?: return
             ratingData = mainActivity.ratingData ?: return
+            userFeedData = mainActivity.userFeedData ?: return
         }
 
         configureProfile()
@@ -55,6 +61,15 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
                 userData.info.lastName
             )
         Picasso.get().load(userData.info.avatarUrl).into(binding.bigAvatar)
+
+        val onlyUsedFeeds: List<Feed> = userFeedData.feed.mapNotNull {
+            if (it.type in UsedFeedTypes.values().map { it1 -> it1.feedType }) {
+                return@mapNotNull it
+            }
+            return@mapNotNull null
+        }
+        binding.feedRecyclerView.layoutManager = LinearLayoutManager(mainActivity)
+        binding.feedRecyclerView.adapter = UserFeedAdapter(mainActivity, onlyUsedFeeds)
     }
 
     private fun refreshPreferences(preferences: SharedPreferences) {

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/feed_item_margin"
+    android:layout_marginEnd="@dimen/feed_item_margin"
+    android:layout_marginBottom="@dimen/feed_item_margin">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/feed_item_padding">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:contentDescription="@string/image"
+            app:tint="?attr/colorControlNormal" />
+
+        <TextView
+            android:id="@+id/feedItemName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_toStartOf="@id/imageView"
+            android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
+            tools:text="Physical Education" />
+
+        <ViewStub
+            android:id="@+id/included"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/feedItemName"
+            android:layout_toStartOf="@id/imageView" />
+    </RelativeLayout>
+
+</com.google.android.material.card.MaterialCardView>

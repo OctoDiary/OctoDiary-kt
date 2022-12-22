@@ -65,4 +65,9 @@
     <string name="dashboard">Домашняя</string>
     <string name="today">Сегодня</string>
     <string name="tomorrow">Завтра</string>
+    <string name="feed_type_important_work">Важная работа</string>
+    <string name="feed_type_post">Пост</string>
+    <string name="feed_type_week_summary">Итоги недели</string>
+    <string name="feed_type_comment">Комментарий к уроку</string>
+    <string name="image">Картинка</string>
 </resources>

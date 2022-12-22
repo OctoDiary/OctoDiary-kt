@@ -111,4 +111,9 @@
     <string name="fractional_mark" translatable="false">%s/%s</string>
     <string name="today">Today</string>
     <string name="tomorrow">Tomorrow</string>
+    <string name="feed_type_important_work">Important work</string>
+    <string name="feed_type_post">Post</string>
+    <string name="feed_type_week_summary">Week summary</string>
+    <string name="feed_type_comment">Lesson comment</string>
+    <string name="image">Image</string>
 </resources>
