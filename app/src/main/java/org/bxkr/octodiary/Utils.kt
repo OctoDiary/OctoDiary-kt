@@ -12,6 +12,8 @@ import org.bxkr.octodiary.network.NetworkService
 import org.bxkr.octodiary.ui.activities.MainActivity
 import retrofit2.Response
 import java.io.InputStream
+import java.text.SimpleDateFormat
+import java.util.Date
 import java.util.Locale
 
 object Utils {
@@ -91,4 +93,7 @@ object Utils {
             putLong(context.getString(R.string.data_age_key), System.currentTimeMillis())
         }
     }
+
+    fun toPatternedDate(pattern: String, date: Date, locale: Locale): String =
+        SimpleDateFormat(pattern, locale).format(date)
 }

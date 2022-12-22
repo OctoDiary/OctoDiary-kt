@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="@dimen/dashboard_mark_end_margin">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/markCard"
+        style="@style/Widget.Material3.CardView.Filled"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/dashboard_mark_inner_padding">
+
+            <TextView
+                android:id="@+id/markValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="@string/placeholder_mark_value"
+                android:textAppearance="@style/TextAppearance.Material3.DisplaySmall" />
+
+            <TextView
+                android:id="@+id/markLessonName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/markValue"
+                android:layout_centerHorizontal="true"
+                android:singleLine="true"
+                android:text="@string/placeholder_lesson_name"
+                android:textAppearance="@style/TextAppearance.Material3.TitleSmall" />
+
+            <TextView
+                android:id="@+id/markTypeAndDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/markLessonName"
+                android:layout_centerHorizontal="true"
+                android:text="@string/placeholder_mark_type_and_date"
+                android:textAppearance="@style/TextAppearance.Material3.BodyMedium" />
+        </RelativeLayout>
+    </com.google.android.material.card.MaterialCardView>
+</androidx.constraintlayout.widget.ConstraintLayout>

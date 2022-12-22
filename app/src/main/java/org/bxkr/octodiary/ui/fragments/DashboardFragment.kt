@@ -4,6 +4,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import androidx.preference.PreferenceManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.squareup.picasso.Picasso
 import org.bxkr.octodiary.R
 import org.bxkr.octodiary.Utils
@@ -13,6 +14,7 @@ import org.bxkr.octodiary.models.diary.Week
 import org.bxkr.octodiary.models.rating.RatingClass
 import org.bxkr.octodiary.models.userfeed.UserFeed
 import org.bxkr.octodiary.ui.activities.MainActivity
+import org.bxkr.octodiary.ui.adapters.DashboardMarkAdapter
 import org.bxkr.octodiary.ui.dialogs.RatingBottomSheet
 
 class DashboardFragment :
@@ -53,7 +55,10 @@ class DashboardFragment :
     }
 
     private fun configureMarks() {
-        // todo
+        binding.dashboardMarkRecyclerView.layoutManager =
+            LinearLayoutManager(mainActivity, LinearLayoutManager.HORIZONTAL, false)
+        binding.dashboardMarkRecyclerView.adapter =
+            DashboardMarkAdapter(mainActivity, userFeedData.recentMarks)
     }
 
     private fun configureMiniDiary() {

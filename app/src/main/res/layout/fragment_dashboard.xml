@@ -6,6 +6,18 @@
     android:layout_height="match_parent">
 
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/dashboardMarkRecyclerView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dashboard_mark_recycler_margin"
+        app:layout_constraintBottom_toTopOf="@+id/rating_card"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:itemCount="1"
+        tools:listitem="@layout/item_dashboard_mark" />
+
+
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/rating_card"
         style="@style/Widget.Material3.CardView.Filled"

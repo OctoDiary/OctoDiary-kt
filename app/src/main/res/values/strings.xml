@@ -106,4 +106,7 @@
     <string name="screen_when_opening">Screen when opening</string>
     <string name="dashboard">Dashboard</string>
     <string name="user_feed_data_key" translatable="false">user_feed_data</string>
+    <string name="placeholder_mark_type_and_date" translatable="false">WRK, Oct 20</string>
+    <string name="mark_type_and_date" translatable="false">%s, %s</string>
+    <string name="fractional_mark" translatable="false">%s/%s</string>
 </resources>

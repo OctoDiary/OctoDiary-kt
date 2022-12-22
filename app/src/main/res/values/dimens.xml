@@ -27,11 +27,13 @@
     <dimen name="mark_rating_padding">16dp</dimen>
     <dimen name="mark_margin">16dp</dimen>
     <dimen name="big_progress_bar_margin">48dp</dimen>
-
     <dimen name="rating_place_text_size">20sp</dimen>
     <dimen name="name_text_size">20sp</dimen>
     <dimen name="mark_name_margin">16dp</dimen>
     <dimen name="mark_rating_bar_thickness">16dp</dimen>
     <dimen name="mark_rating_bar_corner_radius">8dp</dimen>
     <dimen name="mark_rating_member_padding">8dp</dimen>
+    <dimen name="dashboard_mark_inner_padding">16dp</dimen>
+    <dimen name="dashboard_mark_end_margin">16dp</dimen>
+    <dimen name="dashboard_mark_recycler_margin">16dp</dimen>
 </resources>
