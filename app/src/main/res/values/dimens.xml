@@ -36,4 +36,5 @@
     <dimen name="dashboard_mark_inner_padding">16dp</dimen>
     <dimen name="dashboard_mark_end_margin">16dp</dimen>
     <dimen name="dashboard_mark_recycler_margin">16dp</dimen>
+    <dimen name="dashboard_mini_diary_max_height">320dp</dimen>
 </resources>

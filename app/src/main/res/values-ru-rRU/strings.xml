@@ -63,4 +63,6 @@
     <string name="show_rating_images_name">Аватарки в рейтинге</string>
     <string name="screen_when_opening">Экран при открытии</string>
     <string name="dashboard">Домашняя</string>
+    <string name="today">Сегодня</string>
+    <string name="tomorrow">Завтра</string>
 </resources>

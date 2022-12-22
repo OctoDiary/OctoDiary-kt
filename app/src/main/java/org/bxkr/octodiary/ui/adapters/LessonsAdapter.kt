@@ -18,11 +18,14 @@ import org.bxkr.octodiary.ui.activities.MainActivity
 import java.text.SimpleDateFormat
 
 class LessonsAdapter(
-    private val context: Context, private val lessons: List<Lesson>
+    private val context: Context,
+    private var lessons: List<Lesson>,
+    private val compact: Boolean = false
 ) : RecyclerView.Adapter<LessonsAdapter.LessonsViewHolder>() {
 
     class LessonsViewHolder(
-        ItemLessonsRecyclerBinding: ItemLessonsRecyclerBinding, context: Context
+        ItemLessonsRecyclerBinding: ItemLessonsRecyclerBinding, context: Context,
+        private val compact: Boolean
     ) : RecyclerView.ViewHolder(ItemLessonsRecyclerBinding.root) {
         private val binding = ItemLessonsRecyclerBinding
         private val parentContext = context
@@ -36,29 +39,33 @@ class LessonsAdapter(
             binding.lessonTime.text = parentContext.getString(R.string.time_from_to,
                 toDate.parse(lesson.startDateTime)?.let { toCommon.format(it) },
                 toDate.parse(lesson.endDateTime)?.let { toCommon.format(it) })
-            val description: String? =
-                when (PreferenceManager.getDefaultSharedPreferences(parentContext as MainActivity)
-                    .getString("lesson_description", "homework")) {
-                    "lesson_topic" -> lesson.theme
-                    else -> lesson.homework?.text
-                }
-            if (description != null) {
-                binding.lessonDesc.text = description
-                if (lesson.hasAttachment) {
-                    binding.lessonDesc.setCompoundDrawablesWithIntrinsicBounds(
-                        null,
-                        null,
-                        AppCompatResources.getDrawable(
-                            parentContext,
-                            R.drawable.ic_round_attachment_24
-                        ),
-                        null
-                    )
-                }
-            } else {
+            if (compact) {
                 binding.lessonDesc.visibility = View.GONE
+            } else {
+                val description: String? =
+                    when (PreferenceManager.getDefaultSharedPreferences(parentContext as MainActivity)
+                        .getString("lesson_description", "homework")) {
+                        "lesson_topic" -> lesson.theme
+                        else -> lesson.homework?.text
+                    }
+                if (description != null) {
+                    binding.lessonDesc.text = description
+                    if (lesson.hasAttachment) {
+                        binding.lessonDesc.setCompoundDrawablesWithIntrinsicBounds(
+                            null,
+                            null,
+                            AppCompatResources.getDrawable(
+                                parentContext,
+                                R.drawable.ic_round_attachment_24
+                            ),
+                            null
+                        )
+                    }
+                } else {
+                    binding.lessonDesc.visibility = View.GONE
+                }
             }
-            val personId = parentContext.userData?.info?.personId!!
+            val personId = (parentContext as MainActivity).userData?.info?.personId!!
             val groupId = parentContext.userData?.contextPersons?.get(0)?.group?.id!!
             binding.root.setOnClickListener {
                 val intent = Intent(parentContext, LessonActivity::class.java)
@@ -72,7 +79,7 @@ class LessonsAdapter(
             for (workMark in lesson.workMarks) {
                 marks.addAll(workMark.marks)
             }
-            if (marks.size > 0) {
+            if (marks.size > 0 && !compact) {
                 binding.markRecyclerView.visibility = View.VISIBLE
                 binding.markRecyclerView.layoutManager =
                     LinearLayoutManager(parentContext, LinearLayoutManager.HORIZONTAL, false)
@@ -85,7 +92,7 @@ class LessonsAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LessonsViewHolder {
         val binding =
             ItemLessonsRecyclerBinding.inflate(LayoutInflater.from(context), parent, false)
-        return LessonsViewHolder(binding, context)
+        return LessonsViewHolder(binding, context, compact)
     }
 
     override fun onBindViewHolder(holder: LessonsViewHolder, position: Int) {
@@ -94,4 +101,10 @@ class LessonsAdapter(
     }
 
     override fun getItemCount(): Int = lessons.size
+
+    fun newData(lessons: List<Lesson>) {
+        this.lessons = lessons
+        @Suppress("NotifyDataSetChanged")
+        notifyDataSetChanged()
+    }
 }

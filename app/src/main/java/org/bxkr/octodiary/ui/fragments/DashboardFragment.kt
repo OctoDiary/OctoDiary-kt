@@ -15,7 +15,11 @@ import org.bxkr.octodiary.models.rating.RatingClass
 import org.bxkr.octodiary.models.userfeed.UserFeed
 import org.bxkr.octodiary.ui.activities.MainActivity
 import org.bxkr.octodiary.ui.adapters.DashboardMarkAdapter
+import org.bxkr.octodiary.ui.adapters.LessonsAdapter
 import org.bxkr.octodiary.ui.dialogs.RatingBottomSheet
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class DashboardFragment :
     BaseFragment<FragmentDashboardBinding>(FragmentDashboardBinding::inflate) {
@@ -62,7 +66,49 @@ class DashboardFragment :
     }
 
     private fun configureMiniDiary() {
-        // todo
+        binding.miniDiaryRecyclerView.layoutManager = LinearLayoutManager(mainActivity)
+        val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        val tomorrow =
+            SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault()).format(
+                dateFormat.parse(dateFormat.format(Date(System.currentTimeMillis() + 86400000L)))!!
+            )
+        var tomorrowPosition: Int? = null
+        for ((index, day) in diaryData[1].days.withIndex()) {
+            if (day.date == tomorrow) {
+                tomorrowPosition = index
+            }
+        }
+        val today =
+            SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault()).format(
+                dateFormat.parse(dateFormat.format(Date()))!!
+            )
+        var todayPosition: Int? = null
+        for ((index, day) in diaryData[1].days.withIndex()) {
+            if (day.date == today) {
+                todayPosition = index
+            }
+        }
+        if (tomorrowPosition == null || todayPosition == null) {
+            binding.toggleButton.visibility = View.GONE
+            return
+        }
+        val tomorrowLessons = diaryData[1].days[tomorrowPosition].lessons
+        val todayLessons = diaryData[1].days[todayPosition].lessons
+        binding.miniDiaryRecyclerView.adapter = LessonsAdapter(mainActivity, tomorrowLessons, true)
+        binding.toggleButton.addOnButtonCheckedListener { _, checkedId, isChecked ->
+            if (!isChecked) return@addOnButtonCheckedListener
+            when (checkedId) {
+                R.id.todayButton -> {
+                    (binding.miniDiaryRecyclerView.adapter as LessonsAdapter).newData(todayLessons)
+                }
+
+                R.id.tomorrowButton -> {
+                    (binding.miniDiaryRecyclerView.adapter as LessonsAdapter).newData(
+                        tomorrowLessons
+                    )
+                }
+            }
+        }
     }
 
     private fun configureRating() {

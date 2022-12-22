@@ -109,4 +109,6 @@
     <string name="placeholder_mark_type_and_date" translatable="false">WRK, Oct 20</string>
     <string name="mark_type_and_date" translatable="false">%s, %s</string>
     <string name="fractional_mark" translatable="false">%s/%s</string>
+    <string name="today">Today</string>
+    <string name="tomorrow">Tomorrow</string>
 </resources>
