@@ -220,7 +220,8 @@ class MainActivity : AppCompatActivity() {
         val defaultScreen =
             PreferenceManager.getDefaultSharedPreferences(this).getString("default_screen", "diary")
 
-        if (supportFragmentManager.findFragmentById(R.id.fragment) == null && !supportFragmentManager.isDestroyed) {
+        val openedFragment = supportFragmentManager.findFragmentById(R.id.fragment)
+        if (openedFragment == null && !supportFragmentManager.isDestroyed) {
 
             var fragToOpen: Fragment? = null
 
@@ -245,6 +246,11 @@ class MainActivity : AppCompatActivity() {
                 supportFragmentManager.beginTransaction().replace(R.id.fragment, fragToOpen)
                     .commit()
             }
+        } else if (openedFragment != null) {
+            supportFragmentManager.beginTransaction().detach(openedFragment)
+                .commit() // Detach/attach refresh should be
+            supportFragmentManager.beginTransaction().attach(openedFragment)
+                .commit() // ran with separate transactions
         }
         binding.progressBar.visibility = View.GONE
         binding.swipeRefresh.visibility = View.VISIBLE
