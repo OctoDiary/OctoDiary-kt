@@ -105,4 +105,5 @@
     <string name="show_rating_images_name">Avatars in rating</string>
     <string name="screen_when_opening">Screen when opening</string>
     <string name="dashboard">Dashboard</string>
+    <string name="user_feed_data_key" translatable="false">user_feed_data</string>
 </resources>

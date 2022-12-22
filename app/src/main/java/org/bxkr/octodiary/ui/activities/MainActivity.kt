@@ -28,6 +28,7 @@ import org.bxkr.octodiary.models.diary.Diary
 import org.bxkr.octodiary.models.diary.Week
 import org.bxkr.octodiary.models.rating.RatingClass
 import org.bxkr.octodiary.models.user.User
+import org.bxkr.octodiary.models.userfeed.UserFeed
 import org.bxkr.octodiary.network.BaseCallback
 import org.bxkr.octodiary.network.NetworkService
 import org.bxkr.octodiary.ui.fragments.DashboardFragment
@@ -68,13 +69,16 @@ class MainActivity : AppCompatActivity() {
         set(value) = agedData(this, R.string.user_data_key, value)
 
     var ratingData: RatingClass?
-        get() = agedData<RatingClass>(this, R.string.rating_data_key)
+        get() = agedData(this, R.string.rating_data_key)
         set(value) = agedData(this, R.string.rating_data_key, value)
+
+    var userFeedData: UserFeed?
+        get() = agedData(this, R.string.user_feed_data_key)
+        set(value) = agedData(this, R.string.user_feed_data_key, value)
 
     private val server: Int
         get() = this.getSharedPreferences(
-            getString(R.string.auth_file_key),
-            Context.MODE_PRIVATE
+            getString(R.string.auth_file_key), Context.MODE_PRIVATE
         ).getInt(getString(R.string.server_key), 0)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -129,27 +133,21 @@ class MainActivity : AppCompatActivity() {
                     MaterialAlertDialogBuilder(
                         this@MainActivity,
                         com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog_Centered
-                    )
-                        .setTitle(getString(R.string.update_available, tag_name))
+                    ).setTitle(getString(R.string.update_available, tag_name))
                         .setMessage(getString(R.string.update_available_message, name))
                         .setIcon(R.drawable.ic_outline_file_download_24)
                         .setNeutralButton(R.string.changes) { _, _ ->
                             val intent = Intent(Intent.ACTION_VIEW)
                             intent.data = Uri.parse(html_url)
                             startActivity(intent)
-                        }
-                        .setNegativeButton(R.string.later) { dialog, _ ->
+                        }.setNegativeButton(R.string.later) { dialog, _ ->
                             dialog.dismiss()
-                        }
-                        .setPositiveButton(R.string.yes) { _, _ ->
+                        }.setPositiveButton(R.string.yes) { _, _ ->
                             downloadUpdate(assets[0].browser_download_url, tag_name)
                             Snackbar.make(
-                                binding.root,
-                                R.string.download_started,
-                                Snackbar.LENGTH_LONG
+                                binding.root, R.string.download_started, Snackbar.LENGTH_LONG
                             ).show()
-                        }
-                        .show()
+                        }.show()
                 }
             }
         }
@@ -160,16 +158,19 @@ class MainActivity : AppCompatActivity() {
             ?.let { NetworkService.api(NetworkService.Server.values()[server]).user(it, token) }
         call?.enqueue(object : BaseCallback<User>(this, function = {
             userData = it.body()!!
+
             getRating(listener)
-        }, errorFunction = {
-            val intent = Intent(this@MainActivity, LoginActivity::class.java)
-            intent.putExtra(getString(R.string.auth_out_of_date_extra), true)
-            startActivity(intent)
-            finish()
-        }) {})
-        if (userData != null) {
-            getRating(listener)
-        }
+            getDiary(listener)
+            getUserFeed(listener)
+
+        }, errorFunction = { dataIsOutOfDate() }) {})
+
+        /*
+        It should work like this - first createDiary receives userData,
+        and since the rest of the requests depend only on it,
+        they are executed immediately after the userData is set.
+        */
+
     }
 
     private fun getRating(listener: () -> Unit = {}) {
@@ -179,13 +180,8 @@ class MainActivity : AppCompatActivity() {
             )
             call.enqueue(object : BaseCallback<RatingClass>(this@MainActivity, function = {
                 ratingData = it.body()!!
-            }, errorFunction = {
-                val intent = Intent(this@MainActivity, LoginActivity::class.java)
-                intent.putExtra(getString(R.string.auth_out_of_date_extra), true)
-                startActivity(intent)
-                finish()
-            }) {})
-            getDiary(listener)
+                if (isAllDataLoaded()) allDataLoaded(listener)
+            }, errorFunction = { dataIsOutOfDate() }) {})
         }
     }
 
@@ -196,18 +192,30 @@ class MainActivity : AppCompatActivity() {
             )
             call.enqueue(object : BaseCallback<Diary>(this@MainActivity, function = {
                 diaryData = it.body()!!.weeks
-                listener()
-                allDataLoaded()
-            }, errorFunction = {
-                val intent = Intent(this@MainActivity, LoginActivity::class.java)
-                intent.putExtra(getString(R.string.auth_out_of_date_extra), true)
-                startActivity(intent)
-                finish()
-            }) {})
+                if (isAllDataLoaded()) allDataLoaded(listener)
+            }, errorFunction = { dataIsOutOfDate() }) {})
         }
     }
 
-    private fun allDataLoaded() {
+    private fun getUserFeed(listener: () -> Unit = {}) {
+        with(userData!!) {
+            val call = NetworkService.api(NetworkService.Server.values()[server]).userFeed(
+                info.personId, contextPersons[0].group.id, token
+            )
+            call.enqueue(object : BaseCallback<UserFeed>(this@MainActivity, function = {
+                userFeedData = it.body()
+                if (isAllDataLoaded()) allDataLoaded(listener)
+            }, errorFunction = { dataIsOutOfDate() }) {})
+        }
+    }
+
+
+    private fun isAllDataLoaded(): Boolean =
+        userData != null && diaryData != null && ratingData != null && userFeedData != null
+
+    private fun allDataLoaded(listener: () -> Unit = {}) {
+
+        listener()
 
         val defaultScreen =
             PreferenceManager.getDefaultSharedPreferences(this).getString("default_screen", "diary")
@@ -234,8 +242,8 @@ class MainActivity : AppCompatActivity() {
             }
 
             if (fragToOpen != null) {
-                supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragment, fragToOpen).commit()
+                supportFragmentManager.beginTransaction().replace(R.id.fragment, fragToOpen)
+                    .commit()
             }
         }
         binding.progressBar.visibility = View.GONE
@@ -244,6 +252,13 @@ class MainActivity : AppCompatActivity() {
             createDiary { binding.swipeRefresh.isRefreshing = false }
         }
         binding.bottomNavigationView.visibility = View.VISIBLE
+    }
+
+    private fun dataIsOutOfDate() {
+        val intent = Intent(this@MainActivity, LoginActivity::class.java)
+        intent.putExtra(getString(R.string.auth_out_of_date_extra), true)
+        startActivity(intent)
+        finish()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -264,11 +279,11 @@ class MainActivity : AppCompatActivity() {
                 userData = null
                 diaryData = null
                 ratingData = null
+                userFeedData = null
                 token = null
                 userId = null
                 this.getSharedPreferences(
-                    getString(R.string.saved_data_key),
-                    Context.MODE_PRIVATE
+                    getString(R.string.saved_data_key), Context.MODE_PRIVATE
                 ).edit {
                     putLong(getString(R.string.data_age_key), -1L)
                 }
@@ -283,12 +298,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun downloadUpdate(url: String, name: String) {
-        val request = DownloadManager.Request(Uri.parse(url))
-            .setTitle(getString(R.string.update, name))
-            .setDestinationInExternalPublicDir(
-                Environment.DIRECTORY_DOWNLOADS,
-                getString(R.string.update_file_name, getString(R.string.app_name), name)
-            )
+        val request =
+            DownloadManager.Request(Uri.parse(url)).setTitle(getString(R.string.update, name))
+                .setDestinationInExternalPublicDir(
+                    Environment.DIRECTORY_DOWNLOADS,
+                    getString(R.string.update_file_name, getString(R.string.app_name), name)
+                )
         val downloadManager = getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
         val downloadId = downloadManager.enqueue(request)
         registerReceiver(object : BroadcastReceiver() {

@@ -11,6 +11,7 @@ import org.bxkr.octodiary.Utils.toOrdinal
 import org.bxkr.octodiary.databinding.FragmentDashboardBinding
 import org.bxkr.octodiary.models.diary.Week
 import org.bxkr.octodiary.models.rating.RatingClass
+import org.bxkr.octodiary.models.userfeed.UserFeed
 import org.bxkr.octodiary.ui.activities.MainActivity
 import org.bxkr.octodiary.ui.dialogs.RatingBottomSheet
 
@@ -19,7 +20,7 @@ class DashboardFragment :
 
     private lateinit var mainActivity: MainActivity
     private lateinit var preferences: SharedPreferences
-    private lateinit var TODO: Any // todo
+    private lateinit var userFeedData: UserFeed
     private lateinit var diaryData: List<Week>
     private lateinit var ratingData: RatingClass
 
@@ -41,7 +42,7 @@ class DashboardFragment :
                 }
             }
         } else {
-            TODO = mainActivity.userData ?: return // todo
+            userFeedData = mainActivity.userFeedData ?: return
             diaryData = mainActivity.diaryData ?: return
             ratingData = mainActivity.ratingData ?: return
 

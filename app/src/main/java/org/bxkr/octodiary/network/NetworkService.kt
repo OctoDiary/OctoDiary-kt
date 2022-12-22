@@ -9,6 +9,7 @@ import org.bxkr.octodiary.models.mark.MarkDetails
 import org.bxkr.octodiary.models.rating.RatingClass
 import org.bxkr.octodiary.models.release.Release
 import org.bxkr.octodiary.models.user.User
+import org.bxkr.octodiary.models.userfeed.UserFeed
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -106,6 +107,13 @@ object NetworkService {
             @Path("mark_id") markId: Long,
             @Header("Access-Token") accessToken: String?,
         ): Call<MarkDetails>
+
+        @GET("persons/{person_id}/groups/{group_id}/important")
+        fun userFeed(
+            @Path("person_id") personId: Long,
+            @Path("group_id") groupId: Long,
+            @Header("Access-Token") accessToken: String?,
+        ): Call<UserFeed>
     }
 
     interface GitHubAPI {
