@@ -70,4 +70,7 @@
     <string name="feed_type_week_summary">Итоги недели</string>
     <string name="feed_type_comment">Комментарий к уроку</string>
     <string name="image">Картинка</string>
+    <string name="data_update_channel_name">Обновление школьных данных</string>
+    <string name="notification_new_mark_text">Новая оценка: %s, %s, %s, %s</string>
+    <string name="notification_new_mark_title">Новая оценка!</string>
 </resources>

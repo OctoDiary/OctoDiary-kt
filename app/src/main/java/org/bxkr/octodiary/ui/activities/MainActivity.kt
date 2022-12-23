@@ -1,11 +1,17 @@
 package org.bxkr.octodiary.ui.activities
 
+import android.Manifest
+import android.app.AlarmManager
 import android.app.DownloadManager
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.view.Menu
@@ -17,8 +23,10 @@ import androidx.fragment.app.Fragment
 import androidx.preference.PreferenceManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
+import com.google.gson.Gson
 import org.bxkr.octodiary.BuildConfig
 import org.bxkr.octodiary.R
+import org.bxkr.octodiary.UpdateReceiver
 import org.bxkr.octodiary.Utils.agedData
 import org.bxkr.octodiary.Utils.checkUpdate
 import org.bxkr.octodiary.Utils.getJsonRaw
@@ -34,11 +42,13 @@ import org.bxkr.octodiary.network.NetworkService
 import org.bxkr.octodiary.ui.fragments.DashboardFragment
 import org.bxkr.octodiary.ui.fragments.DiaryFragment
 import org.bxkr.octodiary.ui.fragments.ProfileFragment
+import java.util.Calendar
 
 
 class MainActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMainBinding
+    lateinit var alarmManager: AlarmManager
 
     var token: String?
         get() = this.getSharedPreferences(getString(R.string.auth_file_key), Context.MODE_PRIVATE)
@@ -84,6 +94,13 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        if (Build.VERSION.SDK_INT >= 33) {
+            requestPermissions(
+                arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                1
+            )
+        }
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         if (token == null && userId == null) {
@@ -104,19 +121,19 @@ class MainActivity : AppCompatActivity() {
             when (item.itemId) {
                 R.id.diaryPage -> {
                     supportFragmentManager.beginTransaction()
-                        .replace(R.id.fragment, DiaryFragment()).commit()
+                        .replace(R.id.fragment, DiaryFragment()).commitAllowingStateLoss()
                     true
                 }
 
                 R.id.dashboardPage -> {
                     supportFragmentManager.beginTransaction()
-                        .replace(R.id.fragment, DashboardFragment()).commit()
+                        .replace(R.id.fragment, DashboardFragment()).commitAllowingStateLoss()
                     true
                 }
 
                 R.id.profilePage -> {
                     supportFragmentManager.beginTransaction()
-                        .replace(R.id.fragment, ProfileFragment()).commit()
+                        .replace(R.id.fragment, ProfileFragment()).commitAllowingStateLoss()
                     true
                 }
 
@@ -244,13 +261,13 @@ class MainActivity : AppCompatActivity() {
 
             if (fragToOpen != null) {
                 supportFragmentManager.beginTransaction().replace(R.id.fragment, fragToOpen)
-                    .commit()
+                    .commitAllowingStateLoss()
             }
         } else if (openedFragment != null) {
             supportFragmentManager.beginTransaction().detach(openedFragment)
-                .commit() // Detach/attach refresh should be
+                .commitAllowingStateLoss() // Detach/attach refresh should be
             supportFragmentManager.beginTransaction().attach(openedFragment)
-                .commit() // ran with separate transactions
+                .commitAllowingStateLoss() // ran with separate transactions
         }
         binding.progressBar.visibility = View.GONE
         binding.swipeRefresh.visibility = View.VISIBLE
@@ -258,6 +275,26 @@ class MainActivity : AppCompatActivity() {
             createDiary { binding.swipeRefresh.isRefreshing = false }
         }
         binding.bottomNavigationView.visibility = View.VISIBLE
+
+        val notifyTime: Calendar = Calendar.getInstance()
+
+        val intent = Intent(this, UpdateReceiver::class.java)
+        intent.putExtra("person_id", userData?.contextPersons?.get(0)?.personId)
+        intent.putExtra("group_id", userData?.contextPersons?.get(0)?.group?.id)
+        intent.putExtra("access_token", token)
+        intent.putExtra("server", server)
+        intent.putExtra("old_marks", Gson().toJson(userFeedData?.recentMarks!!))
+        val pendingIntent =
+            PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
+
+        createNotificationChannel()
+        alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        alarmManager.setRepeating(
+            AlarmManager.RTC_WAKEUP,
+            notifyTime.timeInMillis,
+            300000,
+            pendingIntent
+        )
     }
 
     private fun dataIsOutOfDate() {
@@ -324,5 +361,15 @@ class MainActivity : AppCompatActivity() {
                 finish()
             }
         }, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
+    }
+
+
+    private fun createNotificationChannel() {
+        val name = getString(R.string.data_update_channel_name)
+        val importance = NotificationManager.IMPORTANCE_DEFAULT
+        val channel = NotificationChannel("data_update", name, importance)
+        val notificationManager: NotificationManager =
+            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.createNotificationChannel(channel)
     }
 }

@@ -21,7 +21,7 @@ class SettingsActivity : AppCompatActivity() {
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.settings_frame, SettingsFragment()).commit()
+                .replace(R.id.settings_frame, SettingsFragment()).commitAllowingStateLoss()
         }
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {

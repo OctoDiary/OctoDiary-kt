@@ -116,4 +116,7 @@
     <string name="feed_type_week_summary">Week summary</string>
     <string name="feed_type_comment">Lesson comment</string>
     <string name="image">Image</string>
+    <string name="data_update_channel_name">School data update channel</string>
+    <string name="notification_new_mark_text">New mark: %s, %s, %s, %s</string>
+    <string name="notification_new_mark_title">New mark!</string>
 </resources>
