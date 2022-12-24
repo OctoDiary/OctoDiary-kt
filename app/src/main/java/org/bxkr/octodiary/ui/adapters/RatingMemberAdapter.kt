@@ -30,6 +30,8 @@ class RatingMemberAdapter(private val context: Context, private val members: Lis
                     if (member.isContextUser) {
                         card.strokeWidth =
                             parentContext.resources.getDimensionPixelSize(R.dimen.card_stroke_width)
+                    } else {
+                        card.strokeWidth = 0
                     }
                 } else avatar.visibility = View.GONE
             }
