@@ -10,6 +10,7 @@ import org.bxkr.octodiary.R
 import org.bxkr.octodiary.Utils
 import org.bxkr.octodiary.Utils.toOrdinal
 import org.bxkr.octodiary.databinding.FragmentDashboardBinding
+import org.bxkr.octodiary.models.diary.Lesson
 import org.bxkr.octodiary.models.diary.Week
 import org.bxkr.octodiary.models.rating.RatingClass
 import org.bxkr.octodiary.models.userfeed.UserFeed
@@ -95,18 +96,20 @@ class DashboardFragment :
         val tomorrowLessons = diaryData[1].days[tomorrowPosition].lessons
         val todayLessons = diaryData[1].days[todayPosition].lessons
         binding.miniDiaryRecyclerView.adapter = LessonsAdapter(mainActivity, tomorrowLessons, true)
+        if (tomorrowLessons.isEmpty()) binding.freeDay.visibility = View.VISIBLE
+        val replaceFunction: (lessons: List<Lesson>) -> Unit = {
+            if (it.isEmpty()) binding.freeDay.visibility = View.VISIBLE
+            else {
+                binding.freeDay.visibility = View.GONE
+                (binding.miniDiaryRecyclerView.adapter as LessonsAdapter).newData(it)
+            }
+        }
+
         binding.toggleButton.addOnButtonCheckedListener { _, checkedId, isChecked ->
             if (!isChecked) return@addOnButtonCheckedListener
             when (checkedId) {
-                R.id.todayButton -> {
-                    (binding.miniDiaryRecyclerView.adapter as LessonsAdapter).newData(todayLessons)
-                }
-
-                R.id.tomorrowButton -> {
-                    (binding.miniDiaryRecyclerView.adapter as LessonsAdapter).newData(
-                        tomorrowLessons
-                    )
-                }
+                R.id.todayButton -> replaceFunction(todayLessons)
+                R.id.tomorrowButton -> replaceFunction(tomorrowLessons)
             }
         }
     }

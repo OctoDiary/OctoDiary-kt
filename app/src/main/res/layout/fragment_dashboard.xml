@@ -37,13 +37,20 @@
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/miniDiaryCard"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:layout_margin="@dimen/dashboard_mark_recycler_margin"
-        android:maxHeight="@dimen/dashboard_mini_diary_max_height"
+        android:layout_height="@dimen/dashboard_mini_diary_max_height"
         app:layout_constraintBottom_toTopOf="@+id/dashboardMarkRecyclerView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_max="@dimen/dashboard_mini_diary_max_height"
         app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/free_day"
+            style="@style/TextAppearance.Material3.HeadlineMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/free_day"
+            android:visibility="gone" />
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
