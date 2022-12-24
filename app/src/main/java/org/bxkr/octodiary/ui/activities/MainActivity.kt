@@ -283,7 +283,10 @@ class MainActivity : AppCompatActivity() {
         intent.putExtra("group_id", userData?.contextPersons?.get(0)?.group?.id)
         intent.putExtra("access_token", token)
         intent.putExtra("server", server)
-        intent.putExtra("old_marks", Gson().toJson(userFeedData?.recentMarks!!))
+        val prefs = getSharedPreferences(getString(R.string.saved_data_key), Context.MODE_PRIVATE)
+        prefs.edit {
+            putString("old_marks", Gson().toJson(userFeedData?.recentMarks))
+        }
         val pendingIntent =
             PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
 

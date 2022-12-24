@@ -9,6 +9,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.edit
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import org.bxkr.octodiary.Utils.toPatternedDate
@@ -31,8 +32,12 @@ class UpdateReceiver : BroadcastReceiver() {
         val personId = intent.getLongExtra("person_id", 0L)
         val groupId = intent.getLongExtra("group_id", 0L)
         val server = intent.getIntExtra("server", 0)
+        val prefs = context.getSharedPreferences(
+            context.getString(R.string.saved_data_key),
+            Context.MODE_PRIVATE
+        )
         val oldMarks = Gson().fromJson<List<RecentMark>>(
-            intent.getStringExtra("old_marks"),
+            prefs.getString("old_marks", null),
             object : TypeToken<List<RecentMark>>() {}.type
         )
 
@@ -41,8 +46,8 @@ class UpdateReceiver : BroadcastReceiver() {
             groupId,
             accessToken
         ).enqueue(object : BaseCallback<UserFeed>(context, function = { response ->
-            response.body()?.recentMarks!!.forEach {
-                if (it !in oldMarks) {
+            response.body()?.recentMarks?.forEach { recentMark ->
+                if (recentMark.marks[0].id !in oldMarks.map { it.marks[0].id }) {
                     val pendingIntent: PendingIntent =
                         Intent(context, MainActivity::class.java).let { notificationIntent ->
                             PendingIntent.getActivity(
@@ -51,12 +56,12 @@ class UpdateReceiver : BroadcastReceiver() {
                             )
                         }
 
-                    var markValue = it.marks[0].value
-                    if (it.marks.size == 2) {
+                    var markValue = recentMark.marks[0].value
+                    if (recentMark.marks.size == 2) {
                         markValue = context.getString(
                             R.string.fractional_mark,
-                            it.marks[0].value,
-                            it.marks[1].value
+                            recentMark.marks[0].value,
+                            recentMark.marks[1].value
                         )
                     }
                     val notification: Notification = Notification.Builder(context, "data_update")
@@ -65,11 +70,11 @@ class UpdateReceiver : BroadcastReceiver() {
                             context.getString(
                                 R.string.notification_new_mark_text,
                                 markValue,
-                                it.subject.name,
-                                it.shortMarkTypeText,
+                                recentMark.subject.name,
+                                recentMark.shortMarkTypeText,
                                 toPatternedDate(
                                     "MMM d",
-                                    Date(it.date * 1000L),
+                                    Date(recentMark.date * 1000L),
                                     context.resources.configuration.locales[0]
                                 )
                             )
@@ -81,6 +86,10 @@ class UpdateReceiver : BroadcastReceiver() {
 
                     val notificationManager = NotificationManagerCompat.from(context)
                     notificationManager.notify(1, notification)
+
+                    prefs.edit {
+                        putString("old_marks", Gson().toJson(response.body()?.recentMarks))
+                    }
                 }
             }
         }) {})
