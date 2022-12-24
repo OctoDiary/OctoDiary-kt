@@ -2,6 +2,7 @@ package org.bxkr.octodiary
 
 import android.Manifest
 import android.app.Notification
+import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -84,8 +85,16 @@ class UpdateReceiver : BroadcastReceiver() {
                         .setTicker(context.getText(R.string.school_out_of_date))
                         .build()
 
-                    val notificationManager = NotificationManagerCompat.from(context)
-                    notificationManager.notify(1, notification)
+                    val notificationManager =
+                        (context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager)
+                    var notificationId = 1
+                    if (notificationManager.activeNotifications.isNotEmpty()) {
+                        notificationId =
+                            notificationManager.activeNotifications.maxOf { it.id } + 1
+                    }
+
+                    val notificationManagerCompat = NotificationManagerCompat.from(context)
+                    notificationManagerCompat.notify(notificationId, notification)
 
                     prefs.edit {
                         putString("old_marks", Gson().toJson(response.body()?.recentMarks))
