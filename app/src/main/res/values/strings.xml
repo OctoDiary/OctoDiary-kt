@@ -121,4 +121,7 @@
     <string name="notification_new_mark_title">New mark!</string>
     <string name="period_marks">Period Marks</string>
     <string name="period_marks_data_key" translatable="false">period_marks</string>
+    <string name="average_mark">Average</string>
+    <string name="average_important">Average by works</string>
+    <string name="not_yet">Not yet</string>
 </resources>

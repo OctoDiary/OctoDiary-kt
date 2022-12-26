@@ -105,6 +105,9 @@ class MarkActivity : AppCompatActivity() {
             markRatingRecyclerView.adapter = MarkRatingMemberAdapter(
                 this@MarkActivity,
                 mark.categories.sortedByDescending { it.value })
+            avg.text = mark.averageMarks.averageMark
+            avgImportant.text =
+                mark.averageMarks.averageMarkByImportantWork ?: getString(R.string.not_yet)
         }
     }
 }

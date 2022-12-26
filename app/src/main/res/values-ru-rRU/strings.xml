@@ -74,4 +74,7 @@
     <string name="notification_new_mark_text">Новая оценка: %s, %s, %s, %s</string>
     <string name="notification_new_mark_title">Новая оценка!</string>
     <string name="period_marks">Оценки за период</string>
+    <string name="average_mark">Средний балл</string>
+    <string name="average_important">Средний балл за работы</string>
+    <string name="not_yet">Пока нет</string>
 </resources>
