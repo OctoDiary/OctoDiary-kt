@@ -6,6 +6,7 @@ import org.bxkr.octodiary.R
 import org.bxkr.octodiary.models.diary.Diary
 import org.bxkr.octodiary.models.lesson.Lesson
 import org.bxkr.octodiary.models.mark.MarkDetails
+import org.bxkr.octodiary.models.periodmarks.PeriodMarksResponse
 import org.bxkr.octodiary.models.rating.RatingClass
 import org.bxkr.octodiary.models.release.Release
 import org.bxkr.octodiary.models.user.User
@@ -114,6 +115,14 @@ object NetworkService {
             @Path("group_id") groupId: Long,
             @Header("Access-Token") accessToken: String?,
         ): Call<UserFeed>
+
+        @GET("persons/{person_id}/groups/{group_id}/periods/{period_id}/periodMarks")
+        fun periodMarks(
+            @Path("person_id") personId: Long,
+            @Path("group_id") groupId: Long,
+            @Path("period_id") periodId: Long,
+            @Header("Access-Token") accessToken: String?,
+        ): Call<PeriodMarksResponse>
     }
 
     interface GitHubAPI {

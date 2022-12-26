@@ -10,6 +10,10 @@
         android:icon="@drawable/ic_round_dashboard_24"
         android:title="@string/dashboard" />
     <item
+        android:id="@+id/periodMarksPage"
+        android:icon="@drawable/ic_round_timeline_24"
+        android:title="@string/marks" />
+    <item
         android:id="@+id/profilePage"
         android:icon="@drawable/ic_round_account_circle_24"
         android:title="@string/profile" />

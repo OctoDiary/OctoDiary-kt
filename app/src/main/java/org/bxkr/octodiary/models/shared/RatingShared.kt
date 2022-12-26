@@ -1,6 +1,6 @@
-package org.bxkr.octodiary.models.userfeed
+package org.bxkr.octodiary.models.shared
 
-data class Rating(
+data class RatingShared(
     val rankingPlaces: List<RankingPlace>,
     val rankingPosition: RankingPosition
 )

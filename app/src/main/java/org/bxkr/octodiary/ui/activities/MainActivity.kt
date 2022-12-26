@@ -34,6 +34,7 @@ import org.bxkr.octodiary.Utils.isDemo
 import org.bxkr.octodiary.databinding.ActivityMainBinding
 import org.bxkr.octodiary.models.diary.Diary
 import org.bxkr.octodiary.models.diary.Week
+import org.bxkr.octodiary.models.periodmarks.PeriodMarksResponse
 import org.bxkr.octodiary.models.rating.RatingClass
 import org.bxkr.octodiary.models.user.User
 import org.bxkr.octodiary.models.userfeed.UserFeed
@@ -41,6 +42,7 @@ import org.bxkr.octodiary.network.BaseCallback
 import org.bxkr.octodiary.network.NetworkService
 import org.bxkr.octodiary.ui.fragments.DashboardFragment
 import org.bxkr.octodiary.ui.fragments.DiaryFragment
+import org.bxkr.octodiary.ui.fragments.PeriodMarksFragment
 import org.bxkr.octodiary.ui.fragments.ProfileFragment
 import java.util.Calendar
 
@@ -48,7 +50,7 @@ import java.util.Calendar
 class MainActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMainBinding
-    lateinit var alarmManager: AlarmManager
+    private lateinit var alarmManager: AlarmManager
 
     var token: String?
         get() = this.getSharedPreferences(getString(R.string.auth_file_key), Context.MODE_PRIVATE)
@@ -86,6 +88,10 @@ class MainActivity : AppCompatActivity() {
         get() = agedData(this, R.string.user_feed_data_key)
         set(value) = agedData(this, R.string.user_feed_data_key, value)
 
+    var periodMarksData: PeriodMarksResponse?
+        get() = agedData(this, R.string.period_marks_data_key)
+        set(value) = agedData(this, R.string.period_marks_data_key, value)
+
     private val server: Int
         get() = this.getSharedPreferences(
             getString(R.string.auth_file_key), Context.MODE_PRIVATE
@@ -117,25 +123,18 @@ class MainActivity : AppCompatActivity() {
 
         PreferenceManager.setDefaultValues(this, R.xml.root_preferences, false)
 
+        val changeFragment: (Fragment) -> Boolean = {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment, it).commitAllowingStateLoss()
+            true
+        }
+
         binding.bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.diaryPage -> {
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.fragment, DiaryFragment()).commitAllowingStateLoss()
-                    true
-                }
-
-                R.id.dashboardPage -> {
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.fragment, DashboardFragment()).commitAllowingStateLoss()
-                    true
-                }
-
-                R.id.profilePage -> {
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.fragment, ProfileFragment()).commitAllowingStateLoss()
-                    true
-                }
+                R.id.diaryPage -> changeFragment(DiaryFragment())
+                R.id.dashboardPage -> changeFragment(DashboardFragment())
+                R.id.periodMarksPage -> changeFragment(PeriodMarksFragment())
+                R.id.profilePage -> changeFragment(ProfileFragment())
 
                 else -> false
             }
@@ -179,6 +178,7 @@ class MainActivity : AppCompatActivity() {
             getRating(listener)
             getDiary(listener)
             getUserFeed(listener)
+            getPeriodMarks(listener)
 
         }, errorFunction = { dataIsOutOfDate() }) {})
 
@@ -226,6 +226,21 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun getPeriodMarks(listener: () -> Unit = {}) {
+        with(userData!!) {
+            val call = NetworkService.api(NetworkService.Server.values()[server]).periodMarks(
+                info.personId,
+                contextPersons[0].group.id,
+                contextPersons[0].reportingPeriodGroup.periods.first { it.isCurrent }.id,
+                token
+            )
+            call.enqueue(object : BaseCallback<PeriodMarksResponse>(this@MainActivity, function = {
+                periodMarksData = it.body()
+                if (isAllDataLoaded()) allDataLoaded(listener)
+            }) {})
+        }
+    }
+
 
     private fun isAllDataLoaded(): Boolean =
         userData != null && diaryData != null && ratingData != null && userFeedData != null
@@ -239,29 +254,16 @@ class MainActivity : AppCompatActivity() {
 
         val openedFragment = supportFragmentManager.findFragmentById(R.id.fragment)
         if (openedFragment == null && !supportFragmentManager.isDestroyed) {
-
-            var fragToOpen: Fragment? = null
-
-            when (defaultScreen) {
-                "diary" -> {
-                    fragToOpen = DiaryFragment()
-                    binding.bottomNavigationView.selectedItemId = R.id.diaryPage
-                }
-
-                "dashboard" -> {
-                    fragToOpen = DashboardFragment()
-                    binding.bottomNavigationView.selectedItemId = R.id.dashboardPage
-                }
-
-                "profile" -> {
-                    fragToOpen = ProfileFragment()
-                    binding.bottomNavigationView.selectedItemId = R.id.profilePage
-                }
-            }
-
-            if (fragToOpen != null) {
-                supportFragmentManager.beginTransaction().replace(R.id.fragment, fragToOpen)
+            val openFragment: (Fragment, Int) -> Unit = { frag, id ->
+                supportFragmentManager.beginTransaction().replace(R.id.fragment, frag)
                     .commitAllowingStateLoss()
+                binding.bottomNavigationView.selectedItemId = id
+            }
+            when (defaultScreen) {
+                "diary" -> openFragment(DiaryFragment(), R.id.diaryPage)
+                "dashboard" -> openFragment(DashboardFragment(), R.id.dashboardPage)
+                "period_marks" -> openFragment(PeriodMarksFragment(), R.id.periodMarksPage)
+                "profile" -> openFragment(ProfileFragment(), R.id.profilePage)
             }
         } else if (openedFragment != null) {
             supportFragmentManager.beginTransaction().detach(openedFragment)

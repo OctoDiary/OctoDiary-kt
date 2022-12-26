@@ -73,4 +73,5 @@
     <string name="data_update_channel_name">Обновление школьных данных</string>
     <string name="notification_new_mark_text">Новая оценка: %s, %s, %s, %s</string>
     <string name="notification_new_mark_title">Новая оценка!</string>
+    <string name="period_marks">Оценки за период</string>
 </resources>
