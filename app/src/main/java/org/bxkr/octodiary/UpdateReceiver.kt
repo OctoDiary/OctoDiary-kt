@@ -18,7 +18,7 @@ import org.bxkr.octodiary.models.userfeed.RecentMark
 import org.bxkr.octodiary.models.userfeed.UserFeed
 import org.bxkr.octodiary.network.BaseCallback
 import org.bxkr.octodiary.network.NetworkService
-import org.bxkr.octodiary.ui.activities.MainActivity
+import org.bxkr.octodiary.ui.activities.MarkActivity
 import java.util.Date
 
 class UpdateReceiver : BroadcastReceiver() {
@@ -49,10 +49,24 @@ class UpdateReceiver : BroadcastReceiver() {
         ).enqueue(object : BaseCallback<UserFeed>(context, function = { response ->
             response.body()?.recentMarks?.forEach { recentMark ->
                 if (recentMark.marks[0].id !in oldMarks.map { it.marks[0].id }) {
+
+                    val notificationManager =
+                        (context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager)
+                    var notificationId = 1
+                    if (notificationManager.activeNotifications.isNotEmpty()) {
+                        notificationId =
+                            notificationManager.activeNotifications.maxOf { it.id } + 1
+                    }
+
                     val pendingIntent: PendingIntent =
-                        Intent(context, MainActivity::class.java).let { notificationIntent ->
+                        Intent(context, MarkActivity::class.java).let { notificationIntent ->
+                            notificationIntent.action = "notification_$notificationId"
+                            notificationIntent.putExtra("person_id", personId)
+                            notificationIntent.putExtra("group_id", groupId)
+                            notificationIntent.putExtra("mark_id", recentMark.marks[0].id)
+                            notificationIntent.putExtra("notification_id", notificationId)
                             PendingIntent.getActivity(
-                                context, 0, notificationIntent,
+                                context, notificationId, notificationIntent,
                                 PendingIntent.FLAG_IMMUTABLE
                             )
                         }
@@ -84,14 +98,6 @@ class UpdateReceiver : BroadcastReceiver() {
                         .setContentIntent(pendingIntent)
                         .setTicker(context.getText(R.string.school_out_of_date))
                         .build()
-
-                    val notificationManager =
-                        (context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager)
-                    var notificationId = 1
-                    if (notificationManager.activeNotifications.isNotEmpty()) {
-                        notificationId =
-                            notificationManager.activeNotifications.maxOf { it.id } + 1
-                    }
 
                     val notificationManagerCompat = NotificationManagerCompat.from(context)
                     notificationManagerCompat.notify(notificationId, notification)

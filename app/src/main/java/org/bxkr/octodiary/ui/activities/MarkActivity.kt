@@ -1,5 +1,6 @@
 package org.bxkr.octodiary.ui.activities
 
+import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -29,6 +30,15 @@ class MarkActivity : AppCompatActivity() {
         binding = ActivityMarkBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        if (intent.hasExtra("notification_id")) {
+            (getSystemService(NOTIFICATION_SERVICE) as NotificationManager).cancel(
+                intent.getIntExtra(
+                    "notification_id",
+                    -1
+                )
+            )
+        }
+
         if (isDemo(this)) {
             configureMark(getJsonRaw(resources.openRawResource(R.raw.sample_mark_details_data)))
         } else {
@@ -41,18 +51,13 @@ class MarkActivity : AppCompatActivity() {
 
             val call = NetworkService.api(
                 NetworkService.Server.values()[prefs.getInt(
-                    getString(R.string.server_key),
-                    0
+                    getString(R.string.server_key), 0
                 )]
             ).markDetails(
-                personId,
-                groupId,
-                markId,
-                prefs.getString(getString(R.string.token), null)
+                personId, groupId, markId, prefs.getString(getString(R.string.token), null)
             )
 
-            call.enqueue(object : BaseCallback<MarkDetails>(
-                this,
+            call.enqueue(object : BaseCallback<MarkDetails>(this,
                 binding.root,
                 R.string.unexpected_error,
                 { response ->
@@ -79,17 +84,14 @@ class MarkActivity : AppCompatActivity() {
 
     private fun configureMark(mark: MarkDetails) {
 
-        val toCommon =
-            SimpleDateFormat("dd MMMM", this.resources.configuration.locales[0])
-        val toWeekday =
-            SimpleDateFormat("EEEE", this.resources.configuration.locales[0])
+        val toCommon = SimpleDateFormat("dd MMMM", this.resources.configuration.locales[0])
+        val toWeekday = SimpleDateFormat("EEEE", this.resources.configuration.locales[0])
 
         with(binding) {
             bigProgressBar.visibility = View.GONE
             contentScrollView.visibility = View.VISIBLE
             markValue.text = mark.markDetails.marks[0].value
-            lessonDate.text = this@MarkActivity.getString(
-                R.string.date_weekday,
+            lessonDate.text = this@MarkActivity.getString(R.string.date_weekday,
                 Date(mark.date.toLong() * 1000).let { toCommon.format(it) },
                 Date(mark.date.toLong() * 1000).let { toWeekday.format(it) })
             lessonName.text = mark.subject.name
@@ -102,8 +104,7 @@ class MarkActivity : AppCompatActivity() {
                 this@MarkActivity.startActivity(intent)
             }
             markRatingRecyclerView.layoutManager = LinearLayoutManager(this@MarkActivity)
-            markRatingRecyclerView.adapter = MarkRatingMemberAdapter(
-                this@MarkActivity,
+            markRatingRecyclerView.adapter = MarkRatingMemberAdapter(this@MarkActivity,
                 mark.categories.sortedByDescending { it.value })
             avg.text = mark.averageMarks.averageMark
             avgImportant.text =
