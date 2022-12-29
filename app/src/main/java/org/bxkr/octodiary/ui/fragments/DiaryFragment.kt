@@ -7,9 +7,14 @@ import com.google.android.material.snackbar.Snackbar
 import org.bxkr.octodiary.R
 import org.bxkr.octodiary.Utils
 import org.bxkr.octodiary.databinding.FragmentDiaryBinding
+import org.bxkr.octodiary.models.diary.Diary
+import org.bxkr.octodiary.models.diary.Week
+import org.bxkr.octodiary.network.BaseCallback
+import org.bxkr.octodiary.network.NetworkService
 import org.bxkr.octodiary.ui.activities.MainActivity
 import org.bxkr.octodiary.ui.adapters.DayAdapter
 import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
@@ -39,6 +44,11 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(FragmentDiaryBinding::i
             return
         } else {
             val diaryData = mainActivity.diaryData ?: return
+            val weekId = Calendar.getInstance().let {
+                it.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
+                SimpleDateFormat("yyyy-MM-dd", resources.configuration.locales[0]).format(it.time)
+            }
+            binding.weekSlider.value = diaryData.indexOfFirst { it.id == weekId }.toFloat()
             binding.dayViewPager.adapter =
                 DayAdapter(binding.root.context, diaryData[binding.weekSlider.value.toInt()].days)
             binding.dayViewPager.offscreenPageLimit = 7
@@ -75,6 +85,7 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(FragmentDiaryBinding::i
                     secondDate?.let { it1 -> formatter.format(it1) }
                 )
             }
+            binding.weekSlider.valueTo = diaryData.size - 1F
             binding.daySlider.setLabelFormatter {
                 val date = SimpleDateFormat("EEEE", resources.configuration.locales[0])
                 date.format(Date(86400000 * (it + 4).toLong()))
@@ -83,8 +94,44 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(FragmentDiaryBinding::i
                 binding.dayViewPager.currentItem = value.toInt()
             }
             binding.weekSlider.addOnChangeListener { _, value, _ ->
+                binding.daySlider.value = 0F
                 binding.dayViewPager.adapter =
-                    DayAdapter(binding.root.context, diaryData[value.toInt()].days)
+                    DayAdapter(binding.root.context, mainActivity.diaryData!![value.toInt()].days)
+            }
+
+            val loadWeek =
+                { weekFunction: (List<Week>) -> Week, loadType: NetworkService.LoadType, addingFunction: (MutableList<Week>) -> Unit ->
+                    mainActivity.apply {
+                        userData?.contextPersons?.get(0)?.let {
+                            NetworkService.api(NetworkService.Server.values()[server]).diary(
+                                it.personId,
+                                it.school.id,
+                                it.group.id,
+                                mainActivity.token,
+                                weekFunction(diaryData).id,
+                                loadType.name
+                            ).enqueue(object :
+                                BaseCallback<Diary>(mainActivity, function = { response ->
+                                    addingFunction(response.body()!!.weeks)
+                                    onViewCreated(view, savedInstanceState)
+                                }) {})
+                        }
+                    }
+                }
+
+            binding.addWeekBefore.setOnClickListener {
+                loadWeek({ it.first() }, NetworkService.LoadType.Past, {
+                    val tempDiary = mainActivity.diaryData!!
+                    tempDiary.add(0, it[0])
+                    mainActivity.diaryData = tempDiary
+                })
+            }
+            binding.addWeekAfter.setOnClickListener {
+                loadWeek({ it.last() }, NetworkService.LoadType.Future, {
+                    val tempDiary = mainActivity.diaryData!!
+                    tempDiary.add(it[0])
+                    mainActivity.diaryData = tempDiary
+                })
             }
             binding.root.visibility = View.VISIBLE
         }

@@ -4,5 +4,5 @@ data class Diary(
     val description: String,
     val mobileSubscriptionStatus: String,
     val type: String,
-    val weeks: List<Week>
+    val weeks: MutableList<Week>
 )

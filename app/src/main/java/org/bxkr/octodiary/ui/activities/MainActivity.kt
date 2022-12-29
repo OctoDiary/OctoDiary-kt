@@ -72,7 +72,7 @@ class MainActivity : AppCompatActivity() {
                 }
         }
 
-    var diaryData: List<Week>?
+    var diaryData: MutableList<Week>?
         get() = agedData(this, R.string.diary_data_key)
         set(value) = agedData(this, R.string.diary_data_key, value)
 
@@ -92,7 +92,7 @@ class MainActivity : AppCompatActivity() {
         get() = agedData(this, R.string.period_marks_data_key)
         set(value) = agedData(this, R.string.period_marks_data_key, value)
 
-    private val server: Int
+    val server: Int
         get() = this.getSharedPreferences(
             getString(R.string.auth_file_key), Context.MODE_PRIVATE
         ).getInt(getString(R.string.server_key), 0)
@@ -115,7 +115,8 @@ class MainActivity : AppCompatActivity() {
         } else if (isDemo(this)) {
             with(resources) {
                 userData = getJsonRaw<User>(openRawResource(R.raw.sample_user_data))
-                diaryData = getJsonRaw<List<Week>>(openRawResource(R.raw.sample_diary_data))
+                diaryData =
+                    getJsonRaw<List<Week>>(openRawResource(R.raw.sample_diary_data)) as MutableList<Week>
                 ratingData = getJsonRaw<RatingClass>(openRawResource(R.raw.sample_rating_data))
                 allDataLoaded()
             }

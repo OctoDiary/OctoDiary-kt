@@ -45,6 +45,12 @@ object NetworkService {
         )
     }
 
+    enum class LoadType {
+        Undefined,
+        Past,
+        Future
+    }
+
     data class AuthResult(
         val credentials: AuthResultCredentials,
         val reason: String,
@@ -77,7 +83,7 @@ object NetworkService {
             @Path("group_id") groupId: Long,
             @Header("Access-Token") accessToken: String?,
             @Query("id") id: String = "",
-            @Query("loadType") loadType: String = "Undefined",
+            @Query("loadType") loadType: String = LoadType.Undefined.name,
         ): Call<Diary>
 
         @GET("users/{user_id}/context")

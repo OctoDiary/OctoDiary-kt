@@ -19,6 +19,7 @@ import org.bxkr.octodiary.ui.adapters.DashboardMarkAdapter
 import org.bxkr.octodiary.ui.adapters.LessonsAdapter
 import org.bxkr.octodiary.ui.dialogs.RatingBottomSheet
 import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
@@ -94,8 +95,12 @@ class DashboardFragment :
             binding.toggleButton.visibility = View.GONE
             return
         }
-        val tomorrowLessons = diaryData[1].days[tomorrowPosition].lessons
-        val todayLessons = diaryData[1].days[todayPosition].lessons
+        val weekId = Calendar.getInstance().let {
+            it.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
+            SimpleDateFormat("yyyy-MM-dd", resources.configuration.locales[0]).format(it.time)
+        }
+        val tomorrowLessons = diaryData.first { it.id == weekId }.days[tomorrowPosition].lessons
+        val todayLessons = diaryData.first { it.id == weekId }.days[todayPosition].lessons
         binding.miniDiaryRecyclerView.adapter = LessonsAdapter(mainActivity, tomorrowLessons, true)
         if (tomorrowLessons.isEmpty()) binding.freeDay.visibility = View.VISIBLE
         val replaceFunction: (lessons: List<Lesson>) -> Unit = {
