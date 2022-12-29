@@ -51,7 +51,7 @@ class SettingsActivity : AppCompatActivity() {
         }
     }
 
-    private fun goToDiary() {
+    protected fun goToDiary() {
         val intent = Intent(this@SettingsActivity, MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
         startActivity(intent)

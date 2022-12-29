@@ -97,6 +97,8 @@ class MainActivity : AppCompatActivity() {
             getString(R.string.auth_file_key), Context.MODE_PRIVATE
         ).getInt(getString(R.string.server_key), 0)
 
+    private val diaryFragment = DiaryFragment()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -129,10 +131,9 @@ class MainActivity : AppCompatActivity() {
                 .replace(R.id.fragment, it).commitAllowingStateLoss()
             true
         }
-
         binding.bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.diaryPage -> changeFragment(DiaryFragment())
+                R.id.diaryPage -> changeFragment(diaryFragment)
                 R.id.dashboardPage -> changeFragment(DashboardFragment())
                 R.id.periodMarksPage -> changeFragment(PeriodMarksFragment())
                 R.id.profilePage -> changeFragment(ProfileFragment())

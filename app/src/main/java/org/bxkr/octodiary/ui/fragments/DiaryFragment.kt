@@ -52,28 +52,26 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(FragmentDiaryBinding::i
             binding.dayViewPager.adapter =
                 DayAdapter(binding.root.context, diaryData[binding.weekSlider.value.toInt()].days)
             binding.dayViewPager.offscreenPageLimit = 7
-            binding.dayViewPager.post {
-                val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-                val today =
-                    SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault()).format(
-                        dateFormat.parse(dateFormat.format(Date()))!!
-                    )
-                var todayPosition: Int? = null
-                for ((index, day) in diaryData[binding.weekSlider.value.toInt()].days.withIndex()) {
-                    if (day.date == today) {
-                        todayPosition = index
-                    }
+            val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+            val today =
+                SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault()).format(
+                    dateFormat.parse(dateFormat.format(Date()))!!
+                )
+            var todayPosition: Int? = null
+            for ((index, day) in diaryData[binding.weekSlider.value.toInt()].days.withIndex()) {
+                if (day.date == today) {
+                    todayPosition = index
                 }
-                binding.daySlider.value = todayPosition?.toFloat() ?: 4.toFloat()
-                binding.dayViewPager.currentItem = binding.daySlider.value.toInt()
-                binding.dayViewPager.registerOnPageChangeCallback(object : OnPageChangeCallback() {
-
-                    override fun onPageSelected(position: Int) {
-                        super.onPageSelected(position)
-                        binding.daySlider.value = position.toFloat()
-                    }
-                })
             }
+            binding.daySlider.value = todayPosition?.toFloat() ?: 4.toFloat()
+            binding.dayViewPager.currentItem = binding.daySlider.value.toInt()
+            binding.dayViewPager.registerOnPageChangeCallback(object : OnPageChangeCallback() {
+
+                override fun onPageSelected(position: Int) {
+                    super.onPageSelected(position)
+                    binding.daySlider.value = position.toFloat()
+                }
+            })
             binding.weekSlider.setLabelFormatter {
                 val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault())
                 val formatter = SimpleDateFormat("dd.MM", resources.configuration.locales[0])

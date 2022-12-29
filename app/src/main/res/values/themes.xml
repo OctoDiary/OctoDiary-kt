@@ -3,4 +3,8 @@
     <style name="Theme.OctoDiary" parent="Theme.Material3.DayNight">
         <item name="bottomSheetDialogTheme">@style/ModalBottomSheetDialog</item>
     </style>
+
+    <style name="Selectable" parent="Theme.OctoDiary">
+        <item name="background">?attr/selectableItemBackground</item>
+    </style>
 </resources>

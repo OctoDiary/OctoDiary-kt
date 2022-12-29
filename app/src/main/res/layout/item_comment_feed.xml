@@ -10,6 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
+        android:textIsSelectable="true"
         tools:text="Released from physical education" />
 
     <TextView
@@ -18,5 +19,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/feedBody"
         android:layout_alignParentStart="true"
+        android:textIsSelectable="true"
         tools:text="Oct 20, Thursday" />
 </RelativeLayout>
