@@ -1,0 +1,2058 @@
+{
+  "schedule": {
+    "todayLessons": [
+      {
+        "id": 0,
+        "number": 1,
+        "place": null,
+        "startTime": 1672378200,
+        "endTime": 1672380600,
+        "hours": {
+          "startHour": "8",
+          "startMinute": "30",
+          "endHour": "9",
+          "endMinute": "10"
+        },
+        "subject": {
+          "id": 0,
+          "name": "Русский язык",
+          "knowledgeArea": "Philology",
+          "subjectMood": null
+        }
+      },
+      {
+        "id": 0,
+        "number": 2,
+        "place": null,
+        "startTime": 1672381200,
+        "endTime": 1672383600,
+        "hours": {
+          "startHour": "9",
+          "startMinute": "20",
+          "endHour": "10",
+          "endMinute": "00"
+        },
+        "subject": {
+          "id": 0,
+          "name": "Иностр.яз(немецкий)",
+          "knowledgeArea": "Philology",
+          "subjectMood": null
+        }
+      },
+      {
+        "id": 0,
+        "number": 3,
+        "place": null,
+        "startTime": 1672384200,
+        "endTime": 1672386600,
+        "hours": {
+          "startHour": "10",
+          "startMinute": "10",
+          "endHour": "10",
+          "endMinute": "50"
+        },
+        "subject": {
+          "id": 0,
+          "name": "Ист.России. Вс.ист-я",
+          "knowledgeArea": "SocialStudies",
+          "subjectMood": null
+        }
+      },
+      {
+        "id": 0,
+        "number": 4,
+        "place": null,
+        "startTime": 1672387500,
+        "endTime": 1672389900,
+        "hours": {
+          "startHour": "11",
+          "startMinute": "05",
+          "endHour": "11",
+          "endMinute": "45"
+        },
+        "subject": {
+          "id": 0,
+          "name": "Родная литература",
+          "knowledgeArea": "Philology",
+          "subjectMood": null
+        }
+      },
+      {
+        "id": 0,
+        "number": 5,
+        "place": null,
+        "startTime": 1672390500,
+        "endTime": 1672392900,
+        "hours": {
+          "startHour": "11",
+          "startMinute": "55",
+          "endHour": "12",
+          "endMinute": "35"
+        },
+        "subject": {
+          "id": 0,
+          "name": "Геометрия",
+          "knowledgeArea": "Mathematics",
+          "subjectMood": null
+        }
+      },
+      {
+        "id": 0,
+        "number": 6,
+        "place": null,
+        "startTime": 1672393800,
+        "endTime": 1672396200,
+        "hours": {
+          "startHour": "12",
+          "startMinute": "50",
+          "endHour": "13",
+          "endMinute": "30"
+        },
+        "subject": {
+          "id": 0,
+          "name": "Химия",
+          "knowledgeArea": "NaturalScience",
+          "subjectMood": null
+        }
+      },
+      {
+        "id": 0,
+        "number": 7,
+        "place": null,
+        "startTime": 1672397100,
+        "endTime": 1672399500,
+        "hours": {
+          "startHour": "13",
+          "startMinute": "45",
+          "endHour": "14",
+          "endMinute": "25"
+        },
+        "subject": {
+          "id": 0,
+          "name": "Иностр.яз(английск)",
+          "knowledgeArea": "Philology",
+          "subjectMood": null
+        }
+      }
+    ],
+    "tomorrowLessons": [],
+    "nextLessonDate": null
+  },
+  "recentMarks": [
+    {
+      "categories": [
+        {
+          "mood": "Good",
+          "percent": 67.857,
+          "studentCount": 19,
+          "markNumber": 0,
+          "value": "5"
+        },
+        {
+          "mood": "Good",
+          "percent": 32.143,
+          "studentCount": 9,
+          "markNumber": 0,
+          "value": "4"
+        }
+      ],
+      "date": 1672386620,
+      "subject": {
+        "id": 0,
+        "name": "Родная литература",
+        "knowledgeArea": "Philology",
+        "subjectMood": null
+      },
+      "markType": "Mark",
+      "criteriaMarkType": "NotSet",
+      "markTypeText": "Самостоятельная работа",
+      "shortMarkTypeText": "С/Р",
+      "lesson": {
+        "id": 0,
+        "date": 1672358400,
+        "theme": "Н.П.Вагнер \"Христова детка\" или Павел Засодимский «В метель и вьюгу». Рождественские рассказы. Мотив \"божественного дитя\"."
+      },
+      "isNew": true,
+      "isFinal": false,
+      "isImportant": true,
+      "marks": [
+        {
+          "id": 0,
+          "value": "5",
+          "mood": "Good"
+        }
+      ],
+      "indicator": null
+    },
+    {
+      "categories": [
+        {
+          "mood": "Good",
+          "percent": 52.381,
+          "studentCount": 11,
+          "markNumber": 0,
+          "value": "5"
+        },
+        {
+          "mood": "Good",
+          "percent": 19.048,
+          "studentCount": 4,
+          "markNumber": 1,
+          "value": "5"
+        },
+        {
+          "mood": "Good",
+          "percent": 33.333,
+          "studentCount": 7,
+          "markNumber": 0,
+          "value": "4"
+        },
+        {
+          "mood": "Good",
+          "percent": 38.095,
+          "studentCount": 8,
+          "markNumber": 1,
+          "value": "4"
+        },
+        {
+          "mood": "Average",
+          "percent": 33.333,
+          "studentCount": 7,
+          "markNumber": 1,
+          "value": "3"
+        },
+        {
+          "mood": "Average",
+          "percent": 14.286,
+          "studentCount": 3,
+          "markNumber": 0,
+          "value": "3"
+        },
+        {
+          "mood": "Bad",
+          "percent": 9.524,
+          "studentCount": 2,
+          "markNumber": 1,
+          "value": "2"
+        }
+      ],
+      "date": 1672386362,
+      "subject": {
+        "id": 0,
+        "name": "Русский язык",
+        "knowledgeArea": "Philology",
+        "subjectMood": null
+      },
+      "markType": "Mark",
+      "criteriaMarkType": "NotSet",
+      "markTypeText": "Сочинение по картине",
+      "shortMarkTypeText": "СК",
+      "lesson": {
+        "id": 0,
+        "date": 1672012800,
+        "theme": "Р.Р. Описание произведения живописи"
+      },
+      "isNew": true,
+      "isFinal": false,
+      "isImportant": true,
+      "marks": [
+        {
+          "id": 0,
+          "value": "5",
+          "mood": "Good"
+        },
+        {
+          "id": 0,
+          "value": "5",
+          "mood": "Good"
+        }
+      ],
+      "indicator": null
+    },
+    {
+      "categories": [
+        {
+          "mood": "Good",
+          "percent": 10.526,
+          "studentCount": 2,
+          "markNumber": 0,
+          "value": "5"
+        },
+        {
+          "mood": "Good",
+          "percent": 21.053,
+          "studentCount": 4,
+          "markNumber": 0,
+          "value": "4"
+        },
+        {
+          "mood": "Average",
+          "percent": 68.421,
+          "studentCount": 13,
+          "markNumber": 0,
+          "value": "3"
+        }
+      ],
+      "date": 1672306059,
+      "subject": {
+        "id": 0,
+        "name": "Физика",
+        "knowledgeArea": "NaturalScience",
+        "subjectMood": null
+      },
+      "markType": "Mark",
+      "criteriaMarkType": "NotSet",
+      "markTypeText": "Контрольная",
+      "shortMarkTypeText": "К/Р",
+      "lesson": {
+        "id": 0,
+        "date": 1671062400,
+        "theme": "Контрольная работа № 1.«Тепловые явления»."
+      },
+      "isNew": false,
+      "isFinal": false,
+      "isImportant": true,
+      "marks": [
+        {
+          "id": 0,
+          "value": "5",
+          "mood": "Good"
+        }
+      ],
+      "indicator": null
+    },
+    {
+      "categories": [
+        {
+          "mood": "Good",
+          "percent": 50.0,
+          "studentCount": 13,
+          "markNumber": 0,
+          "value": "5"
+        },
+        {
+          "mood": "Good",
+          "percent": 34.615,
+          "studentCount": 9,
+          "markNumber": 0,
+          "value": "4"
+        },
+        {
+          "mood": "Average",
+          "percent": 15.385,
+          "studentCount": 4,
+          "markNumber": 0,
+          "value": "3"
+        }
+      ],
+      "date": 1672302330,
+      "subject": {
+        "id": 0,
+        "name": "Родная литература",
+        "knowledgeArea": "Philology",
+        "subjectMood": null
+      },
+      "markType": "Mark",
+      "criteriaMarkType": "NotSet",
+      "markTypeText": "Тест",
+      "shortMarkTypeText": "Тест",
+      "lesson": {
+        "id": 0,
+        "date": 1671753600,
+        "theme": "А.С.Пушкин «Пиковая дама». Проблема «человек и судьба» в идейном содержании произведения. Система образов-персонажей, сочетание в них реального и символического планов, значение образа Петербурга."
+      },
+      "isNew": false,
+      "isFinal": false,
+      "isImportant": true,
+      "marks": [
+        {
+          "id": 0,
+          "value": "5",
+          "mood": "Good"
+        }
+      ],
+      "indicator": null
+    },
+    {
+      "categories": [
+        {
+          "mood": "Good",
+          "percent": 63.158,
+          "studentCount": 12,
+          "markNumber": 0,
+          "value": "5"
+        },
+        {
+          "mood": "Good",
+          "percent": 36.842,
+          "studentCount": 7,
+          "markNumber": 0,
+          "value": "4"
+        }
+      ],
+      "date": 1672291067,
+      "subject": {
+        "id": 0,
+        "name": "Технология",
+        "knowledgeArea": "Technology",
+        "subjectMood": null
+      },
+      "markType": "Mark",
+      "criteriaMarkType": "NotSet",
+      "markTypeText": "Урок",
+      "shortMarkTypeText": "УР",
+      "lesson": {
+        "id": 0,
+        "date": 1672185600,
+        "theme": "Технологии обработки пищевых продуктов"
+      },
+      "isNew": false,
+      "isFinal": false,
+      "isImportant": false,
+      "marks": [
+        {
+          "id": 0,
+          "value": "5",
+          "mood": "Good"
+        }
+      ],
+      "indicator": null
+    },
+    {
+      "categories": [
+        {
+          "mood": "Good",
+          "percent": 100.0,
+          "studentCount": 21,
+          "markNumber": 0,
+          "value": "5"
+        }
+      ],
+      "date": 1672227242,
+      "subject": {
+        "id": 0,
+        "name": "Музыка",
+        "knowledgeArea": "Art",
+        "subjectMood": null
+      },
+      "markType": "Mark",
+      "criteriaMarkType": "NotSet",
+      "markTypeText": "Ответ на уроке",
+      "shortMarkTypeText": "ОТВ",
+      "lesson": {
+        "id": 0,
+        "date": 1672185600,
+        "theme": "Симфония №1 «Классическая»  С. Прокофьева."
+      },
+      "isNew": false,
+      "isFinal": false,
+      "isImportant": false,
+      "marks": [
+        {
+          "id": 0,
+          "value": "5",
+          "mood": "Good"
+        }
+      ],
+      "indicator": null
+    },
+    {
+      "categories": [
+        {
+          "mood": "Good",
+          "percent": 30.0,
+          "studentCount": 3,
+          "markNumber": 0,
+          "value": "4"
+        },
+        {
+          "mood": "Bad",
+          "percent": 50.0,
+          "studentCount": 5,
+          "markNumber": 0,
+          "value": "2"
+        },
+        {
+          "mood": "Average",
+          "percent": 20.0,
+          "studentCount": 2,
+          "markNumber": 0,
+          "value": "3"
+        }
+      ],
+      "date": 1672223672,
+      "subject": {
+        "id": 0,
+        "name": "Иностр.яз(английск)",
+        "knowledgeArea": "Philology",
+        "subjectMood": null
+      },
+      "markType": "Mark",
+      "criteriaMarkType": "NotSet",
+      "markTypeText": "Проверочная работа",
+      "shortMarkTypeText": "ПР",
+      "lesson": {
+        "id": 0,
+        "date": 1671580800,
+        "theme": "В магазине одежды. Словообразование. Прилагательные –антонимы. Предлоги. Фразовый глагол put. Отработка лексических навыков."
+      },
+      "isNew": false,
+      "isFinal": false,
+      "isImportant": true,
+      "marks": [
+        {
+          "id": 0,
+          "value": "4",
+          "mood": "Good"
+        }
+      ],
+      "indicator": null
+    },
+    {
+      "categories": [
+        {
+          "mood": "Good",
+          "percent": 42.857,
+          "studentCount": 3,
+          "markNumber": 0,
+          "value": "5"
+        },
+        {
+          "mood": "Average",
+          "percent": 57.143,
+          "studentCount": 4,
+          "markNumber": 0,
+          "value": "3"
+        }
+      ],
+      "date": 1672223555,
+      "subject": {
+        "id": 0,
+        "name": "Иностр.яз(английск)",
+        "knowledgeArea": "Philology",
+        "subjectMood": null
+      },
+      "markType": "Mark",
+      "criteriaMarkType": "NotSet",
+      "markTypeText": "Словарный диктант",
+      "shortMarkTypeText": "СД",
+      "lesson": {
+        "id": 0,
+        "date": 1671148800,
+        "theme": "Описание внешности. Изменение внешности звезд. Каузативная конструкция. Идиомы."
+      },
+      "isNew": false,
+      "isFinal": false,
+      "isImportant": true,
+      "marks": [
+        {
+          "id": 0,
+          "value": "5",
+          "mood": "Good"
+        }
+      ],
+      "indicator": null
+    },
+    {
+      "categories": [
+        {
+          "mood": "Good",
+          "percent": 71.429,
+          "studentCount": 5,
+          "markNumber": 0,
+          "value": "4"
+        },
+        {
+          "mood": "Good",
+          "percent": 28.571,
+          "studentCount": 2,
+          "markNumber": 0,
+          "value": "5"
+        }
+      ],
+      "date": 1672223472,
+      "subject": {
+        "id": 0,
+        "name": "Иностр.яз(английск)",
+        "knowledgeArea": "Philology",
+        "subjectMood": null
+      },
+      "markType": "Mark",
+      "criteriaMarkType": "NotSet",
+      "markTypeText": "Письмо",
+      "shortMarkTypeText": "ПИС",
+      "lesson": {
+        "id": 0,
+        "date": 1672185600,
+        "theme": "Экология в одежде. Чтение. Аудирование."
+      },
+      "isNew": false,
+      "isFinal": false,
+      "isImportant": false,
+      "marks": [
+        {
+          "id": 0,
+          "value": "4",
+          "mood": "Good"
+        }
+      ],
+      "indicator": null
+    },
+    {
+      "categories": [
+        {
+          "mood": "Good",
+          "percent": 64.706,
+          "studentCount": 11,
+          "markNumber": 0,
+          "value": "5"
+        },
+        {
+          "mood": "Good",
+          "percent": 35.294,
+          "studentCount": 6,
+          "markNumber": 0,
+          "value": "4"
+        }
+      ],
+      "date": 1672133943,
+      "subject": {
+        "id": 0,
+        "name": "Физическая культура",
+        "knowledgeArea": "PhysicalCulture",
+        "subjectMood": null
+      },
+      "markType": "Mark",
+      "criteriaMarkType": "NotSet",
+      "markTypeText": "Ответ на уроке",
+      "shortMarkTypeText": "ОТВ",
+      "lesson": {
+        "id": 0,
+        "date": 1672099200,
+        "theme": "ОРУ. Соединение из 2-3 эл-тов на перекладине. Круговая тренировка по станциям."
+      },
+      "isNew": false,
+      "isFinal": false,
+      "isImportant": false,
+      "marks": [
+        {
+          "id": 0,
+          "value": "5",
+          "mood": "Good"
+        }
+      ],
+      "indicator": null
+    },
+    {
+      "categories": [
+        {
+          "mood": "Good",
+          "percent": 26.316,
+          "studentCount": 5,
+          "markNumber": 0,
+          "value": "5"
+        },
+        {
+          "mood": "Good",
+          "percent": 31.579,
+          "studentCount": 6,
+          "markNumber": 0,
+          "value": "4"
+        },
+        {
+          "mood": "Average",
+          "percent": 21.053,
+          "studentCount": 4,
+          "markNumber": 0,
+          "value": "3"
+        },
+        {
+          "mood": "Bad",
+          "percent": 21.053,
+          "studentCount": 4,
+          "markNumber": 0,
+          "value": "2"
+        }
+      ],
+      "date": 1672130871,
+      "subject": {
+        "id": 0,
+        "name": "Литература",
+        "knowledgeArea": "Philology",
+        "subjectMood": null
+      },
+      "markType": "Mark",
+      "criteriaMarkType": "NotSet",
+      "markTypeText": "Ответ на уроке",
+      "shortMarkTypeText": "ОТВ",
+      "lesson": {
+        "id": 0,
+        "date": 1672099200,
+        "theme": "РРН.В. Гоголь. «Ревизор». Подготовка к письменному ответу на один из проблемных вопросов"
+      },
+      "isNew": false,
+      "isFinal": false,
+      "isImportant": false,
+      "marks": [
+        {
+          "id": 0,
+          "value": "5",
+          "mood": "Good"
+        }
+      ],
+      "indicator": null
+    },
+    {
+      "categories": [
+        {
+          "mood": "Good",
+          "percent": 38.095,
+          "studentCount": 8,
+          "markNumber": 0,
+          "value": "5"
+        },
+        {
+          "mood": "Good",
+          "percent": 33.333,
+          "studentCount": 7,
+          "markNumber": 0,
+          "value": "4"
+        },
+        {
+          "mood": "Average",
+          "percent": 19.048,
+          "studentCount": 4,
+          "markNumber": 0,
+          "value": "3"
+        },
+        {
+          "mood": "Bad",
+          "percent": 9.524,
+          "studentCount": 2,
+          "markNumber": 0,
+          "value": "2"
+        }
+      ],
+      "date": 1672126252,
+      "subject": {
+        "id": 0,
+        "name": "Физика",
+        "knowledgeArea": "NaturalScience",
+        "subjectMood": null
+      },
+      "markType": "Mark",
+      "criteriaMarkType": "NotSet",
+      "markTypeText": "Лабораторная работа",
+      "shortMarkTypeText": "Л/Р",
+      "lesson": {
+        "id": 0,
+        "date": 1670284800,
+        "theme": "Работа газа и пара при расширении. Двигатель внутреннего сгорания.Лабораторная работа №3. «Измерение влажности воздуха». "
+      },
+      "isNew": false,
+      "isFinal": false,
+      "isImportant": true,
+      "marks": [
+        {
+          "id": 0,
+          "value": "5",
+          "mood": "Good"
+        }
+      ],
+      "indicator": null
+    },
+    {
+      "categories": [
+        {
+          "mood": "Good",
+          "percent": 50.0,
+          "studentCount": 1,
+          "markNumber": 0,
+          "value": "5"
+        },
+        {
+          "mood": "Average",
+          "percent": 50.0,
+          "studentCount": 1,
+          "markNumber": 0,
+          "value": "3"
+        }
+      ],
+      "date": 1672085956,
+      "subject": {
+        "id": 0,
+        "name": "Алгебра",
+        "knowledgeArea": "Mathematics",
+        "subjectMood": null
+      },
+      "markType": "Mark",
+      "criteriaMarkType": "NotSet",
+      "markTypeText": "Урок",
+      "shortMarkTypeText": "УР",
+      "lesson": {
+        "id": 0,
+        "date": 1672012800,
+        "theme": "Формулы  корней  квадратного  уравнения."
+      },
+      "isNew": false,
+      "isFinal": false,
+      "isImportant": false,
+      "marks": [
+        {
+          "id": 0,
+          "value": "5",
+          "mood": "Good"
+        }
+      ],
+      "indicator": null
+    },
+    {
+      "categories": [
+        {
+          "mood": "Good",
+          "percent": 23.810,
+          "studentCount": 5,
+          "markNumber": 0,
+          "value": "5"
+        },
+        {
+          "mood": "Good",
+          "percent": 23.810,
+          "studentCount": 5,
+          "markNumber": 0,
+          "value": "4"
+        },
+        {
+          "mood": "Bad",
+          "percent": 28.571,
+          "studentCount": 6,
+          "markNumber": 0,
+          "value": "2"
+        },
+        {
+          "mood": "Average",
+          "percent": 23.810,
+          "studentCount": 5,
+          "markNumber": 0,
+          "value": "3"
+        }
+      ],
+      "date": 1672085935,
+      "subject": {
+        "id": 0,
+        "name": "Алгебра",
+        "knowledgeArea": "Mathematics",
+        "subjectMood": null
+      },
+      "markType": "Mark",
+      "criteriaMarkType": "NotSet",
+      "markTypeText": "Самостоятельная работа",
+      "shortMarkTypeText": "С/Р",
+      "lesson": {
+        "id": 0,
+        "date": 1672012800,
+        "theme": "Формулы  корней  квадратного  уравнения."
+      },
+      "isNew": false,
+      "isFinal": false,
+      "isImportant": true,
+      "marks": [
+        {
+          "id": 0,
+          "value": "5",
+          "mood": "Good"
+        }
+      ],
+      "indicator": null
+    },
+    {
+      "categories": [
+        {
+          "mood": "Good",
+          "percent": 100.0,
+          "studentCount": 4,
+          "markNumber": 0,
+          "value": "5"
+        }
+      ],
+      "date": 1672047818,
+      "subject": {
+        "id": 0,
+        "name": "Иностр.яз(английск)",
+        "knowledgeArea": "Philology",
+        "subjectMood": null
+      },
+      "markType": "Mark",
+      "criteriaMarkType": "NotSet",
+      "markTypeText": "Ответ на уроке",
+      "shortMarkTypeText": "ОТВ",
+      "lesson": {
+        "id": 0,
+        "date": 1672012800,
+        "theme": "Национальные костюмы в России. Чтение."
+      },
+      "isNew": false,
+      "isFinal": false,
+      "isImportant": false,
+      "marks": [
+        {
+          "id": 0,
+          "value": "5",
+          "mood": "Good"
+        }
+      ],
+      "indicator": null
+    }
+  ],
+  "homeworksProgress": null,
+  "childLocationInfo": {
+    "code": 1705142,
+    "personId": 0,
+    "lastLocation": null,
+    "context": {
+      "chargeLevel": 91,
+      "isGeolocationEnabled": true,
+      "isBackgroundRefreshEnabled": true
+    },
+    "zones": [
+      {
+        "id": 0,
+        "name": "Школа",
+        "zoneType": "school",
+        "radius": 200,
+        "latitude": 55.423407,
+        "longitude": 37.76946
+      }
+    ]
+  },
+  "feed": [
+    {
+      "type": "Banner",
+      "timeStamp": 1672272002,
+      "content": {
+        "bannerId": "mobile_exp_banner_push_v1",
+        "maximumViewsCount": 250,
+        "imageUrl": "https://f1.school.mosreg.ru/get.aspx/53/d38d478b5a5341b098bc8067c663da2b.png",
+        "internalLink": "ProfileScreen",
+        "externalLink": "https://school.mosreg.ru/?utm_source=mobileapp&utm_medium=banner&utm_campaign=bug",
+        "linkType": "Internal"
+      }
+    },
+    {
+      "type": "ImportantWork",
+      "timeStamp": 1672272001,
+      "content": {
+        "works": [
+          {
+            "date": 1672358400,
+            "workTypeName": "Самостоятельная работа",
+            "subject": {
+              "id": 0,
+              "name": "Родная литература",
+              "knowledgeArea": "Philology",
+              "subjectMood": null
+            },
+            "knowledgeArea": "Philology",
+            "lessonId": 0,
+            "lessonNumber": 4,
+            "averageMarks": {
+              "averageMark": "5.00",
+              "averageMarkByImportantWork": "5.00",
+              "weightedAverageMark": null
+            },
+            "summativeMarks": null,
+            "messengerEntryPoint": null
+          }
+        ]
+      }
+    },
+    {
+      "type": "ImportantWork",
+      "timeStamp": 1671926401,
+      "content": {
+        "works": [
+          {
+            "date": 1672012800,
+            "workTypeName": "Самостоятельная работа",
+            "subject": {
+              "id": 0,
+              "name": "Алгебра",
+              "knowledgeArea": "Mathematics",
+              "subjectMood": null
+            },
+            "knowledgeArea": "Mathematics",
+            "lessonId": 0,
+            "lessonNumber": 4,
+            "averageMarks": {
+              "averageMark": "4.83",
+              "averageMarkByImportantWork": "4.67",
+              "weightedAverageMark": null
+            },
+            "summativeMarks": null,
+            "messengerEntryPoint": null
+          },
+          {
+            "date": 1672012800,
+            "workTypeName": "Сочинение по картине",
+            "subject": {
+              "id": 0,
+              "name": "Русский язык",
+              "knowledgeArea": "Philology",
+              "subjectMood": null
+            },
+            "knowledgeArea": "Philology",
+            "lessonId": 0,
+            "lessonNumber": 2,
+            "averageMarks": {
+              "averageMark": "4.75",
+              "averageMarkByImportantWork": "4.80",
+              "weightedAverageMark": null
+            },
+            "summativeMarks": null,
+            "messengerEntryPoint": null
+          }
+        ]
+      }
+    },
+    {
+      "type": "WeekSummary",
+      "timeStamp": 1671926400,
+      "content": {
+        "date": 1671926400,
+        "items": [
+          {
+            "date": 1671926400,
+            "subject": {
+              "id": 0,
+              "name": "Алгебра",
+              "knowledgeArea": "Mathematics",
+              "subjectMood": null
+            },
+            "subjectMarks": [
+              {
+                "marks": [
+                  {
+                    "id": 0,
+                    "value": "5",
+                    "mood": "Good"
+                  }
+                ]
+              },
+              {
+                "marks": [
+                  {
+                    "id": 0,
+                    "value": "4",
+                    "mood": "Good"
+                  }
+                ]
+              }
+            ],
+            "averageMarks": {
+              "averageMarkTrend": "Down",
+              "averageMarkMood": "Good",
+              "averagemarkByImportantWorkTrend": "Equal",
+              "weightedAverageMarkTrend": "NotSet",
+              "indicator": null,
+              "averageMark": "4.75",
+              "averageMarkByImportantWork": "4.50",
+              "weightedAverageMark": null
+            },
+            "messengerEntryPoint": null
+          },
+          {
+            "date": 1671926400,
+            "subject": {
+              "id": 0,
+              "name": "Биология",
+              "knowledgeArea": "NaturalScience",
+              "subjectMood": null
+            },
+            "subjectMarks": [
+              {
+                "marks": [
+                  {
+                    "id": 0,
+                    "value": "5",
+                    "mood": "Good"
+                  }
+                ]
+              }
+            ],
+            "averageMarks": {
+              "averageMarkTrend": "Equal",
+              "averageMarkMood": "Good",
+              "averagemarkByImportantWorkTrend": "Equal",
+              "weightedAverageMarkTrend": "NotSet",
+              "indicator": null,
+              "averageMark": "5.00",
+              "averageMarkByImportantWork": "5.00",
+              "weightedAverageMark": null
+            },
+            "messengerEntryPoint": null
+          },
+          {
+            "date": 1671926400,
+            "subject": {
+              "id": 0,
+              "name": "География",
+              "knowledgeArea": "SocialStudies",
+              "subjectMood": null
+            },
+            "subjectMarks": [
+              {
+                "marks": [
+                  {
+                    "id": 0,
+                    "value": "5",
+                    "mood": "Good"
+                  }
+                ]
+              }
+            ],
+            "averageMarks": {
+              "averageMarkTrend": "Up",
+              "averageMarkMood": "Good",
+              "averagemarkByImportantWorkTrend": "Equal",
+              "weightedAverageMarkTrend": "NotSet",
+              "indicator": null,
+              "averageMark": "4.50",
+              "averageMarkByImportantWork": null,
+              "weightedAverageMark": null
+            },
+            "messengerEntryPoint": null
+          },
+          {
+            "date": 1671926400,
+            "subject": {
+              "id": 0,
+              "name": "Геометрия",
+              "knowledgeArea": "Mathematics",
+              "subjectMood": null
+            },
+            "subjectMarks": [
+              {
+                "marks": [
+                  {
+                    "id": 0,
+                    "value": "5",
+                    "mood": "Good"
+                  }
+                ]
+              }
+            ],
+            "averageMarks": {
+              "averageMarkTrend": "Up",
+              "averageMarkMood": "Good",
+              "averagemarkByImportantWorkTrend": "Up",
+              "weightedAverageMarkTrend": "NotSet",
+              "indicator": null,
+              "averageMark": "4.67",
+              "averageMarkByImportantWork": "4.50",
+              "weightedAverageMark": null
+            },
+            "messengerEntryPoint": null
+          },
+          {
+            "date": 1671926400,
+            "subject": {
+              "id": 0,
+              "name": "Иностр.яз(немецкий)",
+              "knowledgeArea": "Philology",
+              "subjectMood": null
+            },
+            "subjectMarks": [
+              {
+                "marks": [
+                  {
+                    "id": 0,
+                    "value": "5",
+                    "mood": "Good"
+                  }
+                ]
+              }
+            ],
+            "averageMarks": {
+              "averageMarkTrend": "Up",
+              "averageMarkMood": "Good",
+              "averagemarkByImportantWorkTrend": "Equal",
+              "weightedAverageMarkTrend": "NotSet",
+              "indicator": null,
+              "averageMark": "4.67",
+              "averageMarkByImportantWork": null,
+              "weightedAverageMark": null
+            },
+            "messengerEntryPoint": null
+          },
+          {
+            "date": 1671926400,
+            "subject": {
+              "id": 0,
+              "name": "Ист.России. Вс.ист-я",
+              "knowledgeArea": "SocialStudies",
+              "subjectMood": null
+            },
+            "subjectMarks": [
+              {
+                "marks": [
+                  {
+                    "id": 0,
+                    "value": "5",
+                    "mood": "Good"
+                  }
+                ]
+              },
+              {
+                "marks": [
+                  {
+                    "id": 0,
+                    "value": "5",
+                    "mood": "Good"
+                  }
+                ]
+              }
+            ],
+            "averageMarks": {
+              "averageMarkTrend": "Equal",
+              "averageMarkMood": "Good",
+              "averagemarkByImportantWorkTrend": "Equal",
+              "weightedAverageMarkTrend": "NotSet",
+              "indicator": null,
+              "averageMark": "5.00",
+              "averageMarkByImportantWork": null,
+              "weightedAverageMark": null
+            },
+            "messengerEntryPoint": null
+          },
+          {
+            "date": 1671926400,
+            "subject": {
+              "id": 0,
+              "name": "Литература",
+              "knowledgeArea": "Philology",
+              "subjectMood": null
+            },
+            "subjectMarks": [
+              {
+                "marks": [
+                  {
+                    "id": 0,
+                    "value": "5",
+                    "mood": "Good"
+                  }
+                ]
+              },
+              {
+                "marks": [
+                  {
+                    "id": 0,
+                    "value": "5",
+                    "mood": "Good"
+                  }
+                ]
+              }
+            ],
+            "averageMarks": {
+              "averageMarkTrend": "Equal",
+              "averageMarkMood": "Good",
+              "averagemarkByImportantWorkTrend": "Equal",
+              "weightedAverageMarkTrend": "NotSet",
+              "indicator": null,
+              "averageMark": "5.00",
+              "averageMarkByImportantWork": null,
+              "weightedAverageMark": null
+            },
+            "messengerEntryPoint": null
+          },
+          {
+            "date": 1671926400,
+            "subject": {
+              "id": 0,
+              "name": "Музыка",
+              "knowledgeArea": "Art",
+              "subjectMood": null
+            },
+            "subjectMarks": [
+              {
+                "marks": [
+                  {
+                    "id": 0,
+                    "value": "5",
+                    "mood": "Good"
+                  }
+                ]
+              }
+            ],
+            "averageMarks": {
+              "averageMarkTrend": "Equal",
+              "averageMarkMood": "Good",
+              "averagemarkByImportantWorkTrend": "Equal",
+              "weightedAverageMarkTrend": "NotSet",
+              "indicator": null,
+              "averageMark": "5.00",
+              "averageMarkByImportantWork": null,
+              "weightedAverageMark": null
+            },
+            "messengerEntryPoint": null
+          },
+          {
+            "date": 1671926400,
+            "subject": {
+              "id": 0,
+              "name": "Обществознание",
+              "knowledgeArea": "SocialStudies",
+              "subjectMood": null
+            },
+            "subjectMarks": [
+              {
+                "marks": [
+                  {
+                    "id": 0,
+                    "value": "5",
+                    "mood": "Good"
+                  }
+                ]
+              }
+            ],
+            "averageMarks": {
+              "averageMarkTrend": "Equal",
+              "averageMarkMood": "Good",
+              "averagemarkByImportantWorkTrend": "Equal",
+              "weightedAverageMarkTrend": "NotSet",
+              "indicator": null,
+              "averageMark": "5.00",
+              "averageMarkByImportantWork": null,
+              "weightedAverageMark": null
+            },
+            "messengerEntryPoint": null
+          },
+          {
+            "date": 1671926400,
+            "subject": {
+              "id": 0,
+              "name": "ОсновыБезопаснЖизнед",
+              "knowledgeArea": "Common",
+              "subjectMood": null
+            },
+            "subjectMarks": [
+              {
+                "marks": [
+                  {
+                    "id": 0,
+                    "value": "5",
+                    "mood": "Good"
+                  }
+                ]
+              },
+              {
+                "marks": [
+                  {
+                    "id": 0,
+                    "value": "4",
+                    "mood": "Good"
+                  }
+                ]
+              }
+            ],
+            "averageMarks": {
+              "averageMarkTrend": "Down",
+              "averageMarkMood": "Good",
+              "averagemarkByImportantWorkTrend": "Equal",
+              "weightedAverageMarkTrend": "NotSet",
+              "indicator": null,
+              "averageMark": "4.67",
+              "averageMarkByImportantWork": null,
+              "weightedAverageMark": null
+            },
+            "messengerEntryPoint": null
+          },
+          {
+            "date": 1671926400,
+            "subject": {
+              "id": 0,
+              "name": "Родная литература",
+              "knowledgeArea": "Philology",
+              "subjectMood": null
+            },
+            "subjectMarks": [
+              {
+                "marks": [
+                  {
+                    "id": 0,
+                    "value": "5",
+                    "mood": "Good"
+                  }
+                ]
+              }
+            ],
+            "averageMarks": {
+              "averageMarkTrend": "Equal",
+              "averageMarkMood": "Good",
+              "averagemarkByImportantWorkTrend": "Equal",
+              "weightedAverageMarkTrend": "NotSet",
+              "indicator": null,
+              "averageMark": "5.00",
+              "averageMarkByImportantWork": null,
+              "weightedAverageMark": null
+            },
+            "messengerEntryPoint": null
+          },
+          {
+            "date": 1671926400,
+            "subject": {
+              "id": 0,
+              "name": "Русский язык",
+              "knowledgeArea": "Philology",
+              "subjectMood": null
+            },
+            "subjectMarks": [
+              {
+                "marks": [
+                  {
+                    "id": 0,
+                    "value": "5",
+                    "mood": "Good"
+                  }
+                ]
+              },
+              {
+                "marks": [
+                  {
+                    "id": 0,
+                    "value": "4",
+                    "mood": "Good"
+                  }
+                ]
+              },
+              {
+                "marks": [
+                  {
+                    "id": 0,
+                    "value": "5",
+                    "mood": "Good"
+                  }
+                ]
+              },
+              {
+                "marks": [
+                  {
+                    "id": 0,
+                    "value": "5",
+                    "mood": "Good"
+                  }
+                ]
+              }
+            ],
+            "averageMarks": {
+              "averageMarkTrend": "Up",
+              "averageMarkMood": "Good",
+              "averagemarkByImportantWorkTrend": "Up",
+              "weightedAverageMarkTrend": "NotSet",
+              "indicator": null,
+              "averageMark": "4.67",
+              "averageMarkByImportantWork": "4.67",
+              "weightedAverageMark": null
+            },
+            "messengerEntryPoint": null
+          },
+          {
+            "date": 1671926400,
+            "subject": {
+              "id": 0,
+              "name": "Технология",
+              "knowledgeArea": "Technology",
+              "subjectMood": null
+            },
+            "subjectMarks": [
+              {
+                "marks": [
+                  {
+                    "id": 0,
+                    "value": "5",
+                    "mood": "Good"
+                  }
+                ]
+              }
+            ],
+            "averageMarks": {
+              "averageMarkTrend": "Equal",
+              "averageMarkMood": "Good",
+              "averagemarkByImportantWorkTrend": "Equal",
+              "weightedAverageMarkTrend": "NotSet",
+              "indicator": null,
+              "averageMark": "5.00",
+              "averageMarkByImportantWork": null,
+              "weightedAverageMark": null
+            },
+            "messengerEntryPoint": null
+          },
+          {
+            "date": 1671926400,
+            "subject": {
+              "id": 0,
+              "name": "Физическая культура",
+              "knowledgeArea": "PhysicalCulture",
+              "subjectMood": null
+            },
+            "subjectMarks": [
+              {
+                "marks": [
+                  {
+                    "id": 0,
+                    "value": "5",
+                    "mood": "Good"
+                  }
+                ]
+              },
+              {
+                "marks": [
+                  {
+                    "id": 0,
+                    "value": "5",
+                    "mood": "Good"
+                  }
+                ]
+              }
+            ],
+            "averageMarks": {
+              "averageMarkTrend": "Up",
+              "averageMarkMood": "Good",
+              "averagemarkByImportantWorkTrend": "Equal",
+              "weightedAverageMarkTrend": "NotSet",
+              "indicator": null,
+              "averageMark": "4.75",
+              "averageMarkByImportantWork": null,
+              "weightedAverageMark": null
+            },
+            "messengerEntryPoint": null
+          },
+          {
+            "date": 1671926400,
+            "subject": {
+              "id": 0,
+              "name": "Химия",
+              "knowledgeArea": "NaturalScience",
+              "subjectMood": null
+            },
+            "subjectMarks": [
+              {
+                "marks": [
+                  {
+                    "id": 0,
+                    "value": "5",
+                    "mood": "Good"
+                  }
+                ]
+              }
+            ],
+            "averageMarks": {
+              "averageMarkTrend": "Equal",
+              "averageMarkMood": "Good",
+              "averagemarkByImportantWorkTrend": "Equal",
+              "weightedAverageMarkTrend": "NotSet",
+              "indicator": null,
+              "averageMark": "5.00",
+              "averageMarkByImportantWork": null,
+              "weightedAverageMark": null
+            },
+            "messengerEntryPoint": null
+          }
+        ]
+      }
+    },
+    {
+      "type": "ImportantWork",
+      "timeStamp": 1671667201,
+      "content": {
+        "works": [
+          {
+            "date": 1671753600,
+            "workTypeName": "Тест",
+            "subject": {
+              "id": 0,
+              "name": "Родная литература",
+              "knowledgeArea": "Philology",
+              "subjectMood": null
+            },
+            "knowledgeArea": "Philology",
+            "lessonId": 0,
+            "lessonNumber": 4,
+            "averageMarks": {
+              "averageMark": "5.00",
+              "averageMarkByImportantWork": "5.00",
+              "weightedAverageMark": null
+            },
+            "summativeMarks": null,
+            "messengerEntryPoint": null
+          },
+          {
+            "date": 1671753600,
+            "workTypeName": "Проверочная работа",
+            "subject": {
+              "id": 0,
+              "name": "Русский язык",
+              "knowledgeArea": "Philology",
+              "subjectMood": null
+            },
+            "knowledgeArea": "Philology",
+            "lessonId": 0,
+            "lessonNumber": 1,
+            "averageMarks": {
+              "averageMark": "4.75",
+              "averageMarkByImportantWork": "4.80",
+              "weightedAverageMark": null
+            },
+            "summativeMarks": null,
+            "messengerEntryPoint": null
+          }
+        ]
+      }
+    },
+    {
+      "type": "ImportantWork",
+      "timeStamp": 1671494401,
+      "content": {
+        "works": [
+          {
+            "date": 1671580800,
+            "workTypeName": "Проверочная работа",
+            "subject": {
+              "id": 0,
+              "name": "Иностр.яз(английск)",
+              "knowledgeArea": "Philology",
+              "subjectMood": null
+            },
+            "knowledgeArea": "Philology",
+            "lessonId": 0,
+            "lessonNumber": 6,
+            "averageMarks": {
+              "averageMark": "4.67",
+              "averageMarkByImportantWork": "4.50",
+              "weightedAverageMark": null
+            },
+            "summativeMarks": null,
+            "messengerEntryPoint": null
+          },
+          {
+            "date": 1671580800,
+            "workTypeName": "Контрольная",
+            "subject": {
+              "id": 0,
+              "name": "Геометрия",
+              "knowledgeArea": "Mathematics",
+              "subjectMood": null
+            },
+            "knowledgeArea": "Mathematics",
+            "lessonId": 0,
+            "lessonNumber": 5,
+            "averageMarks": {
+              "averageMark": "4.67",
+              "averageMarkByImportantWork": "4.50",
+              "weightedAverageMark": null
+            },
+            "summativeMarks": null,
+            "messengerEntryPoint": null
+          }
+        ]
+      }
+    },
+    {
+      "type": "ImportantWork",
+      "timeStamp": 1671321601,
+      "content": {
+        "works": [
+          {
+            "date": 1671408000,
+            "workTypeName": "Контрольная",
+            "subject": {
+              "id": 0,
+              "name": "Алгебра",
+              "knowledgeArea": "Mathematics",
+              "subjectMood": null
+            },
+            "knowledgeArea": "Mathematics",
+            "lessonId": 0,
+            "lessonNumber": 4,
+            "averageMarks": {
+              "averageMark": "4.83",
+              "averageMarkByImportantWork": "4.67",
+              "weightedAverageMark": null
+            },
+            "summativeMarks": null,
+            "messengerEntryPoint": null
+          }
+        ]
+      }
+    },
+    {
+      "type": "WeekSummary",
+      "timeStamp": 1671321600,
+      "content": {
+        "date": 1671321600,
+        "items": [
+          {
+            "date": 1671321600,
+            "subject": {
+              "id": 0,
+              "name": "Биология",
+              "knowledgeArea": "NaturalScience",
+              "subjectMood": null
+            },
+            "subjectMarks": [
+              {
+                "marks": [
+                  {
+                    "id": 0,
+                    "value": "5",
+                    "mood": "Good"
+                  }
+                ]
+              }
+            ],
+            "averageMarks": {
+              "averageMarkTrend": "Equal",
+              "averageMarkMood": "Good",
+              "averagemarkByImportantWorkTrend": "Equal",
+              "weightedAverageMarkTrend": "NotSet",
+              "indicator": null,
+              "averageMark": "5.00",
+              "averageMarkByImportantWork": "5.00",
+              "weightedAverageMark": null
+            },
+            "messengerEntryPoint": null
+          },
+          {
+            "date": 1671321600,
+            "subject": {
+              "id": 0,
+              "name": "Геометрия",
+              "knowledgeArea": "Mathematics",
+              "subjectMood": null
+            },
+            "subjectMarks": [
+              {
+                "marks": [
+                  {
+                    "id": 0,
+                    "value": "4",
+                    "mood": "Good"
+                  }
+                ]
+              },
+              {
+                "marks": [
+                  {
+                    "id": 0,
+                    "value": "5",
+                    "mood": "Good"
+                  }
+                ]
+              }
+            ],
+            "averageMarks": {
+              "averageMarkTrend": "Equal",
+              "averageMarkMood": "Good",
+              "averagemarkByImportantWorkTrend": "Equal",
+              "weightedAverageMarkTrend": "NotSet",
+              "indicator": null,
+              "averageMark": "4.50",
+              "averageMarkByImportantWork": "4.00",
+              "weightedAverageMark": null
+            },
+            "messengerEntryPoint": null
+          },
+          {
+            "date": 1671321600,
+            "subject": {
+              "id": 0,
+              "name": "Иностр.яз(английск)",
+              "knowledgeArea": "Philology",
+              "subjectMood": null
+            },
+            "subjectMarks": [
+              {
+                "marks": [
+                  {
+                    "id": 0,
+                    "value": "5",
+                    "mood": "Good"
+                  }
+                ]
+              },
+              {
+                "marks": [
+                  {
+                    "id": 0,
+                    "value": "5",
+                    "mood": "Good"
+                  }
+                ]
+              }
+            ],
+            "averageMarks": {
+              "averageMarkTrend": "Equal",
+              "averageMarkMood": "Good",
+              "averagemarkByImportantWorkTrend": "Equal",
+              "weightedAverageMarkTrend": "NotSet",
+              "indicator": null,
+              "averageMark": "5.00",
+              "averageMarkByImportantWork": null,
+              "weightedAverageMark": null
+            },
+            "messengerEntryPoint": null
+          },
+          {
+            "date": 1671321600,
+            "subject": {
+              "id": 0,
+              "name": "Иностр.яз(немецкий)",
+              "knowledgeArea": "Philology",
+              "subjectMood": null
+            },
+            "subjectMarks": [
+              {
+                "marks": [
+                  {
+                    "id": 0,
+                    "value": "5",
+                    "mood": "Good"
+                  }
+                ]
+              }
+            ],
+            "averageMarks": {
+              "averageMarkTrend": "Up",
+              "averageMarkMood": "Good",
+              "averagemarkByImportantWorkTrend": "Equal",
+              "weightedAverageMarkTrend": "NotSet",
+              "indicator": null,
+              "averageMark": "4.50",
+              "averageMarkByImportantWork": null,
+              "weightedAverageMark": null
+            },
+            "messengerEntryPoint": null
+          },
+          {
+            "date": 1671321600,
+            "subject": {
+              "id": 0,
+              "name": "Ист.России. Вс.ист-я",
+              "knowledgeArea": "SocialStudies",
+              "subjectMood": null
+            },
+            "subjectMarks": [
+              {
+                "marks": [
+                  {
+                    "id": 0,
+                    "value": "5",
+                    "mood": "Good"
+                  }
+                ]
+              }
+            ],
+            "averageMarks": {
+              "averageMarkTrend": "Equal",
+              "averageMarkMood": "Good",
+              "averagemarkByImportantWorkTrend": "Equal",
+              "weightedAverageMarkTrend": "NotSet",
+              "indicator": null,
+              "averageMark": "5.00",
+              "averageMarkByImportantWork": null,
+              "weightedAverageMark": null
+            },
+            "messengerEntryPoint": null
+          },
+          {
+            "date": 1671321600,
+            "subject": {
+              "id": 0,
+              "name": "Музыка",
+              "knowledgeArea": "Art",
+              "subjectMood": null
+            },
+            "subjectMarks": [
+              {
+                "marks": [
+                  {
+                    "id": 0,
+                    "value": "5",
+                    "mood": "Good"
+                  }
+                ]
+              }
+            ],
+            "averageMarks": {
+              "averageMarkTrend": "Equal",
+              "averageMarkMood": "Good",
+              "averagemarkByImportantWorkTrend": "Equal",
+              "weightedAverageMarkTrend": "NotSet",
+              "indicator": null,
+              "averageMark": "5.00",
+              "averageMarkByImportantWork": null,
+              "weightedAverageMark": null
+            },
+            "messengerEntryPoint": null
+          },
+          {
+            "date": 1671321600,
+            "subject": {
+              "id": 0,
+              "name": "Родной язык",
+              "knowledgeArea": "Philology",
+              "subjectMood": null
+            },
+            "subjectMarks": [
+              {
+                "marks": [
+                  {
+                    "id": 0,
+                    "value": "5",
+                    "mood": "Good"
+                  }
+                ]
+              }
+            ],
+            "averageMarks": {
+              "averageMarkTrend": "Equal",
+              "averageMarkMood": "Good",
+              "averagemarkByImportantWorkTrend": "Equal",
+              "weightedAverageMarkTrend": "NotSet",
+              "indicator": null,
+              "averageMark": "5.00",
+              "averageMarkByImportantWork": null,
+              "weightedAverageMark": null
+            },
+            "messengerEntryPoint": null
+          },
+          {
+            "date": 1671321600,
+            "subject": {
+              "id": 0,
+              "name": "Русский язык",
+              "knowledgeArea": "Philology",
+              "subjectMood": null
+            },
+            "subjectMarks": [
+              {
+                "marks": [
+                  {
+                    "id": 0,
+                    "value": "4",
+                    "mood": "Good"
+                  }
+                ]
+              },
+              {
+                "marks": [
+                  {
+                    "id": 0,
+                    "value": "5",
+                    "mood": "Good"
+                  }
+                ]
+              }
+            ],
+            "averageMarks": {
+              "averageMarkTrend": "Equal",
+              "averageMarkMood": "Good",
+              "averagemarkByImportantWorkTrend": "Equal",
+              "weightedAverageMarkTrend": "NotSet",
+              "indicator": null,
+              "averageMark": "4.50",
+              "averageMarkByImportantWork": "4.50",
+              "weightedAverageMark": null
+            },
+            "messengerEntryPoint": null
+          },
+          {
+            "date": 1671321600,
+            "subject": {
+              "id": 0,
+              "name": "Физика",
+              "knowledgeArea": "NaturalScience",
+              "subjectMood": null
+            },
+            "subjectMarks": [
+              {
+                "marks": [
+                  {
+                    "id": 0,
+                    "value": "5",
+                    "mood": "Good"
+                  }
+                ]
+              }
+            ],
+            "averageMarks": {
+              "averageMarkTrend": "Equal",
+              "averageMarkMood": "Good",
+              "averagemarkByImportantWorkTrend": "Equal",
+              "weightedAverageMarkTrend": "NotSet",
+              "indicator": null,
+              "averageMark": "5.00",
+              "averageMarkByImportantWork": "5.00",
+              "weightedAverageMark": null
+            },
+            "messengerEntryPoint": null
+          },
+          {
+            "date": 1671321600,
+            "subject": {
+              "id": 0,
+              "name": "Физическая культура",
+              "knowledgeArea": "PhysicalCulture",
+              "subjectMood": null
+            },
+            "subjectMarks": [
+              {
+                "marks": [
+                  {
+                    "id": 0,
+                    "value": "5",
+                    "mood": "Good"
+                  }
+                ]
+              }
+            ],
+            "averageMarks": {
+              "averageMarkTrend": "Up",
+              "averageMarkMood": "Good",
+              "averagemarkByImportantWorkTrend": "Equal",
+              "weightedAverageMarkTrend": "NotSet",
+              "indicator": null,
+              "averageMark": "4.50",
+              "averageMarkByImportantWork": null,
+              "weightedAverageMark": null
+            },
+            "messengerEntryPoint": null
+          }
+        ]
+      }
+    }
+  ],
+  "rating": {
+    "rankingPosition": {
+      "trendDescription": "Ваш рейтинг стабилен",
+      "placeTrend": "Equal",
+      "place": 1
+    },
+    "rankingPlaces": [
+      {
+        "imageUrl": "https://static.school.mosreg.ru/images/studentrating/animalrating/2.png",
+        "isContextUser": true
+      },
+      {
+        "imageUrl": "https://static.school.mosreg.ru/images/studentrating/animalrating/3.png",
+        "isContextUser": false
+      },
+      {
+        "imageUrl": "https://static.school.mosreg.ru/images/studentrating/animalrating/21.png",
+        "isContextUser": false
+      }
+    ]
+  },
+  "type": "Success",
+  "description": "Success",
+  "mobileSubscriptionStatus": "NotActive"
+}

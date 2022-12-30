@@ -120,6 +120,10 @@ class MainActivity : AppCompatActivity() {
                 diaryData =
                     getJsonRaw<List<Week>>(openRawResource(R.raw.sample_diary_data)) as MutableList<Week>
                 ratingData = getJsonRaw<RatingClass>(openRawResource(R.raw.sample_rating_data))
+                userFeedData = getJsonRaw<UserFeed>(openRawResource(R.raw.sample_userfeed_data))
+                periodMarksData =
+                    getJsonRaw<PeriodMarksResponse>(openRawResource(R.raw.sample_period_marks_data))
+
                 allDataLoaded()
             }
         } else createDiary()
@@ -330,6 +334,7 @@ class MainActivity : AppCompatActivity() {
                 diaryData = null
                 ratingData = null
                 userFeedData = null
+                periodMarksData = null
                 token = null
                 userId = null
                 this.getSharedPreferences(

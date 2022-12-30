@@ -48,9 +48,15 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(FragmentDiaryBinding::i
                 it.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
                 SimpleDateFormat("yyyy-MM-dd", resources.configuration.locales[0]).format(it.time)
             }
-            binding.weekSlider.value = diaryData.indexOfFirst { it.id == weekId }.toFloat()
-            binding.dayViewPager.adapter =
-                DayAdapter(binding.root.context, diaryData[binding.weekSlider.value.toInt()].days)
+            val weekSliderValue = diaryData.indexOfFirst { it.id == weekId }.toFloat()
+            if (weekSliderValue == -1F) {
+                binding.dayViewPager.adapter =
+                    DayAdapter(binding.root.context, diaryData[1].days)
+            } else {
+                binding.weekSlider.value = weekSliderValue
+                binding.dayViewPager.adapter =
+                    DayAdapter(binding.root.context, diaryData[weekSliderValue.toInt()].days)
+            }
             binding.dayViewPager.offscreenPageLimit = 7
             val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
             val today =

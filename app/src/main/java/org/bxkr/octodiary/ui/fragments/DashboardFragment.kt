@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.squareup.picasso.Picasso
 import org.bxkr.octodiary.R
 import org.bxkr.octodiary.Utils
+import org.bxkr.octodiary.Utils.isDemo
 import org.bxkr.octodiary.Utils.toOrdinal
 import org.bxkr.octodiary.databinding.FragmentDashboardBinding
 import org.bxkr.octodiary.models.diary.Lesson
@@ -92,7 +93,12 @@ class DashboardFragment :
             }
         }
         if (tomorrowPosition == null || todayPosition == null) {
-            binding.toggleButton.visibility = View.GONE
+            if (isDemo(mainActivity)) {
+                binding.miniDiaryRecyclerView.adapter =
+                    LessonsAdapter(mainActivity, diaryData[0].days[0].lessons, true)
+            } else {
+                binding.toggleButton.visibility = View.GONE
+            }
             return
         }
         val weekId = Calendar.getInstance().let {

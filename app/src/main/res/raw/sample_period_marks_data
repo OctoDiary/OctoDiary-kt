@@ -1,0 +1,1213 @@
+{
+  "periodNumber": 1,
+  "periodMarks": [
+    {
+      "subject": {
+        "id": 0,
+        "name": "Родная литература",
+        "knowledgeArea": "Philology",
+        "subjectMood": "Sunny"
+      },
+      "averageMarks": {
+        "averageMarkTrend": "Equal",
+        "averageMarkMood": "Good",
+        "averagemarkByImportantWorkTrend": "Equal",
+        "weightedAverageMarkTrend": "NotSet",
+        "indicator": null,
+        "averageMark": "5.00",
+        "averageMarkByImportantWork": "5.00",
+        "weightedAverageMark": null
+      },
+      "summativeMarks": null,
+      "recentMarks": [
+        {
+          "date": 1672386620,
+          "marks": [
+            {
+              "id": 0,
+              "value": "5",
+              "mood": "Good"
+            }
+          ],
+          "isNew": true
+        },
+        {
+          "date": 1672302330,
+          "marks": [
+            {
+              "id": 0,
+              "value": "5",
+              "mood": "Good"
+            }
+          ],
+          "isNew": false
+        },
+        {
+          "date": 1671785256,
+          "marks": [
+            {
+              "id": 0,
+              "value": "5",
+              "mood": "Good"
+            }
+          ],
+          "isNew": false
+        }
+      ],
+      "finalMark": null,
+      "rankingPlace": 1
+    },
+    {
+      "subject": {
+        "id": 0,
+        "name": "Русский язык",
+        "knowledgeArea": "Philology",
+        "subjectMood": "Sunny"
+      },
+      "averageMarks": {
+        "averageMarkTrend": "Up",
+        "averageMarkMood": "Good",
+        "averagemarkByImportantWorkTrend": "Up",
+        "weightedAverageMarkTrend": "NotSet",
+        "indicator": null,
+        "averageMark": "4.75",
+        "averageMarkByImportantWork": "4.80",
+        "weightedAverageMark": null
+      },
+      "summativeMarks": null,
+      "recentMarks": [
+        {
+          "date": 1672386362,
+          "marks": [
+            {
+              "id": 0,
+              "value": "5",
+              "mood": "Good"
+            },
+            {
+              "id": 0,
+              "value": "5",
+              "mood": "Good"
+            }
+          ],
+          "isNew": true
+        },
+        {
+          "date": 1671775864,
+          "marks": [
+            {
+              "id": 0,
+              "value": "5",
+              "mood": "Good"
+            }
+          ],
+          "isNew": false
+        },
+        {
+          "date": 1671775862,
+          "marks": [
+            {
+              "id": 0,
+              "value": "4",
+              "mood": "Good"
+            }
+          ],
+          "isNew": false
+        },
+        {
+          "date": 1671775518,
+          "marks": [
+            {
+              "id": 0,
+              "value": "5",
+              "mood": "Good"
+            }
+          ],
+          "isNew": false
+        },
+        {
+          "date": 1671605416,
+          "marks": [
+            {
+              "id": 0,
+              "value": "5",
+              "mood": "Good"
+            }
+          ],
+          "isNew": false
+        },
+        {
+          "date": 1671172342,
+          "marks": [
+            {
+              "id": 0,
+              "value": "4",
+              "mood": "Good"
+            }
+          ],
+          "isNew": false
+        },
+        {
+          "date": 1671003918,
+          "marks": [
+            {
+              "id": 0,
+              "value": "5",
+              "mood": "Good"
+            }
+          ],
+          "isNew": false
+        }
+      ],
+      "finalMark": null,
+      "rankingPlace": 3
+    },
+    {
+      "subject": {
+        "id": 0,
+        "name": "Физика",
+        "knowledgeArea": "NaturalScience",
+        "subjectMood": "Sunny"
+      },
+      "averageMarks": {
+        "averageMarkTrend": "Equal",
+        "averageMarkMood": "Good",
+        "averagemarkByImportantWorkTrend": "Equal",
+        "weightedAverageMarkTrend": "NotSet",
+        "indicator": null,
+        "averageMark": "5.00",
+        "averageMarkByImportantWork": "5.00",
+        "weightedAverageMark": null
+      },
+      "summativeMarks": null,
+      "recentMarks": [
+        {
+          "date": 1672306059,
+          "marks": [
+            {
+              "id": 0,
+              "value": "5",
+              "mood": "Good"
+            }
+          ],
+          "isNew": false
+        },
+        {
+          "date": 1672126252,
+          "marks": [
+            {
+              "id": 0,
+              "value": "5",
+              "mood": "Good"
+            }
+          ],
+          "isNew": false
+        },
+        {
+          "date": 1670996322,
+          "marks": [
+            {
+              "id": 0,
+              "value": "5",
+              "mood": "Good"
+            }
+          ],
+          "isNew": false
+        },
+        {
+          "date": 1669911180,
+          "marks": [
+            {
+              "id": 0,
+              "value": "5",
+              "mood": "Good"
+            }
+          ],
+          "isNew": false
+        }
+      ],
+      "finalMark": null,
+      "rankingPlace": 1
+    },
+    {
+      "subject": {
+        "id": 0,
+        "name": "Технология",
+        "knowledgeArea": "Technology",
+        "subjectMood": "Sunny"
+      },
+      "averageMarks": {
+        "averageMarkTrend": "Equal",
+        "averageMarkMood": "Good",
+        "averagemarkByImportantWorkTrend": "Equal",
+        "weightedAverageMarkTrend": "NotSet",
+        "indicator": null,
+        "averageMark": "5.00",
+        "averageMarkByImportantWork": null,
+        "weightedAverageMark": null
+      },
+      "summativeMarks": null,
+      "recentMarks": [
+        {
+          "date": 1672291067,
+          "marks": [
+            {
+              "id": 0,
+              "value": "5",
+              "mood": "Good"
+            }
+          ],
+          "isNew": false
+        },
+        {
+          "date": 1671612491,
+          "marks": [
+            {
+              "id": 0,
+              "value": "5",
+              "mood": "Good"
+            }
+          ],
+          "isNew": false
+        }
+      ],
+      "finalMark": null,
+      "rankingPlace": 1
+    },
+    {
+      "subject": {
+        "id": 0,
+        "name": "Музыка",
+        "knowledgeArea": "Art",
+        "subjectMood": "Sunny"
+      },
+      "averageMarks": {
+        "averageMarkTrend": "Equal",
+        "averageMarkMood": "Good",
+        "averagemarkByImportantWorkTrend": "Equal",
+        "weightedAverageMarkTrend": "NotSet",
+        "indicator": null,
+        "averageMark": "5.00",
+        "averageMarkByImportantWork": null,
+        "weightedAverageMark": null
+      },
+      "summativeMarks": null,
+      "recentMarks": [
+        {
+          "date": 1672227242,
+          "marks": [
+            {
+              "id": 0,
+              "value": "5",
+              "mood": "Good"
+            }
+          ],
+          "isNew": false
+        },
+        {
+          "date": 1671632731,
+          "marks": [
+            {
+              "id": 0,
+              "value": "5",
+              "mood": "Good"
+            }
+          ],
+          "isNew": false
+        },
+        {
+          "date": 1671034378,
+          "marks": [
+            {
+              "id": 0,
+              "value": "5",
+              "mood": "Good"
+            }
+          ],
+          "isNew": false
+        },
+        {
+          "date": 1669806399,
+          "marks": [
+            {
+              "id": 0,
+              "value": "5",
+              "mood": "Good"
+            }
+          ],
+          "isNew": false
+        }
+      ],
+      "finalMark": null,
+      "rankingPlace": 1
+    },
+    {
+      "subject": {
+        "id": 0,
+        "name": "Иностр.яз(английск)",
+        "knowledgeArea": "Philology",
+        "subjectMood": "Cloudy"
+      },
+      "averageMarks": {
+        "averageMarkTrend": "Down",
+        "averageMarkMood": "Good",
+        "averagemarkByImportantWorkTrend": "Equal",
+        "weightedAverageMarkTrend": "NotSet",
+        "indicator": null,
+        "averageMark": "2.67",
+        "averageMarkByImportantWork": "4.50",
+        "weightedAverageMark": null
+      },
+      "summativeMarks": null,
+      "recentMarks": [
+        {
+          "date": 1672223672,
+          "marks": [
+            {
+              "id": 0,
+              "value": "3",
+              "mood": "Good"
+            }
+          ],
+          "isNew": false
+        },
+        {
+          "date": 1672223555,
+          "marks": [
+            {
+              "id": 0,
+              "value": "3",
+              "mood": "Good"
+            }
+          ],
+          "isNew": false
+        },
+        {
+          "date": 1672223472,
+          "marks": [
+            {
+              "id": 0,
+              "value": "3",
+              "mood": "Good"
+            }
+          ],
+          "isNew": false
+        },
+        {
+          "date": 1672047818,
+          "marks": [
+            {
+              "id": 0,
+              "value": "3",
+              "mood": "Good"
+            }
+          ],
+          "isNew": false
+        },
+        {
+          "date": 1671190581,
+          "marks": [
+            {
+              "id": 0,
+              "value": "3",
+              "mood": "Good"
+            }
+          ],
+          "isNew": false
+        },
+        {
+          "date": 1671014269,
+          "marks": [
+            {
+              "id": 0,
+              "value": "3",
+              "mood": "Good"
+            }
+          ],
+          "isNew": false
+        }
+      ],
+      "finalMark": null,
+      "rankingPlace": 9
+    },
+    {
+      "subject": {
+        "id": 0,
+        "name": "Физическая культура",
+        "knowledgeArea": "PhysicalCulture",
+        "subjectMood": "Sunny"
+      },
+      "averageMarks": {
+        "averageMarkTrend": "Up",
+        "averageMarkMood": "Good",
+        "averagemarkByImportantWorkTrend": "Equal",
+        "weightedAverageMarkTrend": "NotSet",
+        "indicator": null,
+        "averageMark": "4.80",
+        "averageMarkByImportantWork": null,
+        "weightedAverageMark": null
+      },
+      "summativeMarks": null,
+      "recentMarks": [
+        {
+          "date": 1672133943,
+          "marks": [
+            {
+              "id": 0,
+              "value": "5",
+              "mood": "Good"
+            }
+          ],
+          "isNew": false
+        },
+        {
+          "date": 1671690428,
+          "marks": [
+            {
+              "id": 0,
+              "value": "5",
+              "mood": "Good"
+            }
+          ],
+          "isNew": false
+        },
+        {
+          "date": 1671520090,
+          "marks": [
+            {
+              "id": 0,
+              "value": "5",
+              "mood": "Good"
+            }
+          ],
+          "isNew": false
+        },
+        {
+          "date": 1670924371,
+          "marks": [
+            {
+              "id": 0,
+              "value": "5",
+              "mood": "Good"
+            }
+          ],
+          "isNew": false
+        },
+        {
+          "date": 1669705267,
+          "marks": [
+            {
+              "id": 0,
+              "value": "4",
+              "mood": "Good"
+            }
+          ],
+          "isNew": false
+        }
+      ],
+      "finalMark": null,
+      "rankingPlace": 8
+    },
+    {
+      "subject": {
+        "id": 0,
+        "name": "Литература",
+        "knowledgeArea": "Philology",
+        "subjectMood": "Sunny"
+      },
+      "averageMarks": {
+        "averageMarkTrend": "Equal",
+        "averageMarkMood": "Good",
+        "averagemarkByImportantWorkTrend": "Equal",
+        "weightedAverageMarkTrend": "NotSet",
+        "indicator": null,
+        "averageMark": "2.00",
+        "averageMarkByImportantWork": null,
+        "weightedAverageMark": null
+      },
+      "summativeMarks": null,
+      "recentMarks": [
+        {
+          "date": 1672130871,
+          "marks": [
+            {
+              "id": 0,
+              "value": "2",
+              "mood": "Good"
+            }
+          ],
+          "isNew": false
+        },
+        {
+          "date": 1671784199,
+          "marks": [
+            {
+              "id": 0,
+              "value": "2",
+              "mood": "Good"
+            }
+          ],
+          "isNew": false
+        },
+        {
+          "date": 1671705199,
+          "marks": [
+            {
+              "id": 0,
+              "value": "2",
+              "mood": "Good"
+            }
+          ],
+          "isNew": false
+        },
+        {
+          "date": 1669891175,
+          "marks": [
+            {
+              "id": 0,
+              "value": "2",
+              "mood": "Good"
+            }
+          ],
+          "isNew": false
+        },
+        {
+          "date": 1669712963,
+          "marks": [
+            {
+              "id": 0,
+              "value": "2",
+              "mood": "Good"
+            }
+          ],
+          "isNew": false
+        }
+      ],
+      "finalMark": null,
+      "rankingPlace": 1
+    },
+    {
+      "subject": {
+        "id": 0,
+        "name": "Алгебра",
+        "knowledgeArea": "Mathematics",
+        "subjectMood": "Sunny"
+      },
+      "averageMarks": {
+        "averageMarkTrend": "Up",
+        "averageMarkMood": "Good",
+        "averagemarkByImportantWorkTrend": "Up",
+        "weightedAverageMarkTrend": "NotSet",
+        "indicator": null,
+        "averageMark": "4.83",
+        "averageMarkByImportantWork": "4.67",
+        "weightedAverageMark": null
+      },
+      "summativeMarks": null,
+      "recentMarks": [
+        {
+          "date": 1672085956,
+          "marks": [
+            {
+              "id": 0,
+              "value": "5",
+              "mood": "Good"
+            }
+          ],
+          "isNew": false
+        },
+        {
+          "date": 1672085935,
+          "marks": [
+            {
+              "id": 0,
+              "value": "5",
+              "mood": "Good"
+            }
+          ],
+          "isNew": false
+        },
+        {
+          "date": 1671648693,
+          "marks": [
+            {
+              "id": 0,
+              "value": "5",
+              "mood": "Good"
+            }
+          ],
+          "isNew": false
+        },
+        {
+          "date": 1671648685,
+          "marks": [
+            {
+              "id": 0,
+              "value": "4",
+              "mood": "Good"
+            }
+          ],
+          "isNew": false
+        },
+        {
+          "date": 1669741761,
+          "marks": [
+            {
+              "id": 0,
+              "value": "5",
+              "mood": "Good"
+            }
+          ],
+          "isNew": false
+        },
+        {
+          "date": 1669622920,
+          "marks": [
+            {
+              "id": 0,
+              "value": "5",
+              "mood": "Good"
+            }
+          ],
+          "isNew": false
+        }
+      ],
+      "finalMark": null,
+      "rankingPlace": 1
+    },
+    {
+      "subject": {
+        "id": 0,
+        "name": "Биология",
+        "knowledgeArea": "NaturalScience",
+        "subjectMood": "Sunny"
+      },
+      "averageMarks": {
+        "averageMarkTrend": "Equal",
+        "averageMarkMood": "Good",
+        "averagemarkByImportantWorkTrend": "Equal",
+        "weightedAverageMarkTrend": "NotSet",
+        "indicator": null,
+        "averageMark": "4.00",
+        "averageMarkByImportantWork": "5.00",
+        "weightedAverageMark": null
+      },
+      "summativeMarks": null,
+      "recentMarks": [
+        {
+          "date": 1672039546,
+          "marks": [
+            {
+              "id": 0,
+              "value": "5",
+              "mood": "Good"
+            }
+          ],
+          "isNew": false
+        },
+        {
+          "date": 1671607892,
+          "marks": [
+            {
+              "id": 0,
+              "value": "5",
+              "mood": "Good"
+            }
+          ],
+          "isNew": false
+        },
+        {
+          "date": 1671102220,
+          "marks": [
+            {
+              "id": 0,
+              "value": "5",
+              "mood": "Good"
+            }
+          ],
+          "isNew": false
+        },
+        {
+          "date": 1670222063,
+          "marks": [
+            {
+              "id": 0,
+              "value": "5",
+              "mood": "Good"
+            }
+          ],
+          "isNew": false
+        },
+        {
+          "date": 1669619872,
+          "marks": [
+            {
+              "id": 0,
+              "value": "5",
+              "mood": "Good"
+            }
+          ],
+          "isNew": false
+        }
+      ],
+      "finalMark": null,
+      "rankingPlace": 1
+    },
+    {
+      "subject": {
+        "id": 0,
+        "name": "Геометрия",
+        "knowledgeArea": "Mathematics",
+        "subjectMood": "Sunny"
+      },
+      "averageMarks": {
+        "averageMarkTrend": "Equal",
+        "averageMarkMood": "Good",
+        "averagemarkByImportantWorkTrend": "Equal",
+        "weightedAverageMarkTrend": "NotSet",
+        "indicator": null,
+        "averageMark": "4.67",
+        "averageMarkByImportantWork": "4.50",
+        "weightedAverageMark": null
+      },
+      "summativeMarks": null,
+      "recentMarks": [
+        {
+          "date": 1671969003,
+          "marks": [
+            {
+              "id": 0,
+              "value": "5",
+              "mood": "Good"
+            }
+          ],
+          "isNew": false
+        },
+        {
+          "date": 1671265533,
+          "marks": [
+            {
+              "id": 0,
+              "value": "4",
+              "mood": "Good"
+            }
+          ],
+          "isNew": false
+        },
+        {
+          "date": 1671264747,
+          "marks": [
+            {
+              "id": 0,
+              "value": "5",
+              "mood": "Good"
+            }
+          ],
+          "isNew": false
+        }
+      ],
+      "finalMark": null,
+      "rankingPlace": 2
+    },
+    {
+      "subject": {
+        "id": 0,
+        "name": "Иностр.яз(немецкий)",
+        "knowledgeArea": "Philology",
+        "subjectMood": "Sunny"
+      },
+      "averageMarks": {
+        "averageMarkTrend": "Equal",
+        "averageMarkMood": "Good",
+        "averagemarkByImportantWorkTrend": "Equal",
+        "weightedAverageMarkTrend": "NotSet",
+        "indicator": null,
+        "averageMark": "4.67",
+        "averageMarkByImportantWork": null,
+        "weightedAverageMark": null
+      },
+      "summativeMarks": null,
+      "recentMarks": [
+        {
+          "date": 1671800511,
+          "marks": [
+            {
+              "id": 0,
+              "value": "5",
+              "mood": "Good"
+            }
+          ],
+          "isNew": false
+        },
+        {
+          "date": 1670928051,
+          "marks": [
+            {
+              "id": 0,
+              "value": "5",
+              "mood": "Good"
+            }
+          ],
+          "isNew": false
+        },
+        {
+          "date": 1669716702,
+          "marks": [
+            {
+              "id": 0,
+              "value": "4",
+              "mood": "Good"
+            }
+          ],
+          "isNew": false
+        }
+      ],
+      "finalMark": null,
+      "rankingPlace": 3
+    },
+    {
+      "subject": {
+        "id": 0,
+        "name": "Обществознание",
+        "knowledgeArea": "SocialStudies",
+        "subjectMood": "Sunny"
+      },
+      "averageMarks": {
+        "averageMarkTrend": "Equal",
+        "averageMarkMood": "Good",
+        "averagemarkByImportantWorkTrend": "Equal",
+        "weightedAverageMarkTrend": "NotSet",
+        "indicator": null,
+        "averageMark": "5.00",
+        "averageMarkByImportantWork": null,
+        "weightedAverageMark": null
+      },
+      "summativeMarks": null,
+      "recentMarks": [
+        {
+          "date": 1671782492,
+          "marks": [
+            {
+              "id": 0,
+              "value": "5",
+              "mood": "Good"
+            }
+          ],
+          "isNew": false
+        }
+      ],
+      "finalMark": null,
+      "rankingPlace": 1
+    },
+    {
+      "subject": {
+        "id": 0,
+        "name": "Ист.России. Вс.ист-я",
+        "knowledgeArea": "SocialStudies",
+        "subjectMood": "Sunny"
+      },
+      "averageMarks": {
+        "averageMarkTrend": "Equal",
+        "averageMarkMood": "Good",
+        "averagemarkByImportantWorkTrend": "Equal",
+        "weightedAverageMarkTrend": "NotSet",
+        "indicator": null,
+        "averageMark": "5.00",
+        "averageMarkByImportantWork": null,
+        "weightedAverageMark": null
+      },
+      "summativeMarks": null,
+      "recentMarks": [
+        {
+          "date": 1671780458,
+          "marks": [
+            {
+              "id": 0,
+              "value": "5",
+              "mood": "Good"
+            }
+          ],
+          "isNew": false
+        },
+        {
+          "date": 1671780171,
+          "marks": [
+            {
+              "id": 0,
+              "value": "5",
+              "mood": "Good"
+            }
+          ],
+          "isNew": false
+        },
+        {
+          "date": 1671178600,
+          "marks": [
+            {
+              "id": 0,
+              "value": "5",
+              "mood": "Good"
+            }
+          ],
+          "isNew": false
+        }
+      ],
+      "finalMark": null,
+      "rankingPlace": 1
+    },
+    {
+      "subject": {
+        "id": 0,
+        "name": "ОсновыБезопаснЖизнед",
+        "knowledgeArea": "Common",
+        "subjectMood": "Sunny"
+      },
+      "averageMarks": {
+        "averageMarkTrend": "Equal",
+        "averageMarkMood": "Good",
+        "averagemarkByImportantWorkTrend": "Equal",
+        "weightedAverageMarkTrend": "NotSet",
+        "indicator": null,
+        "averageMark": "4.67",
+        "averageMarkByImportantWork": null,
+        "weightedAverageMark": null
+      },
+      "summativeMarks": null,
+      "recentMarks": [
+        {
+          "date": 1671698079,
+          "marks": [
+            {
+              "id": 0,
+              "value": "5",
+              "mood": "Good"
+            }
+          ],
+          "isNew": false
+        },
+        {
+          "date": 1671697416,
+          "marks": [
+            {
+              "id": 0,
+              "value": "4",
+              "mood": "Good"
+            }
+          ],
+          "isNew": false
+        },
+        {
+          "date": 1669883267,
+          "marks": [
+            {
+              "id": 0,
+              "value": "5",
+              "mood": "Good"
+            }
+          ],
+          "isNew": false
+        }
+      ],
+      "finalMark": null,
+      "rankingPlace": 11
+    },
+    {
+      "subject": {
+        "id": 0,
+        "name": "География",
+        "knowledgeArea": "SocialStudies",
+        "subjectMood": "Sunny"
+      },
+      "averageMarks": {
+        "averageMarkTrend": "Equal",
+        "averageMarkMood": "Good",
+        "averagemarkByImportantWorkTrend": "Equal",
+        "weightedAverageMarkTrend": "NotSet",
+        "indicator": null,
+        "averageMark": "4.50",
+        "averageMarkByImportantWork": null,
+        "weightedAverageMark": null
+      },
+      "summativeMarks": null,
+      "recentMarks": [
+        {
+          "date": 1671690405,
+          "marks": [
+            {
+              "id": 0,
+              "value": "5",
+              "mood": "Good"
+            }
+          ],
+          "isNew": false
+        },
+        {
+          "date": 1670505458,
+          "marks": [
+            {
+              "id": 0,
+              "value": "4",
+              "mood": "Good"
+            },
+            {
+              "id": 0,
+              "value": "4",
+              "mood": "Good"
+            }
+          ],
+          "isNew": false
+        },
+        {
+          "date": 1669878134,
+          "marks": [
+            {
+              "id": 0,
+              "value": "5",
+              "mood": "Good"
+            }
+          ],
+          "isNew": false
+        }
+      ],
+      "finalMark": null,
+      "rankingPlace": 7
+    },
+    {
+      "subject": {
+        "id": 0,
+        "name": "Химия",
+        "knowledgeArea": "NaturalScience",
+        "subjectMood": "Sunny"
+      },
+      "averageMarks": {
+        "averageMarkTrend": "Equal",
+        "averageMarkMood": "Good",
+        "averagemarkByImportantWorkTrend": "Equal",
+        "weightedAverageMarkTrend": "NotSet",
+        "indicator": null,
+        "averageMark": "5.00",
+        "averageMarkByImportantWork": null,
+        "weightedAverageMark": null
+      },
+      "summativeMarks": null,
+      "recentMarks": [
+        {
+          "date": 1671564902,
+          "marks": [
+            {
+              "id": 0,
+              "value": "5",
+              "mood": "Good"
+            }
+          ],
+          "isNew": false
+        }
+      ],
+      "finalMark": null,
+      "rankingPlace": 1
+    },
+    {
+      "subject": {
+        "id": 0,
+        "name": "Родной язык",
+        "knowledgeArea": "Philology",
+        "subjectMood": "Sunny"
+      },
+      "averageMarks": {
+        "averageMarkTrend": "Equal",
+        "averageMarkMood": "Good",
+        "averagemarkByImportantWorkTrend": "Equal",
+        "weightedAverageMarkTrend": "NotSet",
+        "indicator": null,
+        "averageMark": "5.00",
+        "averageMarkByImportantWork": null,
+        "weightedAverageMark": null
+      },
+      "summativeMarks": null,
+      "recentMarks": [
+        {
+          "date": 1671178465,
+          "marks": [
+            {
+              "id": 0,
+              "value": "5",
+              "mood": "Good"
+            }
+          ],
+          "isNew": false
+        }
+      ],
+      "finalMark": null,
+      "rankingPlace": 1
+    },
+    {
+      "subject": {
+        "id": 0,
+        "name": "Внеур. деят.",
+        "knowledgeArea": "Common",
+        "subjectMood": "NotSet"
+      },
+      "averageMarks": {
+        "averageMarkTrend": "Equal",
+        "averageMarkMood": "NotSet",
+        "averagemarkByImportantWorkTrend": "Equal",
+        "weightedAverageMarkTrend": "NotSet",
+        "indicator": null,
+        "averageMark": null,
+        "averageMarkByImportantWork": null,
+        "weightedAverageMark": null
+      },
+      "summativeMarks": null,
+      "recentMarks": [],
+      "finalMark": null,
+      "rankingPlace": null
+    },
+    {
+      "subject": {
+        "id": 0,
+        "name": "Информатика",
+        "knowledgeArea": "Mathematics",
+        "subjectMood": "NotSet"
+      },
+      "averageMarks": {
+        "averageMarkTrend": "Equal",
+        "averageMarkMood": "NotSet",
+        "averagemarkByImportantWorkTrend": "Equal",
+        "weightedAverageMarkTrend": "NotSet",
+        "indicator": null,
+        "averageMark": null,
+        "averageMarkByImportantWork": null,
+        "weightedAverageMark": null
+      },
+      "summativeMarks": null,
+      "recentMarks": [],
+      "finalMark": null,
+      "rankingPlace": null
+    }
+  ],
+  "rating": {
+    "rankingPosition": {
+      "trendDescription": "Ваш рейтинг стабилен",
+      "placeTrend": "Equal",
+      "place": 1
+    },
+    "rankingPlaces": [
+      {
+        "imageUrl": "https://au1.school.mosreg.ru/get.aspx/46/54e7b4636061487bbfe82d22e8c0fbb0.png?d=20210923013650",
+        "isContextUser": true
+      },
+      {
+        "imageUrl": "https://static.school.mosreg.ru/images/studentrating/animalrating/3.png",
+        "isContextUser": false
+      },
+      {
+        "imageUrl": "https://static.school.mosreg.ru/images/studentrating/animalrating/21.png",
+        "isContextUser": false
+      }
+    ]
+  },
+  "askTeacher": null,
+  "type": "Success",
+  "description": "Success",
+  "mobileSubscriptionStatus": "NotActive"
+}
