@@ -1,9 +1,11 @@
 package org.bxkr.octodiary.models.user
 
+import org.bxkr.octodiary.models.periodmarks.PeriodType
+
 data class Periods(
     val id: Long,
     val number: Int,
-    val type: String,
+    val type: PeriodType,
     val studyYear: Int,
     val isCurrent: Boolean,
     val dateStart: Long,

@@ -199,6 +199,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="@string/placeholder_lesson_desc"
+                        android:textIsSelectable="true"
                         android:textAppearance="?attr/textAppearanceTitleSmall"
                         app:layout_constraintEnd_toStartOf="@id/homeworkImageBarrier"
                         app:layout_constraintStart_toStartOf="parent"

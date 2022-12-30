@@ -5,7 +5,7 @@ import org.bxkr.octodiary.ui.activities.MainActivity
 
 enum class UsedFeedTypes(
     val feedType: FeedType,
-    val bind: ((Feed, MainActivity, ItemGeneralFeedBinding) -> Unit)
+    val bind: ((PeriodMark, MainActivity, ItemGeneralFeedBinding) -> Unit)
 ) {
     TeacherLessonComment(FeedType.TeacherLessonComment, { feed, context, it ->
         it.feedItemName.text = feed.content.subject?.name

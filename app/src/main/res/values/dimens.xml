@@ -40,4 +40,7 @@
     <dimen name="feed_item_padding">16dp</dimen>
     <dimen name="feed_item_margin">16dp</dimen>
     <dimen name="loading_corner_radius">2dp</dimen>
+    <dimen name="period_subject_margin">16dp</dimen>
+    <dimen name="period_subject_padding">16dp</dimen>
+    <dimen name="period_marks_chips_margin">8dp</dimen>
 </resources>

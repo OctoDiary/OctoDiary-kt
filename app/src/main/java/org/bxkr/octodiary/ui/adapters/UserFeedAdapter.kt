@@ -5,18 +5,18 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import org.bxkr.octodiary.databinding.ItemGeneralFeedBinding
-import org.bxkr.octodiary.models.userfeed.Feed
+import org.bxkr.octodiary.models.userfeed.PeriodMark
 import org.bxkr.octodiary.models.userfeed.UsedFeedTypes
 import org.bxkr.octodiary.ui.activities.MainActivity
 
 class UserFeedAdapter(
-    private val context: Context, private val feeds: List<Feed>
+    private val context: Context, private val feeds: List<PeriodMark>
 ) : RecyclerView.Adapter<UserFeedAdapter.UserFeedViewHolder>() {
 
     class UserFeedViewHolder(
         val binding: ItemGeneralFeedBinding, val context: Context
     ) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(feed: Feed) {
+        fun bind(feed: PeriodMark) {
             UsedFeedTypes.valueOf(feed.type.name).bind(feed, (context as MainActivity), binding)
         }
     }

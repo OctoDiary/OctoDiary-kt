@@ -77,4 +77,14 @@
     <string name="average_mark">Средний балл</string>
     <string name="average_important">Средний балл за работы</string>
     <string name="not_yet">Пока нет</string>
+    <string name="period_average_extended">Средний балл: %s – %s за %s</string>
+    <string name="placeholder_period_average">Средний балл: 4.5 – 5 за семестр</string>
+    <string name="half_year">полугодие</string>
+    <string name="quarter">четверть</string>
+    <string name="semester">семестр</string>
+    <string name="trimester">триместр</string>
+    <string name="module">модуль</string>
+    <string name="period_average">Средний балл: %s</string>
+    <string name="not_set_yet">пока не выставлен</string>
+    <string name="period_marks_chip">Выходит %s</string>
 </resources>

@@ -35,7 +35,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/markValue"
                 android:layout_centerHorizontal="true"
-                android:singleLine="true"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:text="@string/placeholder_lesson_name"
                 android:textAppearance="@style/TextAppearance.Material3.TitleSmall" />
 

@@ -124,4 +124,14 @@
     <string name="average_mark">Average</string>
     <string name="average_important">Average by works</string>
     <string name="not_yet">Not yet</string>
+    <string name="period_average_extended">Average mark: %s – %s for the %s</string>
+    <string name="placeholder_period_average">Average mark: 4.5 – 5 for the semester</string>
+    <string name="half_year">half-year</string>
+    <string name="quarter">quarter</string>
+    <string name="semester">semester</string>
+    <string name="trimester">trimester</string>
+    <string name="module">module</string>
+    <string name="period_average">Average mark: %s</string>
+    <string name="not_set_yet">not set yet</string>
+    <string name="period_marks_chip">Will be %s</string>
 </resources>

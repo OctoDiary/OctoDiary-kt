@@ -12,7 +12,7 @@ import org.bxkr.octodiary.databinding.FragmentProfileBinding
 import org.bxkr.octodiary.models.diary.Week
 import org.bxkr.octodiary.models.rating.RatingClass
 import org.bxkr.octodiary.models.user.User
-import org.bxkr.octodiary.models.userfeed.Feed
+import org.bxkr.octodiary.models.userfeed.PeriodMark
 import org.bxkr.octodiary.models.userfeed.UsedFeedTypes
 import org.bxkr.octodiary.models.userfeed.UserFeed
 import org.bxkr.octodiary.ui.activities.MainActivity
@@ -62,7 +62,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
             )
         Picasso.get().load(userData.info.avatarUrl).into(binding.bigAvatar)
 
-        val onlyUsedFeeds: List<Feed> = userFeedData.feed.mapNotNull {
+        val onlyUsedFeeds: List<PeriodMark> = userFeedData.feed.mapNotNull {
             if (it.type in UsedFeedTypes.values().map { it1 -> it1.feedType }) {
                 return@mapNotNull it
             }
