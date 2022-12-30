@@ -8,9 +8,14 @@ Android 7.0+, target: Android 13.0
 &nbsp;
 
 <div align=center style="padding: 30px">
-<img src=https://user-images.githubusercontent.com/66333241/202867560-e446484e-9dff-4a2c-86a7-f97bfd34328d.jpg height=500px>
-<img src=https://user-images.githubusercontent.com/66333241/202867561-493fc89f-c32d-4acd-b5e4-2bf74f4e4031.jpg height=500px>
-<img src=https://user-images.githubusercontent.com/66333241/202867559-10ecceef-8329-4b43-a849-c077f3f8b364.jpg height=500px>
+
+<img src=https://user-images.githubusercontent.com/66333241/210060210-10dcddbe-65cc-45b7-bae7-0311f624c971.png width=150>
+<img src=https://user-images.githubusercontent.com/66333241/210060211-52826772-f905-407b-a129-3645f8acff60.png width=150>
+<img src=https://user-images.githubusercontent.com/66333241/210060213-7774e6c3-fbcc-47da-bace-8cfb02bb72a8.png width=150>
+<img src=https://user-images.githubusercontent.com/66333241/210060424-2658f7a0-ea4b-4f85-ad03-c3abc0199793.png width=150>
+<img src=https://user-images.githubusercontent.com/66333241/210060206-2ac4173b-cd21-41bd-8e09-7df7b117259a.png width=150>
+
+
 </div>
 &nbsp; 
 
