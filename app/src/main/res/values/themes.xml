@@ -5,6 +5,6 @@
     </style>
 
     <style name="Selectable" parent="Theme.OctoDiary">
-        <item name="background">?attr/selectableItemBackground</item>
+        <item name="android:background">?attr/selectableItemBackground</item>
     </style>
 </resources>
