@@ -99,8 +99,12 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(FragmentDiaryBinding::i
             }
             binding.weekSlider.addOnChangeListener { _, value, _ ->
                 binding.daySlider.value = 0F
+                var normalValue = value.toInt()
+                if (value > mainActivity.diaryData!!.size - 1) {
+                    normalValue = mainActivity.diaryData!!.size - 1
+                }
                 binding.dayViewPager.adapter =
-                    DayAdapter(binding.root.context, mainActivity.diaryData!![value.toInt()].days)
+                    DayAdapter(binding.root.context, mainActivity.diaryData!![normalValue].days)
             }
 
             val loadWeek =

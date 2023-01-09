@@ -36,9 +36,11 @@ class LessonsAdapter(
             val toCommon =
                 SimpleDateFormat("HH:mm", parentContext.resources.configuration.locales[0])
             binding.lessonName.text = lesson.subject.name
-            binding.lessonTime.text = parentContext.getString(R.string.time_from_to,
-                toDate.parse(lesson.startDateTime)?.let { toCommon.format(it) },
-                toDate.parse(lesson.endDateTime)?.let { toCommon.format(it) })
+            if (lesson.startDateTime != null && lesson.endDateTime != null) {
+                binding.lessonTime.text = parentContext.getString(R.string.time_from_to,
+                    toDate.parse(lesson.startDateTime)?.let { toCommon.format(it) },
+                    toDate.parse(lesson.endDateTime)?.let { toCommon.format(it) })
+            }
             if (compact) {
                 binding.lessonDesc.visibility = View.GONE
             } else {

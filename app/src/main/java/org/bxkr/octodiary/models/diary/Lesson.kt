@@ -2,7 +2,7 @@ package org.bxkr.octodiary.models.diary
 
 data class Lesson(
     val comment: Any,
-    val endDateTime: String,
+    val endDateTime: String?,
     val group: Group,
     val hasAttachment: Boolean,
     val homework: Homework?,
@@ -12,7 +12,7 @@ data class Lesson(
     val isEmpty: Any,
     val number: Int,
     val place: Any,
-    val startDateTime: String,
+    val startDateTime: String?,
     val subject: Subject,
     val teacher: Teacher,
     val theme: String?,
