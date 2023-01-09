@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.bxkr.octodiary.R
 import org.bxkr.octodiary.Utils.getJsonRaw
@@ -91,6 +92,14 @@ class MarkActivity : AppCompatActivity() {
             bigProgressBar.visibility = View.GONE
             contentScrollView.visibility = View.VISIBLE
             markValue.text = mark.markDetails.marks[0].value
+            if (mark.markDetails.marks.size > 1) {
+                markValue.text = getString(
+                    R.string.fractional_mark,
+                    mark.markDetails.marks[0].value,
+                    mark.markDetails.marks[1].value
+                )
+                (markValue.layoutParams as ConstraintLayout.LayoutParams).dimensionRatio = "2:1"
+            }
             lessonDate.text = this@MarkActivity.getString(R.string.date_weekday,
                 Date(mark.date.toLong() * 1000).let { toCommon.format(it) },
                 Date(mark.date.toLong() * 1000).let { toWeekday.format(it) })
@@ -105,7 +114,8 @@ class MarkActivity : AppCompatActivity() {
             }
             markRatingRecyclerView.layoutManager = LinearLayoutManager(this@MarkActivity)
             markRatingRecyclerView.adapter = MarkRatingMemberAdapter(this@MarkActivity,
-                mark.categories.sortedByDescending { it.value })
+                mark.categories.sortedByDescending { it.value }, mark.markDetails.marks.size > 1
+            )
             avg.text = mark.averageMarks.averageMark
             avgImportant.text =
                 mark.averageMarks.averageMarkByImportantWork ?: getString(R.string.not_yet)

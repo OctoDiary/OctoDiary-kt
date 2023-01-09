@@ -134,4 +134,5 @@
     <string name="period_average">Average mark: %s</string>
     <string name="not_set_yet">not set yet</string>
     <string name="period_marks_chip">Will be %s</string>
+    <string name="fractional_mark_rating_value" translatable="false">%s%s</string>
 </resources>
