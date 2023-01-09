@@ -1,6 +1,7 @@
 package org.bxkr.octodiary.network
 
 import androidx.annotation.DrawableRes
+import androidx.annotation.Keep
 import androidx.annotation.StringRes
 import org.bxkr.octodiary.R
 import org.bxkr.octodiary.models.diary.Diary
@@ -44,23 +45,27 @@ object NetworkService {
         )
     }
 
+    @Keep
     enum class LoadType {
         Undefined,
         Past,
         Future
     }
 
+    @Keep
     data class AuthResult(
         val credentials: AuthResultCredentials,
         val reason: String,
         val type: String
     )
 
+    @Keep
     data class AuthResultCredentials(
         val accessToken: String,
         val userId: Long,
     )
 
+    @Keep
     data class AuthRequestBody(
         val username: String,
         val password: String,
