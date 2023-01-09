@@ -1,4 +1,6 @@
 # OctoDiary-kt
+<div align=center style="padding: 30px">
+<a href='https://play.google.com/store/apps/details?id=org.bxkr.octodiary&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img width=256 alt='Доступно в Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/ru_badge_web_generic.png'/></a></div>  
 
 Android-клиент [Дневник.ру](https://dnevnik.ru/)
 и [Школьного Портала](https://school.mosreg.ru/about/project).  
@@ -23,6 +25,6 @@ Android 7.0+, target: Android 13.0
 
 ```./gradlew assembleDebug```
 
-## Скачать
+## Копилефт
 
-GitHub Releases: [последний релиз](https://github.com/octodiary/octodiary-kt/releases/latest)
+Google Play и логотип Google Play являются товарными знаками корпорации Google LLC.

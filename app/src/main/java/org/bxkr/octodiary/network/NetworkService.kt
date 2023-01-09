@@ -8,7 +8,6 @@ import org.bxkr.octodiary.models.lesson.Lesson
 import org.bxkr.octodiary.models.mark.MarkDetails
 import org.bxkr.octodiary.models.periodmarks.PeriodMarksResponse
 import org.bxkr.octodiary.models.rating.RatingClass
-import org.bxkr.octodiary.models.release.Release
 import org.bxkr.octodiary.models.user.User
 import org.bxkr.octodiary.models.userfeed.UserFeed
 import retrofit2.Call
@@ -131,27 +130,11 @@ object NetworkService {
         ): Call<PeriodMarksResponse>
     }
 
-    interface GitHubAPI {
-        @GET("repos/{owner}/{repo}/releases/latest")
-        fun getLatestRelease(
-            @Path("owner") owner: String,
-            @Path("repo") repo: String,
-        ): Call<Release>
-    }
-
     fun api(server: Server): API {
         val retrofit = Retrofit.Builder()
             .baseUrl(server.url)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         return retrofit.create(API::class.java)
-    }
-
-    fun updateApi(gitUrl: String): GitHubAPI {
-        val retrofit = Retrofit.Builder()
-            .baseUrl(gitUrl)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-        return retrofit.create(GitHubAPI::class.java)
     }
 }

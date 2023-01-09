@@ -6,11 +6,7 @@ import androidx.annotation.StringRes
 import androidx.core.content.edit
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import org.bxkr.octodiary.models.release.Release
-import org.bxkr.octodiary.network.BaseCallback
-import org.bxkr.octodiary.network.NetworkService
 import org.bxkr.octodiary.ui.activities.MainActivity
-import retrofit2.Response
 import java.io.InputStream
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -32,15 +28,6 @@ object Utils {
         val byteArray = ByteArray(rawResource.available())
         rawResource.read(byteArray)
         return Gson().fromJson(String(byteArray), object : TypeToken<T>() {}.type)
-    }
-
-    fun checkUpdate(context: Context, onResponse: (Response<Release>) -> Unit) {
-        val call = NetworkService.updateApi(context.getString(R.string.api_git_host))
-            .getLatestRelease(
-                context.getString(R.string.repo_owner),
-                context.getString(R.string.repo_name)
-            )
-        call.enqueue(object : BaseCallback<Release>(context, function = onResponse) {})
     }
 
     fun isDemo(context: Context): Boolean {

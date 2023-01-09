@@ -2,18 +2,13 @@ package org.bxkr.octodiary.ui.activities
 
 import android.Manifest
 import android.app.AlarmManager
-import android.app.DownloadManager
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
-import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.Environment
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -21,14 +16,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
 import androidx.fragment.app.Fragment
 import androidx.preference.PreferenceManager
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
-import org.bxkr.octodiary.BuildConfig
 import org.bxkr.octodiary.R
 import org.bxkr.octodiary.UpdateReceiver
 import org.bxkr.octodiary.Utils.agedData
-import org.bxkr.octodiary.Utils.checkUpdate
 import org.bxkr.octodiary.Utils.getJsonRaw
 import org.bxkr.octodiary.Utils.isDemo
 import org.bxkr.octodiary.databinding.ActivityMainBinding
@@ -149,30 +140,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun createDiary(listener: () -> Unit = {}) {
-        checkUpdate(this) {
-            if (it.body() != null) with(it.body()!!) {
-                if (tag_name != BuildConfig.ATTACHED_GIT_TAG) {
-                    MaterialAlertDialogBuilder(
-                        this@MainActivity,
-                        com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog_Centered
-                    ).setTitle(getString(R.string.update_available, tag_name))
-                        .setMessage(getString(R.string.update_available_message, name))
-                        .setIcon(R.drawable.ic_outline_file_download_24)
-                        .setNeutralButton(R.string.changes) { _, _ ->
-                            val intent = Intent(Intent.ACTION_VIEW)
-                            intent.data = Uri.parse(html_url)
-                            startActivity(intent)
-                        }.setNegativeButton(R.string.later) { dialog, _ ->
-                            dialog.dismiss()
-                        }.setPositiveButton(R.string.yes) { _, _ ->
-                            downloadUpdate(assets[0].browser_download_url, tag_name)
-                            Snackbar.make(
-                                binding.root, R.string.download_started, Snackbar.LENGTH_LONG
-                            ).show()
-                        }.show()
-                }
-            }
-        }
         if ((diaryData != null) && (userData != null)) {
             allDataLoaded()
         }
@@ -350,29 +317,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    private fun downloadUpdate(url: String, name: String) {
-        val request =
-            DownloadManager.Request(Uri.parse(url)).setTitle(getString(R.string.update, name))
-                .setDestinationInExternalPublicDir(
-                    Environment.DIRECTORY_DOWNLOADS,
-                    getString(R.string.update_file_name, getString(R.string.app_name), name)
-                )
-        val downloadManager = getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
-        val downloadId = downloadManager.enqueue(request)
-        registerReceiver(object : BroadcastReceiver() {
-            override fun onReceive(context: Context?, intent: Intent?) {
-                val install = Intent(Intent.ACTION_VIEW)
-                install.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
-                install.setDataAndType(
-                    downloadManager.getUriForDownloadedFile(downloadId),
-                    "application/vnd.android.package-archive"
-                )
-                startActivity(install)
-                finish()
-            }
-        }, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
     }
 
 
