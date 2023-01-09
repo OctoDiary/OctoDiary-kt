@@ -147,7 +147,6 @@ class MainActivity : AppCompatActivity() {
             ?.let { NetworkService.api(NetworkService.Server.values()[server]).user(it, token) }
         call?.enqueue(object : BaseCallback<User>(this, function = {
             userData = it.body()!!
-            println(userData)
 
             getRating(listener)
             getDiary(listener)
