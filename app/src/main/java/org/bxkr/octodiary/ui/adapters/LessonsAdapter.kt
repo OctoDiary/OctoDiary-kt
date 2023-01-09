@@ -67,7 +67,8 @@ class LessonsAdapter(
                     binding.lessonDesc.visibility = View.GONE
                 }
             }
-            val personId = (parentContext as MainActivity).userData?.info?.personId!!
+            val personId =
+                (parentContext as MainActivity).userData?.contextPersons?.get(0)?.personId!!
             val groupId = parentContext.userData?.contextPersons?.get(0)?.group?.id!!
             binding.root.setOnClickListener {
                 val intent = Intent(parentContext, LessonActivity::class.java)

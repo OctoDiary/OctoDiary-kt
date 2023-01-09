@@ -57,10 +57,10 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
         binding.studentName.text =
             getString(
                 R.string.profile_name,
-                userData.info.firstName,
-                userData.info.lastName
+                userData.contextPersons[0].firstName,
+                userData.contextPersons[0].lastName
             )
-        Picasso.get().load(userData.info.avatarUrl).into(binding.bigAvatar)
+        Picasso.get().load(userData.contextPersons[0].avatarUrl).into(binding.bigAvatar)
 
         val onlyUsedFeeds: List<PeriodMark> = userFeedData.feed.mapNotNull {
             if (it.type in UsedFeedTypes.values().map { it1 -> it1.feedType }) {
@@ -76,7 +76,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
         when (preferences.getString("data_under_name", "school")) {
             "school" -> binding.dataUnderName.text = userData.contextPersons[0].school.name
             "class_name" -> binding.dataUnderName.text = userData.contextPersons[0].group.name
-            "middle_name" -> binding.dataUnderName.text = userData.info.middleName
+            "middle_name" -> binding.dataUnderName.text = userData.contextPersons[0].middleName
             "lessons_tomorrow" -> binding.dataUnderName.text = java.text.MessageFormat.format(
                 getString(R.string.lessons_tomorrow_template),
                 diaryData[1].days[Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1].lessons.size

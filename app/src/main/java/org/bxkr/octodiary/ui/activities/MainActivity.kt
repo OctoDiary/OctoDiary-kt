@@ -147,6 +147,7 @@ class MainActivity : AppCompatActivity() {
             ?.let { NetworkService.api(NetworkService.Server.values()[server]).user(it, token) }
         call?.enqueue(object : BaseCallback<User>(this, function = {
             userData = it.body()!!
+            println(userData)
 
             getRating(listener)
             getDiary(listener)
@@ -166,7 +167,7 @@ class MainActivity : AppCompatActivity() {
     private fun getRating(listener: () -> Unit = {}) {
         with(userData!!) {
             val call = NetworkService.api(NetworkService.Server.values()[server]).rating(
-                info.personId, contextPersons[0].group.id, token
+                contextPersons[0].personId, contextPersons[0].group.id, token
             )
             call.enqueue(object : BaseCallback<RatingClass>(this@MainActivity, function = {
                 ratingData = it.body()!!
@@ -178,7 +179,10 @@ class MainActivity : AppCompatActivity() {
     private fun getDiary(listener: () -> Unit = {}) {
         with(userData!!) {
             val call = NetworkService.api(NetworkService.Server.values()[server]).diary(
-                info.personId, contextPersons[0].school.id, contextPersons[0].group.id, token
+                contextPersons[0].personId,
+                contextPersons[0].school.id,
+                contextPersons[0].group.id,
+                token
             )
             call.enqueue(object : BaseCallback<Diary>(this@MainActivity, function = {
                 diaryData = it.body()!!.weeks
@@ -190,7 +194,7 @@ class MainActivity : AppCompatActivity() {
     private fun getUserFeed(listener: () -> Unit = {}) {
         with(userData!!) {
             val call = NetworkService.api(NetworkService.Server.values()[server]).userFeed(
-                info.personId, contextPersons[0].group.id, token
+                contextPersons[0].personId, contextPersons[0].group.id, token
             )
             call.enqueue(object : BaseCallback<UserFeed>(this@MainActivity, function = {
                 userFeedData = it.body()
@@ -202,7 +206,7 @@ class MainActivity : AppCompatActivity() {
     private fun getPeriodMarks(listener: () -> Unit = {}) {
         with(userData!!) {
             val call = NetworkService.api(NetworkService.Server.values()[server]).periodMarks(
-                info.personId,
+                contextPersons[0].personId,
                 contextPersons[0].group.id,
                 contextPersons[0].reportingPeriodGroup.periods.first { it.isCurrent }.id,
                 token
@@ -210,7 +214,7 @@ class MainActivity : AppCompatActivity() {
             call.enqueue(object : BaseCallback<PeriodMarksResponse>(this@MainActivity, function = {
                 periodMarksData = it.body()
                 if (isAllDataLoaded()) allDataLoaded(listener)
-            }) {})
+            }, errorFunction = { dataIsOutOfDate() }) {})
         }
     }
 
