@@ -5,7 +5,6 @@ import androidx.annotation.StyleRes
 import com.google.android.material.color.DynamicColors
 
 class OctoDiaryApplication : Application() {
-    private var themeRes: Int = 0
     private var themeCallback = ThemeCallback(this)
 
     @Suppress("unused")
