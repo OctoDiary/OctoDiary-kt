@@ -3,4 +3,5 @@
     android:id="@+id/workName"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
     android:text="@string/placeholder_work_type" />
