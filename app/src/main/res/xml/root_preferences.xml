@@ -8,6 +8,15 @@
         app:title="@string/screen_when_opening"
         app:useSimpleSummaryProvider="true" />
 
+    <ListPreference
+        app:defaultValue="dynamic"
+        app:entries="@array/theme_values"
+        app:entryValues="@array/theme_keys"
+        app:key="theme"
+        app:summary="@string/theme_description"
+        app:title="@string/theme"
+        app:useSimpleSummaryProvider="true" />
+
     <PreferenceCategory app:title="@string/diary">
         <ListPreference
             app:defaultValue="homework"

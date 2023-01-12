@@ -87,4 +87,13 @@
     <string name="period_average">Средний балл: %s</string>
     <string name="not_set_yet">пока не выставлен</string>
     <string name="period_marks_chip">Выходит %s</string>
+    <string name="theme_dynamic">Динамический цвет</string>
+    <string name="theme_red">Красная тема</string>
+    <string name="theme_green">Зелёная тема</string>
+    <string name="theme_blue">Синяя тема</string>
+    <string name="theme_yellow">Жёлтая тема</string>
+    <string name="theme_purple">Фиолетовая тема</string>
+    <string name="theme_cyan">Циановая тема</string>
+    <string name="theme">Цветовая тема</string>
+    <string name="theme_description">Цветовой акцент во всём приложении</string>
 </resources>

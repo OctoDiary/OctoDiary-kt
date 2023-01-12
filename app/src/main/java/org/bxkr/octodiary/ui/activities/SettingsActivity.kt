@@ -5,7 +5,9 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.preference.ListPreference
 import androidx.preference.PreferenceFragmentCompat
+import org.bxkr.octodiary.OctoDiaryApplication
 import org.bxkr.octodiary.R
 import org.bxkr.octodiary.databinding.SettingsActivityBinding
 
@@ -36,6 +38,10 @@ class SettingsActivity : AppCompatActivity() {
 
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey)
+            findPreference<ListPreference>("theme")?.setOnPreferenceChangeListener { _, _ ->
+                (requireContext().applicationContext as OctoDiaryApplication).updateTheme()
+                true
+            }
         }
 
     }

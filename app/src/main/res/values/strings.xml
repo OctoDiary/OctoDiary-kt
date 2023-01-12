@@ -135,4 +135,13 @@
     <string name="not_set_yet">not set yet</string>
     <string name="period_marks_chip">Will be %s</string>
     <string name="fractional_mark_rating_value" translatable="false">%s%s</string>
+    <string name="theme_dynamic">Dynamic Color</string>
+    <string name="theme_red">Red theme</string>
+    <string name="theme_green">Green theme</string>
+    <string name="theme_blue">Blue theme</string>
+    <string name="theme_yellow">Yellow theme</string>
+    <string name="theme_purple">Purple theme</string>
+    <string name="theme_cyan">Cyan theme</string>
+    <string name="theme">App color theme</string>
+    <string name="theme_description">Color accent in whole app</string>
 </resources>
