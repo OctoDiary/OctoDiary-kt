@@ -53,7 +53,7 @@ object Utils {
             Context.MODE_PRIVATE
         ).getLong(context.getString(R.string.data_age_key), (-1).toLong())
 
-        if (dataAge == (-1).toLong() || ((System.currentTimeMillis() - dataAge) >= 3600000)) {
+        if (dataAge == (-1).toLong() || ((System.currentTimeMillis() - dataAge) >= 3600000) || ((System.currentTimeMillis() - dataAge) < 0)) {
             return null
         }
 
