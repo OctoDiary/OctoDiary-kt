@@ -16,7 +16,7 @@
     <string name="rating_place">На <u>%s</u> месте в классе!</string>
     <string name="content_rating_card_background">Весёлая картинка, которая соответствует вашему текущему рейтингу</string>
     <string name="title_activity_settings">Настройки</string>
-    <string name="show_rating">Рейтинг в профиле</string>
+    <string name="show_rating">Рейтинг на домашней</string>
     <string name="rating">Рейтинг</string>
     <string name="rating_background_info">Картинка из внешнего ресурса</string>
     <string name="show_rating_background">Фон рейтинга</string>

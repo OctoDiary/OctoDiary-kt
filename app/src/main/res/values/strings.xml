@@ -31,7 +31,7 @@
     <string name="rating_place">At the <u>%s</u> place in class!</string>
     <string name="content_rating_card_background">Funny image that matches your current rating</string>
     <string name="title_activity_settings">Settings</string>
-    <string name="show_rating">Rating in profile</string>
+    <string name="show_rating">Rating in dashboard</string>
     <string name="rating">Rating</string>
     <string name="rating_background_info">Image, provided by external resource</string>
     <string name="show_rating_background">Rating background</string>
