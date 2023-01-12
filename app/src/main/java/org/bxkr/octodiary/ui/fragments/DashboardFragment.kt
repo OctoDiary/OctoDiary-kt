@@ -41,23 +41,15 @@ class DashboardFragment :
         preferences = PreferenceManager.getDefaultSharedPreferences(mainActivity)
 
         if (Utils.isSchoolDataOutOfDate(mainActivity)) {
-            mainActivity.let { it ->
-                it.binding.swipeRefresh.let { swipeRefresh ->
-                    it.createDiary {
-                        swipeRefresh.isRefreshing = false
-                        onViewCreated(view, savedInstanceState)
-                    }
-                    swipeRefresh.isRefreshing = true
-                    return@onViewCreated
-                }
-            }
+            reload(view, savedInstanceState)
+            return
         } else {
             userFeedData = mainActivity.userFeedData ?: return
             diaryData = mainActivity.diaryData ?: return
             ratingData = mainActivity.ratingData ?: return
 
             configureMarks()
-            configureMiniDiary()
+            configureMiniDiary(view, savedInstanceState)
             configureRating()
         }
     }
@@ -69,15 +61,20 @@ class DashboardFragment :
             DashboardMarkAdapter(mainActivity, userFeedData.recentMarks)
     }
 
-    private fun configureMiniDiary() {
+    private fun configureMiniDiary(view: View, savedInstanceState: Bundle?) {
         binding.miniDiaryRecyclerView.layoutManager = LinearLayoutManager(mainActivity)
+        val weekId = Calendar.getInstance().let {
+            it.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
+            SimpleDateFormat("yyyy-MM-dd", resources.configuration.locales[0]).format(it.time)
+        }
         val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        val diaryDaysConcat = listOf(diaryData[1].days, diaryData[2].days).flatten()
         val tomorrow =
             SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault()).format(
                 dateFormat.parse(dateFormat.format(Date(System.currentTimeMillis() + 86400000L)))!!
             )
         var tomorrowPosition: Int? = null
-        for ((index, day) in diaryData[1].days.withIndex()) {
+        for ((index, day) in diaryDaysConcat.withIndex()) {
             if (day.date == tomorrow) {
                 tomorrowPosition = index
             }
@@ -87,7 +84,7 @@ class DashboardFragment :
                 dateFormat.parse(dateFormat.format(Date()))!!
             )
         var todayPosition: Int? = null
-        for ((index, day) in diaryData[1].days.withIndex()) {
+        for ((index, day) in diaryDaysConcat.withIndex()) {
             if (day.date == today) {
                 todayPosition = index
             }
@@ -101,19 +98,25 @@ class DashboardFragment :
             }
             return
         }
-        val weekId = Calendar.getInstance().let {
-            it.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
-            SimpleDateFormat("yyyy-MM-dd", resources.configuration.locales[0]).format(it.time)
+        if (tomorrowPosition >= 7) {
+            tomorrowPosition -= 7
         }
         val tomorrowLessons = diaryData.first { it.id == weekId }.days[tomorrowPosition].lessons
         val todayLessons = diaryData.first { it.id == weekId }.days[todayPosition].lessons
         binding.miniDiaryRecyclerView.adapter = LessonsAdapter(mainActivity, tomorrowLessons, true)
         if (tomorrowLessons.isEmpty()) binding.freeDay.visibility = View.VISIBLE
         val replaceFunction: (lessons: List<Lesson>) -> Unit = {
-            if (it.isEmpty()) binding.freeDay.visibility = View.VISIBLE
-            else {
-                binding.freeDay.visibility = View.GONE
-                (binding.miniDiaryRecyclerView.adapter as LessonsAdapter).newData(it)
+            if (!Utils.isSchoolDataOutOfDate(mainActivity)) {
+                if (it.isEmpty()) {
+                    binding.freeDay.visibility = View.VISIBLE
+                    binding.miniDiaryRecyclerView.visibility = View.GONE
+                } else {
+                    binding.freeDay.visibility = View.GONE
+                    binding.miniDiaryRecyclerView.visibility = View.VISIBLE
+                    (binding.miniDiaryRecyclerView.adapter as LessonsAdapter).newData(it)
+                }
+            } else {
+                reload(view, savedInstanceState)
             }
         }
 
@@ -149,5 +152,17 @@ class DashboardFragment :
             binding.ratingButton.setOnClickListener(openBottomSheet)
             binding.ratingCard.setOnClickListener(openBottomSheet)
         } else binding.ratingCard.visibility = View.GONE
+    }
+
+    private fun reload(view: View, savedInstanceState: Bundle?) {
+        mainActivity.let {
+            it.binding.swipeRefresh.let { swipeRefresh ->
+                it.createDiary {
+                    swipeRefresh.isRefreshing = false
+                    onViewCreated(view, savedInstanceState)
+                }
+                swipeRefresh.isRefreshing = true
+            }
+        }
     }
 }
