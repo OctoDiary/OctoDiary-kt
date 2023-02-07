@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.models.lesson
 
+import org.bxkr.octodiary.models.shared.File
+
 data class Lesson(
     val status: String,
     val subject: Subject,
@@ -13,7 +15,7 @@ data class Lesson(
     val averageMarks: AverageMarks,
     val lessonDetailsMarks: List<LessonDetailsMarks>,
     val homework: Homework?,
-    val attachments: List<Attachments>,
+    val attachments: List<File>,
     val lessonDescription: String,
     val type: String,
     val description: String,

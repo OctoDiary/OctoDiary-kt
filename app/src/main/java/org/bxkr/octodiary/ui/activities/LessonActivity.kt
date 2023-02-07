@@ -17,8 +17,8 @@ import org.bxkr.octodiary.Utils.isDemo
 import org.bxkr.octodiary.Utils.toOrdinal
 import org.bxkr.octodiary.databinding.ActivityLessonBinding
 import org.bxkr.octodiary.databinding.ItemHomeworkAttachmentBinding
-import org.bxkr.octodiary.models.lesson.Attachments
 import org.bxkr.octodiary.models.lesson.Lesson
+import org.bxkr.octodiary.models.shared.File
 import org.bxkr.octodiary.models.shared.NamedMark
 import org.bxkr.octodiary.network.BaseCallback
 import org.bxkr.octodiary.network.NetworkService
@@ -143,7 +143,7 @@ class LessonActivity : AppCompatActivity() {
 
     class AttachmentsAdapter(
         private val context: Context,
-        private val attachments: List<Attachments>
+        private val attachments: List<File>
     ) :
         RecyclerView.Adapter<AttachmentsAdapter.AttachmentsViewHolder>() {
 
@@ -154,11 +154,11 @@ class LessonActivity : AppCompatActivity() {
             RecyclerView.ViewHolder(attachmentBinding.root) {
             private val binding = attachmentBinding
             private val parentContext = context
-            fun bind(attachment: Attachments) {
+            fun bind(attachment: File) {
                 binding.root.text = attachment.fileName
                 binding.root.setOnClickListener {
                     val intent = Intent(Intent.ACTION_VIEW)
-                    intent.data = Uri.parse(attachment.fileDownloadLink)
+                    intent.data = Uri.parse(attachment.fileLink)
                     parentContext.startActivity(intent)
                 }
             }

@@ -144,4 +144,5 @@
     <string name="theme_cyan">Cyan theme</string>
     <string name="theme">App color theme</string>
     <string name="theme_description">Color accent in whole app</string>
+    <string name="class_wall_post">Class wall post</string>
 </resources>

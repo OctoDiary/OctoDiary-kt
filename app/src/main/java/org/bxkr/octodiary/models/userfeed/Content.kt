@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.models.userfeed
 
+import org.bxkr.octodiary.models.shared.File
+
 data class Content(
     val attachmentFiles: List<AttachmentFile>?,
     val authorFirstName: String?,

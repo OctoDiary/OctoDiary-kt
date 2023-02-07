@@ -96,4 +96,5 @@
     <string name="theme_cyan">Циановая тема</string>
     <string name="theme">Цветовая тема</string>
     <string name="theme_description">Цветовой акцент во всём приложении</string>
+    <string name="class_wall_post">Объявление на стене класса</string>
 </resources>

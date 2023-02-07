@@ -21,4 +21,10 @@
         android:layout_alignParentStart="true"
         android:textIsSelectable="true"
         tools:text="Oct 20, Thursday" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/attachments_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/lessonDate" />
 </RelativeLayout>
