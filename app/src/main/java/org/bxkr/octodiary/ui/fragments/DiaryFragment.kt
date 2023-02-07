@@ -98,6 +98,25 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(FragmentDiaryBinding::i
                 binding.dayViewPager.currentItem = value.toInt()
             }
             binding.weekSlider.addOnChangeListener { _, value, _ ->
+                if (Utils.isSchoolDataOutOfDate(activity as MainActivity)) {
+                    mainActivity.createDiary {
+                        mainActivity.binding.swipeRefresh.isRefreshing = false
+                        onViewCreated(view, savedInstanceState)
+                    }
+                    mainActivity.binding.swipeRefresh.isRefreshing = true
+                    val snackBar =
+                        Snackbar.make(
+                            binding.root,
+                            R.string.school_out_of_date,
+                            Snackbar.LENGTH_INDEFINITE
+                        )
+                    snackBar.show()
+                    mainActivity.createDiary {
+                        snackBar.dismiss()
+                        onViewCreated(view, savedInstanceState)
+                    }
+                    return@addOnChangeListener
+                }
                 binding.daySlider.value = 0F
                 var normalValue = value.toInt()
                 if (value > mainActivity.diaryData!!.size - 1) {

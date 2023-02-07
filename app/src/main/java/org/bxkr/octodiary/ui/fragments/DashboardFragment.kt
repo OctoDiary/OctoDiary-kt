@@ -41,6 +41,7 @@ class DashboardFragment :
         preferences = PreferenceManager.getDefaultSharedPreferences(mainActivity)
 
         if (Utils.isSchoolDataOutOfDate(mainActivity)) {
+            binding.root.visibility = View.GONE
             reload(view, savedInstanceState)
             return
         } else {
@@ -160,6 +161,7 @@ class DashboardFragment :
                 it.createDiary {
                     swipeRefresh.isRefreshing = false
                     onViewCreated(view, savedInstanceState)
+                    binding.root.visibility = View.VISIBLE
                 }
                 swipeRefresh.isRefreshing = true
             }
