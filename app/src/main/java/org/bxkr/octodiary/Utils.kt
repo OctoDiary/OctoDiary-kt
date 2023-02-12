@@ -9,6 +9,7 @@ import com.google.gson.reflect.TypeToken
 import org.bxkr.octodiary.ui.activities.MainActivity
 import java.io.InputStream
 import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
@@ -53,7 +54,12 @@ object Utils {
             Context.MODE_PRIVATE
         ).getLong(context.getString(R.string.data_age_key), (-1).toLong())
 
-        if (dataAge == (-1).toLong() || ((System.currentTimeMillis() - dataAge) >= 3600000) || ((System.currentTimeMillis() - dataAge) < 0)) {
+        val dataAgeCalendar = Calendar.getInstance()
+        dataAgeCalendar.timeInMillis = dataAge
+        if (dataAge == (-1).toLong() || ((System.currentTimeMillis() - dataAge) >= 3600000) || ((System.currentTimeMillis() - dataAge) < 0) ||
+            Calendar.getInstance()
+                .get(Calendar.DAY_OF_YEAR) != dataAgeCalendar.get(Calendar.DAY_OF_YEAR)
+        ) {
             return null
         }
 
