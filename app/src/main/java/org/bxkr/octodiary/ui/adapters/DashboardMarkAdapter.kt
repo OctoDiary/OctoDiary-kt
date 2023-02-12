@@ -34,9 +34,13 @@ class DashboardMarkAdapter(
                         marks[0].value
                     }.also { it1 -> it.markValue.text = it1 }
                     it.markLessonName.text = subject.name
+                    var shortText = shortMarkTypeText
+                    if (shortText == "Label.EduSchool.WorkType.PeriodMark.Short") {
+                        shortText = "ПЕР"
+                    }
                     it.markTypeAndDate.text = context.getString(
                         R.string.mark_type_and_date,
-                        shortMarkTypeText,
+                        shortText,
                         Utils.toPatternedDate(
                             "MMM d",
                             Date(this.date * 1000L),
