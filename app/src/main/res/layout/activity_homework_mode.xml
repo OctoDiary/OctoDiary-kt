@@ -69,6 +69,7 @@
         android:format24Hour="H\nmm"
         android:lineSpacingExtra="-32sp"
         android:textSize="128sp"
+        android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

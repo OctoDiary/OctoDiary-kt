@@ -9,6 +9,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.bxkr.octodiary.R
@@ -82,7 +83,10 @@ class LessonActivity : AppCompatActivity() {
         with(binding) {
             bigProgressBar.visibility = View.GONE
             contentScrollView.visibility = View.VISIBLE
-            if (lesson.homework != null && lesson.homework.text.isNotEmpty()) {
+            if (lesson.homework != null && lesson.homework.text.isNotEmpty() && PreferenceManager.getDefaultSharedPreferences(
+                    this@LessonActivity
+                ).getBoolean("homework_mode", true)
+            ) {
                 floatingActionButton.visibility = View.VISIBLE
                 floatingActionButton.setOnClickListener {
                     val toHumanDate =

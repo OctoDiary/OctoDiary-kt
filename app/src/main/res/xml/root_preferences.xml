@@ -58,4 +58,27 @@
             app:title="@string/show_rating_images_name" />
     </PreferenceCategory>
 
+    <PreferenceCategory app:title="@string/homework">
+        <org.bxkr.octodiary.ui.MaterialSwitchPreference
+            app:allowDividerAbove="false"
+            app:defaultValue="true"
+            app:key="homework_mode"
+            app:summary="@string/homework_mode_summary"
+            app:title="@string/homework_mode" />
+        <org.bxkr.octodiary.ui.MaterialSwitchPreference
+            app:allowDividerAbove="false"
+            app:defaultValue="true"
+            app:dependency="homework_mode"
+            app:key="homework_mode_music_controls"
+            app:summary="@string/music_controls_summary"
+            app:title="@string/music_controls" />
+        <org.bxkr.octodiary.ui.MaterialSwitchPreference
+            app:allowDividerAbove="false"
+            app:defaultValue="true"
+            app:dependency="homework_mode"
+            app:key="homework_mode_keep_screen_on"
+            app:summary="@string/keep_screen_on_summary"
+            app:title="@string/keep_screen_on" />
+    </PreferenceCategory>
+
 </PreferenceScreen>

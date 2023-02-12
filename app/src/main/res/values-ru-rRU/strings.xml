@@ -104,4 +104,10 @@
     <string name="previous">предыдущее</string>
     <string name="next">следующее</string>
     <string name="back">назад</string>
+    <string name="homework_mode">Режим домашней работы</string>
+    <string name="homework_mode_summary">Экран с полезной информацией при выполнении домашних работ</string>
+    <string name="music_controls">Управление музыкой</string>
+    <string name="keep_screen_on">Экран всегда включен</string>
+    <string name="keep_screen_on_summary">Не гасить экран в режиме домашней работы</string>
+    <string name="music_controls_summary">Может не появиться при удалённом воспроизведении</string>
 </resources>

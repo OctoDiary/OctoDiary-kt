@@ -8,6 +8,7 @@ import android.view.KeyEvent
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.preference.PreferenceManager
 import org.bxkr.octodiary.R
 import org.bxkr.octodiary.databinding.ActivityHomeworkModeBinding
 
@@ -29,6 +30,8 @@ class HomeworkModeActivity : AppCompatActivity() {
         binding.backButton.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
+        binding.root.keepScreenOn = PreferenceManager.getDefaultSharedPreferences(this)
+            .getBoolean("homework_mode_keep_screen_on", true)
 
         audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
         checkMusic()
@@ -49,6 +52,9 @@ class HomeworkModeActivity : AppCompatActivity() {
     }
 
     private fun checkMusic() {
+        if (!PreferenceManager.getDefaultSharedPreferences(this)
+                .getBoolean("homework_mode_music_controls", true)
+        ) return
         if (audioManager.isMusicActive) {
             preventDisappear = true
             binding.previous.visibility = View.VISIBLE
