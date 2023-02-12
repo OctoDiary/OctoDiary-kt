@@ -82,6 +82,13 @@ class LessonActivity : AppCompatActivity() {
         with(binding) {
             bigProgressBar.visibility = View.GONE
             contentScrollView.visibility = View.VISIBLE
+            floatingActionButton.visibility = View.VISIBLE
+            floatingActionButton.setOnClickListener {
+                val intent = Intent(this@LessonActivity, HomeworkModeActivity::class.java)
+                // ... extras etc.
+                startActivity(intent)
+            }
+
             lessonName.text = lesson.subject.name
             lessonTopic.text = lesson.theme
             lessonTime.text = getString(

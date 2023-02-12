@@ -8,6 +8,12 @@
         <item name="android:background">?attr/selectableItemBackground</item>
     </style>
 
+    <style name="Theme.HomeworkMode" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="android:background">@color/black</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:keepScreenOn">true</item>
+    </style>
+
     <style name="Theme.Green" parent="Theme.OctoDiary">
         <item name="colorPrimary">@color/green_md_theme_light_primary</item>
         <item name="colorOnPrimary">@color/green_md_theme_light_onPrimary</item>
