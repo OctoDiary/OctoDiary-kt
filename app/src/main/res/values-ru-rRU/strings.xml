@@ -98,4 +98,10 @@
     <string name="theme_description">Цветовой акцент во всём приложении</string>
     <string name="class_wall_post">Объявление на стене класса</string>
     <string name="homework_fab_desc">Сделать домашнюю работу</string>
+    <string name="homework_for_date">к %s</string>
+    <string name="play">играть</string>
+    <string name="pause">пауза</string>
+    <string name="previous">предыдущее</string>
+    <string name="next">следующее</string>
+    <string name="back">назад</string>
 </resources>

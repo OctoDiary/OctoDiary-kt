@@ -82,11 +82,22 @@ class LessonActivity : AppCompatActivity() {
         with(binding) {
             bigProgressBar.visibility = View.GONE
             contentScrollView.visibility = View.VISIBLE
-            floatingActionButton.visibility = View.VISIBLE
-            floatingActionButton.setOnClickListener {
-                val intent = Intent(this@LessonActivity, HomeworkModeActivity::class.java)
-                // ... extras etc.
-                startActivity(intent)
+            if (lesson.homework != null && lesson.homework.text.isNotEmpty()) {
+                floatingActionButton.visibility = View.VISIBLE
+                floatingActionButton.setOnClickListener {
+                    val toHumanDate =
+                        SimpleDateFormat(
+                            "d MMMM",
+                            this@LessonActivity.resources.configuration.locales[0]
+                        )
+                    val intent = Intent(this@LessonActivity, HomeworkModeActivity::class.java)
+                    intent.putExtra("lesson_name", lesson.subject.name)
+                    intent.putExtra(
+                        "lesson_date",
+                        Date(lesson.startTime.toLong() * 1000).let { toHumanDate.format(it) })
+                    intent.putExtra("homework_text", lesson.homework.text)
+                    startActivity(intent)
+                }
             }
 
             lessonName.text = lesson.subject.name

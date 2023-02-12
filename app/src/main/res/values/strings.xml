@@ -146,4 +146,11 @@
     <string name="theme_description">Color accent in whole app</string>
     <string name="class_wall_post">Class wall post</string>
     <string name="homework_fab_desc">Do the homework</string>
+    <string name="placeholder_time" translatable="false">20\n42</string>
+    <string name="homework_for_date">by %s</string>
+    <string name="play">play</string>
+    <string name="pause">pause</string>
+    <string name="previous">previous</string>
+    <string name="next">next</string>
+    <string name="back">back</string>
 </resources>
