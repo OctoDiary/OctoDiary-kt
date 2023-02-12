@@ -26,7 +26,9 @@ class RatingMemberAdapter(private val context: Context, private val members: Lis
                 progressBar.progress = itemCount - member.place + 1
                 val preferences = PreferenceManager.getDefaultSharedPreferences(parentContext)
                 if (preferences.getBoolean("show_rating_images", true)) {
-                    Picasso.get().load(member.imageUrl).into(avatar)
+                    if (member.imageUrl.isNotEmpty()) {
+                        Picasso.get().load(member.imageUrl).into(avatar)
+                    }
                     if (member.isContextUser) {
                         card.strokeWidth =
                             parentContext.resources.getDimensionPixelSize(R.dimen.card_stroke_width)
