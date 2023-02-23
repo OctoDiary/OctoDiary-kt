@@ -159,4 +159,7 @@
     <string name="keep_screen_on">Keep screen on</string>
     <string name="keep_screen_on_summary">Don\'t turn the screen off when in the homework mode</string>
     <string name="music_controls_summary">May not appear when using remote play</string>
+    <string name="search_by_subject">Search by subject</string>
+    <string name="always_show_keyboard">Always raise keyboard</string>
+    <string name="always_show_keyboard_summary">May cause lagging on some devices</string>
 </resources>

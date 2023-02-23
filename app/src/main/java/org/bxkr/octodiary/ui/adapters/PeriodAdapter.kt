@@ -66,17 +66,24 @@ class PeriodAdapter(
     }
 
     override fun onBindViewHolder(holder: PeriodViewHolder, position: Int) {
-        val subject = newSubject[position]
+        val subject = newSubject.sortedBy { it.subject.name }[position]
         holder.bind(subject, periodType)
     }
 
     override fun getItemCount(): Int = newSubject.size
 
     @SuppressLint("NotifyDataSetChanged")
-    fun onlyWithValues(shownValues: List<String>) {
+    fun updateList(shownValues: List<String>) {
         newSubject = subject.filter {
             it.averageMarks.averageMark?.toFloatOrNull()?.roundToInt().toString() in shownValues
         }
+        notifyDataSetChanged()
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateList(searchName: String) {
+        newSubject =
+            subject.filter { Regex("${searchName.lowercase()}.+").matches(it.subject.name.lowercase()) }
         notifyDataSetChanged()
     }
 }

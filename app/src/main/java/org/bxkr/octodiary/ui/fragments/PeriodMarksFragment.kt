@@ -1,9 +1,12 @@
 package org.bxkr.octodiary.ui.fragments
 
+import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.annotation.IdRes
+import androidx.core.widget.doOnTextChanged
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.chip.Chip
@@ -13,6 +16,7 @@ import org.bxkr.octodiary.databinding.FragmentPeriodMarksBinding
 import org.bxkr.octodiary.models.periodmarks.PeriodMarksResponse
 import org.bxkr.octodiary.ui.activities.MainActivity
 import org.bxkr.octodiary.ui.adapters.PeriodAdapter
+
 
 class PeriodMarksFragment :
     BaseFragment<FragmentPeriodMarksBinding>(FragmentPeriodMarksBinding::inflate) {
@@ -48,6 +52,17 @@ class PeriodMarksFragment :
             periodMarks = mainActivity.periodMarksData!!
             configureChips()
             configureRecycler()
+            if (PreferenceManager.getDefaultSharedPreferences(mainActivity)
+                    .getBoolean("always_show_keyboard_in_period_marks", false)
+            ) {
+                binding.searchInput.requestFocus()
+                val inputMethodManager =
+                    mainActivity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                inputMethodManager.showSoftInput(
+                    binding.searchInput,
+                    InputMethodManager.SHOW_IMPLICIT
+                )
+            }
         }
     }
 
@@ -65,7 +80,7 @@ class PeriodMarksFragment :
                 shownValues = (checkedIds.map {
                     ChipsMarkTexts.values().first { it1 -> it1.idRes == it }.value
                 } as MutableList<String>)
-                setNeededSubjects()
+                (binding.periodMarksRecyclerView.adapter as PeriodAdapter).updateList(shownValues)
             }
         }
     }
@@ -77,9 +92,8 @@ class PeriodMarksFragment :
             mainActivity.userData!!.contextPersons[0].reportingPeriodGroup.periods.first { it.isCurrent }.type,
             periodMarks.periodMarks
         )
-    }
-
-    private fun setNeededSubjects() {
-        (binding.periodMarksRecyclerView.adapter as PeriodAdapter).onlyWithValues(shownValues)
+        binding.searchInput.doOnTextChanged { text, _, _, _ ->
+            (binding.periodMarksRecyclerView.adapter as PeriodAdapter).updateList(text.toString())
+        }
     }
 }

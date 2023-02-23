@@ -81,4 +81,13 @@
             app:title="@string/keep_screen_on" />
     </PreferenceCategory>
 
+    <PreferenceCategory app:title="@string/period_marks">
+        <org.bxkr.octodiary.ui.MaterialSwitchPreference
+            app:allowDividerAbove="false"
+            app:defaultValue="false"
+            app:key="always_show_keyboard_in_period_marks"
+            app:summary="@string/always_show_keyboard_summary"
+            app:title="@string/always_show_keyboard" />
+    </PreferenceCategory>
+
 </PreferenceScreen>

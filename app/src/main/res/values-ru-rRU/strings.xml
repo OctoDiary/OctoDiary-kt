@@ -110,4 +110,7 @@
     <string name="keep_screen_on">Экран всегда включен</string>
     <string name="keep_screen_on_summary">Не гасить экран в режиме домашней работы</string>
     <string name="music_controls_summary">Может не появиться при удалённом воспроизведении</string>
+    <string name="search_by_subject">Поиск по предмету</string>
+    <string name="always_show_keyboard">Сразу показывать клавиатуру</string>
+    <string name="always_show_keyboard_summary">Может вызывать лаги на некоторых устройствах</string>
 </resources>
