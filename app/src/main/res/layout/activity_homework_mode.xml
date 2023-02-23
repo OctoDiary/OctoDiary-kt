@@ -6,6 +6,7 @@
     android:layout_height="match_parent">
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_gravity="bottom|right|end"
         android:id="@+id/back_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -14,7 +15,7 @@
         app:backgroundTint="@color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:rippleColor="@color/material_dynamic_neutral30"
+        app:rippleColor="#454749"
         app:srcCompat="@drawable/ic_round_arrow_back_24"
         app:tint="@color/white" />
 
@@ -22,7 +23,7 @@
         android:id="@+id/lesson_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/material_dynamic_neutral80"
+        android:textColor="#c5c7c9"
         android:textIsSelectable="false"
         app:layout_constraintBottom_toTopOf="@id/lesson_date"
         app:layout_constraintEnd_toEndOf="parent"
@@ -35,7 +36,7 @@
         android:id="@+id/lesson_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/material_dynamic_neutral80"
+        android:textColor="#c5c7c9"
         android:textIsSelectable="false"
         app:layout_constraintBottom_toTopOf="@id/homework_text"
         app:layout_constraintEnd_toEndOf="parent"
@@ -51,7 +52,7 @@
         android:layout_marginEnd="16dp"
         android:textAlignment="center"
         android:textAllCaps="false"
-        android:textColor="@color/material_dynamic_neutral80"
+        android:textColor="#c5c7c9"
         android:textIsSelectable="false"
         android:textStyle="italic"
         app:layout_constraintBottom_toTopOf="@id/clock"
@@ -77,6 +78,7 @@
         tools:text="@string/placeholder_time" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_gravity="bottom|right|end"
         android:id="@+id/previous"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -88,12 +90,13 @@
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/clock"
-        app:rippleColor="@color/material_dynamic_neutral30"
+        app:rippleColor="#454749"
         app:srcCompat="@drawable/ic_round_skip_previous_24"
         app:tint="@color/white"
         tools:visibility="visible" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_gravity="bottom|right|end"
         android:id="@+id/play_pause"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -110,6 +113,7 @@
         tools:visibility="visible" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_gravity="bottom|right|end"
         android:id="@+id/next"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -120,7 +124,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/play_pause"
         app:layout_constraintTop_toBottomOf="@+id/clock"
-        app:rippleColor="@color/material_dynamic_neutral30"
+        app:rippleColor="#454749"
         app:srcCompat="@drawable/ic_round_skip_next_24"
         app:tint="@color/white"
         tools:visibility="visible" />
