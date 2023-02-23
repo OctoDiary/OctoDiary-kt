@@ -105,15 +105,22 @@ class MarkActivity : AppCompatActivity() {
                 Date(mark.date.toLong() * 1000).let { toWeekday.format(it) })
             lessonName.text = mark.subject.name
             workName.text = mark.markDetails.markTypeText
-            markInfoCard.setOnClickListener {
-                val intent = Intent(this@MarkActivity, LessonActivity::class.java)
-                intent.putExtra("lesson_id", mark.lessonId)
-                intent.putExtra("person_id", personId)
-                intent.putExtra("group_id", groupId)
-                this@MarkActivity.startActivity(intent)
+            if (mark.lessonId != null) {
+                markInfoCard.setOnClickListener {
+                    val intent = Intent(this@MarkActivity, LessonActivity::class.java)
+                    intent.putExtra("lesson_id", mark.lessonId)
+                    intent.putExtra("person_id", personId)
+                    intent.putExtra("group_id", groupId)
+                    this@MarkActivity.startActivity(intent)
+                }
+            } else {
+                markInfoCard.isClickable = false
+                markInfoCard.isFocusable = false
+                arrowToLesson.visibility = View.GONE
             }
             markRatingRecyclerView.layoutManager = LinearLayoutManager(this@MarkActivity)
-            markRatingRecyclerView.adapter = MarkRatingMemberAdapter(this@MarkActivity,
+            markRatingRecyclerView.adapter = MarkRatingMemberAdapter(
+                this@MarkActivity,
                 mark.categories.sortedByDescending { it.value }, mark.markDetails.marks.size > 1
             )
             avg.text = mark.averageMarks.averageMark

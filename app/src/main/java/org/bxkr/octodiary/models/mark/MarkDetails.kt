@@ -6,7 +6,7 @@ data class MarkDetails(
     val date: Int,
     val description: String,
     val groupReportsPlot: GroupReportsPlot,
-    val lessonId: Long,
+    val lessonId: Long?,
     val markDetails: MarkDetailsX,
     val messengerEntryPoint: Any?,
     val mobileSubscriptionStatus: String,

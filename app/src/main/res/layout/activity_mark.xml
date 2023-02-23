@@ -90,7 +90,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/workName" />
 
                     <ImageView
-                        android:id="@+id/imageView"
+                        android:id="@+id/arrowToLesson"
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:contentDescription="@string/goto_lesson"
