@@ -134,16 +134,16 @@ class DashboardFragment :
         val showRating = preferences.getBoolean("show_rating", true)
         val showRatingBackground = preferences.getBoolean("show_rating_background", true)
 
-        if (showRating) {
+        if (showRating && ratingData.history != null) {
             binding.ratingCard.visibility = View.VISIBLE
             binding.ratingStatus.text =
                 getString(
                     R.string.rating_place,
-                    toOrdinal(ratingData.history.rankingPosition.place)
+                    toOrdinal(ratingData.history?.rankingPosition?.place)
                 )
             if (showRatingBackground) {
                 binding.ratingBackground.visibility = View.VISIBLE
-                Picasso.get().load(ratingData.history.rankingPosition.backgroundImageUrl)
+                Picasso.get().load(ratingData.history?.rankingPosition?.backgroundImageUrl)
                     .into(binding.ratingBackground)
             } else binding.ratingBackground.visibility = View.INVISIBLE
             val openBottomSheet = { _: View ->

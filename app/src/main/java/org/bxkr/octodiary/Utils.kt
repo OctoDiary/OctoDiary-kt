@@ -20,7 +20,7 @@ object Utils {
                 mainActivity.ratingData != null)
     }
 
-    fun toOrdinal(place: Int): String {
+    fun toOrdinal(place: Int?): String {
         val formatter = MessageFormat("{0,ordinal}", Locale.getDefault())
         return formatter.format(arrayOf(place)).replace(".", "")
     }
