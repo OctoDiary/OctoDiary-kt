@@ -7,6 +7,8 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.Build
 import android.os.Bundle
 import android.view.Menu
@@ -16,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
 import androidx.fragment.app.Fragment
 import androidx.preference.PreferenceManager
+import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import org.bxkr.octodiary.R
 import org.bxkr.octodiary.UpdateReceiver
@@ -121,6 +124,21 @@ class MainActivity : AppCompatActivity() {
 
         PreferenceManager.setDefaultValues(this, R.xml.root_preferences, false)
 
+        val connectivityManager =
+            (getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager)
+        val activeNetwork = connectivityManager.activeNetwork
+        if (activeNetwork != null) {
+            val caps = connectivityManager.getNetworkCapabilities(activeNetwork)
+            val vpnInUse = caps?.hasTransport(NetworkCapabilities.TRANSPORT_VPN)
+            if (vpnInUse != null && vpnInUse) {
+                Snackbar.make(
+                    binding.root,
+                    getString(R.string.vpn_can_slow_loadings),
+                    Snackbar.LENGTH_SHORT
+                ).show()
+            }
+        }
+
         val changeFragment: (Fragment) -> Boolean = {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment, it).commitAllowingStateLoss()
@@ -145,7 +163,7 @@ class MainActivity : AppCompatActivity() {
         }
         val call = userId?.toLong()
             ?.let { NetworkService.api(NetworkService.Server.values()[server]).user(it, token) }
-        call?.enqueue(object : BaseCallback<User>(this, function = {
+        call?.enqueue(object : BaseCallback<User>(this, binding.root, function = {
             userData = it.body()!!
 
             getRating(listener)
@@ -153,7 +171,7 @@ class MainActivity : AppCompatActivity() {
             getUserFeed(listener)
             getPeriodMarks(listener)
 
-        }, errorFunction = { dataIsOutOfDate() }) {})
+        }, errorFunction = { dataIsOutOfDate() }, noConnectionFunction = listener) {})
 
         /*
         It should work like this - first createDiary receives userData,
@@ -168,10 +186,11 @@ class MainActivity : AppCompatActivity() {
             val call = NetworkService.api(NetworkService.Server.values()[server]).rating(
                 contextPersons[0].personId, contextPersons[0].group.id, token
             )
-            call.enqueue(object : BaseCallback<RatingClass>(this@MainActivity, function = {
-                ratingData = it.body()!!
-                if (isAllDataLoaded()) allDataLoaded(listener)
-            }, errorFunction = { dataIsOutOfDate() }) {})
+            call.enqueue(object :
+                BaseCallback<RatingClass>(this@MainActivity, binding.root, function = {
+                    ratingData = it.body()!!
+                    if (isAllDataLoaded()) allDataLoaded(listener)
+                }, errorFunction = { dataIsOutOfDate() }, noConnectionFunction = listener) {})
         }
     }
 
@@ -183,10 +202,10 @@ class MainActivity : AppCompatActivity() {
                 contextPersons[0].group.id,
                 token
             )
-            call.enqueue(object : BaseCallback<Diary>(this@MainActivity, function = {
+            call.enqueue(object : BaseCallback<Diary>(this@MainActivity, binding.root, function = {
                 diaryData = it.body()!!.weeks
                 if (isAllDataLoaded()) allDataLoaded(listener)
-            }, errorFunction = { dataIsOutOfDate() }) {})
+            }, errorFunction = { dataIsOutOfDate() }, noConnectionFunction = listener) {})
         }
     }
 
@@ -195,10 +214,11 @@ class MainActivity : AppCompatActivity() {
             val call = NetworkService.api(NetworkService.Server.values()[server]).userFeed(
                 contextPersons[0].personId, contextPersons[0].group.id, token
             )
-            call.enqueue(object : BaseCallback<UserFeed>(this@MainActivity, function = {
-                userFeedData = it.body()
-                if (isAllDataLoaded()) allDataLoaded(listener)
-            }, errorFunction = { dataIsOutOfDate() }) {})
+            call.enqueue(object :
+                BaseCallback<UserFeed>(this@MainActivity, binding.root, function = {
+                    userFeedData = it.body()
+                    if (isAllDataLoaded()) allDataLoaded(listener)
+                }, errorFunction = { dataIsOutOfDate() }, noConnectionFunction = listener) {})
         }
     }
 
@@ -210,10 +230,11 @@ class MainActivity : AppCompatActivity() {
                 contextPersons[0].reportingPeriodGroup.periods.first { it.isCurrent }.id,
                 token
             )
-            call.enqueue(object : BaseCallback<PeriodMarksResponse>(this@MainActivity, function = {
-                periodMarksData = it.body()
-                if (isAllDataLoaded()) allDataLoaded(listener)
-            }, errorFunction = { dataIsOutOfDate() }) {})
+            call.enqueue(object :
+                BaseCallback<PeriodMarksResponse>(this@MainActivity, binding.root, function = {
+                    periodMarksData = it.body()
+                    if (isAllDataLoaded()) allDataLoaded(listener)
+                }, errorFunction = { dataIsOutOfDate() }, noConnectionFunction = listener) {})
         }
     }
 

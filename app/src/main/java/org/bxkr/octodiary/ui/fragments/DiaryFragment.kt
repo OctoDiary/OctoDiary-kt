@@ -138,10 +138,13 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(FragmentDiaryBinding::i
                                 weekFunction(diaryData).id,
                                 loadType.name
                             ).enqueue(object :
-                                BaseCallback<Diary>(mainActivity, function = { response ->
-                                    addingFunction(response.body()!!.weeks)
-                                    onViewCreated(view, savedInstanceState)
-                                }) {})
+                                BaseCallback<Diary>(
+                                    mainActivity,
+                                    binding.root,
+                                    function = { response ->
+                                        addingFunction(response.body()!!.weeks)
+                                        onViewCreated(view, savedInstanceState)
+                                    }) {})
                         }
                     }
                 }

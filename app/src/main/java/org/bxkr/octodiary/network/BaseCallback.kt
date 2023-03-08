@@ -15,7 +15,8 @@ abstract class BaseCallback<T>(
     private val bindingRoot: View? = null,
     private val errorMessage: Int = 0,
     private val function: (response: Response<T>) -> Unit,
-    private val errorFunction: ((errorBody: ResponseBody) -> Unit)? = null
+    private val errorFunction: ((errorBody: ResponseBody) -> Unit)? = null,
+    private val noConnectionFunction: (() -> Unit)? = null
 ) : Callback<T> {
     override fun onResponse(
         call: Call<T>,
@@ -34,6 +35,10 @@ abstract class BaseCallback<T>(
     }
 
     override fun onFailure(call: Call<T>, t: Throwable) {
+        if (bindingRoot != null) {
+            Snackbar.make(bindingRoot, R.string.check_connection, Snackbar.LENGTH_SHORT).show()
+        }
+        noConnectionFunction?.invoke()
         Log.e(this::class.simpleName, parentContext.getString(R.string.retrofit_error, t.message))
     }
 }
