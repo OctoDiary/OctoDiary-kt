@@ -115,4 +115,5 @@
     <string name="always_show_keyboard_summary">Может вызывать лаги на некоторых устройствах</string>
     <string name="vpn_can_slow_loadings">VPN может замедлять загрузки</string>
     <string name="check_connection">Сервер не отвечает или нет интернета</string>
+    <string name="kundelik">Күнделiк</string>
 </resources>

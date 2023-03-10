@@ -2,6 +2,7 @@ package org.bxkr.octodiary.ui.adapters
 
 import android.content.Context
 import android.content.Intent
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -32,7 +33,15 @@ class DashboardMarkAdapter(
                         )
                     } else {
                         marks[0].value
-                    }.also { it1 -> it.markValue.text = it1 }
+                    }.also { it1 ->
+                        if (it1.length > 3) {
+                            it.markValue.setTextSize(
+                                TypedValue.COMPLEX_UNIT_PX,
+                                it.markValue.textSize - 40
+                            )
+                        }
+                        it.markValue.text = it1
+                    }
                     it.markLessonName.text = subject.name
                     var shortText = shortMarkTypeText
                     if (shortText == "Label.EduSchool.WorkType.PeriodMark.Short") {

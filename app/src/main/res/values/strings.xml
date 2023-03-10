@@ -164,4 +164,5 @@
     <string name="always_show_keyboard_summary">May cause lagging on some devices</string>
     <string name="vpn_can_slow_loadings">VPN can slow loadings</string>
     <string name="check_connection">Server is down or no internet connection</string>
+    <string name="kundelik">Kundelik</string>
 </resources>

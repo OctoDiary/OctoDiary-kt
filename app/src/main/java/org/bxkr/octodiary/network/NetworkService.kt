@@ -42,6 +42,13 @@ object NetworkService {
             "https://api.school.mosreg.ru/mobile/v6.0/",
             R.string.school_mosreg_client_id,
             R.string.school_mosreg_client_secret
+        ),
+        KUNDELIK(
+            R.string.kundelik,
+            R.drawable.ic_round_first_page_24,
+            "https://api.kundelik.kz/mobile/v6.0/",
+            R.string.kundelik_client_id,
+            R.string.kundelik_client_secret
         )
     }
 

@@ -288,6 +288,10 @@ class MainActivity : AppCompatActivity() {
         }
         val pendingIntent =
             PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
+        if (server == NetworkService.Server.KUNDELIK.ordinal) {
+            binding.bottomNavigationView.menu.removeItem(R.id.periodMarksPage)
+
+        }
 
         createNotificationChannel()
         alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager

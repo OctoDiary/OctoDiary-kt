@@ -27,7 +27,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:text="@string/placeholder_mark_value"
-                android:textAppearance="@style/TextAppearance.Material3.DisplaySmall" />
+                android:textAppearance="@style/TextAppearance.Material3.DisplaySmall"
+                app:lineHeight="44sp" />
 
             <TextView
                 android:id="@+id/markLessonName"

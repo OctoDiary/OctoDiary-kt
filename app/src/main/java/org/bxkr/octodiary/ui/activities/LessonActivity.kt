@@ -110,12 +110,16 @@ class LessonActivity : AppCompatActivity() {
                 R.string.time_from_to,
                 Date(lesson.startTime.toLong() * 1000).let { toCommon.format(it) },
                 Date(lesson.endTime.toLong() * 1000).let { toCommon.format(it) })
-            lessonTeacher.text = getString(
-                R.string.teacher_name_template,
-                lesson.teacher.lastName,
-                lesson.teacher.firstName,
-                lesson.teacher.middleName
-            )
+            if (lesson.teacher != null) {
+                lessonTeacher.text = getString(
+                    R.string.teacher_name_template,
+                    lesson.teacher.lastName,
+                    lesson.teacher.firstName,
+                    lesson.teacher.middleName
+                )
+            } else {
+                lessonTeacher.visibility = View.GONE
+            }
             lessonNumber.text =
                 getString(R.string.lesson_n, toOrdinal(lesson.number))
             val marks = mutableListOf<NamedMark>()
@@ -131,10 +135,12 @@ class LessonActivity : AppCompatActivity() {
             if (lesson.homework?.text == null) {
                 homeworkCard.visibility = View.GONE
             } else homeworkText.text = lesson.homework.text
-            attachmentsRecyclerView.layoutManager =
-                LinearLayoutManager(this@LessonActivity)
-            attachmentsRecyclerView.adapter =
-                AttachmentsAdapter(this@LessonActivity, lesson.attachments)
+            if (lesson.attachments != null) {
+                attachmentsRecyclerView.layoutManager =
+                    LinearLayoutManager(this@LessonActivity)
+                attachmentsRecyclerView.adapter =
+                    AttachmentsAdapter(this@LessonActivity, lesson.attachments)
+            }
             if (lesson.importantWorks.isNotEmpty()) {
                 worksRecyclerView.layoutManager =
                     LinearLayoutManager(this@LessonActivity)

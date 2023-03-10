@@ -6,5 +6,5 @@ data class Author(
     val jid: String,
     val lastName: String,
     val middleName: Any?,
-    val userId: Int
+    val userId: Long
 )

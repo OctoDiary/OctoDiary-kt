@@ -4,6 +4,8 @@
     <string name="school_mosreg_client_secret" translatable="false">2436e132-8103-417b-ab63-5e89dcf6fba9</string>
     <string name="dnevnik_ru_client_id" translatable="false">1d7bd105-4cd1-4f6c-9ecc-394e400b53bd</string>
     <string name="dnevnik_ru_client_secret" translatable="false">5dcb5237-b5d3-406b-8fee-4441c3a66c99</string>
+    <string name="kundelik_client_id" translatable="false">387D44E3-E0C9-4265-A9E4-A4CAAAD5111C</string>
+    <string name="kundelik_client_secret" translatable="false">8A7D709C-FDBB-4047-B0EA-8947AFE89D67</string>
     <string name="default_scope" translatable="false">CommonInfo,EducationalInfo</string>
     <string name="api_git_host" translatable="false">https://api.github.com/</string>
     <string name="repo_owner" translatable="false">OctoDiary</string>
