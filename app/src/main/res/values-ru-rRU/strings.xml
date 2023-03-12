@@ -116,4 +116,5 @@
     <string name="vpn_can_slow_loadings">VPN может замедлять загрузки</string>
     <string name="check_connection">Сервер не отвечает или нет интернета</string>
     <string name="kundelik">Күнделiк</string>
+    <string name="chats">Чаты</string>
 </resources>
