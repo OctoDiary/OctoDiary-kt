@@ -34,6 +34,7 @@ import org.bxkr.octodiary.models.user.User
 import org.bxkr.octodiary.models.userfeed.UserFeed
 import org.bxkr.octodiary.network.BaseCallback
 import org.bxkr.octodiary.network.NetworkService
+import org.bxkr.octodiary.ui.fragments.ChatListFragment
 import org.bxkr.octodiary.ui.fragments.DashboardFragment
 import org.bxkr.octodiary.ui.fragments.DiaryFragment
 import org.bxkr.octodiary.ui.fragments.PeriodMarksFragment
@@ -150,6 +151,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.dashboardPage -> changeFragment(DashboardFragment())
                 R.id.periodMarksPage -> changeFragment(PeriodMarksFragment())
                 R.id.profilePage -> changeFragment(ProfileFragment())
+                R.id.chatsPage -> changeFragment(ChatListFragment())
 
                 else -> false
             }
@@ -160,6 +162,7 @@ class MainActivity : AppCompatActivity() {
     fun createDiary(listener: () -> Unit = {}) {
         if ((diaryData != null) && (userData != null)) {
             allDataLoaded()
+            return
         }
         val call = userId?.toLong()
             ?.let { NetworkService.api(NetworkService.Server.values()[server]).user(it, token) }
@@ -261,6 +264,7 @@ class MainActivity : AppCompatActivity() {
                 "dashboard" -> openFragment(DashboardFragment(), R.id.dashboardPage)
                 "period_marks" -> openFragment(PeriodMarksFragment(), R.id.periodMarksPage)
                 "profile" -> openFragment(ProfileFragment(), R.id.profilePage)
+                "chats" -> openFragment(ChatListFragment(), R.id.chatsPage)
             }
         } else if (openedFragment != null) {
             supportFragmentManager.beginTransaction().detach(openedFragment)

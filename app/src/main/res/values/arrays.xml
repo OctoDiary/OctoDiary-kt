@@ -25,6 +25,7 @@
 
     <string-array name="default_screen_keys">
         <item>diary</item>
+        <item>chats</item>
         <item>dashboard</item>
         <item>period_marks</item>
         <item>profile</item>
@@ -32,6 +33,7 @@
 
     <string-array name="default_screen_values">
         <item>@string/diary</item>
+        <item>@string/chats</item>
         <item>@string/dashboard</item>
         <item>@string/period_marks</item>
         <item>@string/profile</item>

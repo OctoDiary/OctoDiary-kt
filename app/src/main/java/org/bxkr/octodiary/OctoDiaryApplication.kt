@@ -3,6 +3,7 @@ package org.bxkr.octodiary
 import android.app.Application
 import androidx.annotation.StyleRes
 import com.google.android.material.color.DynamicColors
+import org.jivesoftware.smack.android.AndroidSmackInitializer
 
 class OctoDiaryApplication : Application() {
     private var themeCallback = ThemeCallback(this)
@@ -22,6 +23,7 @@ class OctoDiaryApplication : Application() {
         super.onCreate()
         DynamicColors.applyToActivitiesIfAvailable(this)
         updateTheme()
+        AndroidSmackInitializer.initialize(this)
     }
 
     fun updateTheme() {
