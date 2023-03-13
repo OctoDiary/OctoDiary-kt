@@ -166,4 +166,8 @@
     <string name="check_connection">Server is down or no internet connection</string>
     <string name="kundelik">Kundelik</string>
     <string name="chats">Chats</string>
+    <string name="connecting_to_chat_service">Connecting to the chat service…</string>
+    <string name="connected">Connected!</string>
+    <string name="you">You</string>
+    <string name="last_message_template" translatable="false">%s: %s</string>
 </resources>

@@ -117,4 +117,7 @@
     <string name="check_connection">Сервер не отвечает или нет интернета</string>
     <string name="kundelik">Күнделiк</string>
     <string name="chats">Чаты</string>
+    <string name="connecting_to_chat_service">Подключение к чату…</string>
+    <string name="connected">Подключено!</string>
+    <string name="you">Вы</string>
 </resources>

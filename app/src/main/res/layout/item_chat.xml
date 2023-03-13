@@ -7,8 +7,8 @@
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/avatar"
-        android:layout_width="@dimen/avatar_size"
-        android:layout_height="@dimen/avatar_size"
+        android:layout_width="@dimen/chats_avatar_size"
+        android:layout_height="@dimen/chats_avatar_size"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="@dimen/avatar_margin"
@@ -25,27 +25,36 @@
         app:srcCompat="@drawable/ic_round_person_24"
         tools:ignore="ImageContrastCheck" />
 
-    <TextView
-        android:id="@+id/chatName"
+    <RelativeLayout
+        android:id="@+id/onAvatarCenter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:layout_toEndOf="@id/avatar"
-        android:text="@string/placeholder_teacher"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
-
-    <TextView
-        android:id="@+id/lastMessage"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/chatName"
-        android:layout_alignBottom="@id/avatar"
+        android:layout_alignBaseline="@id/avatar"
         android:layout_alignParentEnd="true"
-        android:layout_marginEnd="@dimen/avatar_margin"
+        android:layout_centerVertical="true"
         android:layout_toEndOf="@id/avatar"
-        android:ellipsize="end"
-        android:maxLines="2"
-        android:text="@string/placeholder_lesson_desc"
-        android:textAppearance="@style/TextAppearance.Material3.LabelMedium" />
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/chatName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/placeholder_teacher"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+        <TextView
+            android:id="@+id/lastMessage"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/chatName"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="@dimen/avatar_margin"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="@string/placeholder_lesson_desc"
+            android:textAppearance="@style/TextAppearance.Material3.LabelMedium"
+            android:visibility="gone" />
+    </RelativeLayout>
 
 </RelativeLayout>

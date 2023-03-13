@@ -1,6 +1,7 @@
 package org.bxkr.octodiary.ui.adapters
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.appcompat.content.res.AppCompatResources
@@ -33,8 +34,18 @@ class ChatAdapter(
                         R.drawable.ic_round_person_24
                     )
                 )
+                if (chat.lastMessage != null) {
+                    binding.lastMessage.text = context.getString(
+                        R.string.last_message_template,
+                        chat.sender,
+                        chat.lastMessage
+                    )
+                    binding.lastMessage.visibility = View.VISIBLE
+                } else {
+                    binding.lastMessage.text = ""
+                    binding.lastMessage.visibility = View.GONE
+                }
             }
-            binding.lastMessage.text = ""
         }
     }
 
