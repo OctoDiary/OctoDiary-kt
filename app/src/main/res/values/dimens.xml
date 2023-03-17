@@ -43,4 +43,5 @@
     <dimen name="period_subject_margin">16dp</dimen>
     <dimen name="period_subject_padding">16dp</dimen>
     <dimen name="period_marks_chips_margin">8dp</dimen>
+    <dimen name="chats_avatar_size">48dp</dimen>
 </resources>

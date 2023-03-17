@@ -166,6 +166,11 @@
     <string name="vpn_can_slow_loadings">VPN can slow loadings</string>
     <string name="check_connection">Server is down or no internet connection</string>
     <string name="kundelik">Kundelik</string>
+    <string name="chats">Chats</string>
+    <string name="connecting_to_chat_service">Connecting to the chat service…</string>
+    <string name="connected">Connected!</string>
+    <string name="you">You</string>
+    <string name="last_message_template" translatable="false">%s: %s</string>
     <string name="weighted_template">Weighted average: %s</string>
     <string name="weighted_template_extended">Weighted average: %s - %s for the %s</string>
 </resources>

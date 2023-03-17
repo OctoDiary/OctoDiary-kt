@@ -4,6 +4,11 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.Keep
 import androidx.annotation.StringRes
 import org.bxkr.octodiary.R
+import org.bxkr.octodiary.models.chat.ChatCloseContacts
+import org.bxkr.octodiary.models.chat.ChatContext
+import org.bxkr.octodiary.models.chat.ChatCredentials
+import org.bxkr.octodiary.models.chat.ChatEnrich
+import org.bxkr.octodiary.models.chat.ChatEnrichBody
 import org.bxkr.octodiary.models.diary.Diary
 import org.bxkr.octodiary.models.lesson.Lesson
 import org.bxkr.octodiary.models.mark.MarkDetails
@@ -140,6 +145,27 @@ object NetworkService {
             @Path("period_id") periodId: Long,
             @Header("Access-Token") accessToken: String?,
         ): Call<PeriodMarksResponse>
+
+        @GET("chat/context")
+        fun chatContext(
+            @Header("Access-Token") accessToken: String?
+        ): Call<ChatContext>
+
+        @POST("chat/credentials")
+        fun chatCredentials(
+            @Header("Access-Token") accessToken: String?
+        ): Call<ChatCredentials>
+
+        @POST("chat/contacts/enrich")
+        fun chatEnrich(
+            @Body body: ChatEnrichBody,
+            @Header("Access-Token") accessToken: String?
+        ): Call<ChatEnrich>
+
+        @GET("chat/closeContacts")
+        fun chatCloseContacts(
+            @Header("Access-Token") accessToken: String?
+        ): Call<ChatCloseContacts>
     }
 
     fun api(server: Server): API {
