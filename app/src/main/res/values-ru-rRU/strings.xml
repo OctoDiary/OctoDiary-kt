@@ -78,7 +78,6 @@
     <string name="average_important">Средний балл за работы</string>
     <string name="not_yet">Пока нет</string>
     <string name="period_average_extended">Средний балл: %s – %s за %s</string>
-    <string name="placeholder_period_average">Средний балл: 4.5 – 5 за семестр</string>
     <string name="half_year">полугодие</string>
     <string name="quarter">четверть</string>
     <string name="semester">семестр</string>
@@ -120,4 +119,6 @@
     <string name="connecting_to_chat_service">Подключение к чату…</string>
     <string name="connected">Подключено!</string>
     <string name="you">Вы</string>
+    <string name="weighted_template">Взвеш. сред. балл: %s</string>
+    <string name="weighted_template_extended">Взвеш. сред. балл: %s - %s за %s</string>
 </resources>

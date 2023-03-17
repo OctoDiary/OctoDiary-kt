@@ -2,6 +2,7 @@ package org.bxkr.octodiary.ui.adapters
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,7 +20,7 @@ class PeriodAdapter(
     private val subject: List<PeriodMark>
 ) : RecyclerView.Adapter<PeriodAdapter.PeriodViewHolder>() {
 
-    var newSubject = subject
+    private var newSubject = subject
 
     class PeriodViewHolder(
         val binding: ItemPeriodSubjectBinding, val context: MainActivity
@@ -55,6 +56,29 @@ class PeriodAdapter(
                     R.string.period_average,
                     context.getString(R.string.not_set_yet)
                 )
+            }
+            if (period.averageMarks.weightedAverageMark != null) {
+                binding.subjectWeighted.visibility = View.VISIBLE
+                binding.subjectAverage.text = context.getString(
+                    R.string.period_average,
+                    period.averageMarks.averageMark
+                )
+                try {
+                    val floatMark = period.averageMarks.weightedAverageMark.toFloat()
+                    binding.subjectWeighted.text = context.getString(
+                        R.string.weighted_template_extended,
+                        period.averageMarks.weightedAverageMark,
+                        round(floatMark).toInt().toString(),
+                        context.getString(periodType.stringRes)
+                    )
+                } catch (exception: NumberFormatException) {
+                    binding.subjectWeighted.text = context.getString(
+                        R.string.weighted_template,
+                        period.averageMarks.weightedAverageMark
+                    )
+                }
+            } else {
+                binding.subjectWeighted.visibility = View.GONE
             }
         }
     }
