@@ -23,6 +23,17 @@ class ChatAdapter(
             binding.root.tag = chat.jid
             binding.chatName.text = chat.shortName
             binding.avatar.adjustViewBounds = chat.avatar != null
+            if (!chat.lastMessage.isNullOrBlank()) {
+                binding.lastMessage.text = context.getString(
+                    R.string.last_message_template,
+                    chat.sender,
+                    chat.lastMessage
+                )
+                binding.lastMessage.visibility = View.VISIBLE
+            } else {
+                binding.lastMessage.text = ""
+                binding.lastMessage.visibility = View.GONE
+            }
             if (chat.avatar != null) {
                 binding.avatar.scaleType = ImageView.ScaleType.FIT_START
                 Picasso.get().load(chat.avatar).into(binding.avatar)
@@ -34,17 +45,6 @@ class ChatAdapter(
                         R.drawable.ic_round_person_24
                     )
                 )
-                if (chat.lastMessage != null) {
-                    binding.lastMessage.text = context.getString(
-                        R.string.last_message_template,
-                        chat.sender,
-                        chat.lastMessage
-                    )
-                    binding.lastMessage.visibility = View.VISIBLE
-                } else {
-                    binding.lastMessage.text = ""
-                    binding.lastMessage.visibility = View.GONE
-                }
             }
         }
     }

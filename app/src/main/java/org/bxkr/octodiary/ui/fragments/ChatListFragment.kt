@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
-import org.bxkr.octodiary.ModInboxProvider
 import org.bxkr.octodiary.R
 import org.bxkr.octodiary.databinding.FragmentChatListBinding
 import org.bxkr.octodiary.models.chat.ChatCloseContacts
@@ -19,11 +18,11 @@ import org.bxkr.octodiary.network.NetworkService
 import org.bxkr.octodiary.ui.activities.MainActivity
 import org.bxkr.octodiary.ui.adapters.ChatAdapter
 import org.jivesoftware.smack.AbstractXMPPConnection
-import org.jivesoftware.smack.provider.ProviderManager
 import org.jivesoftware.smack.roster.Roster
-import org.jivesoftware.smackx.delay.packet.DelayInformation
 import org.jivesoftware.smackx.mam.MamManager
 import org.jivesoftware.smackx.mam.MamManager.MamQueryArgs
+import org.jivesoftware.smackx.mam.element.MamElements.MamResultExtension
+import org.jxmpp.jid.impl.JidCreate
 import java.util.Date
 
 
@@ -105,52 +104,47 @@ class ChatListFragment : BaseFragment<FragmentChatListBinding>(FragmentChatListB
                         function = { enrichResponse ->
                             val mamManager = MamManager.getInstanceFor(connection)
                             mamManager.enableMamForAllMessages()
-                            val archive = mamManager.queryArchive(
-                                MamQueryArgs.Builder()
-                                    .build()
-                            )
+                            val bigArchive = mutableListOf<MamResultExtension>()
+                            enrichResponse.body()!!.jidList.forEach {
+                                val archive = mamManager.queryArchive(
+                                    MamQueryArgs.Builder()
+                                        .limitResultsToJid(JidCreate.from(it.jid))
+                                        .setResultPageSize(100)
+                                        .queryLastPage()
+                                        .build()
+                                ).mamResultExtensions
+                                bigArchive.addAll(archive)
+                            }
                             val mamByJid =
                                 mutableMapOf<String, MutableList<Pair<Pair<String, String>, Date>>>()
-                            ProviderManager.addExtensionProvider(
-                                "result",
-                                "erlang-solutions.com:xmpp:inbox:0",
-                                ModInboxProvider()
-                            )
-                            archive.messages.forEach {
-                                println(it.toXML().toString())
-                                println(
-                                    it.getExtension(
-                                        "result",
-                                        "erlang-solutions.com:xmpp:inbox:0"
-                                    )
-                                )
-                                if (it.body != null) {
+                            bigArchive.forEach {
+                                if (it.forwarded.forwardedStanza.body != null) {
                                     val chat =
-                                        (if (it.from.asBareJid() == connection.user.asBareJid()) it.to else it.from).asBareJid()
+                                        (if (it.forwarded.forwardedStanza.from.asBareJid() == connection.user.asBareJid()) it.forwarded.forwardedStanza.to else it.forwarded.forwardedStanza.from).asBareJid()
                                             .toString()
 
-                                    val delay = it.getExtension(
-                                        DelayInformation.ELEMENT,
-                                        DelayInformation.NAMESPACE
-                                    ) as DelayInformation?
+                                    val delay = it.forwarded.delayInformation
                                     if (delay != null) {
                                         mamByJid.getOrPut(chat) { mutableListOf() }
                                             .add(
-                                                it.from.asBareJid()
-                                                    .toString() to it.body to delay.stamp
+                                                it.forwarded.forwardedStanza.from.asBareJid()
+                                                    .toString() to it.forwarded.forwardedStanza.body to delay.stamp
                                             )
                                     }
                                 }
                             }
                             val enriched = enrichResponse.body()!!.jidList.map {
                                 if (mamByJid.containsKey(it.jid)) {
-                                    if (mamByJid[it.jid]?.maxBy { it1 -> it1.second.time }?.first?.first == connection.user.asBareJid()
+                                    val latestElement =
+                                        mamByJid[it.jid]?.maxBy { it1 -> it1.second.time }
+                                    if (latestElement?.first?.first == connection.user.asBareJid()
                                             .toString()
                                     ) {
                                         it.sender = getString(R.string.you)
                                     } else it.sender =
-                                        enrichResponse.body()!!.jidList.firstOrNull { it1 -> it1.jid == mamByJid[it.jid]?.last()?.first?.first }?.name
-                                    it.lastMessage = mamByJid[it.jid]?.last()?.first?.second
+                                        enrichResponse.body()!!.jidList.firstOrNull { it1 -> it1.jid == latestElement?.first?.first }?.name
+                                    it.lastMessage = latestElement?.first?.second
+                                    println(it.name to it.lastMessage)
                                 }
                                 it
                             }
