@@ -135,7 +135,6 @@ class ChatListFragment : BaseFragment<FragmentChatListBinding>(FragmentChatListB
                                         } else it.sender =
                                             enrichResponse.body()!!.jidList.firstOrNull { it1 -> it1.jid == latestElement?.first?.first }?.name
                                         it.lastMessage = latestElement?.first?.second
-                                        println(it.name to it.lastMessage)
                                     }
                                     it
                                 }
