@@ -1,7 +1,6 @@
 package org.bxkr.octodiary.network
 
 import android.content.Context
-import android.view.View
 import org.bxkr.octodiary.models.chat.ChatContext
 import org.bxkr.octodiary.models.chat.ChatCredentials
 import org.bxkr.octodiary.network.NetworkService.Server
@@ -15,13 +14,11 @@ object ChatService {
         accessToken: String,
         server: Server,
         parentContext: Context,
-        bindingRoot: View,
         after: (ChatContext) -> Unit
     ) {
         val call = NetworkService.api(server).chatContext(accessToken)
         call.enqueue(object : BaseCallback<ChatContext>(
             parentContext = parentContext,
-            bindingRoot = bindingRoot,
             function = {
                 after.invoke(it.body()!!)
             }
@@ -32,13 +29,11 @@ object ChatService {
         accessToken: String,
         server: Server,
         parentContext: Context,
-        bindingRoot: View,
         after: (ChatCredentials) -> Unit
     ) {
         val call = NetworkService.api(server).chatCredentials(accessToken)
         call.enqueue(object : BaseCallback<ChatCredentials>(
             parentContext = parentContext,
-            bindingRoot = bindingRoot,
             function = {
                 after.invoke(it.body()!!)
             }
