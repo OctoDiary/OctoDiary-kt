@@ -33,11 +33,22 @@
             android:text="@string/placeholder_period_average"
             android:textAppearance="@style/TextAppearance.Material3.LabelLarge" />
 
+        <TextView
+            android:id="@+id/subjectWeighted"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/subjectAverage"
+            android:layout_alignParentStart="true"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@string/placeholder_period_weighted"
+            android:textAppearance="@style/TextAppearance.Material3.LabelLarge" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/marksRecyclerView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/subjectAverage"
+            android:layout_below="@id/subjectWeighted"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:ellipsize="none"

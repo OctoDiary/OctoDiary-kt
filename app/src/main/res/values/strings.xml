@@ -35,7 +35,7 @@
     <string name="rating">Rating</string>
     <string name="rating_background_info">Image, provided by external resource</string>
     <string name="show_rating_background">Rating background</string>
-    <string name="data_under_name">Info under student\'s name</string>
+    <string name="data_under_name">Info under student\’s name</string>
     <string name="school">School</string>
     <string name="class_name">Class name</string>
     <string name="middle_name">Middle name</string>
@@ -85,7 +85,7 @@
     <string name="select_server">Diary</string>
     <string name="server_key" translatable="false">server</string>
     <string name="have_not_active_memberships_error_reason" translatable="false">HaveNotActiveMemberships</string>
-    <string name="have_not_active_memberships_message">Student doesn\'t have an active membership in any school</string>
+    <string name="have_not_active_memberships_message">Student doesn\’t have an active membership in any school</string>
     <string name="error_type" translatable="false">Error</string>
     <string name="update_available">Update %s available!</string>
     <string name="update_available_message">Found an update: %s. Want to download and install it?</string>
@@ -125,7 +125,8 @@
     <string name="average_important">Average by works</string>
     <string name="not_yet">Not yet</string>
     <string name="period_average_extended">Average mark: %s – %s for the %s</string>
-    <string name="placeholder_period_average">Average mark: 4.5 – 5 for the semester</string>
+    <string name="placeholder_period_average" translatable="false">Average mark: 4.5 – 5 for the semester</string>
+    <string name="placeholder_period_weighted" translatable="false">Weighted average: 4.5 – 5 for the semester</string>
     <string name="half_year">half-year</string>
     <string name="quarter">quarter</string>
     <string name="semester">semester</string>
@@ -157,7 +158,7 @@
     <string name="homework_mode_summary">Screen with useful information when doing the homework</string>
     <string name="music_controls">Music controls</string>
     <string name="keep_screen_on">Keep screen on</string>
-    <string name="keep_screen_on_summary">Don\'t turn the screen off when in the homework mode</string>
+    <string name="keep_screen_on_summary">Don\’t turn the screen off when in the homework mode</string>
     <string name="music_controls_summary">May not appear when using remote play</string>
     <string name="search_by_subject">Search by subject</string>
     <string name="always_show_keyboard">Always raise keyboard</string>
@@ -165,4 +166,6 @@
     <string name="vpn_can_slow_loadings">VPN can slow loadings</string>
     <string name="check_connection">Server is down or no internet connection</string>
     <string name="kundelik">Kundelik</string>
+    <string name="weighted_template">Weighted average: %s</string>
+    <string name="weighted_template_extended">Weighted average: %s - %s for the %s</string>
 </resources>
