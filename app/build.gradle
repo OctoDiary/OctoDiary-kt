@@ -59,5 +59,6 @@ dependencies {
 }
 
 configurations {
+    all*.exclude group: 'xpp3', module: 'xpp3_min'
     all*.exclude group: 'xpp3', module: 'xpp3'
 }
