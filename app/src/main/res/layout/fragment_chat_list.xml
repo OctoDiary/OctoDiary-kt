@@ -23,9 +23,73 @@
         android:indeterminate="true"
         app:trackCornerRadius="@dimen/loading_corner_radius" />
 
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chipGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/period_marks_chips_margin"
+        android:alpha="0"
+        app:singleLine="true">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/groups"
+            style="@style/Widget.Material3.Chip.Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="@string/groups"
+            app:checkedIconEnabled="false" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/personals"
+            style="@style/Widget.Material3.Chip.Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="@string/pms"
+            app:checkedIconEnabled="false" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/unknowns"
+            style="@style/Widget.Material3.Chip.Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="@string/unknowns"
+            app:checkedIconEnabled="false" />
+
+    </com.google.android.material.chip.ChipGroup>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/chipGroup"
+        android:layout_marginStart="@dimen/period_subject_margin"
+        android:layout_marginEnd="@dimen/period_subject_margin"
+        android:alpha="0"
+        android:hint="@string/search_by_name"
+        android:textColorHint="?attr/colorOnSurfaceVariant"
+        app:boxBackgroundColor="?attr/colorSurfaceVariant"
+        app:boxStrokeWidth="0dp"
+        app:boxStrokeWidthFocused="0dp"
+        app:shapeAppearance="?attr/shapeAppearanceMediumComponent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/searchInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="?attr/colorOnSurface" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_below="@id/search"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
         android:alpha="0" />
 </RelativeLayout>

@@ -1,5 +1,6 @@
 package org.bxkr.octodiary.ui.adapters
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +17,9 @@ class ChatAdapter(
     private val context: MainActivity,
     private val chats: List<Contact>
 ) : RecyclerView.Adapter<ChatAdapter.ChatViewHolder>() {
+
+    private var editedChats: List<Contact> = chats
+
     class ChatViewHolder(
         val binding: ItemChatBinding, val context: MainActivity
     ) : RecyclerView.ViewHolder(binding.root) {
@@ -56,9 +60,15 @@ class ChatAdapter(
     }
 
     override fun onBindViewHolder(holder: ChatViewHolder, position: Int) {
-        val chat = chats[position]
+        val chat = editedChats[position]
         holder.bind(chat)
     }
 
-    override fun getItemCount(): Int = chats.size
+    override fun getItemCount(): Int = editedChats.size
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun filterBy(predicate: (Contact) -> Boolean) {
+        editedChats = chats.filter(predicate)
+        notifyDataSetChanged()
+    }
 }

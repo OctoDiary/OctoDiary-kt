@@ -14,7 +14,7 @@ data class Contact(
     val senderShortName: String?,
     val sex: String?,
     val shortName: String,
-    val type: String,
+    val type: ContactType,
     val unknown: Boolean,
     var lastMessage: String?,
     var sender: String?

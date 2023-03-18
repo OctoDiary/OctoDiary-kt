@@ -122,4 +122,8 @@
     <string name="weighted_template">Взвеш. сред. балл: %s</string>
     <string name="weighted_template_extended">Взвеш. сред. балл: %s - %s за %s</string>
     <string name="deleted_message">Сообщение удалено</string>
+    <string name="groups">Группы</string>
+    <string name="pms">Личные</string>
+    <string name="unknowns">Неизвестные</string>
+    <string name="search_by_name">Поиск по имени</string>
 </resources>

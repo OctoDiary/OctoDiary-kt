@@ -174,4 +174,8 @@
     <string name="weighted_template">Weighted average: %s</string>
     <string name="weighted_template_extended">Weighted average: %s - %s for the %s</string>
     <string name="deleted_message">Deleted message</string>
+    <string name="groups">Groups</string>
+    <string name="pms">PMs</string>
+    <string name="unknowns">Unknowns</string>
+    <string name="search_by_name">Search by name</string>
 </resources>

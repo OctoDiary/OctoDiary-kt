@@ -5,6 +5,7 @@ import android.animation.Animator.AnimatorListener
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.bxkr.octodiary.R
 import org.bxkr.octodiary.databinding.FragmentChatListBinding
@@ -30,6 +31,7 @@ import java.util.Date
 
 class ChatListFragment : BaseFragment<FragmentChatListBinding>(FragmentChatListBinding::inflate) {
     private lateinit var mainActivity: MainActivity
+    private lateinit var adapter: ChatAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -76,10 +78,13 @@ class ChatListFragment : BaseFragment<FragmentChatListBinding>(FragmentChatListB
                         override fun onAnimationRepeat(animation: Animator) {}
                         override fun onAnimationStart(animation: Animator) {}
                         override fun onAnimationEnd(animation: Animator) {
+                            adapter = ChatAdapter(mainActivity, contacts)
                             binding.recyclerView.visibility = View.VISIBLE
                             binding.recyclerView.layoutManager = LinearLayoutManager(mainActivity)
-                            binding.recyclerView.adapter = ChatAdapter(mainActivity, contacts)
+                            binding.recyclerView.adapter = adapter
                             binding.recyclerView.animate().alpha(1f).setDuration(300).start()
+                            configureChips()
+                            configureSearch()
                         }
                     }).start()
             } catch (_: NullPointerException) {
@@ -177,7 +182,6 @@ class ChatListFragment : BaseFragment<FragmentChatListBinding>(FragmentChatListB
                                     }
                                     enrichResponse.body()!!.jidList.forEach {
                                         Thread {
-                                            println("doing network for ${it.name}")
                                             val archive = mamManager.queryArchive(
                                                 MamQueryArgs.Builder()
                                                     .limitResultsToJid(JidCreate.from(it.jid))
@@ -185,7 +189,6 @@ class ChatListFragment : BaseFragment<FragmentChatListBinding>(FragmentChatListB
                                                     .queryLastPage()
                                                     .build()
                                             ).mamResultExtensions
-                                            println("finished network for ${it.name}")
                                             ranJidList.add(it.jid)
                                             after(archive)
                                         }.start()
@@ -203,6 +206,34 @@ class ChatListFragment : BaseFragment<FragmentChatListBinding>(FragmentChatListB
             ) {})
         }
         thread.start()
+    }
+
+
+    private fun configureChips() {
+        binding.chipGroup.animate().alpha(1f).setDuration(300).start()
+        binding.chipGroup.setOnCheckedStateChangeListener { _, checkedIds ->
+            adapter.filterBy {
+                (if (checkedIds.contains(R.id.groups)) {
+                    it.isGroupChat
+                } else false) || (if (checkedIds.contains(R.id.personals)) {
+                    if (checkedIds.contains(R.id.unknowns)) {
+                        !it.isGroupChat
+                    } else !it.isGroupChat && !it.unknown
+                } else false)
+            }
+        }
+    }
+
+    private fun configureSearch() {
+        binding.search.animate().alpha(1f).setDuration(300).start()
+        binding.searchInput.doOnTextChanged { text, _, _, _ ->
+            adapter.filterBy {
+                if (!text.isNullOrBlank()) {
+                    it.name.lowercase()
+                        .matches(Regex("^.*${Regex.escape(text.toString().lowercase())}.*$"))
+                } else true
+            }
+        }
     }
 
     override fun onDestroy() {
