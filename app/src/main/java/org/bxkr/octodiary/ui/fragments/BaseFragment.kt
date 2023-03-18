@@ -20,8 +20,10 @@ abstract class BaseFragment<VB : ViewBinding>(
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        token = (activity as MainActivity).token
-        userId = (activity as MainActivity).userId
+        val mainActivity = (activity as MainActivity)
+        mainActivity.invalidateOptionsMenu()
+        token = mainActivity.token
+        userId = mainActivity.userId
     }
 
     override fun onCreateView(

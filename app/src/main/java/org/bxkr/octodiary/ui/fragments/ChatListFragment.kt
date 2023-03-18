@@ -121,40 +121,47 @@ class ChatListFragment : BaseFragment<FragmentChatListBinding>(FragmentChatListB
                                                     .toString()
 
                                             val delay = it.forwarded.delayInformation
-                                            if (delay != null) {
-                                                if (stanza.hasExtension(MessageCorrectExtension.QNAME)) {
-                                                    mamByJid.getOrPut(chat) { mutableListOf() }
-                                                        .add(
-                                                            it.forwarded.forwardedStanza.from.asBareJid()
-                                                                .toString() to getString(R.string.deleted_message) to delay.stamp
-                                                        )
-                                                } else {
-                                                    mamByJid.getOrPut(chat) { mutableListOf() }
-                                                        .add(
-                                                            it.forwarded.forwardedStanza.from.asBareJid()
-                                                                .toString() to it.forwarded.forwardedStanza.body to delay.stamp
-                                                        )
-                                                }
+                                            if (stanza.hasExtension(MessageCorrectExtension.QNAME)) {
+                                                mamByJid.getOrPut(chat) { mutableListOf() }
+                                                    .add(
+                                                        it.forwarded.forwardedStanza.from.asBareJid()
+                                                            .toString() to getString(R.string.deleted_message) to delay.stamp
+                                                    )
+                                            } else {
+                                                mamByJid.getOrPut(chat) { mutableListOf() }
+                                                    .add(
+                                                        it.forwarded.forwardedStanza.from.asBareJid()
+                                                            .toString() to it.forwarded.forwardedStanza.body to delay.stamp
+                                                    )
                                             }
                                         }
                                     }
+                                    val lastMessageStamps: MutableList<Pair<String, Long>> =
+                                        mutableListOf()
                                     val enriched = enrichResponse.body()!!.jidList.map {
                                         if (mamByJid.containsKey(it.jid)) {
                                             val latestElement =
                                                 mamByJid[it.jid]?.maxBy { it1 -> it1.second.time }
-                                            if (latestElement?.first?.first == connection.user.asBareJid()
-                                                    .toString()
-                                            ) {
-                                                it.sender = getString(R.string.you)
-                                            } else it.sender =
-                                                enrichResponse.body()!!.jidList.firstOrNull { it1 -> it1.jid == latestElement?.first?.first }?.name
-                                            it.lastMessage = latestElement?.first?.second
+                                            if (latestElement != null) {
+                                                if (latestElement.first.first == connection.user.asBareJid()
+                                                        .toString()
+                                                ) {
+                                                    it.sender = getString(R.string.you)
+                                                } else it.sender =
+                                                    enrichResponse.body()!!.jidList.firstOrNull { it1 -> it1.jid == latestElement.first.first }?.name
+                                                it.lastMessage = latestElement.first.second
+                                                lastMessageStamps.add(it.jid to latestElement.second.time)
+                                            }
                                         }
                                         it
                                     }
+                                    lastMessageStamps.sortByDescending { it.second }
+                                    val sortedEnriched = lastMessageStamps.map {
+                                        enriched.first { it1 -> it1.jid == it.first }
+                                    }
                                     val sendingList =
-                                        enriched.plus(contacts.filter {
-                                            !enriched.map { it1 -> it1.jid }.contains(it.jid)
+                                        sortedEnriched.plus(contacts.filter {
+                                            !sortedEnriched.map { it1 -> it1.jid }.contains(it.jid)
                                         })
                                     mainActivity.runOnUiThread {
                                         setAdapter(sendingList)
