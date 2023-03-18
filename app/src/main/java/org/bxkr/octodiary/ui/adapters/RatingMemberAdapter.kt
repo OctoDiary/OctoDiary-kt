@@ -26,7 +26,7 @@ class RatingMemberAdapter(private val context: Context, private val members: Lis
                 progressBar.progress = itemCount - member.place + 1
                 val preferences = PreferenceManager.getDefaultSharedPreferences(parentContext)
                 if (preferences.getBoolean("show_rating_images", true)) {
-                    if (member.imageUrl.isNotEmpty()) {
+                    if (!member.imageUrl.isNullOrEmpty()) {
                         Picasso.get().load(member.imageUrl).into(avatar)
                     }
                     if (member.isContextUser) {
