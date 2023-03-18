@@ -173,4 +173,5 @@
     <string name="last_message_template" translatable="false">%s: %s</string>
     <string name="weighted_template">Weighted average: %s</string>
     <string name="weighted_template_extended">Weighted average: %s - %s for the %s</string>
+    <string name="deleted_message">Deleted message</string>
 </resources>

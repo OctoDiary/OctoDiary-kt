@@ -19,9 +19,11 @@ import org.bxkr.octodiary.ui.activities.MainActivity
 import org.bxkr.octodiary.ui.adapters.ChatAdapter
 import org.jivesoftware.smack.AbstractXMPPConnection
 import org.jivesoftware.smack.roster.Roster
+import org.jivesoftware.smack.roster.RosterEntry
 import org.jivesoftware.smackx.mam.MamManager
 import org.jivesoftware.smackx.mam.MamManager.MamQueryArgs
 import org.jivesoftware.smackx.mam.element.MamElements.MamResultExtension
+import org.jivesoftware.smackx.message_correct.element.MessageCorrectExtension
 import org.jxmpp.jid.impl.JidCreate
 import java.util.Date
 
@@ -33,6 +35,7 @@ class ChatListFragment : BaseFragment<FragmentChatListBinding>(FragmentChatListB
         super.onViewCreated(view, savedInstanceState)
         mainActivity = activity as MainActivity
         mainActivity.title = getString(R.string.chats)
+        mainActivity.binding.swipeRefresh.isRefreshing = false
         configureChats()
     }
 
@@ -47,11 +50,13 @@ class ChatListFragment : BaseFragment<FragmentChatListBinding>(FragmentChatListB
                     accessToken = mainActivity.token!!,
                     parentContext = mainActivity,
                     after = { chatCredentials ->
-                        ChatService.getConnection(
-                            username = chatCredentials.jid,
-                            password = chatCredentials.token,
-                            hostname = chatContext.mongooseTCPHost
-                        ).let { connectChats(it) }
+                        Thread {
+                            ChatService.getConnection(
+                                username = chatCredentials.jid,
+                                password = chatCredentials.token,
+                                hostname = chatContext.mongooseTCPHost
+                            ).let { connectChats(it) }
+                        }.start()
                     }
                 )
             }
@@ -92,80 +97,105 @@ class ChatListFragment : BaseFragment<FragmentChatListBinding>(FragmentChatListB
                 parentContext = mainActivity,
                 function = { response ->
                     val contacts = response.body()!!.contacts
-                    val rosterEntries = Roster.getInstanceFor(connection).entries
-                    val enrich =
-                        NetworkService.api(NetworkService.Server.values()[mainActivity.server])
-                            .chatEnrich(
-                                body = ChatEnrichBody(jids = rosterEntries.map { it.jid.toString() }),
-                                accessToken = mainActivity.token
-                            )
-                    enrich.enqueue(object : BaseCallback<ChatEnrich>(
-                        parentContext = mainActivity,
-                        function = { enrichResponse ->
-                            val mamManager = MamManager.getInstanceFor(connection)
-                            mamManager.enableMamForAllMessages()
-                            val bigArchive = mutableListOf<MamResultExtension>()
-                            val afterLongMamWork = {
-                                val mamByJid =
-                                    mutableMapOf<String, MutableList<Pair<Pair<String, String>, Date>>>()
-                                bigArchive.forEach {
-                                    if (it.forwarded.forwardedStanza.body != null) {
-                                        val chat =
-                                            (if (it.forwarded.forwardedStanza.from.asBareJid() == connection.user.asBareJid()) it.forwarded.forwardedStanza.to else it.forwarded.forwardedStanza.from).asBareJid()
-                                                .toString()
+                    val afterRosterGot = { rosterEntries: Set<RosterEntry> ->
+                        val enrich =
+                            NetworkService.api(NetworkService.Server.values()[mainActivity.server])
+                                .chatEnrich(
+                                    body = ChatEnrichBody(jids = rosterEntries.map { it.jid.toString() }),
+                                    accessToken = mainActivity.token
+                                )
+                        enrich.enqueue(object : BaseCallback<ChatEnrich>(
+                            parentContext = mainActivity,
+                            function = { enrichResponse ->
+                                val mamManager = MamManager.getInstanceFor(connection)
+                                mamManager.enableMamForAllMessages()
+                                val bigArchive = mutableListOf<MamResultExtension>()
+                                val afterLongMamWork = {
+                                    val mamByJid =
+                                        mutableMapOf<String, MutableList<Pair<Pair<String, String>, Date>>>()
+                                    bigArchive.forEach {
+                                        val stanza = it.forwarded.forwardedStanza
+                                        if (stanza.body != null) {
+                                            val chat =
+                                                (if (stanza.from.asBareJid() == connection.user.asBareJid()) stanza.to else stanza.from).asBareJid()
+                                                    .toString()
 
-                                        val delay = it.forwarded.delayInformation
-                                        if (delay != null) {
-                                            mamByJid.getOrPut(chat) { mutableListOf() }
-                                                .add(
-                                                    it.forwarded.forwardedStanza.from.asBareJid()
-                                                        .toString() to it.forwarded.forwardedStanza.body to delay.stamp
-                                                )
+                                            val delay = it.forwarded.delayInformation
+                                            if (delay != null) {
+                                                if (stanza.hasExtension(MessageCorrectExtension.QNAME)) {
+                                                    mamByJid.getOrPut(chat) { mutableListOf() }
+                                                        .add(
+                                                            it.forwarded.forwardedStanza.from.asBareJid()
+                                                                .toString() to getString(R.string.deleted_message) to delay.stamp
+                                                        )
+                                                } else {
+                                                    mamByJid.getOrPut(chat) { mutableListOf() }
+                                                        .add(
+                                                            it.forwarded.forwardedStanza.from.asBareJid()
+                                                                .toString() to it.forwarded.forwardedStanza.body to delay.stamp
+                                                        )
+                                                }
+                                            }
                                         }
                                     }
-                                }
-                                val enriched = enrichResponse.body()!!.jidList.map {
-                                    if (mamByJid.containsKey(it.jid)) {
-                                        val latestElement =
-                                            mamByJid[it.jid]?.maxBy { it1 -> it1.second.time }
-                                        if (latestElement?.first?.first == connection.user.asBareJid()
-                                                .toString()
-                                        ) {
-                                            it.sender = getString(R.string.you)
-                                        } else it.sender =
-                                            enrichResponse.body()!!.jidList.firstOrNull { it1 -> it1.jid == latestElement?.first?.first }?.name
-                                        it.lastMessage = latestElement?.first?.second
+                                    val enriched = enrichResponse.body()!!.jidList.map {
+                                        if (mamByJid.containsKey(it.jid)) {
+                                            val latestElement =
+                                                mamByJid[it.jid]?.maxBy { it1 -> it1.second.time }
+                                            if (latestElement?.first?.first == connection.user.asBareJid()
+                                                    .toString()
+                                            ) {
+                                                it.sender = getString(R.string.you)
+                                            } else it.sender =
+                                                enrichResponse.body()!!.jidList.firstOrNull { it1 -> it1.jid == latestElement?.first?.first }?.name
+                                            it.lastMessage = latestElement?.first?.second
+                                        }
+                                        it
                                     }
-                                    it
+                                    val sendingList =
+                                        enriched.plus(contacts.filter {
+                                            !enriched.map { it1 -> it1.jid }.contains(it.jid)
+                                        })
+                                    mainActivity.runOnUiThread {
+                                        setAdapter(sendingList)
+                                    }
                                 }
-                                val sendingList =
-                                    enriched.plus(contacts.filter {
-                                        !enriched.map { it1 -> it1.jid }.contains(it.jid)
-                                    })
-                                mainActivity.runOnUiThread {
-                                    setAdapter(sendingList)
-                                }
+                                Thread {
+                                    val ranJidList = mutableListOf<String>()
+                                    val after = { archive: List<MamResultExtension> ->
+                                        bigArchive.addAll(archive)
+                                        if (enrichResponse.body()!!.jidList.size == ranJidList.size) {
+                                            afterLongMamWork()
+                                        }
+                                    }
+                                    enrichResponse.body()!!.jidList.forEach {
+                                        Thread {
+                                            println("doing network for ${it.name}")
+                                            val archive = mamManager.queryArchive(
+                                                MamQueryArgs.Builder()
+                                                    .limitResultsToJid(JidCreate.from(it.jid))
+                                                    .setResultPageSize(100)
+                                                    .queryLastPage()
+                                                    .build()
+                                            ).mamResultExtensions
+                                            println("finished network for ${it.name}")
+                                            ranJidList.add(it.jid)
+                                            after(archive)
+                                        }.start()
+
+                                    }
+                                }.start()
                             }
-                            Thread {
-                                enrichResponse.body()!!.jidList.forEach {
-                                    val archive = mamManager.queryArchive(
-                                        MamQueryArgs.Builder()
-                                            .limitResultsToJid(JidCreate.from(it.jid))
-                                            .setResultPageSize(100)
-                                            .queryLastPage()
-                                            .build()
-                                    ).mamResultExtensions
-                                    bigArchive.addAll(archive)
-                                }
-                                afterLongMamWork()
-                            }.start()
-                        }
-                    ) {})
+                        ) {})
+                    }
+                    Thread {
+                        val rosterEntries = Roster.getInstanceFor(connection).entries
+                        afterRosterGot(rosterEntries)
+                    }.start()
                 }
             ) {})
         }
         thread.start()
-//        ChatManager.getInstanceFor(connection).chatWith(JidCreate.entityBareFrom("user_1000006787970@xmpp.school.mosreg.ru"))
     }
 
     override fun onDestroy() {
