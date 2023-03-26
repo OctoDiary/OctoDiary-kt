@@ -19,6 +19,7 @@ import org.bxkr.octodiary.network.NetworkService
 import org.bxkr.octodiary.ui.activities.MainActivity
 import org.bxkr.octodiary.ui.adapters.ChatAdapter
 import org.jivesoftware.smack.AbstractXMPPConnection
+import org.jivesoftware.smack.chat2.ChatManager
 import org.jivesoftware.smack.roster.Roster
 import org.jivesoftware.smack.roster.RosterEntry
 import org.jivesoftware.smackx.mam.MamManager
@@ -66,10 +67,11 @@ class ChatListFragment : BaseFragment<FragmentChatListBinding>(FragmentChatListB
     }
 
     private fun connectChats(connection: AbstractXMPPConnection) {
+        val roster = Roster.getInstanceFor(connection)
         val setAdapter = { contacts: List<Contact> ->
-            mainActivity.binding.bottomNavigationView.getOrCreateBadge(R.id.chatsPage).backgroundColor =
-                mainActivity.getColor(R.color.green_connected)
             try {
+                mainActivity.binding.bottomNavigationView.getOrCreateBadge(R.id.chatsPage).backgroundColor =
+                    mainActivity.getColor(R.color.green_connected)
                 binding.progress.visibility = View.GONE
                 binding.connecting.text = getString(R.string.connected)
                 binding.connecting.animate().alpha(0f).setDuration(300)
@@ -83,6 +85,21 @@ class ChatListFragment : BaseFragment<FragmentChatListBinding>(FragmentChatListB
                             binding.recyclerView.layoutManager = LinearLayoutManager(mainActivity)
                             binding.recyclerView.adapter = adapter
                             binding.recyclerView.animate().alpha(1f).setDuration(300).start()
+                            val chatManager = ChatManager.getInstanceFor(connection)
+                            chatManager.addOutgoingListener { to, messageBuilder, _ ->
+                                mainActivity.runOnUiThread {
+                                    adapter.updateChatOutgo(to, messageBuilder.body)
+                                }
+                            }
+                            chatManager.addIncomingListener { from, message, _ ->
+                                mainActivity.runOnUiThread {
+                                    adapter.updateChatIncome(from, message.body)
+                                }
+                            }
+                            Thread {
+                                Thread.sleep(1000)
+
+                            }.start()
                             configureChips()
                             configureSearch()
                         }
@@ -153,7 +170,7 @@ class ChatListFragment : BaseFragment<FragmentChatListBinding>(FragmentChatListB
                                                 ) {
                                                     it.sender = getString(R.string.you)
                                                 } else it.sender =
-                                                    enrichResponse.body()!!.jidList.firstOrNull { it1 -> it1.jid == latestElement.first.first }?.name
+                                                    enrichResponse.body()!!.jidList.firstOrNull { it1 -> it1.jid == latestElement.first.first }?.shortName
                                                 it.lastMessage = latestElement.first.second
                                                 lastMessageStamps.add(it.jid to latestElement.second.time)
                                             }
@@ -199,7 +216,7 @@ class ChatListFragment : BaseFragment<FragmentChatListBinding>(FragmentChatListB
                         ) {})
                     }
                     Thread {
-                        val rosterEntries = Roster.getInstanceFor(connection).entries
+                        val rosterEntries = roster.entries
                         afterRosterGot(rosterEntries)
                     }.start()
                 }

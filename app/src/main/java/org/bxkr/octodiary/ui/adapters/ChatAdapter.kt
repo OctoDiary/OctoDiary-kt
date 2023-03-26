@@ -12,6 +12,7 @@ import org.bxkr.octodiary.R
 import org.bxkr.octodiary.databinding.ItemChatBinding
 import org.bxkr.octodiary.models.chat.Contact
 import org.bxkr.octodiary.ui.activities.MainActivity
+import org.jxmpp.jid.Jid
 
 class ChatAdapter(
     private val context: MainActivity,
@@ -70,5 +71,23 @@ class ChatAdapter(
     fun filterBy(predicate: (Contact) -> Boolean) {
         editedChats = chats.filter(predicate)
         notifyDataSetChanged()
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateChatIncome(from: Jid, message: String) {
+        editedChats.firstOrNull { it.jid == from.asBareJid().toString() }?.let {
+            it.lastMessage = message
+            it.sender = chats.first { it1 -> it1.jid == from.asBareJid().toString() }.shortName
+            notifyItemChanged(editedChats.indexOf(it))
+        }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateChatOutgo(to: Jid, message: String) {
+        editedChats.firstOrNull { it.jid == to.asBareJid().toString() }?.also {
+            it.lastMessage = message
+            it.sender = context.getString(R.string.you)
+            notifyDataSetChanged()
+        }
     }
 }

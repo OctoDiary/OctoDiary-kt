@@ -50,6 +50,7 @@ object ChatService {
         configBuilder.setHost(hostname.replace(Regex(":\\d+$"), ""))
         configBuilder.setPort(hostname.replace(Regex("^.+:"), "").toInt())
         configBuilder.setXmppDomain(username.replace(Regex("^.+@"), ""))
+        configBuilder.setSendPresence(true)
         return XMPPTCPConnection(configBuilder.build())
     }
 }
