@@ -2,7 +2,6 @@ package org.bxkr.octodiary.ui.fragments
 
 import android.animation.Animator
 import android.animation.Animator.AnimatorListener
-import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.core.widget.doOnTextChanged
@@ -34,15 +33,17 @@ class ChatListFragment : BaseFragment<FragmentChatListBinding>(FragmentChatListB
     private lateinit var mainActivity: MainActivity
     private lateinit var adapter: ChatAdapter
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onResume() {
+        super.onResume()
         mainActivity = activity as MainActivity
         mainActivity.title = getString(R.string.chats)
         mainActivity.binding.swipeRefresh.isRefreshing = false
-        configureChats()
+        if (isVisible) {
+            configureChats()
+        }
     }
 
-    private fun configureChats() {
+    fun configureChats() {
         ChatService.getContext(
             server = NetworkService.Server.values()[mainActivity.server],
             accessToken = mainActivity.token!!,

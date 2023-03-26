@@ -23,7 +23,7 @@ class PeriodMarksFragment :
     private lateinit var mainActivity: MainActivity
     private lateinit var preferences: SharedPreferences
     private lateinit var periodMarks: PeriodMarksResponse
-    var shownValues = mutableListOf("5", "4", "3", "2")
+    private var shownValues = mutableListOf("5", "4", "3", "2")
 
     enum class ChipsMarkTexts(val value: String, @IdRes val idRes: Int) {
         Five("5", R.id.will_be_5),

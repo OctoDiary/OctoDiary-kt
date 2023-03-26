@@ -11,12 +11,14 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.commit
 import androidx.preference.PreferenceManager
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
@@ -34,10 +36,8 @@ import org.bxkr.octodiary.models.user.User
 import org.bxkr.octodiary.models.userfeed.UserFeed
 import org.bxkr.octodiary.network.BaseCallback
 import org.bxkr.octodiary.network.NetworkService
+import org.bxkr.octodiary.ui.fragments.AvailableFragments
 import org.bxkr.octodiary.ui.fragments.ChatListFragment
-import org.bxkr.octodiary.ui.fragments.DashboardFragment
-import org.bxkr.octodiary.ui.fragments.DiaryFragment
-import org.bxkr.octodiary.ui.fragments.PeriodMarksFragment
 import org.bxkr.octodiary.ui.fragments.ProfileFragment
 import java.util.Calendar
 
@@ -92,8 +92,6 @@ class MainActivity : AppCompatActivity() {
             getString(R.string.auth_file_key), Context.MODE_PRIVATE
         ).getInt(getString(R.string.server_key), 0)
 
-    private val diaryFragment = DiaryFragment()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -140,27 +138,40 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        val changeFragment: (Fragment) -> Boolean = {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment, it).commitAllowingStateLoss()
+        val changeFragment: (Fragment) -> Boolean = { fragment ->
+            supportFragmentManager.commit(true) {
+                hide(supportFragmentManager.fragments.first { it.isVisible })
+                show(fragment)
+                setReorderingAllowed(true)
+            }
+            if (fragment is ChatListFragment) {
+                fragment.configureChats()
+            }
             true
         }
         binding.bottomNavigationView.setOnItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.diaryPage -> changeFragment(diaryFragment)
-                R.id.dashboardPage -> changeFragment(DashboardFragment())
-                R.id.periodMarksPage -> changeFragment(PeriodMarksFragment())
-                R.id.profilePage -> changeFragment(ProfileFragment())
-                R.id.chatsPage -> changeFragment(ChatListFragment())
-
-                else -> false
-            }
+            AvailableFragments.values()
+                .first { item.itemId == it.menuId }.instance.let { changeFragment(it) }
         }
         binding.bottomNavigationView.setOnItemReselectedListener { }
+        val onSecondary = TypedValue()
+        val secondary = TypedValue()
+        theme.resolveAttribute(
+            com.google.android.material.R.attr.colorOnSecondaryContainer,
+            onSecondary,
+            true
+        )
+        theme.resolveAttribute(
+            com.google.android.material.R.attr.colorSecondaryContainer,
+            secondary,
+            true
+        )
+        binding.swipeRefresh.setColorSchemeColors(onSecondary.data)
+        binding.swipeRefresh.setProgressBackgroundColorSchemeColor(secondary.data)
     }
 
-    fun createDiary(listener: () -> Unit = {}) {
-        if ((diaryData != null) && (userData != null)) {
+    fun createDiary(reload: Boolean = false, listener: () -> Unit = {}) {
+        if ((diaryData != null) && (userData != null) && !reload) {
             allDataLoaded()
             return
         }
@@ -247,24 +258,38 @@ class MainActivity : AppCompatActivity() {
 
     private fun allDataLoaded(listener: () -> Unit = {}) {
 
-        listener()
+        listener.invoke()
 
         val defaultScreen =
             PreferenceManager.getDefaultSharedPreferences(this).getString("default_screen", "diary")
 
-        val openedFragment = supportFragmentManager.findFragmentById(R.id.fragment)
+        val openedFragment = supportFragmentManager.fragments.firstOrNull { it.isVisible }
         if (openedFragment == null && !supportFragmentManager.isDestroyed) {
-            val openFragment: (Fragment, Int) -> Unit = { frag, id ->
-                supportFragmentManager.beginTransaction().replace(R.id.fragment, frag)
-                    .commitAllowingStateLoss()
-                binding.bottomNavigationView.selectedItemId = id
-            }
-            when (defaultScreen) {
-                "diary" -> openFragment(DiaryFragment(), R.id.diaryPage)
-                "dashboard" -> openFragment(DashboardFragment(), R.id.dashboardPage)
-                "period_marks" -> openFragment(PeriodMarksFragment(), R.id.periodMarksPage)
-                "profile" -> openFragment(ProfileFragment(), R.id.profilePage)
-                "chats" -> openFragment(ChatListFragment(), R.id.chatsPage)
+            AvailableFragments.values().forEach {
+                supportFragmentManager.beginTransaction().add(R.id.fragment, it.instance)
+                    .show(it.instance).commitAllowingStateLoss()
+                binding.fragment.visibility = View.GONE
+                binding.progressBar.visibility = View.VISIBLE
+                Thread {
+                    Thread.sleep(100)
+                    runOnUiThread {
+                        supportFragmentManager.beginTransaction().hide(it.instance)
+                            .addToBackStack(it::class.simpleName).setReorderingAllowed(true)
+                            .commitAllowingStateLoss()
+                        val openFragment: (AvailableFragments, Int) -> Unit = { frag, id ->
+                            supportFragmentManager.commit(true) {
+                                show(frag.instance)
+                            }
+                            title = getString(frag.activityTitle)
+                            binding.bottomNavigationView.selectedItemId = id
+                        }
+                        AvailableFragments.values()
+                            .first { it1 -> it1.preferencesName == defaultScreen }
+                            .let { it1 -> openFragment(it1, it1.menuId) }
+                        binding.fragment.visibility = View.VISIBLE
+                        binding.progressBar.visibility = View.GONE
+                    }
+                }.start()
             }
         } else if (openedFragment != null) {
             supportFragmentManager.beginTransaction().detach(openedFragment)
@@ -275,7 +300,9 @@ class MainActivity : AppCompatActivity() {
         binding.progressBar.visibility = View.GONE
         binding.swipeRefresh.visibility = View.VISIBLE
         binding.swipeRefresh.setOnRefreshListener {
-            createDiary { binding.swipeRefresh.isRefreshing = false }
+            createDiary(true) {
+                binding.swipeRefresh.isRefreshing = false
+            }
         }
         binding.bottomNavigationView.visibility = View.VISIBLE
 
@@ -317,6 +344,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         if (binding.fragment.getFragment<Fragment>() is ProfileFragment) {
             menuInflater.inflate(R.menu.profile_top_app_bar, menu)
+        } else {
+            menu?.clear()
         }
         return super.onCreateOptionsMenu(menu)
     }
