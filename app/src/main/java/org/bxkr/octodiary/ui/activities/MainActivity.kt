@@ -38,6 +38,7 @@ import org.bxkr.octodiary.network.BaseCallback
 import org.bxkr.octodiary.network.NetworkService
 import org.bxkr.octodiary.ui.fragments.AvailableFragments
 import org.bxkr.octodiary.ui.fragments.ChatListFragment
+import org.bxkr.octodiary.ui.fragments.PeriodMarksFragment
 import org.bxkr.octodiary.ui.fragments.ProfileFragment
 import java.util.Calendar
 
@@ -147,8 +148,9 @@ class MainActivity : AppCompatActivity() {
                 show(fragment.instance)
                 setReorderingAllowed(true)
             }
-            if (fragment.instance is ChatListFragment) {
-                fragment.instance.configureChats()
+            when (fragment.instance) {
+                is ChatListFragment -> fragment.instance.configureChats()
+                is PeriodMarksFragment -> fragment.instance.onReload()
             }
             title = getString(fragment.activityTitle)
             invalidateOptionsMenu()

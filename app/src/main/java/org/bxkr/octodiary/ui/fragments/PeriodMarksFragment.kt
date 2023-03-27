@@ -51,17 +51,6 @@ class PeriodMarksFragment :
             periodMarks = mainActivity.periodMarksData!!
             configureChips()
             configureRecycler()
-            if (PreferenceManager.getDefaultSharedPreferences(mainActivity)
-                    .getBoolean("always_show_keyboard_in_period_marks", false)
-            ) {
-                binding.searchInput.requestFocus()
-                val inputMethodManager =
-                    mainActivity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                inputMethodManager.showSoftInput(
-                    binding.searchInput,
-                    InputMethodManager.SHOW_IMPLICIT
-                )
-            }
         }
     }
 
@@ -93,6 +82,20 @@ class PeriodMarksFragment :
         )
         binding.searchInput.doOnTextChanged { text, _, _, _ ->
             (binding.periodMarksRecyclerView.adapter as PeriodAdapter).updateList(text.toString())
+        }
+    }
+
+    fun onReload() {
+        if (PreferenceManager.getDefaultSharedPreferences(mainActivity)
+                .getBoolean("always_show_keyboard_in_period_marks", false)
+        ) {
+            binding.searchInput.requestFocus()
+            val inputMethodManager =
+                mainActivity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.showSoftInput(
+                binding.searchInput,
+                InputMethodManager.SHOW_IMPLICIT
+            )
         }
     }
 }

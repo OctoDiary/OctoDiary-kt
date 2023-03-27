@@ -18,6 +18,7 @@ import org.bxkr.octodiary.network.NetworkService
 import org.bxkr.octodiary.ui.activities.MainActivity
 import org.bxkr.octodiary.ui.adapters.ChatAdapter
 import org.jivesoftware.smack.AbstractXMPPConnection
+import org.jivesoftware.smack.SmackException
 import org.jivesoftware.smack.chat2.ChatManager
 import org.jivesoftware.smack.roster.Roster
 import org.jivesoftware.smack.roster.RosterEntry
@@ -96,10 +97,6 @@ class ChatListFragment : BaseFragment<FragmentChatListBinding>(FragmentChatListB
                                     adapter.updateChatIncome(from, message.body)
                                 }
                             }
-                            Thread {
-                                Thread.sleep(1000)
-
-                            }.start()
                             configureChips()
                             configureSearch()
                         }
@@ -199,15 +196,23 @@ class ChatListFragment : BaseFragment<FragmentChatListBinding>(FragmentChatListB
                                     }
                                     enrichResponse.body()!!.jidList.forEach {
                                         Thread {
-                                            val archive = mamManager.queryArchive(
-                                                MamQueryArgs.Builder()
-                                                    .limitResultsToJid(JidCreate.from(it.jid))
-                                                    .setResultPageSize(100)
-                                                    .queryLastPage()
-                                                    .build()
-                                            ).mamResultExtensions
-                                            ranJidList.add(it.jid)
-                                            after(archive)
+                                            try {
+                                                val archive = MamManager.getInstanceFor(connection)
+                                                    .queryArchive(
+                                                        MamQueryArgs.Builder()
+                                                            .limitResultsToJid(JidCreate.from(it.jid))
+                                                            .setResultPageSize(100)
+                                                            .queryLastPage()
+                                                            .build()
+                                                    ).mamResultExtensions
+                                                ranJidList.add(it.jid)
+                                                after(archive)
+                                            } catch (_: SmackException.NotConnectedException) {
+                                                Log.e(
+                                                    "ChatListFragment.afterRosterGot()",
+                                                    "Some messages appears to be null. Currently we cannot fix this issue, so this chat is skipped."
+                                                )
+                                            }
                                         }.start()
 
                                     }

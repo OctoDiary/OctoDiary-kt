@@ -5,8 +5,10 @@ import org.bxkr.octodiary.models.chat.ChatContext
 import org.bxkr.octodiary.models.chat.ChatCredentials
 import org.bxkr.octodiary.network.NetworkService.Server
 import org.jivesoftware.smack.AbstractXMPPConnection
+import org.jivesoftware.smack.ReconnectionManager
 import org.jivesoftware.smack.tcp.XMPPTCPConnection
 import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration
+import org.jivesoftware.smackx.ping.PingManager
 
 
 object ChatService {
@@ -51,6 +53,9 @@ object ChatService {
         configBuilder.setPort(hostname.replace(Regex("^.+:"), "").toInt())
         configBuilder.setXmppDomain(username.replace(Regex("^.+@"), ""))
         configBuilder.setSendPresence(true)
-        return XMPPTCPConnection(configBuilder.build())
+        val connection = XMPPTCPConnection(configBuilder.build())
+        ReconnectionManager.getInstanceFor(connection).enableAutomaticReconnection()
+        PingManager.getInstanceFor(connection).pingInterval = 60
+        return connection
     }
 }
