@@ -19,6 +19,7 @@ import org.bxkr.octodiary.network.NetworkService
 import org.bxkr.octodiary.ui.activities.MainActivity
 import org.bxkr.octodiary.ui.adapters.ChatAdapter
 import org.jivesoftware.smack.AbstractXMPPConnection
+import org.jivesoftware.smack.ConnectionListener
 import org.jivesoftware.smack.SmackException
 import org.jivesoftware.smack.chat2.ChatManager
 import org.jivesoftware.smack.roster.Roster
@@ -70,6 +71,11 @@ class ChatListFragment : BaseFragment<FragmentChatListBinding>(FragmentChatListB
 
     private fun connectChats(connection: AbstractXMPPConnection) {
         val roster = Roster.getInstanceFor(connection)
+        connection.addConnectionListener(object : ConnectionListener {
+            override fun connectionClosed() {
+                mainActivity.binding.bottomNavigationView.removeBadge(R.id.chatsPage)
+            }
+        })
         val setAdapter = { contacts: List<Contact> ->
             try {
                 val connectedColor = TypedValue()
