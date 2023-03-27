@@ -29,7 +29,6 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         mainActivity = activity as MainActivity
-        mainActivity.title = getString(R.string.profile)
         super.onViewCreated(view, savedInstanceState)
 
         if (Utils.isSchoolDataOutOfDate(mainActivity)) {

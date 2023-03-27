@@ -35,7 +35,6 @@ class PeriodMarksFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mainActivity = activity as MainActivity
-        mainActivity.title = getString(R.string.period_marks)
         preferences = PreferenceManager.getDefaultSharedPreferences(mainActivity)
         if (Utils.isSchoolDataOutOfDate(mainActivity)) {
             mainActivity.let { it ->

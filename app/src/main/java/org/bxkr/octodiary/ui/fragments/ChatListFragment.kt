@@ -36,7 +36,6 @@ class ChatListFragment : BaseFragment<FragmentChatListBinding>(FragmentChatListB
     override fun onResume() {
         super.onResume()
         mainActivity = activity as MainActivity
-        mainActivity.title = getString(R.string.chats)
         mainActivity.binding.swipeRefresh.isRefreshing = false
         if (isVisible) {
             configureChats()

@@ -17,8 +17,8 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
+import androidx.fragment.app.commitNow
 import androidx.preference.PreferenceManager
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
@@ -138,20 +138,25 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        val changeFragment: (Fragment) -> Boolean = { fragment ->
-            supportFragmentManager.commit(true) {
-                hide(supportFragmentManager.fragments.first { it.isVisible })
-                show(fragment)
+        val changeFragment: (AvailableFragments) -> Boolean = { fragment ->
+            supportFragmentManager.commitNow(true) {
+                val firstVisible = supportFragmentManager.fragments.firstOrNull { it.isVisible }
+                if (firstVisible != null) {
+                    hide(firstVisible)
+                }
+                show(fragment.instance)
                 setReorderingAllowed(true)
             }
-            if (fragment is ChatListFragment) {
-                fragment.configureChats()
+            if (fragment.instance is ChatListFragment) {
+                fragment.instance.configureChats()
             }
+            title = getString(fragment.activityTitle)
+            invalidateOptionsMenu()
             true
         }
         binding.bottomNavigationView.setOnItemSelectedListener { item ->
             AvailableFragments.values()
-                .first { item.itemId == it.menuId }.instance.let { changeFragment(it) }
+                .first { item.itemId == it.menuId }.let { changeFragment(it) }
         }
         binding.bottomNavigationView.setOnItemReselectedListener { }
         val onSecondary = TypedValue()
@@ -266,8 +271,10 @@ class MainActivity : AppCompatActivity() {
         val openedFragment = supportFragmentManager.fragments.firstOrNull { it.isVisible }
         if (openedFragment == null && !supportFragmentManager.isDestroyed) {
             AvailableFragments.values().forEach {
-                supportFragmentManager.beginTransaction().add(R.id.fragment, it.instance)
-                    .show(it.instance).commitAllowingStateLoss()
+                if (!supportFragmentManager.fragments.contains(it.instance)) {
+                    supportFragmentManager.beginTransaction().add(R.id.fragment, it.instance)
+                        .show(it.instance).commitAllowingStateLoss()
+                }
                 binding.fragment.visibility = View.GONE
                 binding.progressBar.visibility = View.VISIBLE
                 Thread {
@@ -280,7 +287,6 @@ class MainActivity : AppCompatActivity() {
                             supportFragmentManager.commit(true) {
                                 show(frag.instance)
                             }
-                            title = getString(frag.activityTitle)
                             binding.bottomNavigationView.selectedItemId = id
                         }
                         AvailableFragments.values()
@@ -342,7 +348,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        if (binding.fragment.getFragment<Fragment>() is ProfileFragment) {
+        if (supportFragmentManager.fragments.firstOrNull { it.isVisible } is ProfileFragment) {
             menuInflater.inflate(R.menu.profile_top_app_bar, menu)
         } else {
             menu?.clear()

@@ -37,7 +37,6 @@ class DashboardFragment :
         super.onViewCreated(view, savedInstanceState)
 
         mainActivity = activity as MainActivity
-        mainActivity.title = getString(R.string.dashboard)
         preferences = PreferenceManager.getDefaultSharedPreferences(mainActivity)
 
         if (Utils.isSchoolDataOutOfDate(mainActivity)) {

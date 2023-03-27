@@ -27,7 +27,6 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(FragmentDiaryBinding::i
         binding.root.visibility = View.GONE
         mainActivity = activity as MainActivity
         mainActivity.onCreateOptionsMenu(null)
-        mainActivity.title = getString(R.string.diary)
         if (Utils.isSchoolDataOutOfDate(mainActivity)) {
             mainActivity.createDiary {
                 mainActivity.binding.swipeRefresh.isRefreshing = false
