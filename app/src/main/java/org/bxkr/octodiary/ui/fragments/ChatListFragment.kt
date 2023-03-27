@@ -3,6 +3,7 @@ package org.bxkr.octodiary.ui.fragments
 import android.animation.Animator
 import android.animation.Animator.AnimatorListener
 import android.util.Log
+import android.util.TypedValue
 import android.view.View
 import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -71,8 +72,14 @@ class ChatListFragment : BaseFragment<FragmentChatListBinding>(FragmentChatListB
         val roster = Roster.getInstanceFor(connection)
         val setAdapter = { contacts: List<Contact> ->
             try {
+                val connectedColor = TypedValue()
+                mainActivity.theme.resolveAttribute(
+                    com.google.android.material.R.attr.colorTertiary,
+                    connectedColor,
+                    true
+                )
                 mainActivity.binding.bottomNavigationView.getOrCreateBadge(R.id.chatsPage).backgroundColor =
-                    mainActivity.getColor(R.color.green_connected)
+                    connectedColor.data
                 binding.progress.visibility = View.GONE
                 binding.connecting.text = getString(R.string.connected)
                 binding.connecting.animate().alpha(0f).setDuration(300)

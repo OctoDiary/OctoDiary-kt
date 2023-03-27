@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <color name="green_connected">#4CAF50</color>
-
     <!-- GREEN COLORS || START -->
     <color name="green_md_theme_light_primary">#006D40</color>
     <color name="green_md_theme_light_onPrimary">#FFFFFF</color>
