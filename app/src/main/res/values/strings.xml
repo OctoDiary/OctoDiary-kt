@@ -178,4 +178,5 @@
     <string name="pms">PMs</string>
     <string name="unknowns">Unknowns</string>
     <string name="search_by_name">Search by name</string>
+    <string name="chat">Chat</string>
 </resources>

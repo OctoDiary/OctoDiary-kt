@@ -126,4 +126,5 @@
     <string name="pms">Личные</string>
     <string name="unknowns">Неизвестные</string>
     <string name="search_by_name">Поиск по имени</string>
+    <string name="chat">Чат</string>
 </resources>

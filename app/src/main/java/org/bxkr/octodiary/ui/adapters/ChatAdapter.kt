@@ -1,6 +1,7 @@
 package org.bxkr.octodiary.ui.adapters
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,7 @@ import com.squareup.picasso.Picasso
 import org.bxkr.octodiary.R
 import org.bxkr.octodiary.databinding.ItemChatBinding
 import org.bxkr.octodiary.models.chat.Contact
+import org.bxkr.octodiary.ui.activities.ChatActivity
 import org.bxkr.octodiary.ui.activities.MainActivity
 import org.jxmpp.jid.Jid
 
@@ -28,6 +30,11 @@ class ChatAdapter(
             binding.root.tag = chat.jid
             binding.chatName.text = chat.shortName
             binding.avatar.adjustViewBounds = chat.avatar != null
+            binding.root.setOnClickListener {
+                val intent = Intent(context, ChatActivity::class.java)
+                intent.putExtra("jid", chat.jid)
+                context.startActivity(intent)
+            }
             if (!chat.lastMessage.isNullOrBlank()) {
                 binding.lastMessage.text = context.getString(
                     R.string.last_message_template,

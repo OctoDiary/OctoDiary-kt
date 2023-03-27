@@ -40,6 +40,11 @@
             android:label="@string/mark"
             android:parentActivityName=".ui.activities.MainActivity" />
         <activity
+            android:name=".ui.activities.ChatActivity"
+            android:exported="false"
+            android:label="@string/chat"
+            android:parentActivityName=".ui.activities.MainActivity" />
+        <activity
             android:name=".ui.activities.SettingsActivity"
             android:exported="false"
             android:label="@string/title_activity_settings" />
