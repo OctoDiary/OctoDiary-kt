@@ -20,6 +20,7 @@ class PeriodAdapter(
     private val subject: List<PeriodMark>
 ) : RecyclerView.Adapter<PeriodAdapter.PeriodViewHolder>() {
 
+    private var searchedSubject = subject
     private var newSubject = subject
 
     class PeriodViewHolder(
@@ -90,24 +91,30 @@ class PeriodAdapter(
     }
 
     override fun onBindViewHolder(holder: PeriodViewHolder, position: Int) {
-        val subject = newSubject.sortedBy { it.subject.name }[position]
+        val subject = searchedSubject.sortedBy { it.subject.name }[position]
         holder.bind(subject, periodType)
     }
 
-    override fun getItemCount(): Int = newSubject.size
+    override fun getItemCount(): Int = searchedSubject.size
 
     @SuppressLint("NotifyDataSetChanged")
     fun updateList(shownValues: List<String>) {
         newSubject = subject.filter {
-            it.averageMarks.averageMark?.toFloatOrNull()?.roundToInt().toString() in shownValues
+            if (it.averageMarks.weightedAverageMark == null) {
+                it.averageMarks.averageMark?.toFloatOrNull()?.roundToInt().toString() in shownValues
+            } else {
+                it.averageMarks.weightedAverageMark.toFloatOrNull()?.roundToInt()
+                    .toString() in shownValues
+            }
         }
+        searchedSubject = newSubject
         notifyDataSetChanged()
     }
 
     @SuppressLint("NotifyDataSetChanged")
     fun updateList(searchName: String) {
-        newSubject =
-            subject.filter { Regex("${searchName.lowercase()}.+").matches(it.subject.name.lowercase()) }
+        searchedSubject =
+            newSubject.filter { Regex(".*${Regex.escape(searchName.lowercase())}.*").matches(it.subject.name.lowercase()) }
         notifyDataSetChanged()
     }
 }

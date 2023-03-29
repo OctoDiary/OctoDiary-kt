@@ -80,6 +80,10 @@ class PeriodMarksFragment :
             mainActivity.userData!!.contextPersons[0].reportingPeriodGroup.periods.first { it.isCurrent }.type,
             periodMarks.periodMarks
         )
+        shownValues = (binding.chipGroup.checkedChipIds.map {
+            ChipsMarkTexts.values().first { it1 -> it1.idRes == it }.value
+        } as MutableList<String>)
+        (binding.periodMarksRecyclerView.adapter as PeriodAdapter).updateList(shownValues)
         binding.searchInput.doOnTextChanged { text, _, _, _ ->
             (binding.periodMarksRecyclerView.adapter as PeriodAdapter).updateList(text.toString())
         }

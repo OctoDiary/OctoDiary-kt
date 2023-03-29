@@ -178,6 +178,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun createDiary(reload: Boolean = false, listener: () -> Unit = {}) {
+        if (reload) logOut()
         if ((diaryData != null) && (userData != null) && !reload) {
             allDataLoaded()
             return
@@ -272,38 +273,39 @@ class MainActivity : AppCompatActivity() {
 
         val openedFragment = supportFragmentManager.fragments.firstOrNull { it.isVisible }
         if (openedFragment == null && !supportFragmentManager.isDestroyed) {
-            AvailableFragments.values().forEach {
-                if (!supportFragmentManager.fragments.contains(it.instance)) {
-                    supportFragmentManager.beginTransaction().add(R.id.fragment, it.instance)
-                        .show(it.instance).commitAllowingStateLoss()
-                }
-                binding.fragment.visibility = View.GONE
-                binding.progressBar.visibility = View.VISIBLE
-                Thread {
-                    Thread.sleep(100)
-                    runOnUiThread {
-                        supportFragmentManager.beginTransaction().hide(it.instance)
-                            .addToBackStack(it::class.simpleName).setReorderingAllowed(true)
-                            .commitAllowingStateLoss()
-                        val openFragment: (AvailableFragments, Int) -> Unit = { frag, id ->
-                            supportFragmentManager.commit(true) {
-                                show(frag.instance)
+            binding.bottomNavigationView.selectedItemId =
+                AvailableFragments.values().first { it.preferencesName == defaultScreen }.menuId
+
+            /*
+            First, each fragment is added, shown, and then all
+            of them are hidden, except for one desired fragment.
+             */
+
+            supportFragmentManager.commit {
+                AvailableFragments.values().forEach {
+                    if (!supportFragmentManager.fragments.contains(it.instance)) {
+                        add(R.id.fragment, it.instance)
+                        show(it.instance)
+                        runOnCommit {
+                            it.instance.requireView().post {
+                                if (it.preferencesName != defaultScreen) {
+                                    supportFragmentManager.commit {
+                                        hide(it.instance)
+                                    }
+                                } else {
+                                    invalidateOptionsMenu()
+                                    title = getString(it.activityTitle)
+                                }
                             }
-                            binding.bottomNavigationView.selectedItemId = id
                         }
-                        AvailableFragments.values()
-                            .first { it1 -> it1.preferencesName == defaultScreen }
-                            .let { it1 -> openFragment(it1, it1.menuId) }
-                        binding.fragment.visibility = View.VISIBLE
-                        binding.progressBar.visibility = View.GONE
                     }
-                }.start()
+                }
             }
         } else if (openedFragment != null) {
-            supportFragmentManager.beginTransaction().detach(openedFragment)
-                .commitAllowingStateLoss() // Detach/attach refresh should be
-            supportFragmentManager.beginTransaction().attach(openedFragment)
-                .commitAllowingStateLoss() // ran with separate transactions
+            supportFragmentManager.run {
+                commitNow { detach(openedFragment) } // Detach/attach refresh should be
+                commitNow { attach(openedFragment) } // ran with separate transactions
+            }
         }
         binding.progressBar.visibility = View.GONE
         binding.swipeRefresh.visibility = View.VISIBLE
@@ -313,6 +315,8 @@ class MainActivity : AppCompatActivity() {
             }
         }
         binding.bottomNavigationView.visibility = View.VISIBLE
+
+        // Notification
 
         val notifyTime: Calendar = Calendar.getInstance()
 
@@ -366,21 +370,12 @@ class MainActivity : AppCompatActivity() {
             }
 
             R.id.log_out -> {
-                userData = null
-                diaryData = null
-                ratingData = null
-                userFeedData = null
-                periodMarksData = null
-                token = null
-                userId = null
-                this.getSharedPreferences(
-                    getString(R.string.saved_data_key), Context.MODE_PRIVATE
-                ).edit {
-                    putLong(getString(R.string.data_age_key), -1L)
-                }
+                logOut()
                 val prefs =
                     getSharedPreferences(getString(R.string.auth_file_key), Context.MODE_PRIVATE)
                 prefs.edit { putInt(getString(R.string.server_key), 0) }
+                token = null
+                userId = null
                 startActivity(Intent(this@MainActivity, LoginActivity::class.java))
                 finish()
             }
@@ -396,5 +391,19 @@ class MainActivity : AppCompatActivity() {
         val notificationManager: NotificationManager =
             getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.createNotificationChannel(channel)
+    }
+
+    private fun logOut() {
+        userData = null
+        diaryData = null
+        ratingData = null
+        userFeedData = null
+        periodMarksData = null
+        // todo disconnect xmpp
+        this.getSharedPreferences(
+            getString(R.string.saved_data_key), Context.MODE_PRIVATE
+        ).edit {
+            putLong(getString(R.string.data_age_key), -1L)
+        }
     }
 }
