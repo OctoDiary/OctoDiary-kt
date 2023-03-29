@@ -12,6 +12,9 @@ import org.jivesoftware.smackx.ping.PingManager
 
 
 object ChatService {
+
+    lateinit var connection: AbstractXMPPConnection
+
     fun getContext(
         accessToken: String,
         server: Server,
@@ -56,6 +59,7 @@ object ChatService {
         val connection = XMPPTCPConnection(configBuilder.build())
         ReconnectionManager.getInstanceFor(connection).enableAutomaticReconnection()
         PingManager.getInstanceFor(connection).pingInterval = 60
+        this.connection = connection
         return connection
     }
 }

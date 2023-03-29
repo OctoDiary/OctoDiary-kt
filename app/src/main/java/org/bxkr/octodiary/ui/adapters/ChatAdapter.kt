@@ -33,6 +33,8 @@ class ChatAdapter(
             binding.root.setOnClickListener {
                 val intent = Intent(context, ChatActivity::class.java)
                 intent.putExtra("jid", chat.jid)
+                intent.putExtra("name", chat.name)
+                intent.putExtra("avatar", chat.avatar)
                 context.startActivity(intent)
             }
             if (!chat.lastMessage.isNullOrBlank()) {
