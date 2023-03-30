@@ -1,6 +1,11 @@
 package org.bxkr.octodiary
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapShader
+import android.graphics.Canvas
+import android.graphics.Paint
+import android.graphics.Shader
 import android.icu.text.MessageFormat
 import androidx.annotation.StringRes
 import androidx.core.content.edit
@@ -12,6 +17,7 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
+
 
 object Utils {
     fun isSchoolDataOutOfDate(mainActivity: MainActivity): Boolean {
@@ -89,4 +95,33 @@ object Utils {
 
     fun toPatternedDate(pattern: String, date: Date, locale: Locale): String =
         SimpleDateFormat(pattern, locale).format(date)
+
+    fun getCroppedBitmap(source: Bitmap): Bitmap {
+        val size: Int = source.width.coerceAtMost(source.height)
+
+        val x: Int = (source.width - size) / 2
+        val y: Int = (source.height - size) / 2
+
+        val squaredBitmap = Bitmap.createBitmap(source, x, y, size, size)
+        if (squaredBitmap != source) {
+            source.recycle()
+        }
+
+        val bitmap = Bitmap.createBitmap(size, size, source.config)
+
+        val canvas = Canvas(bitmap)
+        val paint = Paint()
+        val shader = BitmapShader(
+            squaredBitmap,
+            Shader.TileMode.CLAMP, Shader.TileMode.CLAMP
+        )
+        paint.shader = shader
+        paint.isAntiAlias = true
+
+        val r = size / 2f
+        canvas.drawCircle(r, r, r, paint)
+
+        squaredBitmap.recycle()
+        return bitmap
+    }
 }

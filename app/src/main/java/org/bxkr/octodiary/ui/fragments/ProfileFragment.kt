@@ -1,11 +1,14 @@
 package org.bxkr.octodiary.ui.fragments
 
 import android.content.SharedPreferences
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.squareup.picasso.Picasso
+import com.squareup.picasso.Transformation
 import org.bxkr.octodiary.R
 import org.bxkr.octodiary.Utils
 import org.bxkr.octodiary.databinding.FragmentProfileBinding
@@ -61,7 +64,12 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
             )
         val avatarUrl = userData.contextPersons[0].avatarUrl
         if (avatarUrl?.isNotEmpty() == true) {
-            Picasso.get().load(avatarUrl).into(binding.bigAvatar)
+            Picasso.get().load(avatarUrl).transform(object : Transformation {
+                override fun transform(source: Bitmap?): Bitmap = Utils.getCroppedBitmap(source!!)
+                override fun key() = "circle"
+            }).into(binding.bigAvatar)
+        } else {
+            binding.bigAvatar.scaleType = ImageView.ScaleType.CENTER_INSIDE
         }
 
         val onlyUsedFeeds: List<PeriodMark> = userFeedData.feed.mapNotNull {

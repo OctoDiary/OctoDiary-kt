@@ -6,19 +6,18 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <com.google.android.material.imageview.ShapeableImageView
+    <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/big_avatar"
         android:layout_width="@dimen/avatar_size"
         android:layout_height="@dimen/avatar_size"
         android:layout_margin="@dimen/avatar_margin"
         android:adjustViewBounds="false"
-        android:background="?attr/colorSecondary"
+        android:background="@drawable/avatar_background"
+        android:foreground="@drawable/avatar_ripple"
         android:cropToPadding="false"
-        android:scaleType="centerInside"
-        android:tint="?attr/colorOnSecondary"
+        android:scaleType="fitXY"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
         app:srcCompat="@drawable/ic_round_person_24"
         tools:ignore="ImageContrastCheck" />
 
