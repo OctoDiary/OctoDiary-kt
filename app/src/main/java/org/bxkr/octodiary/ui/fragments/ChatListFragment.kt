@@ -288,7 +288,7 @@ class ChatListFragment : BaseFragment<FragmentChatListBinding>(FragmentChatListB
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
         val connectOnLaunch = prefs.getBoolean("connect_to_chats_on_launch", true)
-        if (((!hidden && mainActivity.fragmentsAreReady) || connectOnLaunch) && (connection == null)) {
+        if ((!hidden && mainActivity.fragmentsAreReady) || connectOnLaunch) {
             configureChats()
         }
     }
