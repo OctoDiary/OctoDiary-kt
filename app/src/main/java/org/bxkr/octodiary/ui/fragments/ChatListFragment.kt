@@ -130,7 +130,7 @@ class ChatListFragment : BaseFragment<FragmentChatListBinding>(FragmentChatListB
             }
         }
         val thread = Thread {
-            connection.connect().login()
+            if (!connection.isConnected) connection.connect().login()
             val call = NetworkService.api(NetworkService.Server.values()[mainActivity.server])
                 .chatCloseContacts(mainActivity.token)
             call.enqueue(object : BaseCallback<ChatCloseContacts>(

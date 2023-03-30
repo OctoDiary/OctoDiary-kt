@@ -159,6 +159,7 @@ class MainActivity : AppCompatActivity() {
         }
         binding.bottomNavigationView.setOnItemReselectedListener { }
         val onSecondary = TypedValue()
+        val tertiary = TypedValue()
         val secondary = TypedValue()
         theme.resolveAttribute(
             com.google.android.material.R.attr.colorOnSecondaryContainer,
@@ -166,11 +167,16 @@ class MainActivity : AppCompatActivity() {
             true
         )
         theme.resolveAttribute(
+            com.google.android.material.R.attr.colorTertiary,
+            tertiary,
+            true
+        )
+        theme.resolveAttribute(
             com.google.android.material.R.attr.colorSecondaryContainer,
             secondary,
             true
         )
-        binding.swipeRefresh.setColorSchemeColors(onSecondary.data)
+        binding.swipeRefresh.setColorSchemeColors(onSecondary.data, tertiary.data)
         binding.swipeRefresh.setProgressBackgroundColorSchemeColor(secondary.data)
     }
 
@@ -397,7 +403,9 @@ class MainActivity : AppCompatActivity() {
         ratingData = null
         userFeedData = null
         periodMarksData = null
-        ChatService.connection?.disconnect()
+        Thread {
+            ChatService.connection?.disconnect()
+        }.start()
         this.getSharedPreferences(
             getString(R.string.saved_data_key), Context.MODE_PRIVATE
         ).edit {
