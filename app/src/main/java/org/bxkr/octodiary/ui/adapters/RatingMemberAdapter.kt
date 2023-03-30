@@ -1,9 +1,12 @@
 package org.bxkr.octodiary.ui.adapters
 
 import android.content.Context
+import android.content.res.ColorStateList
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
@@ -28,6 +31,20 @@ class RatingMemberAdapter(private val context: Context, private val members: Lis
                 if (preferences.getBoolean("show_rating_images", true)) {
                     if (!member.imageUrl.isNullOrEmpty()) {
                         Picasso.get().load(member.imageUrl).into(avatar)
+                        avatar.imageTintList = null
+                    } else {
+                        avatar.setImageDrawable(
+                            AppCompatResources.getDrawable(
+                                parentContext,
+                                R.drawable.ic_round_person_24
+                            )
+                        )
+                        val secondaryColor = TypedValue()
+                        parentContext.theme.resolveAttribute(
+                            com.google.android.material.R.attr.colorSecondary,
+                            secondaryColor, true
+                        )
+                        avatar.imageTintList = ColorStateList.valueOf(secondaryColor.data)
                     }
                     if (member.isContextUser) {
                         card.strokeWidth =

@@ -59,7 +59,10 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
                 userData.contextPersons[0].firstName,
                 userData.contextPersons[0].lastName
             )
-        Picasso.get().load(userData.contextPersons[0].avatarUrl).into(binding.bigAvatar)
+        val avatarUrl = userData.contextPersons[0].avatarUrl
+        if (avatarUrl?.isNotEmpty() == true) {
+            Picasso.get().load(avatarUrl).into(binding.bigAvatar)
+        }
 
         val onlyUsedFeeds: List<PeriodMark> = userFeedData.feed.mapNotNull {
             if (it.type in UsedFeedTypes.values().map { it1 -> it1.feedType }) {

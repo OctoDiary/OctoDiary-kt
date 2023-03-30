@@ -11,11 +11,16 @@
         android:layout_width="@dimen/avatar_size"
         android:layout_height="@dimen/avatar_size"
         android:layout_margin="@dimen/avatar_margin"
+        android:adjustViewBounds="false"
+        android:background="?attr/colorSecondary"
+        android:cropToPadding="false"
+        android:scaleType="centerInside"
+        android:tint="?attr/colorOnSecondary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
-        tools:ignore="ImageContrastCheck"
-        tools:srcCompat="@tools:sample/avatars" />
+        app:srcCompat="@drawable/ic_round_person_24"
+        tools:ignore="ImageContrastCheck" />
 
     <TextView
         android:id="@+id/student_name"
