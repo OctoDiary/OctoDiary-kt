@@ -127,4 +127,5 @@
     <string name="unknowns">Неизвестные</string>
     <string name="search_by_name">Поиск по имени</string>
     <string name="chat">Чат</string>
+    <string name="connect_to_chats_on_app_launch">Подключаться к чатам сразу после запуска</string>
 </resources>

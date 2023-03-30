@@ -2,10 +2,12 @@ package org.bxkr.octodiary.ui.fragments
 
 import android.animation.Animator
 import android.animation.Animator.AnimatorListener
+import android.content.SharedPreferences
 import android.util.Log
 import android.util.TypedValue
 import android.view.View
 import androidx.core.widget.doOnTextChanged
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.bxkr.octodiary.R
 import org.bxkr.octodiary.databinding.FragmentChatListBinding
@@ -36,13 +38,18 @@ import java.util.Date
 class ChatListFragment : BaseFragment<FragmentChatListBinding>(FragmentChatListBinding::inflate) {
     private lateinit var mainActivity: MainActivity
     private lateinit var adapter: ChatAdapter
+    private lateinit var prefs: SharedPreferences
 
     override fun onResume() {
         super.onResume()
         mainActivity = activity as MainActivity
+        prefs = PreferenceManager.getDefaultSharedPreferences(mainActivity)
         mainActivity.binding.swipeRefresh.isRefreshing = false
         if (isVisible) {
             configureChats()
+        }
+        if (connection?.isConnected == true) {
+            connectChats(connection!!)
         }
     }
 
@@ -205,7 +212,11 @@ class ChatListFragment : BaseFragment<FragmentChatListBinding>(FragmentChatListB
                                     val after = { archive: List<MamResultExtension> ->
                                         bigArchive.addAll(archive)
                                         if (enrichResponse.body()!!.jidList.size == ranJidList.size) {
-                                            afterLongMamWork()
+                                            try {
+                                                afterLongMamWork()
+                                            } catch (e: IllegalStateException) {
+                                                onDestroyCatch("afterLongMamWork()")
+                                            }
                                         }
                                     }
                                     enrichResponse.body()!!.jidList.forEach {
@@ -222,10 +233,7 @@ class ChatListFragment : BaseFragment<FragmentChatListBinding>(FragmentChatListB
                                                 ranJidList.add(it.jid)
                                                 after(archive)
                                             } catch (_: SmackException.NotConnectedException) {
-                                                Log.e(
-                                                    "ChatListFragment.afterRosterGot()",
-                                                    "Some messages appears to be null. Currently we cannot fix this issue, so this chat is skipped."
-                                                )
+                                                onDestroyCatch("afterRosterGot()")
                                             }
                                         }.start()
 
@@ -279,8 +287,16 @@ class ChatListFragment : BaseFragment<FragmentChatListBinding>(FragmentChatListB
 
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
-        if (!hidden && mainActivity.fragmentsAreReady && (((connection?.isConnected) == false) || connection == null)) {
+        val connectOnLaunch = prefs.getBoolean("connect_to_chats_on_launch", true)
+        if (((!hidden && mainActivity.fragmentsAreReady) || connectOnLaunch) && (connection == null)) {
             configureChats()
         }
+    }
+
+    private fun onDestroyCatch(tryFunction: String) {
+        Log.e(
+            "ChatListFragment.${tryFunction}",
+            "Some messages appears to be null. Currently we cannot fix this issue, so this chat is skipped."
+        )
     }
 }

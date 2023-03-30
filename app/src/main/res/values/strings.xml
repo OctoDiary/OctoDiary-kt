@@ -179,4 +179,5 @@
     <string name="unknowns">Unknowns</string>
     <string name="search_by_name">Search by name</string>
     <string name="chat">Chat</string>
+    <string name="connect_to_chats_on_app_launch">Connect to chats on app launch</string>
 </resources>
