@@ -15,6 +15,7 @@ import org.bxkr.octodiary.models.chat.ChatEnrichBody
 import org.bxkr.octodiary.models.chat.Contact
 import org.bxkr.octodiary.network.BaseCallback
 import org.bxkr.octodiary.network.ChatService
+import org.bxkr.octodiary.network.ChatService.connection
 import org.bxkr.octodiary.network.NetworkService
 import org.bxkr.octodiary.ui.activities.MainActivity
 import org.bxkr.octodiary.ui.adapters.ChatAdapter
@@ -45,7 +46,7 @@ class ChatListFragment : BaseFragment<FragmentChatListBinding>(FragmentChatListB
         }
     }
 
-    fun configureChats() {
+    private fun configureChats() {
         ChatService.getContext(
             server = NetworkService.Server.values()[mainActivity.server],
             accessToken = mainActivity.token!!,
@@ -274,5 +275,12 @@ class ChatListFragment : BaseFragment<FragmentChatListBinding>(FragmentChatListB
     override fun onDestroy() {
         super.onDestroy()
         mainActivity.binding.bottomNavigationView.removeBadge(R.id.chatsPage)
+    }
+
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        if (!hidden && mainActivity.fragmentsAreReady && (((connection?.isConnected) == false) || connection == null)) {
+            configureChats()
+        }
     }
 }

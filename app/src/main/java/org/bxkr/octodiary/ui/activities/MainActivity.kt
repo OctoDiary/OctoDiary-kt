@@ -38,8 +38,6 @@ import org.bxkr.octodiary.network.BaseCallback
 import org.bxkr.octodiary.network.ChatService
 import org.bxkr.octodiary.network.NetworkService
 import org.bxkr.octodiary.ui.fragments.AvailableFragments
-import org.bxkr.octodiary.ui.fragments.ChatListFragment
-import org.bxkr.octodiary.ui.fragments.PeriodMarksFragment
 import org.bxkr.octodiary.ui.fragments.ProfileFragment
 import java.util.Calendar
 
@@ -93,6 +91,8 @@ class MainActivity : AppCompatActivity() {
         get() = this.getSharedPreferences(
             getString(R.string.auth_file_key), Context.MODE_PRIVATE
         ).getInt(getString(R.string.server_key), 0)
+
+    var fragmentsAreReady = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -148,10 +148,6 @@ class MainActivity : AppCompatActivity() {
                 }
                 show(fragment.instance)
                 setReorderingAllowed(true)
-            }
-            when (fragment.instance) {
-                is ChatListFragment -> fragment.instance.configureChats()
-                is PeriodMarksFragment -> fragment.instance.onReload()
             }
             title = getString(fragment.activityTitle)
             invalidateOptionsMenu()
@@ -283,6 +279,7 @@ class MainActivity : AppCompatActivity() {
              */
 
             supportFragmentManager.commit {
+                runOnCommit { fragmentsAreReady = true }
                 AvailableFragments.values().forEach {
                     if (!supportFragmentManager.fragments.contains(it.instance)) {
                         add(R.id.fragment, it.instance)
@@ -400,7 +397,7 @@ class MainActivity : AppCompatActivity() {
         ratingData = null
         userFeedData = null
         periodMarksData = null
-        ChatService.connection.disconnect()
+        ChatService.connection?.disconnect()
         this.getSharedPreferences(
             getString(R.string.saved_data_key), Context.MODE_PRIVATE
         ).edit {

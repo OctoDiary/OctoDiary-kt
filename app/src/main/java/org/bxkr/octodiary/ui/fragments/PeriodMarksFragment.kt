@@ -21,6 +21,7 @@ import org.bxkr.octodiary.ui.adapters.PeriodAdapter
 class PeriodMarksFragment :
     BaseFragment<FragmentPeriodMarksBinding>(FragmentPeriodMarksBinding::inflate) {
     private lateinit var mainActivity: MainActivity
+    private lateinit var inputMethodManager: InputMethodManager
     private lateinit var preferences: SharedPreferences
     private lateinit var periodMarks: PeriodMarksResponse
     private var shownValues = mutableListOf("5", "4", "3", "2")
@@ -35,6 +36,8 @@ class PeriodMarksFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mainActivity = activity as MainActivity
+        inputMethodManager =
+            mainActivity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         preferences = PreferenceManager.getDefaultSharedPreferences(mainActivity)
         if (Utils.isSchoolDataOutOfDate(mainActivity)) {
             mainActivity.let { it ->
@@ -89,17 +92,24 @@ class PeriodMarksFragment :
         }
     }
 
-    fun onReload() {
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        if (!mainActivity.fragmentsAreReady) return
         if (PreferenceManager.getDefaultSharedPreferences(mainActivity)
                 .getBoolean("always_show_keyboard_in_period_marks", false)
         ) {
-            binding.searchInput.requestFocus()
-            val inputMethodManager =
-                mainActivity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            inputMethodManager.showSoftInput(
-                binding.searchInput,
-                InputMethodManager.SHOW_IMPLICIT
-            )
+            if (hidden) {
+                inputMethodManager.hideSoftInputFromWindow( // Hide the keyboard
+                    binding.searchInput.windowToken,
+                    InputMethodManager.SHOW_IMPLICIT
+                )
+            } else {
+                binding.searchInput.requestFocus()
+                inputMethodManager.showSoftInput( // Show the keyboard
+                    binding.searchInput,
+                    InputMethodManager.SHOW_IMPLICIT
+                )
+            }
         }
     }
 }

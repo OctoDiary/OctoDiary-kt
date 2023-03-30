@@ -13,7 +13,7 @@ import org.jivesoftware.smackx.ping.PingManager
 
 object ChatService {
 
-    lateinit var connection: AbstractXMPPConnection
+    var connection: AbstractXMPPConnection? = null
 
     fun getContext(
         accessToken: String,
