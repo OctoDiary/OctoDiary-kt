@@ -130,7 +130,7 @@ class ChatListFragment : BaseFragment<FragmentChatListBinding>(FragmentChatListB
             }
         }
         val thread = Thread {
-            if (!connection.isConnected) connection.connect().login()
+            if (!connection.isConnected && !connection.isAuthenticated) connection.connect().login()
             val call = NetworkService.api(NetworkService.Server.values()[mainActivity.server])
                 .chatCloseContacts(mainActivity.token)
             call.enqueue(object : BaseCallback<ChatCloseContacts>(
@@ -296,7 +296,7 @@ class ChatListFragment : BaseFragment<FragmentChatListBinding>(FragmentChatListB
     private fun onDestroyCatch(tryFunction: String) {
         Log.e(
             "ChatListFragment.${tryFunction}",
-            "Some messages appears to be null. Currently we cannot fix this issue, so this chat is skipped."
+            "onDestroy caught"
         )
     }
 }

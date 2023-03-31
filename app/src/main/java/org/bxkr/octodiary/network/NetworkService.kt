@@ -3,7 +3,9 @@ package org.bxkr.octodiary.network
 import androidx.annotation.DrawableRes
 import androidx.annotation.Keep
 import androidx.annotation.StringRes
+import okhttp3.MultipartBody
 import org.bxkr.octodiary.R
+import org.bxkr.octodiary.models.avatar.Avatar
 import org.bxkr.octodiary.models.chat.ChatCloseContacts
 import org.bxkr.octodiary.models.chat.ChatContext
 import org.bxkr.octodiary.models.chat.ChatCredentials
@@ -22,7 +24,9 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -166,6 +170,14 @@ object NetworkService {
         fun chatCloseContacts(
             @Header("Access-Token") accessToken: String?
         ): Call<ChatCloseContacts>
+
+        @Multipart
+        @POST("users/{user_id}/avatars")
+        fun uploadAvatar(
+            @Header("Access-Token") accessToken: String?,
+            @Path("user_id") userId: Long,
+            @Part part: MultipartBody.Part
+        ): Call<Avatar>
     }
 
     fun api(server: Server): API {
