@@ -93,6 +93,7 @@ class MainActivity : AppCompatActivity() {
         ).getInt(getString(R.string.server_key), 0)
 
     var fragmentsAreReady = false
+    var onDataLoadedCalled = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -214,7 +215,7 @@ class MainActivity : AppCompatActivity() {
             call.enqueue(object :
                 BaseCallback<RatingClass>(this@MainActivity, binding.root, function = {
                     ratingData = it.body()!!
-                    if (isAllDataLoaded()) allDataLoaded(listener)
+                    if (isAllDataLoaded() && !onDataLoadedCalled) allDataLoaded(listener)
                 }, errorFunction = { dataIsOutOfDate() }, noConnectionFunction = listener) {})
         }
     }
@@ -229,7 +230,7 @@ class MainActivity : AppCompatActivity() {
             )
             call.enqueue(object : BaseCallback<Diary>(this@MainActivity, binding.root, function = {
                 diaryData = it.body()!!.weeks
-                if (isAllDataLoaded()) allDataLoaded(listener)
+                if (isAllDataLoaded() && !onDataLoadedCalled) allDataLoaded(listener)
             }, errorFunction = { dataIsOutOfDate() }, noConnectionFunction = listener) {})
         }
     }
@@ -242,7 +243,7 @@ class MainActivity : AppCompatActivity() {
             call.enqueue(object :
                 BaseCallback<UserFeed>(this@MainActivity, binding.root, function = {
                     userFeedData = it.body()
-                    if (isAllDataLoaded()) allDataLoaded(listener)
+                    if (isAllDataLoaded() && !onDataLoadedCalled) allDataLoaded(listener)
                 }, errorFunction = { dataIsOutOfDate() }, noConnectionFunction = listener) {})
         }
     }
@@ -258,18 +259,22 @@ class MainActivity : AppCompatActivity() {
             call.enqueue(object :
                 BaseCallback<PeriodMarksResponse>(this@MainActivity, binding.root, function = {
                     periodMarksData = it.body()
-                    if (isAllDataLoaded()) allDataLoaded(listener)
+                    if (isAllDataLoaded() && !onDataLoadedCalled) allDataLoaded(listener)
                 }, errorFunction = { dataIsOutOfDate() }, noConnectionFunction = listener) {})
         }
     }
 
 
     private fun isAllDataLoaded(): Boolean =
-        userData != null && diaryData != null && ratingData != null && userFeedData != null
+        userData != null && diaryData != null && ratingData != null && userFeedData != null && periodMarksData != null
 
     private fun allDataLoaded(listener: () -> Unit = {}) {
 
+        onDataLoadedCalled = true
         listener.invoke()
+        if (supportFragmentManager.fragments.isEmpty()) {
+            binding.swipeRefresh.visibility = View.GONE
+        }
 
         val defaultScreen =
             PreferenceManager.getDefaultSharedPreferences(this).getString("default_screen", "diary")
@@ -285,7 +290,16 @@ class MainActivity : AppCompatActivity() {
              */
 
             supportFragmentManager.commit {
-                runOnCommit { fragmentsAreReady = true }
+                runOnCommit {
+                    fragmentsAreReady = true
+                    binding.bottomNavigationView.visibility = View.VISIBLE
+                    binding.swipeRefresh.alpha = 0f
+                    binding.swipeRefresh.visibility = View.VISIBLE
+                    binding.progressBar.animate().alpha(0f).setDuration(300).setStartDelay(500)
+                        .start()
+                    binding.swipeRefresh.animate().alpha(1f).setDuration(300).setStartDelay(500)
+                        .start()
+                }
                 AvailableFragments.values().forEach {
                     if (!supportFragmentManager.fragments.contains(it.instance)) {
                         add(R.id.fragment, it.instance)
@@ -311,14 +325,11 @@ class MainActivity : AppCompatActivity() {
                 commitNow { attach(openedFragment) } // ran with separate transactions
             }
         }
-        binding.progressBar.visibility = View.GONE
-        binding.swipeRefresh.visibility = View.VISIBLE
         binding.swipeRefresh.setOnRefreshListener {
             createDiary(true) {
                 binding.swipeRefresh.isRefreshing = false
             }
         }
-        binding.bottomNavigationView.visibility = View.VISIBLE
 
         // Notification
 
@@ -403,6 +414,8 @@ class MainActivity : AppCompatActivity() {
         ratingData = null
         userFeedData = null
         periodMarksData = null
+        onDataLoadedCalled = false
+        fragmentsAreReady = false
         Thread {
             ChatService.connection?.disconnect()
         }.start()
