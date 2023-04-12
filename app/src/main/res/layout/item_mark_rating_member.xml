@@ -24,7 +24,7 @@
         android:layout_toStartOf="@id/markRatingPersons"
         android:layout_toEndOf="@id/markRatingValue"
         android:max="100"
-        android:progress="42"
+        android:progress="0"
         app:trackCornerRadius="@dimen/mark_rating_bar_corner_radius"
         app:trackThickness="@dimen/mark_rating_bar_thickness" />
 

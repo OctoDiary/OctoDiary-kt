@@ -11,13 +11,12 @@ import org.bxkr.octodiary.databinding.ItemPeriodSubjectBinding
 import org.bxkr.octodiary.models.periodmarks.PeriodMark
 import org.bxkr.octodiary.models.periodmarks.PeriodType
 import org.bxkr.octodiary.ui.activities.MainActivity
-import kotlin.math.round
 import kotlin.math.roundToInt
 
 class PeriodAdapter(
     private val context: MainActivity,
     private val periodType: PeriodType,
-    private val subject: List<PeriodMark>
+    private val subject: MutableList<PeriodMark>
 ) : RecyclerView.Adapter<PeriodAdapter.PeriodViewHolder>() {
 
     private var searchedSubject = subject
@@ -43,7 +42,7 @@ class PeriodAdapter(
                     binding.subjectAverage.text = context.getString(
                         R.string.period_average_extended,
                         period.averageMarks.averageMark,
-                        round(floatMark).toInt().toString(),
+                        floatMark.roundToInt().toString(),
                         context.getString(periodType.stringRes)
                     )
                 } catch (exception: NumberFormatException) {
@@ -69,7 +68,7 @@ class PeriodAdapter(
                     binding.subjectWeighted.text = context.getString(
                         R.string.weighted_template_extended,
                         period.averageMarks.weightedAverageMark,
-                        round(floatMark).toInt().toString(),
+                        floatMark.roundToInt().toString(),
                         context.getString(periodType.stringRes)
                     )
                 } catch (exception: NumberFormatException) {
@@ -106,7 +105,7 @@ class PeriodAdapter(
                 it.averageMarks.weightedAverageMark.toFloatOrNull()?.roundToInt()
                     .toString() in shownValues
             }
-        }
+        }.toMutableList()
         searchedSubject = newSubject
         notifyDataSetChanged()
     }
@@ -115,6 +114,7 @@ class PeriodAdapter(
     fun updateList(searchName: String) {
         searchedSubject =
             newSubject.filter { Regex(".*${Regex.escape(searchName.lowercase())}.*").matches(it.subject.name.lowercase()) }
+                .toMutableList()
         notifyDataSetChanged()
     }
 }

@@ -155,6 +155,21 @@ class LessonActivity : AppCompatActivity() {
                 marksRecyclerView.adapter =
                     MarkAdapter(this@LessonActivity, marks, true, personId, groupId)
             } else marksCard.visibility = View.GONE
+            Thread {
+                for (imageView in listOf(
+                    topicImage,
+                    teacherImage,
+                    homeworkImage,
+                    worksImage,
+                    marksImage
+                ).filter { it.visibility == View.VISIBLE }) {
+                    runOnUiThread {
+                        imageView.alpha = 0f
+                        imageView.animate().alpha(0.7f).setDuration(200).setStartDelay(150).start()
+                    }
+                    Thread.sleep(200)
+                }
+            }.start()
         }
     }
 

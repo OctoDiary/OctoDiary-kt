@@ -7,6 +7,6 @@ data class AverageMarks(
     val averageMarkTrend: String,
     val averageMarkByImportantWorkTrend: String,
     val indicator: Any?,
-    val weightedAverageMark: Any?,
+    val weightedAverageMark: String?,
     val weightedAverageMarkTrend: String
 )

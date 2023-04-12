@@ -116,13 +116,22 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(FragmentDiaryBinding::i
                     }
                     return@addOnChangeListener
                 }
-                binding.daySlider.value = 0F
                 var normalValue = value.toInt()
                 if (value > mainActivity.diaryData!!.size - 1) {
                     normalValue = mainActivity.diaryData!!.size - 1
                 }
-                binding.dayViewPager.adapter =
-                    DayAdapter(binding.root.context, mainActivity.diaryData!![normalValue].days)
+                binding.daySlider.animate().alpha(0f).setDuration(150).withEndAction {
+                    binding.daySlider.animate().alpha(1f).setDuration(150).start()
+                }.start()
+                binding.textView2.animate().alpha(0f).setDuration(150).withEndAction {
+                    binding.textView2.animate().alpha(1f).setDuration(150).start()
+                }.start()
+                binding.dayViewPager.animate().alpha(0f).setDuration(150).withEndAction {
+                    binding.daySlider.value = 0F
+                    binding.dayViewPager.adapter =
+                        DayAdapter(binding.root.context, mainActivity.diaryData!![normalValue].days)
+                    binding.dayViewPager.animate().alpha(1f).setDuration(150).start()
+                }.start()
             }
 
             val loadWeek =

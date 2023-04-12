@@ -1,5 +1,6 @@
 package org.bxkr.octodiary.ui.adapters
 
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.res.ColorStateList
 import android.util.TypedValue
@@ -7,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.animation.doOnEnd
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
@@ -16,8 +18,13 @@ import org.bxkr.octodiary.models.rating.RankingPlaces
 
 class RatingMemberAdapter(private val context: Context, private val members: List<RankingPlaces>) :
     RecyclerView.Adapter<RatingMemberAdapter.RatingMemberViewHolder>() {
+    var animated = false
 
-    class RatingMemberViewHolder(ratingMemberBinding: ItemRatingMemberBinding, context: Context) :
+    class RatingMemberViewHolder(
+        ratingMemberBinding: ItemRatingMemberBinding,
+        context: Context,
+        private val adapter: RatingMemberAdapter
+    ) :
         RecyclerView.ViewHolder(ratingMemberBinding.root) {
         private val parentContext = context
         private val binding = ratingMemberBinding
@@ -25,8 +32,19 @@ class RatingMemberAdapter(private val context: Context, private val members: Lis
             with(binding) {
                 place.text = member.place.toString()
                 averageMark.text = member.averageMark
-                progressBar.max = itemCount
-                progressBar.progress = itemCount - member.place + 1
+                progressBar.max = itemCount * 100
+                if (!adapter.animated) {
+                    val animator = ObjectAnimator.ofInt(
+                        progressBar,
+                        "progress",
+                        (itemCount - member.place + 1) * 100
+                    )
+                        .setDuration(800)
+                    animator.doOnEnd { adapter.animated = true }
+                    animator.start()
+                } else {
+                    progressBar.progress = (itemCount - member.place + 1) * 100
+                }
                 val preferences = PreferenceManager.getDefaultSharedPreferences(parentContext)
                 if (preferences.getBoolean("show_rating_images", true)) {
                     if (!member.imageUrl.isNullOrEmpty()) {
@@ -59,7 +77,7 @@ class RatingMemberAdapter(private val context: Context, private val members: Lis
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RatingMemberViewHolder {
         val binding = ItemRatingMemberBinding.inflate(LayoutInflater.from(context), parent, false)
-        return RatingMemberViewHolder(binding, context)
+        return RatingMemberViewHolder(binding, context, this)
     }
 
     override fun onBindViewHolder(holder: RatingMemberViewHolder, position: Int) {

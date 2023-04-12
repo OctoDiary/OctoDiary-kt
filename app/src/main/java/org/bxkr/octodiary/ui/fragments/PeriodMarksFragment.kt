@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.IdRes
+import androidx.core.view.children
 import androidx.core.widget.doOnTextChanged
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -67,11 +68,28 @@ class PeriodMarksFragment :
                     isChecked = true
                 }
             }
+            for (view in binding.chipGroup.children) {
+                val chip = view as Chip
+                chip.setOnCheckedChangeListener { buttonView, _ ->
+                    val index = binding.chipGroup.indexOfChild(buttonView)
+                    binding.chipGroup.removeView(buttonView)
+                    binding.chipGroup.addView(buttonView, index)
+                }
+            }
             binding.chipGroup.setOnCheckedStateChangeListener { _, checkedIds ->
                 shownValues = (checkedIds.map {
                     ChipsMarkTexts.values().first { it1 -> it1.idRes == it }.value
                 } as MutableList<String>)
-                (binding.periodMarksRecyclerView.adapter as PeriodAdapter).updateList(shownValues)
+                binding.periodMarksRecyclerView.animate().alpha(0f).setDuration(300).withEndAction {
+                    (binding.periodMarksRecyclerView.adapter as PeriodAdapter).updateList(
+                        shownValues
+                    )
+                    binding.periodMarksRecyclerView.animate().run {
+                        duration = 300
+                        alpha(1f)
+                        start()
+                    }
+                }.start()
             }
         }
     }
@@ -81,7 +99,7 @@ class PeriodMarksFragment :
         binding.periodMarksRecyclerView.adapter = PeriodAdapter(
             mainActivity,
             mainActivity.userData!!.contextPersons[0].reportingPeriodGroup.periods.first { it.isCurrent }.type,
-            periodMarks.periodMarks
+            periodMarks.periodMarks.toMutableList()
         )
         shownValues = (binding.chipGroup.checkedChipIds.map {
             ChipsMarkTexts.values().first { it1 -> it1.idRes == it }.value

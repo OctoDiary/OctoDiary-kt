@@ -75,7 +75,7 @@
     <string name="notification_new_mark_title">Новая оценка!</string>
     <string name="period_marks">Оценки за период</string>
     <string name="average_mark">Средний балл</string>
-    <string name="average_important">Средний балл за работы</string>
+    <string name="average_important">За работы</string>
     <string name="not_yet">Пока нет</string>
     <string name="period_average_extended">Средний балл: %s – %s за %s</string>
     <string name="half_year">полугодие</string>
@@ -129,4 +129,5 @@
     <string name="chat">Чат</string>
     <string name="connect_to_chats_on_app_launch">Подключаться к чатам сразу после запуска</string>
     <string name="change_the_avatar">Поменять аватарку</string>
+    <string name="weighted_average">Взвешенный</string>
 </resources>

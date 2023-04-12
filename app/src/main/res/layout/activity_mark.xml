@@ -151,8 +151,18 @@
                         android:text="@string/placeholder_main_rating_average"
                         android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
                         app:layout_constraintBottom_toTopOf="@+id/avgImportantDesc"
-                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/weightedAvg"
                         app:layout_constraintStart_toEndOf="@+id/avg" />
+
+                    <TextView
+                        android:id="@+id/weightedAvg"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/placeholder_main_rating_average"
+                        android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
+                        app:layout_constraintBottom_toTopOf="@+id/weightedAvgDesc"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/avgImportant" />
 
                     <TextView
                         android:id="@+id/avgDesc"
@@ -173,6 +183,16 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="@+id/avgImportant"
                         app:layout_constraintStart_toStartOf="@+id/avgImportant" />
+
+                    <TextView
+                        android:id="@+id/weightedAvgDesc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/weighted_average"
+                        android:textAppearance="@style/TextAppearance.Material3.LabelSmall"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@+id/weightedAvg"
+                        app:layout_constraintStart_toStartOf="@+id/weightedAvg" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.card.MaterialCardView>
         </androidx.constraintlayout.widget.ConstraintLayout>

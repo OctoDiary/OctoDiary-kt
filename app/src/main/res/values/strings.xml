@@ -122,7 +122,7 @@
     <string name="period_marks">Period Marks</string>
     <string name="period_marks_data_key" translatable="false">period_marks</string>
     <string name="average_mark">Average</string>
-    <string name="average_important">Average by works</string>
+    <string name="average_important">By work-marks</string>
     <string name="not_yet">Not yet</string>
     <string name="period_average_extended">Average mark: %s – %s for the %s</string>
     <string name="placeholder_period_average" translatable="false">Average mark: 4.5 – 5 for the semester</string>
@@ -181,4 +181,5 @@
     <string name="chat">Chat</string>
     <string name="connect_to_chats_on_app_launch">Connect to chats on app launch</string>
     <string name="change_the_avatar">Change the avatar</string>
+    <string name="weighted_average">Weighted</string>
 </resources>

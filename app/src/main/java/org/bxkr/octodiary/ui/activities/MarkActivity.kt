@@ -126,6 +126,12 @@ class MarkActivity : AppCompatActivity() {
             avg.text = mark.averageMarks.averageMark
             avgImportant.text =
                 mark.averageMarks.averageMarkByImportantWork ?: getString(R.string.not_yet)
+            weightedAvg.text =
+                mark.averageMarks.weightedAverageMark ?: run {
+                    weightedAvg.visibility = View.GONE
+                    weightedAvgDesc.visibility = View.GONE
+                    ""
+                }
         }
     }
 }

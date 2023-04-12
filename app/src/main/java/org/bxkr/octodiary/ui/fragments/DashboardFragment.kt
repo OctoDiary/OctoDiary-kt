@@ -91,8 +91,11 @@ class DashboardFragment :
         }
         if (tomorrowPosition == null || todayPosition == null) {
             if (isDemo(mainActivity)) {
-                binding.miniDiaryRecyclerView.adapter =
-                    LessonsAdapter(mainActivity, diaryData[0].days[0].lessons, true)
+                binding.miniDiaryRecyclerView.animate().alpha(0f).setDuration(300).withEndAction {
+                    binding.miniDiaryRecyclerView.adapter =
+                        LessonsAdapter(mainActivity, diaryData[0].days[0].lessons, true)
+                    binding.miniDiaryRecyclerView.animate().setDuration(300).alpha(1f).start()
+                }.start()
             } else {
                 binding.toggleButton.visibility = View.GONE
             }
@@ -113,7 +116,12 @@ class DashboardFragment :
                 } else {
                     binding.freeDay.visibility = View.GONE
                     binding.miniDiaryRecyclerView.visibility = View.VISIBLE
-                    (binding.miniDiaryRecyclerView.adapter as LessonsAdapter).newData(it)
+                    binding.miniDiaryRecyclerView.animate().alpha(0f).setDuration(100)
+                        .withEndAction {
+                            (binding.miniDiaryRecyclerView.adapter as LessonsAdapter).newData(it)
+                            binding.miniDiaryRecyclerView.animate().setDuration(100).alpha(1f)
+                                .start()
+                        }.start()
                 }
             } else {
                 reload(view, savedInstanceState)

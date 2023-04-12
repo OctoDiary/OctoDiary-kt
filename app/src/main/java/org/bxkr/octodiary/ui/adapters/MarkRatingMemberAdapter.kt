@@ -1,5 +1,6 @@
 package org.bxkr.octodiary.ui.adapters
 
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.text.SpannableString
 import android.text.Spanned
@@ -50,7 +51,9 @@ class MarkRatingMemberAdapter(
                     member.studentCount,
                     member.studentCount
                 )
-                it.markRatingProgress.progress = member.percent.toInt()
+                ObjectAnimator.ofInt(it.markRatingProgress, "progress", member.percent.toInt())
+                    .setDuration(300)
+                    .start()
             }
         }
     }
