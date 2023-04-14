@@ -90,13 +90,13 @@
             app:title="@string/always_show_keyboard" />
     </PreferenceCategory>
 
-    <PreferenceCategory app:title="@string/chats">
-        <org.bxkr.octodiary.ui.MaterialSwitchPreference
-            app:allowDividerAbove="false"
-            app:defaultValue="true"
-            app:key="connect_to_chats_on_launch"
-            app:singleLineTitle="false"
-            app:title="@string/connect_to_chats_on_app_launch" />
-    </PreferenceCategory>
+    <!--    <PreferenceCategory app:title="@string/chats">-->
+    <!--        <org.bxkr.octodiary.ui.MaterialSwitchPreference-->
+    <!--            app:allowDividerAbove="false"-->
+    <!--            app:defaultValue="true"-->
+    <!--            app:key="connect_to_chats_on_launch"-->
+    <!--            app:singleLineTitle="false"-->
+    <!--            app:title="@string/connect_to_chats_on_app_launch" />-->
+    <!--    </PreferenceCategory>-->
 
 </PreferenceScreen>

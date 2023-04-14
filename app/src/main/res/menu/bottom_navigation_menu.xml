@@ -5,10 +5,10 @@
         android:id="@+id/diaryPage"
         android:icon="@drawable/ic_round_menu_book_24"
         android:title="@string/diary" />
-    <item
-        android:id="@+id/chatsPage"
-        android:icon="@drawable/ic_round_forum_24"
-        android:title="@string/chats" />
+    <!--    <item-->
+    <!--        android:id="@+id/chatsPage"-->
+    <!--        android:icon="@drawable/ic_round_forum_24"-->
+    <!--        android:title="@string/chats" />-->
     <item
         android:id="@+id/dashboardPage"
         android:icon="@drawable/ic_round_dashboard_24"
