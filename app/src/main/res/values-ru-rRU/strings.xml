@@ -115,19 +115,9 @@
     <string name="vpn_can_slow_loadings">VPN может замедлять загрузки</string>
     <string name="check_connection">Сервер не отвечает или нет интернета</string>
     <string name="kundelik">Күнделiк</string>
-    <string name="chats">Чаты</string>
-    <string name="connecting_to_chat_service">Подключение к чату…</string>
-    <string name="connected">Подключено!</string>
-    <string name="you">Вы</string>
     <string name="weighted_template">Взвеш. сред. балл: %s</string>
     <string name="weighted_template_extended">Взвеш. сред. балл: %s - %s за %s</string>
-    <string name="deleted_message">Сообщение удалено</string>
-    <string name="groups">Группы</string>
-    <string name="pms">Личные</string>
     <string name="unknowns">Неизвестные</string>
-    <string name="search_by_name">Поиск по имени</string>
-    <string name="chat">Чат</string>
-    <string name="connect_to_chats_on_app_launch">Подключаться к чатам сразу после запуска</string>
     <string name="change_the_avatar">Поменять аватарку</string>
     <string name="weighted_average">Взвешенный</string>
 </resources>

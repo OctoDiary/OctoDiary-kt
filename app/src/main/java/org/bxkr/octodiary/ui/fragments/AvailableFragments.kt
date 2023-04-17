@@ -14,6 +14,5 @@ enum class AvailableFragments(
     Diary(R.id.diaryPage, DiaryFragment(), "diary", R.string.diary),
     Dashboard(R.id.dashboardPage, DashboardFragment(), "dashboard", R.string.dashboard),
     PeriodMarks(R.id.periodMarksPage, PeriodMarksFragment(), "period_marks", R.string.period_marks),
-    Profile(R.id.profilePage, ProfileFragment(), "profile", R.string.profile),
-    Chats(R.id.chatsPage, ChatListFragment(), "chats", R.string.chats)
+    Profile(R.id.profilePage, ProfileFragment(), "profile", R.string.profile)
 }

@@ -97,4 +97,3 @@
 ##---------------End: proguard configuration for Gson  ----------
 
 -keep class org.bxkr.octodiary.models.** { *; }
--keep class org.jivesoftware.** { *; }

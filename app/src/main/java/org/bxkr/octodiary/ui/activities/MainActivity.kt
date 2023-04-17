@@ -35,7 +35,6 @@ import org.bxkr.octodiary.models.rating.RatingClass
 import org.bxkr.octodiary.models.user.User
 import org.bxkr.octodiary.models.userfeed.UserFeed
 import org.bxkr.octodiary.network.BaseCallback
-import org.bxkr.octodiary.network.ChatService
 import org.bxkr.octodiary.network.NetworkService
 import org.bxkr.octodiary.ui.fragments.AvailableFragments
 import org.bxkr.octodiary.ui.fragments.ProfileFragment
@@ -416,9 +415,6 @@ class MainActivity : AppCompatActivity() {
         periodMarksData = null
         onDataLoadedCalled = false
         fragmentsAreReady = false
-        Thread {
-            ChatService.connection?.disconnect()
-        }.start()
         this.getSharedPreferences(
             getString(R.string.saved_data_key), Context.MODE_PRIVATE
         ).edit {
