@@ -171,4 +171,7 @@
     <string name="unknowns">Unknowns</string>
     <string name="change_the_avatar">Change the avatar</string>
     <string name="weighted_average">Weighted</string>
+    <string name="error_dialog_title">The server responded with an error!</string>
+    <string name="error_dialog_description">Looks like an internal error has occurred on the server side. You can try logging into your account or try again later.</string>
+    <string name="try_again">Try again</string>
 </resources>

@@ -20,6 +20,7 @@ import androidx.core.content.edit
 import androidx.fragment.app.commit
 import androidx.fragment.app.commitNow
 import androidx.preference.PreferenceManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import org.bxkr.octodiary.R
@@ -188,15 +189,21 @@ class MainActivity : AppCompatActivity() {
         }
         val call = userId?.toLong()
             ?.let { NetworkService.api(NetworkService.Server.values()[server]).user(it, token) }
-        call?.enqueue(object : BaseCallback<User>(this, binding.root, function = {
-            userData = it.body()!!
+        call?.enqueue(object : BaseCallback<User>(
+            this,
+            binding.root,
+            function = {
+                userData = it.body()!!
 
-            getRating(listener)
-            getDiary(listener)
-            getUserFeed(listener)
-            getPeriodMarks(listener)
+                getRating(listener)
+                getDiary(listener)
+                getUserFeed(listener)
+                getPeriodMarks(listener)
 
-        }, errorFunction = { dataIsOutOfDate() }, noConnectionFunction = listener) {})
+            },
+            errorFunction = { _, httpCode -> dataIsOutOfDate(httpCode) },
+            noConnectionFunction = listener
+        ) {})
 
         /*
         It should work like this - first createDiary receives userData,
@@ -212,10 +219,16 @@ class MainActivity : AppCompatActivity() {
                 contextPersons[0].personId, contextPersons[0].group.id, token
             )
             call.enqueue(object :
-                BaseCallback<RatingClass>(this@MainActivity, binding.root, function = {
-                    ratingData = it.body()!!
-                    if (isAllDataLoaded() && !onDataLoadedCalled) allDataLoaded(listener)
-                }, errorFunction = { dataIsOutOfDate() }, noConnectionFunction = listener) {})
+                BaseCallback<RatingClass>(
+                    this@MainActivity,
+                    binding.root,
+                    function = {
+                        ratingData = it.body()!!
+                        if (isAllDataLoaded() && !onDataLoadedCalled) allDataLoaded(listener)
+                    },
+                    errorFunction = { _, httpCode -> dataIsOutOfDate(httpCode) },
+                    noConnectionFunction = listener
+                ) {})
         }
     }
 
@@ -227,10 +240,16 @@ class MainActivity : AppCompatActivity() {
                 contextPersons[0].group.id,
                 token
             )
-            call.enqueue(object : BaseCallback<Diary>(this@MainActivity, binding.root, function = {
-                diaryData = it.body()!!.weeks
-                if (isAllDataLoaded() && !onDataLoadedCalled) allDataLoaded(listener)
-            }, errorFunction = { dataIsOutOfDate() }, noConnectionFunction = listener) {})
+            call.enqueue(object : BaseCallback<Diary>(
+                this@MainActivity,
+                binding.root,
+                function = {
+                    diaryData = it.body()!!.weeks
+                    if (isAllDataLoaded() && !onDataLoadedCalled) allDataLoaded(listener)
+                },
+                errorFunction = { _, httpCode -> dataIsOutOfDate(httpCode) },
+                noConnectionFunction = listener
+            ) {})
         }
     }
 
@@ -240,10 +259,16 @@ class MainActivity : AppCompatActivity() {
                 contextPersons[0].personId, contextPersons[0].group.id, token
             )
             call.enqueue(object :
-                BaseCallback<UserFeed>(this@MainActivity, binding.root, function = {
-                    userFeedData = it.body()
-                    if (isAllDataLoaded() && !onDataLoadedCalled) allDataLoaded(listener)
-                }, errorFunction = { dataIsOutOfDate() }, noConnectionFunction = listener) {})
+                BaseCallback<UserFeed>(
+                    this@MainActivity,
+                    binding.root,
+                    function = {
+                        userFeedData = it.body()
+                        if (isAllDataLoaded() && !onDataLoadedCalled) allDataLoaded(listener)
+                    },
+                    errorFunction = { _, httpCode -> dataIsOutOfDate(httpCode) },
+                    noConnectionFunction = listener
+                ) {})
         }
     }
 
@@ -256,10 +281,16 @@ class MainActivity : AppCompatActivity() {
                 token
             )
             call.enqueue(object :
-                BaseCallback<PeriodMarksResponse>(this@MainActivity, binding.root, function = {
-                    periodMarksData = it.body()
-                    if (isAllDataLoaded() && !onDataLoadedCalled) allDataLoaded(listener)
-                }, errorFunction = { dataIsOutOfDate() }, noConnectionFunction = listener) {})
+                BaseCallback<PeriodMarksResponse>(
+                    this@MainActivity,
+                    binding.root,
+                    function = {
+                        periodMarksData = it.body()
+                        if (isAllDataLoaded() && !onDataLoadedCalled) allDataLoaded(listener)
+                    },
+                    errorFunction = { _, httpCode -> dataIsOutOfDate(httpCode) },
+                    noConnectionFunction = listener
+                ) {})
         }
     }
 
@@ -360,11 +391,42 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
-    private fun dataIsOutOfDate() {
-        val intent = Intent(this@MainActivity, LoginActivity::class.java)
-        intent.putExtra(getString(R.string.auth_out_of_date_extra), true)
-        startActivity(intent)
-        finish()
+    private fun dataIsOutOfDate(httpCode: Int) {
+        when (httpCode) {
+            401 -> {
+                val intent = Intent(this@MainActivity, LoginActivity::class.java)
+                intent.putExtra(getString(R.string.auth_out_of_date_extra), true)
+                startActivity(intent)
+                finish()
+            }
+
+            else -> {
+                MaterialAlertDialogBuilder(
+                    this,
+                    com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog_Centered
+                )
+                    .setTitle(R.string.error_dialog_title)
+                    .setMessage(R.string.error_dialog_description)
+                    .setNegativeButton(
+                        R.string.log_out
+                    ) { _, _ ->
+                        logOut()
+                        val prefs =
+                            getSharedPreferences(
+                                getString(R.string.auth_file_key),
+                                Context.MODE_PRIVATE
+                            )
+                        prefs.edit { putInt(getString(R.string.server_key), 0) }
+                        token = null
+                        userId = null
+                        startActivity(Intent(this@MainActivity, LoginActivity::class.java))
+                        finish()
+                    }
+                    .setPositiveButton(R.string.try_again) { _, _ -> createDiary() }
+                    .setIcon(R.drawable.ic_round_sync_problem_24)
+                    .show()
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

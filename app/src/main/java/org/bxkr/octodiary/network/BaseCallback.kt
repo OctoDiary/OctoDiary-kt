@@ -15,7 +15,7 @@ abstract class BaseCallback<T>(
     private val bindingRoot: View? = null,
     private val errorMessage: Int = 0,
     private val function: (response: Response<T>) -> Unit,
-    private val errorFunction: ((errorBody: ResponseBody) -> Unit)? = null,
+    private val errorFunction: ((errorBody: ResponseBody, httpCode: Int) -> Unit)? = null,
     private val noConnectionFunction: (() -> Unit)? = null
 ) : Callback<T> {
     override fun onResponse(
@@ -30,7 +30,9 @@ abstract class BaseCallback<T>(
                 errorMessage,
                 Snackbar.LENGTH_LONG
             ).show()
-            else errorFunction?.let { response.errorBody()?.let { it1 -> it(it1) } }
+            else errorFunction?.let {
+                response.errorBody()?.let { it1 -> it(it1, response.code()) }
+            }
         }
     }
 

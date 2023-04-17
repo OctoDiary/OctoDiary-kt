@@ -120,4 +120,7 @@
     <string name="unknowns">Неизвестные</string>
     <string name="change_the_avatar">Поменять аватарку</string>
     <string name="weighted_average">Взвешенный</string>
+    <string name="error_dialog_title">Сервер ответил ошибкой!</string>
+    <string name="error_dialog_description">Похоже, на стороне сервера произошла внутренняя ошибка. Вы можете попробовать перезайти в аккаунт или повторить попытку позже.</string>
+    <string name="try_again">Повторить</string>
 </resources>
