@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/period_subject_margin"
@@ -42,7 +43,20 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:text="@string/placeholder_period_weighted"
-            android:textAppearance="@style/TextAppearance.Material3.LabelLarge" />
+            android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
+            tools:visibility="gone" />
+
+        <TextView
+            android:id="@+id/rankingPosition"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:alpha="0.3"
+            android:textAppearance="@style/TextAppearance.Material3.DisplayLarge"
+            android:textSize="65sp"
+            android:textStyle="bold"
+            tools:ignore="RelativeOverlap" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/marksRecyclerView"
@@ -53,7 +67,9 @@
             android:layout_alignParentEnd="true"
             android:ellipsize="none"
             android:fadingEdgeLength="40dp"
-            android:requiresFadingEdge="horizontal" />
+            android:requiresFadingEdge="horizontal"
+            tools:itemCount="1" />
+
     </RelativeLayout>
 
 </com.google.android.material.card.MaterialCardView>
