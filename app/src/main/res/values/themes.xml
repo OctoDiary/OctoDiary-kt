@@ -2,6 +2,7 @@
 
     <style name="Theme.OctoDiary" parent="Theme.Material3.DayNight">
         <item name="bottomSheetDialogTheme">@style/ModalBottomSheetDialog</item>
+        <item name="android:popupMenuStyle">@style/Widget.App.PopupMenu</item>
     </style>
 
     <style name="Selectable" parent="Theme.OctoDiary">

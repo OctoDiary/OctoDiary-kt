@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
 import android.widget.ImageView
+import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.preference.PreferenceManager
@@ -112,6 +114,26 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
         }
         binding.bigAvatar.setOnClickListener {
             pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+        }
+
+        binding.bigAvatar.setOnLongClickListener { view ->
+            val popup = PopupMenu(mainActivity, view)
+            popup.inflate(R.menu.delete_avatar_menu)
+            popup.setOnMenuItemClickListener {
+                when (it.itemId) {
+                    R.id.delete_avatar -> {
+                        Toast(mainActivity).apply {
+                            setText(getString(R.string.avatar_deletion_is_currently_unsupported))
+                        }.show()
+                        true
+                    }
+
+                    else -> false
+                }
+            }
+            popup.show()
+
+            true
         }
 
         val onlyUsedFeeds: List<PeriodMark> = userFeedData.feed.mapNotNull {

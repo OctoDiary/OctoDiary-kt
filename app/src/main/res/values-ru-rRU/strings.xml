@@ -123,4 +123,6 @@
     <string name="error_dialog_title">Сервер ответил ошибкой!</string>
     <string name="error_dialog_description">Похоже, на стороне сервера произошла внутренняя ошибка. Вы можете попробовать перезайти в аккаунт или повторить попытку позже.</string>
     <string name="try_again">Повторить</string>
+    <string name="delete_avatar">Удалить аватар</string>
+    <string name="avatar_deletion_is_currently_unsupported">Удалить аватар пока нельзя</string>
 </resources>

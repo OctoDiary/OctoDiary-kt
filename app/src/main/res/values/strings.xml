@@ -174,4 +174,6 @@
     <string name="error_dialog_title">The server responded with an error!</string>
     <string name="error_dialog_description">Looks like an internal error has occurred on the server side. You can try logging into your account or try again later.</string>
     <string name="try_again">Try again</string>
+    <string name="delete_avatar">Remove an avatar</string>
+    <string name="avatar_deletion_is_currently_unsupported">Avatar deletion is currently unsupported</string>
 </resources>
