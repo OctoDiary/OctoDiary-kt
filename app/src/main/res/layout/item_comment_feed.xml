@@ -11,6 +11,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:textIsSelectable="true"
+        android:autoLink="all"
+        android:linksClickable="true"
         tools:text="Released from physical education" />
 
     <TextView

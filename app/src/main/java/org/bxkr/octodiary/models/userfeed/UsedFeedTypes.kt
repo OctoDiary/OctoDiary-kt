@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.models.userfeed
 
+import android.text.Html
+import android.text.method.LinkMovementMethod
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.bxkr.octodiary.R
 import org.bxkr.octodiary.databinding.ItemGeneralFeedBinding
@@ -45,7 +47,10 @@ enum class UsedFeedTypes(
         it.included.layoutResource = R.layout.item_comment_feed
         val innerBinding =
             org.bxkr.octodiary.databinding.ItemCommentFeedBinding.bind(it.included.inflate())
-        innerBinding.feedBody.text = feed.content.text
+        innerBinding.feedBody.apply {
+            text = Html.fromHtml(feed.content.text, Html.FROM_HTML_MODE_COMPACT)
+            movementMethod = LinkMovementMethod.getInstance()
+        }
         if (feed.content.createdDateTime != null) {
             innerBinding.lessonDate.text = org.bxkr.octodiary.Utils.toPatternedDate(
                 "MMM d, EEE",
