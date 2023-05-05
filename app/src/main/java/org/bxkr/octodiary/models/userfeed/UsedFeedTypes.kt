@@ -3,6 +3,7 @@ package org.bxkr.octodiary.models.userfeed
 import android.text.Html
 import android.text.method.LinkMovementMethod
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.iamageo.library.AnotherReadMore
 import org.bxkr.octodiary.R
 import org.bxkr.octodiary.databinding.ItemGeneralFeedBinding
 import org.bxkr.octodiary.models.shared.File
@@ -47,8 +48,16 @@ enum class UsedFeedTypes(
         it.included.layoutResource = R.layout.item_comment_feed
         val innerBinding =
             org.bxkr.octodiary.databinding.ItemCommentFeedBinding.bind(it.included.inflate())
+        AnotherReadMore.Builder(context)
+            .textLength(100, AnotherReadMore.TYPE_LINE)
+            .moreLabel(context.getString(R.string.show_more))
+            .lessLabel(context.getString(R.string.show_less))
+            .build()
+            .addReadMoreTo(
+                innerBinding.feedBody,
+                Html.fromHtml(feed.content.text, Html.FROM_HTML_MODE_COMPACT)
+            )
         innerBinding.feedBody.apply {
-            text = Html.fromHtml(feed.content.text, Html.FROM_HTML_MODE_COMPACT)
             movementMethod = LinkMovementMethod.getInstance()
         }
         if (feed.content.createdDateTime != null) {

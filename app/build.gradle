@@ -50,6 +50,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     //noinspection GradleDependency
     implementation 'com.squareup.picasso:picasso:2.8'
+    implementation 'com.github.iamageo:another-read-more-lib:1.0.0'
     implementation 'androidx.preference:preference-ktx:1.2.0'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'

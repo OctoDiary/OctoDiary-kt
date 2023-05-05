@@ -176,4 +176,6 @@
     <string name="try_again">Try again</string>
     <string name="delete_avatar">Remove an avatar</string>
     <string name="avatar_deletion_is_currently_unsupported">Avatar deletion is currently unsupported</string>
+    <string name="show_more">Show more</string>
+    <string name="show_less">Show less</string>
 </resources>

@@ -125,4 +125,6 @@
     <string name="try_again">Повторить</string>
     <string name="delete_avatar">Удалить аватар</string>
     <string name="avatar_deletion_is_currently_unsupported">Удалить аватар пока нельзя</string>
+    <string name="show_more">Показать больше</string>
+    <string name="show_less">Показать меньше</string>
 </resources>
