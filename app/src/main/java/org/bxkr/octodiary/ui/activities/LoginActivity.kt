@@ -3,6 +3,7 @@ package org.bxkr.octodiary.ui.activities
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.inputmethod.InputMethodManager
 import android.widget.AutoCompleteTextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
@@ -40,6 +41,10 @@ class LoginActivity : AppCompatActivity() {
         }
         binding.password.editText?.setOnEditorActionListener { _, _, _ ->
             logIn()
+            (getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(
+                binding.root.windowToken,
+                0
+            )
             true
         }
         binding.logInButton.setOnClickListener { logIn() }
