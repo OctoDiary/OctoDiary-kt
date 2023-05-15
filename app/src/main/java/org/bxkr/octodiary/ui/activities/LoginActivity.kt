@@ -40,12 +40,14 @@ class LoginActivity : AppCompatActivity() {
             prefs.edit { putInt(getString(R.string.server_key), position) }
         }
         binding.password.editText?.setOnEditorActionListener { _, _, _ ->
-            logIn()
-            (getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(
-                binding.root.windowToken,
-                0
-            )
-            true
+            if (binding.logInButton.isEnabled) {
+                logIn()
+                (getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(
+                    binding.root.windowToken,
+                    0
+                )
+                true
+            } else false
         }
         binding.logInButton.setOnClickListener { logIn() }
         binding.demoButton.setOnClickListener { logIn(demo = true) }
@@ -74,6 +76,8 @@ class LoginActivity : AppCompatActivity() {
             startActivity(Intent(this@LoginActivity, MainActivity::class.java))
             finish()
         }
+        binding.logInButton.isEnabled = false
+        binding.logInButton.animate().alpha(0f).start()
         val server = Server.values()[serverPosition]
         val call: Call<NetworkService.AuthResult> = NetworkService.api(server).auth(
             NetworkService.AuthRequestBody(
@@ -112,6 +116,8 @@ class LoginActivity : AppCompatActivity() {
                     ).show()
                 } else if (it.body()?.type == getString(R.string.error_type)) {
                     Snackbar.make(binding.root, R.string.wrong, Snackbar.LENGTH_SHORT).show()
+                    binding.logInButton.isEnabled = true
+                    binding.logInButton.animate().alpha(1f).start()
                 }
             }) {})
     }

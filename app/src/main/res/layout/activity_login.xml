@@ -16,6 +16,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/password" />
 
+
+    <Button
+        android:id="@+id/grayed_log_in_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="false"
+        android:enabled="false"
+        android:text="@string/log_in"
+        app:layout_constraintBottom_toTopOf="@+id/bottomCenter"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="DuplicateSpeakableTextCheck" />
+
     <Button
         android:id="@+id/log_in_button"
         android:layout_width="wrap_content"
