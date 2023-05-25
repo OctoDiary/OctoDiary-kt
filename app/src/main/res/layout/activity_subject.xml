@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:animateLayoutChanges="true"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    android:gravity="center"
+    android:orientation="vertical">
 
     <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/bigProgressBar"
@@ -14,94 +16,118 @@
         android:layout_marginEnd="@dimen/big_progress_bar_margin"
         android:indeterminate="true"
         android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.5"
-        app:trackCornerRadius="@dimen/loading_corner_radius"
-        tools:visibility="gone" />
+        app:trackCornerRadius="@dimen/loading_corner_radius" />
 
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/subject_content"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:constraint_referenced_ids="subject_name,period_name,rating_card"
-        tools:visibility="visible" />
-
-    <TextView
-        android:id="@+id/subject_name"
-        android:layout_width="wrap_content"
-        android:layout_height="?attr/collapsingToolbarLayoutLargeSize"
-        android:layout_margin="16dp"
-        android:gravity="bottom"
-        android:textAppearance="?attr/textAppearanceHeadlineMedium"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="@string/placeholder_lesson_name" />
-
-    <TextView
-        android:id="@+id/period_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        android:textAppearance="@style/TextAppearance.Material3.ActionBar.Subtitle"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/subject_name"
-        tools:text="3 trimester" />
-
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/rating_card"
-        style="@style/Widget.Material3.CardView.Filled"
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scroll_view"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/rating_card_height"
-        android:layout_margin="@dimen/rating_card_margin"
-        android:clickable="true"
-        android:focusable="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/period_name">
+        android:layout_height="match_parent"
+        android:animateLayoutChanges="true"
+        android:visibility="gone">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:animateLayoutChanges="true">
 
-            <TextView
-                android:id="@+id/rating_status"
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/subject_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/rating_card_margin"
-                android:text="@string/placeholder_rating"
-                android:textSize="@dimen/rating_place_text_size"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:visibility="gone"
+                app:constraint_referenced_ids="subject_name,period_name,rating_card,marks_container" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/rating_button"
-                style="@style/Widget.Material3.Button.IconButton"
+            <TextView
+                android:id="@+id/subject_name"
                 android:layout_width="wrap_content"
-                android:layout_height="@dimen/goto_rating_layout_height"
-                android:layout_marginEnd="@dimen/goto_rating_margin_end"
-                android:contentDescription="@string/content_show_rating"
-                android:insetLeft="0dp"
-                android:insetTop="0dp"
-                android:insetRight="0dp"
-                android:insetBottom="0dp"
-                app:icon="@drawable/ic_round_filter_list_24"
-                app:iconPadding="0dp"
-                app:iconSize="@dimen/goto_rating_size"
+                android:layout_height="?attr/collapsingToolbarLayoutMediumSize"
+                android:layout_margin="16dp"
+                android:gravity="bottom"
+                android:textAppearance="?attr/textAppearanceHeadlineMedium"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="@string/placeholder_lesson_name" />
+
+            <TextView
+                android:id="@+id/period_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:textAppearance="@style/TextAppearance.Material3.ActionBar.Subtitle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/subject_name"
+                tools:text="3 trimester" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/rating_card"
+                style="@style/Widget.Material3.CardView.Filled"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/rating_card_height"
+                android:layout_margin="@dimen/rating_card_margin"
+                android:clickable="true"
+                android:focusable="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/period_name">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/rating_status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/rating_card_margin"
+                        android:text="@string/placeholder_rating"
+                        android:textSize="@dimen/rating_place_text_size"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/rating_button"
+                        style="@style/Widget.Material3.Button.IconButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/goto_rating_layout_height"
+                        android:layout_marginEnd="@dimen/goto_rating_margin_end"
+                        android:contentDescription="@string/content_show_rating"
+                        android:insetLeft="0dp"
+                        android:insetTop="0dp"
+                        android:insetRight="0dp"
+                        android:insetBottom="0dp"
+                        app:icon="@drawable/ic_round_filter_list_24"
+                        app:iconPadding="0dp"
+                        app:iconSize="@dimen/goto_rating_size"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                    </com.google.android.material.button.MaterialButton>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/marks_container"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rating_card">
 
-            </com.google.android.material.button.MaterialButton>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/marksRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.card.MaterialCardView>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
 
-    </com.google.android.material.card.MaterialCardView>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

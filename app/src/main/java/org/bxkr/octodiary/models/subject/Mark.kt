@@ -10,7 +10,7 @@ data class Mark(
     val lesson: Lesson,
     val markType: String,
     val markTypeText: String,
-    val marks: List<MarkX>,
+    val marks: List<org.bxkr.octodiary.models.shared.Mark>,
     val shortMarkTypeText: String?,
     val subject: SubjectX
 )

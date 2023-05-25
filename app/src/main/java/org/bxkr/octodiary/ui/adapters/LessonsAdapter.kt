@@ -20,12 +20,16 @@ import java.text.SimpleDateFormat
 class LessonsAdapter(
     private val context: Context,
     private var lessons: List<Lesson>,
-    private val compact: Boolean = false
+    private val compact: Boolean = false,
+    private var personIdCommon: Long? = null,
+    private var groupIdCommon: Long? = null
 ) : RecyclerView.Adapter<LessonsAdapter.LessonsViewHolder>() {
 
     class LessonsViewHolder(
         ItemLessonsRecyclerBinding: ItemLessonsRecyclerBinding, context: Context,
-        private val compact: Boolean
+        private val compact: Boolean,
+        private val personIdCommon: Long? = null,
+        private val groupIdCommon: Long? = null
     ) : RecyclerView.ViewHolder(ItemLessonsRecyclerBinding.root) {
         private val binding = ItemLessonsRecyclerBinding
         private val parentContext = context
@@ -45,14 +49,14 @@ class LessonsAdapter(
                 binding.lessonDesc.visibility = View.GONE
             } else {
                 val description: String? =
-                    when (PreferenceManager.getDefaultSharedPreferences(parentContext as MainActivity)
+                    when (PreferenceManager.getDefaultSharedPreferences(parentContext)
                         .getString("lesson_description", "homework")) {
                         "lesson_topic" -> lesson.theme
                         else -> lesson.homework?.text
                     }
                 if (description != null) {
                     binding.lessonDesc.text = description
-                    if (lesson.hasAttachment) {
+                    if (lesson.hasAttachment == true) {
                         binding.lessonDesc.setCompoundDrawablesWithIntrinsicBounds(
                             null,
                             null,
@@ -67,15 +71,23 @@ class LessonsAdapter(
                     binding.lessonDesc.visibility = View.GONE
                 }
             }
-            val personId =
-                (parentContext as MainActivity).userData?.contextPersons?.get(0)?.personId!!
-            val groupId = parentContext.userData?.contextPersons?.get(0)?.group?.id!!
-            binding.root.setOnClickListener {
-                val intent = Intent(parentContext, LessonActivity::class.java)
-                intent.putExtra("lesson_id", lesson.id)
-                intent.putExtra("person_id", personId)
-                intent.putExtra("group_id", groupId)
-                parentContext.startActivity(intent)
+            var personId = personIdCommon
+            var groupId = groupIdCommon
+            if (parentContext is MainActivity) {
+                personId =
+                    parentContext.userData?.contextPersons?.get(0)?.personId!!
+                groupId = parentContext.userData?.contextPersons?.get(0)?.group?.id!!
+                binding.root.setOnClickListener {
+                    val intent = Intent(parentContext, LessonActivity::class.java)
+                    intent.putExtra("lesson_id", lesson.id)
+                    intent.putExtra("person_id", personId)
+                    intent.putExtra("group_id", groupId)
+                    parentContext.startActivity(intent)
+                }
+            } else {
+                binding.lessonTime.visibility = View.GONE
+                binding.root.isClickable = false
+                binding.root.isFocusable = false
             }
 
             val marks = mutableListOf<Mark>()
@@ -87,7 +99,7 @@ class LessonsAdapter(
                 binding.markRecyclerView.layoutManager =
                     LinearLayoutManager(parentContext, LinearLayoutManager.HORIZONTAL, false)
                 binding.markRecyclerView.adapter =
-                    MarkAdapter(parentContext, null, false, personId, groupId, marks)
+                    MarkAdapter(parentContext, null, false, personId!!, groupId!!, marks)
             }
         }
     }
@@ -95,7 +107,7 @@ class LessonsAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LessonsViewHolder {
         val binding =
             ItemLessonsRecyclerBinding.inflate(LayoutInflater.from(context), parent, false)
-        return LessonsViewHolder(binding, context, compact)
+        return LessonsViewHolder(binding, context, compact, personIdCommon, groupIdCommon)
     }
 
     override fun onBindViewHolder(holder: LessonsViewHolder, position: Int) {
