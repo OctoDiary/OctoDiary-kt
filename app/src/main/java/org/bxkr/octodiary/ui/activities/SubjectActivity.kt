@@ -7,10 +7,13 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import org.bxkr.octodiary.R
 import org.bxkr.octodiary.Utils
+import org.bxkr.octodiary.Utils.isDemo
 import org.bxkr.octodiary.databinding.ActivitySubjectBinding
 import org.bxkr.octodiary.models.rating.RankingPlaces
 import org.bxkr.octodiary.models.subject.Rating
 import org.bxkr.octodiary.models.subject.SubjectDetails
+import org.bxkr.octodiary.network.BaseCallback
+import org.bxkr.octodiary.network.NetworkService
 import org.bxkr.octodiary.ui.dialogs.RatingBottomSheet
 import kotlin.properties.Delegates
 
@@ -37,14 +40,37 @@ class SubjectActivity : AppCompatActivity() {
         subjectId = intent.getLongExtra("subject_id", 0)
         periodId = intent.getLongExtra("period_id", 0)
 
-        configureSubject(
+        if (isDemo(this)) configureSubject(
             Utils.getJsonRaw(resources.openRawResource(R.raw.sample_subject_details_data)),
             prefs
-        )
+        ) else {
+            val call = NetworkService.api(
+                NetworkService.Server.values()[prefs.getInt(
+                    getString(R.string.server_key),
+                    0
+                )]
+            ).subjectDetails(
+                personId,
+                groupId,
+                subjectId,
+                periodId,
+                prefs.getString(getString(R.string.token), null)
+            )
+
+            call.enqueue(object : BaseCallback<SubjectDetails>(
+                this,
+                binding.root,
+                R.string.unexpected_error,
+                { response ->
+                    val responseBody = response.body()
+                    if (responseBody != null) configureSubject(responseBody, prefs)
+                }) {})
+        }
     }
 
     private fun configureSubject(subject: SubjectDetails, prefs: SharedPreferences) {
         binding.bigProgressBar.visibility = View.GONE
+        binding.subjectContent.visibility = View.VISIBLE
         binding.subjectName.text = subject.subject.name
         binding.periodName.text = getString(
             R.string.period_name,
