@@ -1,0 +1,1797 @@
+{
+  "period": {
+    "id": 0,
+    "number": 2,
+    "type": "Trimester",
+    "dateStart": 1677456000,
+    "dateFinish": 1685491200,
+    "studyYear": 2022,
+    "isCurrent": true
+  },
+  "subject": {
+    "id": 0,
+    "name": "Алгебра",
+    "knowledgeArea": "Mathematics",
+    "subjectMood": "Sunny"
+  },
+  "reportsPlot": {
+    "knowledgeAreaGroup": "MathematicsAndTechnology",
+    "knowledgeAreaGroupName": "Математика и технология",
+    "subject": {
+      "id": 0,
+      "name": "Алгебра",
+      "knowledgeArea": "Mathematics"
+    },
+    "averageMarks": {
+      "averageMarkTrend": "Equal",
+      "averageMarkMood": "Good",
+      "averagemarkByImportantWorkTrend": "NotSet",
+      "weightedAverageMarkTrend": "Equal",
+      "indicator": null,
+      "averageMark": "4.93",
+      "averageMarkByImportantWork": null,
+      "weightedAverageMark": null
+    },
+    "plotOptions": {
+      "yAxis": [
+        {
+          "value": "3.00",
+          "mood": "Average"
+        },
+        {
+          "value": "4.00",
+          "mood": "Good"
+        },
+        {
+          "value": "5.00",
+          "mood": "Good"
+        }
+      ]
+    },
+    "reportingPeriodsReports": [
+      {
+        "periodId": 0,
+        "periodNumber": 0,
+        "periodType": "Trimester",
+        "isCurrent": false,
+        "weekAverages": [
+          {
+            "number": 0,
+            "value": null,
+            "isCurrentWeek": false
+          },
+          {
+            "number": 1,
+            "value": "5.00",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 2,
+            "value": "5.00",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 3,
+            "value": "4.33",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 4,
+            "value": "4.25",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 5,
+            "value": "4.25",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 6,
+            "value": "4.25",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 7,
+            "value": "4.57",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 8,
+            "value": "4.56",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 9,
+            "value": "4.56",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 10,
+            "value": "4.50",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 11,
+            "value": "4.50",
+            "isCurrentWeek": false
+          }
+        ]
+      },
+      {
+        "periodId": 0,
+        "periodNumber": 1,
+        "periodType": "Trimester",
+        "isCurrent": false,
+        "weekAverages": [
+          {
+            "number": 0,
+            "value": null,
+            "isCurrentWeek": false
+          },
+          {
+            "number": 1,
+            "value": "5.00",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 2,
+            "value": "5.00",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 3,
+            "value": "5.00",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 4,
+            "value": "4.75",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 5,
+            "value": "4.83",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 6,
+            "value": "4.83",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 7,
+            "value": "4.86",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 8,
+            "value": "4.89",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 9,
+            "value": "4.82",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 10,
+            "value": "4.82",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 11,
+            "value": "4.83",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 12,
+            "value": "4.77",
+            "isCurrentWeek": false
+          }
+        ]
+      },
+      {
+        "periodId": 0,
+        "periodNumber": 2,
+        "periodType": "Trimester",
+        "isCurrent": true,
+        "weekAverages": [
+          {
+            "number": 0,
+            "value": null,
+            "isCurrentWeek": false
+          },
+          {
+            "number": 1,
+            "value": "4.00",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 2,
+            "value": "4.67",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 3,
+            "value": "4.75",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 4,
+            "value": "4.75",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 5,
+            "value": "4.86",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 6,
+            "value": "4.86",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 7,
+            "value": "4.90",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 8,
+            "value": "4.91",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 9,
+            "value": "4.92",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 10,
+            "value": "4.92",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 11,
+            "value": "4.93",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 12,
+            "value": "4.93",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 13,
+            "value": "4.93",
+            "isCurrentWeek": true
+          },
+          {
+            "number": 14,
+            "value": null,
+            "isCurrentWeek": false
+          }
+        ]
+      }
+    ]
+  },
+  "groupReportsPlot": {
+    "knowledgeAreaGroup": "MathematicsAndTechnology",
+    "knowledgeAreaGroupName": "Математика и технология",
+    "subject": {
+      "id": 0,
+      "name": "Алгебра",
+      "knowledgeArea": "Mathematics"
+    },
+    "averageMarks": {
+      "averageMarkTrend": "Down",
+      "averageMarkMood": "NotSet",
+      "averagemarkByImportantWorkTrend": "NotSet",
+      "weightedAverageMarkTrend": "Down",
+      "indicator": null,
+      "averageMark": "3.58",
+      "averageMarkByImportantWork": null,
+      "weightedAverageMark": null
+    },
+    "plotOptions": {
+      "yAxis": [
+        {
+          "value": "3.00",
+          "mood": "Average"
+        },
+        {
+          "value": "4.00",
+          "mood": "Good"
+        }
+      ]
+    },
+    "reportingPeriodsReports": [
+      {
+        "periodId": 0,
+        "periodNumber": 0,
+        "periodType": "Trimester",
+        "isCurrent": false,
+        "weekAverages": [
+          {
+            "number": 0,
+            "value": null,
+            "isCurrentWeek": false
+          },
+          {
+            "number": 1,
+            "value": "3.67",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 2,
+            "value": "3.49",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 3,
+            "value": "3.44",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 4,
+            "value": "3.37",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 5,
+            "value": "3.40",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 6,
+            "value": "3.41",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 7,
+            "value": "3.40",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 8,
+            "value": "3.35",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 9,
+            "value": "3.37",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 10,
+            "value": "3.36",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 11,
+            "value": "3.41",
+            "isCurrentWeek": false
+          }
+        ]
+      },
+      {
+        "periodId": 0,
+        "periodNumber": 1,
+        "periodType": "Trimester",
+        "isCurrent": false,
+        "weekAverages": [
+          {
+            "number": 0,
+            "value": null,
+            "isCurrentWeek": false
+          },
+          {
+            "number": 1,
+            "value": "3.52",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 2,
+            "value": "3.61",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 3,
+            "value": "3.37",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 4,
+            "value": "3.42",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 5,
+            "value": "3.40",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 6,
+            "value": "3.40",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 7,
+            "value": "3.37",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 8,
+            "value": "3.38",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 9,
+            "value": "3.40",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 10,
+            "value": "3.39",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 11,
+            "value": "3.41",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 12,
+            "value": "3.40",
+            "isCurrentWeek": false
+          }
+        ]
+      },
+      {
+        "periodId": 0,
+        "periodNumber": 2,
+        "periodType": "Trimester",
+        "isCurrent": true,
+        "weekAverages": [
+          {
+            "number": 0,
+            "value": null,
+            "isCurrentWeek": false
+          },
+          {
+            "number": 1,
+            "value": "3.45",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 2,
+            "value": "3.55",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 3,
+            "value": "3.70",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 4,
+            "value": "3.72",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 5,
+            "value": "3.75",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 6,
+            "value": "3.75",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 7,
+            "value": "3.60",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 8,
+            "value": "3.56",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 9,
+            "value": "3.60",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 10,
+            "value": "3.60",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 11,
+            "value": "3.61",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 12,
+            "value": "3.60",
+            "isCurrentWeek": false
+          },
+          {
+            "number": 13,
+            "value": "3.58",
+            "isCurrentWeek": true
+          },
+          {
+            "number": 14,
+            "value": null,
+            "isCurrentWeek": false
+          }
+        ]
+      }
+    ]
+  },
+  "rating": {
+    "rankingPlaces": [
+      {
+        "place": 1,
+        "imageUrl": "",
+        "averageMark": "4.93",
+        "isContextUser": true,
+        "trend": "Equal"
+      },
+      {
+        "place": 2,
+        "imageUrl": "https://static.school.mosreg.ru/images/studentrating/animalrating/3.png",
+        "averageMark": "4.56",
+        "isContextUser": false,
+        "trend": "Equal"
+      },
+      {
+        "place": 3,
+        "imageUrl": "https://static.school.mosreg.ru/images/studentrating/animalrating/6.png",
+        "averageMark": "4.29",
+        "isContextUser": false,
+        "trend": "Equal"
+      },
+      {
+        "place": 3,
+        "imageUrl": "https://static.school.mosreg.ru/images/studentrating/animalrating/25.png",
+        "averageMark": "4.29",
+        "isContextUser": false,
+        "trend": "Equal"
+      },
+      {
+        "place": 5,
+        "imageUrl": "https://static.school.mosreg.ru/images/studentrating/animalrating/21.png",
+        "averageMark": "4.27",
+        "isContextUser": false,
+        "trend": "Equal"
+      },
+      {
+        "place": 6,
+        "imageUrl": "https://static.school.mosreg.ru/images/studentrating/animalrating/13.png",
+        "averageMark": "4.08",
+        "isContextUser": false,
+        "trend": "Equal"
+      },
+      {
+        "place": 7,
+        "imageUrl": "https://static.school.mosreg.ru/images/studentrating/animalrating/10.png",
+        "averageMark": "4.06",
+        "isContextUser": false,
+        "trend": "Down"
+      },
+      {
+        "place": 8,
+        "imageUrl": "https://static.school.mosreg.ru/images/studentrating/animalrating/16.png",
+        "averageMark": "4.00",
+        "isContextUser": false,
+        "trend": "Equal"
+      },
+      {
+        "place": 8,
+        "imageUrl": "https://static.school.mosreg.ru/images/studentrating/animalrating/24.png",
+        "averageMark": "4.00",
+        "isContextUser": false,
+        "trend": "Equal"
+      },
+      {
+        "place": 10,
+        "imageUrl": "https://static.school.mosreg.ru/images/studentrating/animalrating/5.png",
+        "averageMark": "3.89",
+        "isContextUser": false,
+        "trend": "Up"
+      },
+      {
+        "place": 11,
+        "imageUrl": "https://static.school.mosreg.ru/images/studentrating/animalrating/4.png",
+        "averageMark": "3.75",
+        "isContextUser": false,
+        "trend": "Equal"
+      },
+      {
+        "place": 12,
+        "imageUrl": "https://static.school.mosreg.ru/images/studentrating/animalrating/8.png",
+        "averageMark": "3.67",
+        "isContextUser": false,
+        "trend": "Up"
+      },
+      {
+        "place": 13,
+        "imageUrl": "https://static.school.mosreg.ru/images/studentrating/animalrating/11.png",
+        "averageMark": "3.65",
+        "isContextUser": false,
+        "trend": "Down"
+      },
+      {
+        "place": 14,
+        "imageUrl": "https://static.school.mosreg.ru/images/studentrating/animalrating/19.png",
+        "averageMark": "3.54",
+        "isContextUser": false,
+        "trend": "Equal"
+      },
+      {
+        "place": 15,
+        "imageUrl": "https://static.school.mosreg.ru/images/studentrating/animalrating/26.png",
+        "averageMark": "3.53",
+        "isContextUser": false,
+        "trend": "Down"
+      },
+      {
+        "place": 16,
+        "imageUrl": "https://static.school.mosreg.ru/images/studentrating/animalrating/27.png",
+        "averageMark": "3.50",
+        "isContextUser": false,
+        "trend": "Equal"
+      },
+      {
+        "place": 17,
+        "imageUrl": "https://static.school.mosreg.ru/images/studentrating/animalrating/12.png",
+        "averageMark": "3.46",
+        "isContextUser": false,
+        "trend": "Down"
+      },
+      {
+        "place": 18,
+        "imageUrl": "https://static.school.mosreg.ru/images/studentrating/animalrating/23.png",
+        "averageMark": "3.35",
+        "isContextUser": false,
+        "trend": "Down"
+      },
+      {
+        "place": 19,
+        "imageUrl": "https://static.school.mosreg.ru/images/studentrating/animalrating/17.png",
+        "averageMark": "3.15",
+        "isContextUser": false,
+        "trend": "Equal"
+      },
+      {
+        "place": 20,
+        "imageUrl": "https://static.school.mosreg.ru/images/studentrating/animalrating/18.png",
+        "averageMark": "3.12",
+        "isContextUser": false,
+        "trend": "Equal"
+      },
+      {
+        "place": 21,
+        "imageUrl": "https://static.school.mosreg.ru/images/studentrating/animalrating/7.png",
+        "averageMark": "3.07",
+        "isContextUser": false,
+        "trend": "Equal"
+      },
+      {
+        "place": 22,
+        "imageUrl": "https://static.school.mosreg.ru/images/studentrating/animalrating/20.png",
+        "averageMark": "3.06",
+        "isContextUser": false,
+        "trend": "Equal"
+      },
+      {
+        "place": 23,
+        "imageUrl": "https://static.school.mosreg.ru/images/studentrating/animalrating/28.png",
+        "averageMark": "3.00",
+        "isContextUser": false,
+        "trend": "Equal"
+      },
+      {
+        "place": 24,
+        "imageUrl": "https://static.school.mosreg.ru/images/studentrating/animalrating/14.png",
+        "averageMark": "2.93",
+        "isContextUser": false,
+        "trend": "Equal"
+      },
+      {
+        "place": 24,
+        "imageUrl": "https://static.school.mosreg.ru/images/studentrating/animalrating/22.png",
+        "averageMark": "2.93",
+        "isContextUser": false,
+        "trend": "Equal"
+      },
+      {
+        "place": 26,
+        "imageUrl": "https://static.school.mosreg.ru/images/studentrating/animalrating/2.png",
+        "averageMark": "2.87",
+        "isContextUser": false,
+        "trend": "Down"
+      },
+      {
+        "place": 26,
+        "imageUrl": "https://static.school.mosreg.ru/images/studentrating/animalrating/15.png",
+        "averageMark": "2.87",
+        "isContextUser": false,
+        "trend": "Down"
+      },
+      {
+        "place": 28,
+        "imageUrl": "https://static.school.mosreg.ru/images/studentrating/animalrating/1.png",
+        "averageMark": "2.86",
+        "isContextUser": false,
+        "trend": "Down"
+      },
+      {
+        "place": 29,
+        "imageUrl": "https://static.school.mosreg.ru/images/studentrating/animalrating/30.png",
+        "averageMark": "2.57",
+        "isContextUser": false,
+        "trend": "Equal"
+      }
+    ],
+    "imageUrl": null
+  },
+  "marks": [
+    {
+      "categories": [
+        {
+          "mood": "Good",
+          "percent": 10.0,
+          "studentCount": 1,
+          "markNumber": 0,
+          "value": "5"
+        },
+        {
+          "mood": "Good",
+          "percent": 40.0,
+          "studentCount": 4,
+          "markNumber": 0,
+          "value": "4"
+        },
+        {
+          "mood": "Bad",
+          "percent": 30.0,
+          "studentCount": 3,
+          "markNumber": 0,
+          "value": "2"
+        },
+        {
+          "mood": "Average",
+          "percent": 20.0,
+          "studentCount": 2,
+          "markNumber": 0,
+          "value": "3"
+        }
+      ],
+      "date": 1685035616,
+      "subject": {
+        "id": 0,
+        "name": "Алгебра",
+        "knowledgeArea": "Mathematics",
+        "subjectMood": null
+      },
+      "markType": "Mark",
+      "criteriaMarkType": "NotSet",
+      "markTypeText": "Самостоятельная работа",
+      "shortMarkTypeText": "С/Р",
+      "lesson": {
+        "id": 0,
+        "date": 1684800000,
+        "theme": "Квадратные корни"
+      },
+      "isNew": true,
+      "isFinal": false,
+      "isImportant": true,
+      "marks": [
+        {
+          "id": 0,
+          "value": "5",
+          "mood": "Good"
+        }
+      ]
+    },
+    {
+      "categories": [
+        {
+          "mood": "Good",
+          "percent": 3.448,
+          "studentCount": 1,
+          "markNumber": 0,
+          "value": "5"
+        },
+        {
+          "mood": "Good",
+          "percent": 34.483,
+          "studentCount": 10,
+          "markNumber": 0,
+          "value": "4"
+        },
+        {
+          "mood": "Average",
+          "percent": 62.069,
+          "studentCount": 18,
+          "markNumber": 0,
+          "value": "3"
+        }
+      ],
+      "date": 1683634063,
+      "subject": {
+        "id": 0,
+        "name": "Алгебра",
+        "knowledgeArea": "Mathematics",
+        "subjectMood": null
+      },
+      "markType": "Mark",
+      "criteriaMarkType": "NotSet",
+      "markTypeText": "Диагностический срез",
+      "shortMarkTypeText": "Д/С",
+      "lesson": {
+        "id": 0,
+        "date": 1683158400,
+        "theme": "Сбор и группировка статистических данных."
+      },
+      "isNew": false,
+      "isFinal": false,
+      "isImportant": false,
+      "marks": [
+        {
+          "id": 0,
+          "value": "5",
+          "mood": "Good"
+        }
+      ]
+    },
+    {
+      "categories": [
+        {
+          "mood": "Good",
+          "percent": 6.897,
+          "studentCount": 2,
+          "markNumber": 0,
+          "value": "5"
+        },
+        {
+          "mood": "Good",
+          "percent": 72.414,
+          "studentCount": 21,
+          "markNumber": 0,
+          "value": "4"
+        },
+        {
+          "mood": "Average",
+          "percent": 13.793,
+          "studentCount": 4,
+          "markNumber": 0,
+          "value": "3"
+        },
+        {
+          "mood": "Bad",
+          "percent": 6.897,
+          "studentCount": 2,
+          "markNumber": 0,
+          "value": "2"
+        }
+      ],
+      "date": 1683633948,
+      "subject": {
+        "id": 0,
+        "name": "Алгебра",
+        "knowledgeArea": "Mathematics",
+        "subjectMood": null
+      },
+      "markType": "Mark",
+      "criteriaMarkType": "NotSet",
+      "markTypeText": "Контрольная",
+      "shortMarkTypeText": "К/Р",
+      "lesson": {
+        "id": 0,
+        "date": 1682985600,
+        "theme": "Контрольная работа №9   «Степень с целым показателем»"
+      },
+      "isNew": false,
+      "isFinal": false,
+      "isImportant": true,
+      "marks": [
+        {
+          "id": 0,
+          "value": "5",
+          "mood": "Good"
+        }
+      ]
+    },
+    {
+      "categories": [
+        {
+          "mood": "Good",
+          "percent": 10.345,
+          "studentCount": 3,
+          "markNumber": 0,
+          "value": "5"
+        },
+        {
+          "mood": "Good",
+          "percent": 44.828,
+          "studentCount": 13,
+          "markNumber": 0,
+          "value": "4"
+        },
+        {
+          "mood": "Bad",
+          "percent": 6.897,
+          "studentCount": 2,
+          "markNumber": 0,
+          "value": "2"
+        },
+        {
+          "mood": "Average",
+          "percent": 37.931,
+          "studentCount": 11,
+          "markNumber": 0,
+          "value": "3"
+        }
+      ],
+      "date": 1682702145,
+      "subject": {
+        "id": 0,
+        "name": "Алгебра",
+        "knowledgeArea": "Mathematics",
+        "subjectMood": null
+      },
+      "markType": "Mark",
+      "criteriaMarkType": "NotSet",
+      "markTypeText": "Дистанционный урок",
+      "shortMarkTypeText": "ДУ",
+      "lesson": {
+        "id": 0,
+        "date": 1682553600,
+        "theme": "Стандартный вид числа, подгот к контр раб."
+      },
+      "isNew": false,
+      "isFinal": false,
+      "isImportant": false,
+      "marks": [
+        {
+          "id": 0,
+          "value": "5",
+          "mood": "Good"
+        }
+      ]
+    },
+    {
+      "categories": [
+        {
+          "mood": "Good",
+          "percent": 100.0,
+          "studentCount": 3,
+          "markNumber": 0,
+          "value": "5"
+        }
+      ],
+      "date": 1682400175,
+      "subject": {
+        "id": 0,
+        "name": "Алгебра",
+        "knowledgeArea": "Mathematics",
+        "subjectMood": null
+      },
+      "markType": "LogEntry",
+      "criteriaMarkType": "NotSet",
+      "markTypeText": "Пропуск по болезни",
+      "shortMarkTypeText": null,
+      "lesson": {
+        "id": 0,
+        "date": 1682294400,
+        "theme": "Свойства степени с целым показателем."
+      },
+      "isNew": false,
+      "isFinal": false,
+      "isImportant": false,
+      "marks": [
+        {
+          "id": 0,
+          "value": "Б",
+          "mood": "NotSet"
+        }
+      ]
+    },
+    {
+      "categories": [
+        {
+          "mood": "Good",
+          "percent": 60.0,
+          "studentCount": 3,
+          "markNumber": 0,
+          "value": "5"
+        },
+        {
+          "mood": "Good",
+          "percent": 20.0,
+          "studentCount": 1,
+          "markNumber": 0,
+          "value": "4"
+        },
+        {
+          "mood": "Average",
+          "percent": 20.0,
+          "studentCount": 1,
+          "markNumber": 0,
+          "value": "3"
+        }
+      ],
+      "date": 1682400175,
+      "subject": {
+        "id": 0,
+        "name": "Алгебра",
+        "knowledgeArea": "Mathematics",
+        "subjectMood": null
+      },
+      "markType": "LogEntry",
+      "criteriaMarkType": "NotSet",
+      "markTypeText": "Пропуск по болезни",
+      "shortMarkTypeText": null,
+      "lesson": {
+        "id": 0,
+        "date": 1682380800,
+        "theme": "Свойства степени с целым показателем. Стандартный вид числа."
+      },
+      "isNew": false,
+      "isFinal": false,
+      "isImportant": false,
+      "marks": [
+        {
+          "id": 0,
+          "value": "Б",
+          "mood": "NotSet"
+        }
+      ]
+    },
+    {
+      "categories": [
+        {
+          "mood": "Good",
+          "percent": 10.345,
+          "studentCount": 3,
+          "markNumber": 0,
+          "value": "5"
+        },
+        {
+          "mood": "Good",
+          "percent": 41.379,
+          "studentCount": 12,
+          "markNumber": 0,
+          "value": "4"
+        },
+        {
+          "mood": "Average",
+          "percent": 31.034,
+          "studentCount": 9,
+          "markNumber": 0,
+          "value": "3"
+        },
+        {
+          "mood": "Bad",
+          "percent": 17.241,
+          "studentCount": 5,
+          "markNumber": 0,
+          "value": "2"
+        }
+      ],
+      "date": 1682098622,
+      "subject": {
+        "id": 0,
+        "name": "Алгебра",
+        "knowledgeArea": "Mathematics",
+        "subjectMood": null
+      },
+      "markType": "Mark",
+      "criteriaMarkType": "NotSet",
+      "markTypeText": "Дистанционный урок",
+      "shortMarkTypeText": "ДУ",
+      "lesson": {
+        "id": 0,
+        "date": 1681948800,
+        "theme": "Свойства степени с целым показателем."
+      },
+      "isNew": false,
+      "isFinal": false,
+      "isImportant": false,
+      "marks": [
+        {
+          "id": 0,
+          "value": "5",
+          "mood": "Good"
+        }
+      ]
+    },
+    {
+      "categories": [
+        {
+          "mood": "Good",
+          "percent": 10.345,
+          "studentCount": 3,
+          "markNumber": 0,
+          "value": "5"
+        },
+        {
+          "mood": "Good",
+          "percent": 20.690,
+          "studentCount": 6,
+          "markNumber": 0,
+          "value": "4"
+        },
+        {
+          "mood": "Average",
+          "percent": 62.069,
+          "studentCount": 18,
+          "markNumber": 0,
+          "value": "3"
+        },
+        {
+          "mood": "Bad",
+          "percent": 6.897,
+          "studentCount": 2,
+          "markNumber": 0,
+          "value": "2"
+        }
+      ],
+      "date": 1681642442,
+      "subject": {
+        "id": 0,
+        "name": "Алгебра",
+        "knowledgeArea": "Mathematics",
+        "subjectMood": null
+      },
+      "markType": "Mark",
+      "criteriaMarkType": "NotSet",
+      "markTypeText": "Контрольная",
+      "shortMarkTypeText": "К/Р",
+      "lesson": {
+        "id": 0,
+        "date": 1681344000,
+        "theme": "Контрольная работа №8   «Неравенства  с  одной  переменной и их  системы»"
+      },
+      "isNew": false,
+      "isFinal": false,
+      "isImportant": true,
+      "marks": [
+        {
+          "id": 0,
+          "value": "5",
+          "mood": "Good"
+        }
+      ]
+    },
+    {
+      "categories": [
+        {
+          "mood": "Good",
+          "percent": 3.704,
+          "studentCount": 1,
+          "markNumber": 0,
+          "value": "5"
+        },
+        {
+          "mood": "Good",
+          "percent": 3.704,
+          "studentCount": 1,
+          "markNumber": 0,
+          "value": "4"
+        },
+        {
+          "mood": "Bad",
+          "percent": 44.444,
+          "studentCount": 12,
+          "markNumber": 0,
+          "value": "2"
+        },
+        {
+          "mood": "Average",
+          "percent": 48.148,
+          "studentCount": 13,
+          "markNumber": 0,
+          "value": "3"
+        }
+      ],
+      "date": 1681156752,
+      "subject": {
+        "id": 0,
+        "name": "Алгебра",
+        "knowledgeArea": "Mathematics",
+        "subjectMood": null
+      },
+      "markType": "Mark",
+      "criteriaMarkType": "NotSet",
+      "markTypeText": "Домашняя работа",
+      "shortMarkTypeText": "Д/Р",
+      "lesson": {
+        "id": 0,
+        "date": 1681084800,
+        "theme": "Решение систем неравенств с одной переменной"
+      },
+      "isNew": false,
+      "isFinal": false,
+      "isImportant": false,
+      "marks": [
+        {
+          "id": 0,
+          "value": "5",
+          "mood": "Good"
+        }
+      ]
+    },
+    {
+      "categories": [
+        {
+          "mood": "Good",
+          "percent": 16.667,
+          "studentCount": 1,
+          "markNumber": 0,
+          "value": "5"
+        },
+        {
+          "mood": "Good",
+          "percent": 33.333,
+          "studentCount": 2,
+          "markNumber": 0,
+          "value": "4"
+        },
+        {
+          "mood": "Average",
+          "percent": 16.667,
+          "studentCount": 1,
+          "markNumber": 0,
+          "value": "3"
+        },
+        {
+          "mood": "Bad",
+          "percent": 33.333,
+          "studentCount": 2,
+          "markNumber": 0,
+          "value": "2"
+        }
+      ],
+      "date": 1681116294,
+      "subject": {
+        "id": 0,
+        "name": "Алгебра",
+        "knowledgeArea": "Mathematics",
+        "subjectMood": null
+      },
+      "markType": "Mark",
+      "criteriaMarkType": "NotSet",
+      "markTypeText": "Урок",
+      "shortMarkTypeText": "УР",
+      "lesson": {
+        "id": 0,
+        "date": 1681084800,
+        "theme": "Решение систем неравенств с одной переменной"
+      },
+      "isNew": false,
+      "isFinal": false,
+      "isImportant": false,
+      "marks": [
+        {
+          "id": 0,
+          "value": "5",
+          "mood": "Good"
+        }
+      ]
+    },
+    {
+      "categories": [
+        {
+          "mood": "Good",
+          "percent": 33.333,
+          "studentCount": 2,
+          "markNumber": 0,
+          "value": "5"
+        },
+        {
+          "mood": "Good",
+          "percent": 66.667,
+          "studentCount": 4,
+          "markNumber": 0,
+          "value": "4"
+        }
+      ],
+      "date": 1680019290,
+      "subject": {
+        "id": 0,
+        "name": "Алгебра",
+        "knowledgeArea": "Mathematics",
+        "subjectMood": null
+      },
+      "markType": "Mark",
+      "criteriaMarkType": "NotSet",
+      "markTypeText": "Домашняя работа",
+      "shortMarkTypeText": "Д/Р",
+      "lesson": {
+        "id": 0,
+        "date": 1679961600,
+        "theme": "Решение систем неравенств с одной переменной"
+      },
+      "isNew": false,
+      "isFinal": false,
+      "isImportant": false,
+      "marks": [
+        {
+          "id": 0,
+          "value": "5",
+          "mood": "Good"
+        }
+      ]
+    },
+    {
+      "categories": [
+        {
+          "mood": "Good",
+          "percent": 50.0,
+          "studentCount": 2,
+          "markNumber": 0,
+          "value": "5"
+        },
+        {
+          "mood": "Average",
+          "percent": 50.0,
+          "studentCount": 2,
+          "markNumber": 0,
+          "value": "3"
+        }
+      ],
+      "date": 1680019282,
+      "subject": {
+        "id": 0,
+        "name": "Алгебра",
+        "knowledgeArea": "Mathematics",
+        "subjectMood": null
+      },
+      "markType": "Mark",
+      "criteriaMarkType": "NotSet",
+      "markTypeText": "Урок",
+      "shortMarkTypeText": "УР",
+      "lesson": {
+        "id": 0,
+        "date": 1679961600,
+        "theme": "Решение систем неравенств с одной переменной"
+      },
+      "isNew": false,
+      "isFinal": false,
+      "isImportant": false,
+      "marks": [
+        {
+          "id": 0,
+          "value": "5",
+          "mood": "Good"
+        }
+      ]
+    },
+    {
+      "categories": [
+        {
+          "mood": "Good",
+          "percent": 32.00,
+          "studentCount": 8,
+          "markNumber": 0,
+          "value": "5"
+        },
+        {
+          "mood": "Good",
+          "percent": 20.0,
+          "studentCount": 5,
+          "markNumber": 0,
+          "value": "4"
+        },
+        {
+          "mood": "Average",
+          "percent": 32.00,
+          "studentCount": 8,
+          "markNumber": 0,
+          "value": "3"
+        },
+        {
+          "mood": "Bad",
+          "percent": 16.00,
+          "studentCount": 4,
+          "markNumber": 0,
+          "value": "2"
+        }
+      ],
+      "date": 1680019268,
+      "subject": {
+        "id": 0,
+        "name": "Алгебра",
+        "knowledgeArea": "Mathematics",
+        "subjectMood": null
+      },
+      "markType": "Mark",
+      "criteriaMarkType": "NotSet",
+      "markTypeText": "Самостоятельная работа",
+      "shortMarkTypeText": "С/Р",
+      "lesson": {
+        "id": 0,
+        "date": 1679529600,
+        "theme": "Решение неравенств с одной переменной"
+      },
+      "isNew": false,
+      "isFinal": false,
+      "isImportant": true,
+      "marks": [
+        {
+          "id": 0,
+          "value": "5",
+          "mood": "Good"
+        }
+      ]
+    },
+    {
+      "categories": [
+        {
+          "mood": "Good",
+          "percent": 50.0,
+          "studentCount": 2,
+          "markNumber": 0,
+          "value": "4"
+        },
+        {
+          "mood": "Good",
+          "percent": 50.0,
+          "studentCount": 2,
+          "markNumber": 0,
+          "value": "5"
+        }
+      ],
+      "date": 1679557502,
+      "subject": {
+        "id": 0,
+        "name": "Алгебра",
+        "knowledgeArea": "Mathematics",
+        "subjectMood": null
+      },
+      "markType": "LogEntry",
+      "criteriaMarkType": "NotSet",
+      "markTypeText": "Пропуск по уваж. причине",
+      "shortMarkTypeText": null,
+      "lesson": {
+        "id": 0,
+        "date": 1679529600,
+        "theme": "Решение неравенств с одной переменной"
+      },
+      "isNew": false,
+      "isFinal": false,
+      "isImportant": false,
+      "marks": [
+        {
+          "id": 0,
+          "value": "П",
+          "mood": "NotSet"
+        }
+      ]
+    },
+    {
+      "categories": [
+        {
+          "mood": "Bad",
+          "percent": 33.333,
+          "studentCount": 2,
+          "markNumber": 0,
+          "value": "2"
+        },
+        {
+          "mood": "Good",
+          "percent": 33.333,
+          "studentCount": 2,
+          "markNumber": 0,
+          "value": "5"
+        },
+        {
+          "mood": "Good",
+          "percent": 33.333,
+          "studentCount": 2,
+          "markNumber": 0,
+          "value": "4"
+        }
+      ],
+      "date": 1679380744,
+      "subject": {
+        "id": 0,
+        "name": "Алгебра",
+        "knowledgeArea": "Mathematics",
+        "subjectMood": null
+      },
+      "markType": "LogEntry",
+      "criteriaMarkType": "NotSet",
+      "markTypeText": "Пропуск по уваж. причине",
+      "shortMarkTypeText": null,
+      "lesson": {
+        "id": 0,
+        "date": 1679356800,
+        "theme": "Решение неравенств с одной переменной"
+      },
+      "isNew": false,
+      "isFinal": false,
+      "isImportant": false,
+      "marks": [
+        {
+          "id": 0,
+          "value": "П",
+          "mood": "NotSet"
+        }
+      ]
+    },
+    {
+      "categories": [
+        {
+          "mood": "Good",
+          "percent": 25.00,
+          "studentCount": 1,
+          "markNumber": 0,
+          "value": "5"
+        },
+        {
+          "mood": "Good",
+          "percent": 75.00,
+          "studentCount": 3,
+          "markNumber": 0,
+          "value": "4"
+        }
+      ],
+      "date": 1679292047,
+      "subject": {
+        "id": 0,
+        "name": "Алгебра",
+        "knowledgeArea": "Mathematics",
+        "subjectMood": null
+      },
+      "markType": "LogEntry",
+      "criteriaMarkType": "NotSet",
+      "markTypeText": "Пропуск по уваж. причине",
+      "shortMarkTypeText": null,
+      "lesson": {
+        "id": 0,
+        "date": 1679270400,
+        "theme": "Решение неравенств с одной переменной"
+      },
+      "isNew": false,
+      "isFinal": false,
+      "isImportant": false,
+      "marks": [
+        {
+          "id": 0,
+          "value": "П",
+          "mood": "NotSet"
+        }
+      ]
+    },
+    {
+      "categories": [
+        {
+          "mood": "Good",
+          "percent": 37.500,
+          "studentCount": 9,
+          "markNumber": 0,
+          "value": "5"
+        },
+        {
+          "mood": "Good",
+          "percent": 45.833,
+          "studentCount": 11,
+          "markNumber": 0,
+          "value": "4"
+        },
+        {
+          "mood": "Average",
+          "percent": 16.667,
+          "studentCount": 4,
+          "markNumber": 0,
+          "value": "3"
+        }
+      ],
+      "date": 1679219689,
+      "subject": {
+        "id": 0,
+        "name": "Алгебра",
+        "knowledgeArea": "Mathematics",
+        "subjectMood": null
+      },
+      "markType": "Mark",
+      "criteriaMarkType": "NotSet",
+      "markTypeText": "Самостоятельная работа",
+      "shortMarkTypeText": "С/Р",
+      "lesson": {
+        "id": 0,
+        "date": 1678924800,
+        "theme": "Числовые промежутки"
+      },
+      "isNew": false,
+      "isFinal": false,
+      "isImportant": true,
+      "marks": [
+        {
+          "id": 0,
+          "value": "5",
+          "mood": "Good"
+        }
+      ]
+    },
+    {
+      "categories": [
+        {
+          "mood": "Good",
+          "percent": 21.429,
+          "studentCount": 6,
+          "markNumber": 0,
+          "value": "5"
+        },
+        {
+          "mood": "Good",
+          "percent": 46.429,
+          "studentCount": 13,
+          "markNumber": 0,
+          "value": "4"
+        },
+        {
+          "mood": "Average",
+          "percent": 32.143,
+          "studentCount": 9,
+          "markNumber": 0,
+          "value": "3"
+        }
+      ],
+      "date": 1678556369,
+      "subject": {
+        "id": 0,
+        "name": "Алгебра",
+        "knowledgeArea": "Mathematics",
+        "subjectMood": null
+      },
+      "markType": "Mark",
+      "criteriaMarkType": "NotSet",
+      "markTypeText": "Контрольная",
+      "shortMarkTypeText": "К/Р",
+      "lesson": {
+        "id": 0,
+        "date": 1678320000,
+        "theme": "Контрольная  работа № 7  «Числовые  неравенства  и  их  свойства»."
+      },
+      "isNew": false,
+      "isFinal": false,
+      "isImportant": true,
+      "marks": [
+        {
+          "id": 0,
+          "value": "5",
+          "mood": "Good"
+        }
+      ]
+    },
+    {
+      "categories": [
+        {
+          "mood": "Good",
+          "percent": 57.143,
+          "studentCount": 4,
+          "markNumber": 0,
+          "value": "5"
+        },
+        {
+          "mood": "Bad",
+          "percent": 28.571,
+          "studentCount": 2,
+          "markNumber": 0,
+          "value": "2"
+        },
+        {
+          "mood": "Average",
+          "percent": 14.286,
+          "studentCount": 1,
+          "markNumber": 0,
+          "value": "3"
+        }
+      ],
+      "date": 1678300528,
+      "subject": {
+        "id": 0,
+        "name": "Алгебра",
+        "knowledgeArea": "Mathematics",
+        "subjectMood": null
+      },
+      "markType": "Mark",
+      "criteriaMarkType": "NotSet",
+      "markTypeText": "Урок",
+      "shortMarkTypeText": "УР",
+      "lesson": {
+        "id": 0,
+        "date": 1678147200,
+        "theme": "Сложение  и умножение числовых  неравенств, подг к контр работе,"
+      },
+      "isNew": false,
+      "isFinal": false,
+      "isImportant": false,
+      "marks": [
+        {
+          "id": 0,
+          "value": "5",
+          "mood": "Good"
+        }
+      ]
+    },
+    {
+      "categories": [
+        {
+          "mood": "Good",
+          "percent": 37.037,
+          "studentCount": 10,
+          "markNumber": 0,
+          "value": "4"
+        },
+        {
+          "mood": "Good",
+          "percent": 100.0,
+          "studentCount": 1,
+          "markNumber": 1,
+          "value": "4"
+        },
+        {
+          "mood": "Good",
+          "percent": 11.111,
+          "studentCount": 3,
+          "markNumber": 0,
+          "value": "5"
+        },
+        {
+          "mood": "Average",
+          "percent": 29.630,
+          "studentCount": 8,
+          "markNumber": 0,
+          "value": "3"
+        },
+        {
+          "mood": "Bad",
+          "percent": 22.222,
+          "studentCount": 6,
+          "markNumber": 0,
+          "value": "2"
+        }
+      ],
+      "date": 1677955939,
+      "subject": {
+        "id": 0,
+        "name": "Алгебра",
+        "knowledgeArea": "Mathematics",
+        "subjectMood": null
+      },
+      "markType": "Mark",
+      "criteriaMarkType": "NotSet",
+      "markTypeText": "Практическая работа",
+      "shortMarkTypeText": "П/Р",
+      "lesson": {
+        "id": 0,
+        "date": 1677542400,
+        "theme": "Числовые  неравенства. Свойства числовых  неравенств."
+      },
+      "isNew": false,
+      "isFinal": false,
+      "isImportant": false,
+      "marks": [
+        {
+          "id": 0,
+          "value": "4",
+          "mood": "Good"
+        }
+      ]
+    }
+  ],
+  "messengerEntryPoint": null,
+  "type": "Success",
+  "description": "Success",
+  "mobileSubscriptionStatus": "NotActive"
+}

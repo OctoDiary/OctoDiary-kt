@@ -11,6 +11,7 @@ import org.bxkr.octodiary.models.lesson.Lesson
 import org.bxkr.octodiary.models.mark.MarkDetails
 import org.bxkr.octodiary.models.periodmarks.PeriodMarksResponse
 import org.bxkr.octodiary.models.rating.RatingClass
+import org.bxkr.octodiary.models.subject.SubjectDetails
 import org.bxkr.octodiary.models.user.User
 import org.bxkr.octodiary.models.userfeed.UserFeed
 import retrofit2.Call
@@ -144,6 +145,15 @@ object NetworkService {
             @Path("period_id") periodId: Long,
             @Header("Access-Token") accessToken: String?,
         ): Call<PeriodMarksResponse>
+
+        @GET("persons/{person_id}/groups/{group_id}/subjects/{subject_id}/periods/{period_id}/subjectDetails")
+        fun subjectDetails(
+            @Path("person_id") personId: Long,
+            @Path("group_id") groupId: Long,
+            @Path("subject_id") subjectId: Long,
+            @Path("period_id") periodId: Long,
+            @Header("Access-Token") accessToken: String?,
+        ): Call<SubjectDetails>
 
         @Multipart
         @POST("users/{user_id}/avatars")

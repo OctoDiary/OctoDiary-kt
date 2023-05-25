@@ -25,6 +25,11 @@
             android:enabled="true" />
 
         <activity
+            android:name=".ui.activities.SubjectActivity"
+            android:exported="false"
+            android:label="@string/subject"
+            android:parentActivityName=".ui.activities.MainActivity" />
+        <activity
             android:name=".ui.activities.HomeworkModeActivity"
             android:exported="false"
             android:parentActivityName=".ui.activities.LessonActivity"
