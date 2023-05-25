@@ -2,9 +2,12 @@ package org.bxkr.octodiary.ui.activities
 
 import android.content.Context
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import org.bxkr.octodiary.R
+import org.bxkr.octodiary.Utils
 import org.bxkr.octodiary.databinding.ActivitySubjectBinding
+import org.bxkr.octodiary.models.subject.SubjectDetails
 import kotlin.properties.Delegates
 
 class SubjectActivity : AppCompatActivity() {
@@ -30,5 +33,16 @@ class SubjectActivity : AppCompatActivity() {
         subjectId = intent.getLongExtra("subject_id", 0)
         periodId = intent.getLongExtra("period_id", 0)
 
+        configureSubject(Utils.getJsonRaw(resources.openRawResource(R.raw.sample_subject_details_data)))
+    }
+
+    private fun configureSubject(subject: SubjectDetails) {
+        binding.bigProgressBar.visibility = View.GONE
+        binding.subjectName.text = subject.subject.name
+        binding.periodName.text = getString(
+            R.string.period_name,
+            subject.period.number.toString(),
+            getString(subject.period.type.stringRes)
+        )
     }
 }

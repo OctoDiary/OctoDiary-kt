@@ -178,5 +178,6 @@
     <string name="avatar_deletion_is_currently_unsupported">Avatar deletion is currently unsupported</string>
     <string name="show_more">Show more</string>
     <string name="show_less">Show less</string>
-    <string name="subject">Предмет</string>
+    <string name="subject">Subject</string>
+    <string name="period_name" translatable="false">%1$s %2$s</string>
 </resources>

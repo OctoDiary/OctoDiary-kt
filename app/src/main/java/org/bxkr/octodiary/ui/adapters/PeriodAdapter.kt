@@ -1,6 +1,7 @@
 package org.bxkr.octodiary.ui.adapters
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,8 +10,9 @@ import androidx.recyclerview.widget.RecyclerView
 import org.bxkr.octodiary.R
 import org.bxkr.octodiary.databinding.ItemPeriodSubjectBinding
 import org.bxkr.octodiary.models.periodmarks.PeriodMark
-import org.bxkr.octodiary.models.periodmarks.PeriodType
+import org.bxkr.octodiary.models.shared.PeriodType
 import org.bxkr.octodiary.ui.activities.MainActivity
+import org.bxkr.octodiary.ui.activities.SubjectActivity
 import kotlin.math.roundToInt
 
 class PeriodAdapter(
@@ -80,6 +82,23 @@ class PeriodAdapter(
                 }
             } else {
                 binding.subjectWeighted.visibility = View.GONE
+            }
+            binding.iconButton.visibility = View.GONE
+            if (period.averageMarks.weightedAverageMark != null
+                || period.averageMarks.averageMark != null
+            ) {
+                binding.iconButton.visibility = View.VISIBLE
+                binding.iconButton.setOnClickListener {
+                    val intent = Intent(context, SubjectActivity::class.java)
+                    intent.putExtra("person_id", context.userData!!.contextPersons[0].personId)
+                    intent.putExtra("group_id", context.userData!!.contextPersons[0].group.id)
+                    intent.putExtra(
+                        "period_id",
+                        context.userData!!.contextPersons[0].reportingPeriodGroup.periods.first { it.isCurrent }.id
+                    )
+                    intent.putExtra("subject_id", period.subject.id)
+                    context.startActivity(intent)
+                }
             }
         }
     }

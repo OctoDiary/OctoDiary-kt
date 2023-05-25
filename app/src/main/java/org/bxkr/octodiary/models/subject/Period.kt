@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.models.subject
 
+import org.bxkr.octodiary.models.shared.PeriodType
+
 data class Period(
     val dateFinish: Int,
     val dateStart: Int,
@@ -7,5 +9,5 @@ data class Period(
     val isCurrent: Boolean,
     val number: Int,
     val studyYear: Int,
-    val type: String
+    val type: PeriodType
 )

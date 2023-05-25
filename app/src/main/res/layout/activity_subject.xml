@@ -22,4 +22,25 @@
         app:trackCornerRadius="@dimen/loading_corner_radius"
         tools:visibility="gone" />
 
+    <TextView
+        android:id="@+id/subject_name"
+        android:layout_width="wrap_content"
+        android:layout_height="?attr/collapsingToolbarLayoutLargeSize"
+        android:layout_margin="16dp"
+        android:gravity="bottom"
+        android:textAppearance="?attr/textAppearanceHeadlineMedium"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="@string/placeholder_lesson_name" />
+
+    <TextView
+        android:id="@+id/period_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:textAppearance="@style/TextAppearance.Material3.ActionBar.Subtitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/subject_name"
+        tools:text="3 trimester" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

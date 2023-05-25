@@ -1,6 +1,6 @@
 package org.bxkr.octodiary.models.user
 
-import org.bxkr.octodiary.models.periodmarks.PeriodType
+import org.bxkr.octodiary.models.shared.PeriodType
 
 data class Periods(
     val id: Long,

@@ -1,4 +1,4 @@
-package org.bxkr.octodiary.models.periodmarks
+package org.bxkr.octodiary.models.shared
 
 import androidx.annotation.StringRes
 import org.bxkr.octodiary.R
