@@ -85,6 +85,25 @@ class SubjectActivity : AppCompatActivity() {
             subject.period.number.toString(),
             getString(subject.period.type.stringRes)
         )
+        if (subject.reportsPlot.averageMarks.averageMark != null) {
+            binding.avg.text = subject.reportsPlot.averageMarks.averageMark
+        } else {
+            binding.avg.visibility = View.GONE
+            binding.avgDesc.visibility = View.GONE
+        }
+        if (subject.reportsPlot.averageMarks.weightedAverageMark != null) {
+            binding.weightedAvg.text = subject.reportsPlot.averageMarks.weightedAverageMark
+        } else {
+            binding.weightedAvg.visibility = View.GONE
+            binding.weightedAvgDesc.visibility = View.GONE
+        }
+        if (subject.reportsPlot.averageMarks.averageMarkByImportantWork != null) {
+            binding.avgImportant.text =
+                subject.reportsPlot.averageMarks.averagemarkByImportantWorkTrend
+        } else {
+            binding.avgImportant.visibility = View.GONE
+            binding.avgImportantDesc.visibility = View.GONE
+        }
         configureRating(prefs, subject.rating)
         configureMarks(subject.marks)
     }
