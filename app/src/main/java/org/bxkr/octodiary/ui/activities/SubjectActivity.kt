@@ -1,13 +1,17 @@
 package org.bxkr.octodiary.ui.activities
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import org.bxkr.octodiary.R
 import org.bxkr.octodiary.Utils
 import org.bxkr.octodiary.databinding.ActivitySubjectBinding
+import org.bxkr.octodiary.models.rating.RankingPlaces
+import org.bxkr.octodiary.models.subject.Rating
 import org.bxkr.octodiary.models.subject.SubjectDetails
+import org.bxkr.octodiary.ui.dialogs.RatingBottomSheet
 import kotlin.properties.Delegates
 
 class SubjectActivity : AppCompatActivity() {
@@ -33,10 +37,13 @@ class SubjectActivity : AppCompatActivity() {
         subjectId = intent.getLongExtra("subject_id", 0)
         periodId = intent.getLongExtra("period_id", 0)
 
-        configureSubject(Utils.getJsonRaw(resources.openRawResource(R.raw.sample_subject_details_data)))
+        configureSubject(
+            Utils.getJsonRaw(resources.openRawResource(R.raw.sample_subject_details_data)),
+            prefs
+        )
     }
 
-    private fun configureSubject(subject: SubjectDetails) {
+    private fun configureSubject(subject: SubjectDetails, prefs: SharedPreferences) {
         binding.bigProgressBar.visibility = View.GONE
         binding.subjectName.text = subject.subject.name
         binding.periodName.text = getString(
@@ -44,5 +51,34 @@ class SubjectActivity : AppCompatActivity() {
             subject.period.number.toString(),
             getString(subject.period.type.stringRes)
         )
+        configureRating(prefs, subject.rating)
+    }
+
+    private fun configureRating(preferences: SharedPreferences, ratingData: Rating) {
+        val showRating = preferences.getBoolean("show_rating", true)
+
+        if (showRating) {
+            binding.ratingCard.visibility = View.VISIBLE
+            binding.ratingStatus.text =
+                getString(
+                    R.string.rating_place_by_subject,
+                    Utils.toOrdinal(ratingData.rankingPlaces.first { it.isContextUser }.place)
+                )
+            val openBottomSheet = { _: View ->
+                val bottomSheet =
+                    RatingBottomSheet(org.bxkr.octodiary.models.rating.Rating(ratingData.rankingPlaces.map {
+                        RankingPlaces(
+                            it.place,
+                            it.imageUrl,
+                            it.averageMark,
+                            it.isContextUser,
+                            it.trend
+                        )
+                    }))
+                bottomSheet.show(supportFragmentManager, null)
+            }
+            binding.ratingButton.setOnClickListener(openBottomSheet)
+            binding.ratingCard.setOnClickListener(openBottomSheet)
+        } else binding.ratingCard.visibility = View.GONE
     }
 }
