@@ -58,18 +58,6 @@
             android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
             tools:visibility="gone" />
 
-        <TextView
-            android:id="@+id/rankingPosition"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:alpha="0.3"
-            android:textAppearance="@style/TextAppearance.Material3.DisplayLarge"
-            android:textSize="65sp"
-            android:textStyle="bold"
-            tools:ignore="RelativeOverlap" />
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/marksRecyclerView"
             android:layout_width="wrap_content"

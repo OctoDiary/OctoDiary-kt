@@ -38,7 +38,6 @@ class PeriodAdapter(
                 personId = context.userData!!.contextPersons[0].personId,
                 groupId = context.userData!!.contextPersons[0].group.id
             )
-            binding.rankingPosition.text = period.rankingPlace?.toString()
             if (period.averageMarks.averageMark != null) {
                 try {
                     val floatMark = period.averageMarks.averageMark.toFloat()
