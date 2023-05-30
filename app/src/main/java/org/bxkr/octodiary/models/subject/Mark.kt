@@ -7,7 +7,7 @@ data class Mark(
     val isFinal: Boolean,
     val isImportant: Boolean,
     val isNew: Boolean,
-    val lesson: Lesson,
+    val lesson: Lesson?,
     val markType: String,
     val markTypeText: String,
     val marks: List<org.bxkr.octodiary.models.shared.Mark>,

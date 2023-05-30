@@ -148,11 +148,11 @@ class SubjectActivity : AppCompatActivity() {
                         knowledgeArea = String(),
                         subjectMood = null
                     ),
-                    theme = it.lesson.theme,
+                    theme = it.lesson?.theme ?: "",
                     homework = Homework(
                         attachments = listOf(),
                         isCompleted = false,
-                        text = it.lesson.theme,
+                        text = it.lesson?.theme ?: "",
                         workIsAttachRequired = false
                     ),
                     workMarks = listOf(
