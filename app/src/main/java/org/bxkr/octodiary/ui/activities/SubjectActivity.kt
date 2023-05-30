@@ -82,7 +82,7 @@ class SubjectActivity : AppCompatActivity() {
         binding.subjectName.text = subject.subject.name
         binding.periodName.text = getString(
             R.string.period_name,
-            subject.period.number.toString(),
+            (subject.period.number + 1).toString(),
             getString(subject.period.type.stringRes)
         )
         if (subject.reportsPlot.averageMarks.averageMark != null) {
