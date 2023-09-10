@@ -1,3 +1,186 @@
 <resources>
     <string name="app_name" translatable="false">OctoDiary</string>
+    <string name="hello_world">Hello, World!</string>
+    <string name="log_in">Log In</string>
+    <string name="password">Password</string>
+    <string name="username">Username</string>
+    <string name="auth">Authentication</string>
+    <string name="token" translatable="false">token</string>
+    <string name="user_id" translatable="false">user_id</string>
+    <string name="auth_file_key" translatable="false">auth</string>
+    <string name="user_id_is" translatable="false">User ID: %s</string>
+    <string name="retrofit_error" translatable="false">Retrofit error: %s</string>
+    <string name="wrong">Wrong username or/and password!</string>
+    <string name="auth_out_of_date">Authentication data is out of date</string>
+    <string name="week_n">Week from %s to %s</string>
+    <string name="auth_out_of_date_extra" translatable="false">auth_out_of_date</string>
+    <string name="time_from_to" translatable="false">%s - %s</string>
+    <string name="free_day">Free day!</string>
+    <string name="placeholder_week" translatable="false">Week from 01 January to 07 January</string>
+    <string name="placeholder_day" translatable="false">01 January, monday</string>
+    <string name="placeholder_lesson_name" translatable="false">Maths</string>
+    <string name="placeholder_lesson_time" translatable="false">08:30 - 09:10</string>
+    <string name="diary">Diary</string>
+    <string name="profile">Profile</string>
+    <string name="settings">Settings</string>
+    <string name="placeholder_profile_name" translatable="false">Jacque Fresco</string>
+    <string name="profile_name" translatable="false">%s %s</string>
+    <string name="placeholder_school" translatable="false">Manhattan School of Computer Technology</string>
+    <string name="placeholder_rating" translatable="false">At the <u>1st</u> place in class!</string>
+    <string name="content_show_rating">Show general rating</string>
+    <string name="rating_place">At the <u>%s</u> place in class!</string>
+    <string name="rating_place_by_subject">At the <u>%s</u> place by subject!</string>
+    <string name="content_rating_card_background">Funny image that matches your current rating</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="show_rating">Rating in dashboard</string>
+    <string name="rating">Rating</string>
+    <string name="rating_background_info">Image, provided by external resource</string>
+    <string name="show_rating_background">Rating background</string>
+    <string name="data_under_name">Info under student\’s name</string>
+    <string name="school">School</string>
+    <string name="class_name">Class name</string>
+    <string name="middle_name">Middle name</string>
+    <string name="lessons_tomorrow_key">Lessons tomorrow count</string>
+    <string name="lessons_tomorrow_template">{0,choice,0#No lessons tomorrow|1#One lesson tomorrow|1&lt;{0} lessons tomorrow}</string>
+    <string name="add_week_before">Add week before</string>
+    <string name="add_week_after">Add week after</string>
+    <string name="week_slider">Week slider</string>
+    <string name="day_slider">Day slider</string>
+    <string name="weeks">Weeks</string>
+    <string name="days">Days</string>
+    <string name="week_dates" translatable="false">%s-%s</string>
+    <string name="saved_data_key" translatable="false">saved_data</string>
+    <string name="user_data_key" translatable="false">user_data</string>
+    <string name="diary_data_key" translatable="false">diary_data</string>
+    <string name="data_age_key" translatable="false">data_age</string>
+    <string name="placeholder_lesson_desc" translatable="false">Paragraph 1, exercise 23</string>
+    <string name="lesson_description">Lesson description in diary</string>
+    <string name="homework">Homework</string>
+    <string name="lesson_topic">Lesson topic</string>
+    <string name="date_weekday" translatable="false">%s, %s</string>
+    <string name="placeholder_lesson_topic" translatable="false">Functions \'x=a^2\'</string>
+    <string name="placeholder_teacher" translatable="false">Gordon Freeman</string>
+    <string name="placeholder_lesson_number" translatable="false">1st lesson</string>
+    <string name="teacher">Teacher</string>
+    <string name="topic">Topic</string>
+    <string name="lesson">Lesson</string>
+    <string name="teacher_name_template" translatable="false">%s %s %s</string>
+    <string name="lesson_n">%s lesson</string>
+    <string name="placeholder_homework_attachment" translatable="false">Physics, 11th class. Basics</string>
+    <string name="demousername" translatable="false">demousername</string>
+    <string name="demopassword" translatable="false">demopassword</string>
+    <string name="demo_user_id" translatable="false">-1</string>
+    <string name="demo_token" translatable="false">DEMO_TOKEN</string>
+    <string name="rating_data_key" translatable="false">rating_data</string>
+    <string name="log_out">Log out</string>
+    <string name="demo_mode">Demo mode</string>
+    <string name="unexpected_error">Unexpected error</string>
+    <string name="placeholder_rating_place" translatable="false">1</string>
+    <string name="placeholder_main_rating_average" translatable="false">4.67</string>
+    <string name="school_out_of_date">Updating school data…</string>
+    <string name="school_out_of_date_extra" translatable="false">school_out_of_date</string>
+    <string name="placeholder_mark_value" translatable="false">5</string>
+    <string name="mark">Mark</string>
+    <string name="school_mosreg_name">School Mosreg</string>
+    <string name="dnevnik_ru">Dnevnik.ru</string>
+    <string name="select_server">Diary</string>
+    <string name="server_key" translatable="false">server</string>
+    <string name="have_not_active_memberships_error_reason" translatable="false">HaveNotActiveMemberships</string>
+    <string name="have_not_active_memberships_message">Student doesn\’t have an active membership in any school</string>
+    <string name="error_type" translatable="false">Error</string>
+    <string name="update_available">Update %s available!</string>
+    <string name="update_available_message">Found an update: %s. Want to download and install it?</string>
+    <string name="changes">Changes</string>
+    <string name="later">Later</string>
+    <string name="yes">Yes</string>
+    <string name="placeholder_work_type" translatable="false">Test Paper</string>
+    <string name="goto_lesson">Go to lesson page</string>
+    <string name="works">Important works</string>
+    <string name="marks">Marks</string>
+    <string name="placeholder_mark_rating_persons" translatable="false">10 students</string>
+    <string name="select_server_hint">Select diary</string>
+    <string name="update">Update %s</string>
+    <string name="download_started">Download started…</string>
+    <string name="update_file_name" translatable="false">%s-%s.apk</string>
+    <string name="show_rating_images_info">Pictures used instead of student avatars</string>
+    <string name="show_rating_images_name">Avatars in rating</string>
+    <string name="screen_when_opening">Screen when opening</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="user_feed_data_key" translatable="false">user_feed_data</string>
+    <string name="placeholder_mark_type_and_date" translatable="false">WRK, Oct 20</string>
+    <string name="mark_type_and_date" translatable="false">%s, %s</string>
+    <string name="fractional_mark" translatable="false">%s/%s</string>
+    <string name="today">Today</string>
+    <string name="tomorrow">Tomorrow</string>
+    <string name="feed_type_important_work">Important work</string>
+    <string name="feed_type_post">Post</string>
+    <string name="feed_type_week_summary">Week summary</string>
+    <string name="feed_type_comment">Lesson comment</string>
+    <string name="image">Image</string>
+    <string name="data_update_channel_name">School data update channel</string>
+    <string name="notification_new_mark_text">New mark: %s, %s, %s, %s</string>
+    <string name="notification_new_mark_title">New mark!</string>
+    <string name="period_marks">Period Marks</string>
+    <string name="period_marks_data_key" translatable="false">period_marks</string>
+    <string name="average_mark">Average</string>
+    <string name="average_important">By work-marks</string>
+    <string name="not_yet">Not yet</string>
+    <string name="period_average_extended">Average mark: %s – %s for the %s</string>
+    <string name="placeholder_period_average" translatable="false">Average mark: 4.5 – 5 for the semester</string>
+    <string name="placeholder_period_weighted" translatable="false">Weighted average: 4.5 – 5 for the semester</string>
+    <string name="half_year">half-year</string>
+    <string name="quarter">quarter</string>
+    <string name="semester">semester</string>
+    <string name="trimester">trimester</string>
+    <string name="module">module</string>
+    <string name="period_average">Average mark: %s</string>
+    <string name="not_set_yet">not set yet</string>
+    <string name="period_marks_chip">Will be %s</string>
+    <string name="fractional_mark_rating_value" translatable="false">%s%s</string>
+    <string name="theme_dynamic">Dynamic Color</string>
+    <string name="theme_red">Red theme</string>
+    <string name="theme_green">Green theme</string>
+    <string name="theme_blue">Blue theme</string>
+    <string name="theme_yellow">Yellow theme</string>
+    <string name="theme_purple">Purple theme</string>
+    <string name="theme_cyan">Cyan theme</string>
+    <string name="theme">App color theme</string>
+    <string name="theme_description">Color accent in whole app</string>
+    <string name="class_wall_post">Class wall post</string>
+    <string name="homework_fab_desc">Do the homework</string>
+    <string name="placeholder_time" translatable="false">20\n42</string>
+    <string name="homework_for_date">by %s</string>
+    <string name="play">play</string>
+    <string name="pause">pause</string>
+    <string name="previous">previous</string>
+    <string name="next">next</string>
+    <string name="back">back</string>
+    <string name="homework_mode">Homework mode</string>
+    <string name="homework_mode_summary">Screen with useful information when doing the homework</string>
+    <string name="music_controls">Music controls</string>
+    <string name="keep_screen_on">Keep screen on</string>
+    <string name="keep_screen_on_summary">Don\’t turn the screen off when in the homework mode</string>
+    <string name="music_controls_summary">May not appear when using remote play</string>
+    <string name="search_by_subject">Search by subject</string>
+    <string name="always_show_keyboard">Always raise keyboard</string>
+    <string name="always_show_keyboard_summary">May cause lagging on some devices</string>
+    <string name="vpn_can_slow_loadings">VPN can slow loadings</string>
+    <string name="check_connection">Server is down or no internet connection</string>
+    <string name="kundelik">Kundelik</string>
+    <string name="weighted_template">Weighted average: %s</string>
+    <string name="weighted_template_extended">Weighted average: %s - %s for the %s</string>
+    <string name="unknowns">Unknowns</string>
+    <string name="change_the_avatar">Change the avatar</string>
+    <string name="weighted_average">Weighted</string>
+    <string name="error_dialog_title">The server responded with an error!</string>
+    <string name="error_dialog_description">Looks like an internal error has occurred on the server side. You can try logging into your account or try again later.</string>
+    <string name="try_again">Try again</string>
+    <string name="delete_avatar">Remove an avatar</string>
+    <string name="avatar_deletion_is_currently_unsupported">Avatar deletion is currently unsupported</string>
+    <string name="show_more">Show more</string>
+    <string name="show_less">Show less</string>
+    <string name="subject">Subject</string>
+    <string name="period_name" translatable="false">%1$s %2$s</string>
+    <string name="log_in_on_mosru">Log in on mos.ru</string>
+    <string name="or">or</string>
 </resources>
