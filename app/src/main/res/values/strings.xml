@@ -183,4 +183,5 @@
     <string name="period_name" translatable="false">%1$s %2$s</string>
     <string name="log_in_on_mosru">Log in on mos.ru</string>
     <string name="or">or</string>
+    <string name="exchanging_code_to_token">Exchanging code to token…</string>
 </resources>

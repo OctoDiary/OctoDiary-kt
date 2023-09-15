@@ -131,4 +131,5 @@
     <string name="subject">Предмет</string>
     <string name="log_in_on_mosru">Войти на mos.ru</string>
     <string name="or">или</string>
+    <string name="exchanging_code_to_token">Меняю код на токен…</string>
 </resources>

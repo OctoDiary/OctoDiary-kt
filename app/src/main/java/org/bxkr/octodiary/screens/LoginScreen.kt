@@ -30,20 +30,27 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.bxkr.octodiary.R
+import org.bxkr.octodiary.screens.LoginService.LogInWithMosRu
 import org.bxkr.octodiary.ui.theme.OctoDiaryTheme
 
 @Composable
 fun LoginScreen(
     modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current
     var loginText by rememberSaveable { mutableStateOf("") }
     var passwordText by rememberSaveable { mutableStateOf("") }
+    var goAuth by rememberSaveable { mutableStateOf(false) }
+
+    if (goAuth) LogInWithMosRu(context)
+
     Column(
         modifier.fillMaxSize(),
         Arrangement.Center
@@ -59,7 +66,7 @@ fun LoginScreen(
                     MaterialTheme.shapes.medium
                 )
                 .clip(MaterialTheme.shapes.medium)
-                .clickable { LoginService.logInWithMosRu() },
+                .clickable { goAuth = true },
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(

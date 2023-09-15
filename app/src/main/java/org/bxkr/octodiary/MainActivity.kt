@@ -1,6 +1,7 @@
 package org.bxkr.octodiary
 
 import android.content.res.Configuration
+import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -23,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import org.bxkr.octodiary.screens.CallbackScreen
 import org.bxkr.octodiary.screens.LoginScreen
 import org.bxkr.octodiary.ui.theme.OctoDiaryTheme
 
@@ -32,6 +34,14 @@ class MainActivity : ComponentActivity() {
         setContent {
             OctoDiaryTheme {
                 MyApp(modifier = Modifier.fillMaxSize())
+            }
+        }
+        val intentData = intent.dataString
+        if (intentData != null) {
+            setContent {
+                OctoDiaryTheme {
+                    CallbackScreen(Modifier.fillMaxSize(), code = Uri.parse(intentData).getQueryParameter("code")!!)
+                }
             }
         }
     }
