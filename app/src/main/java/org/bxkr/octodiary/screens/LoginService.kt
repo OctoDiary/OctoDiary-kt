@@ -26,11 +26,11 @@ object LoginService {
     fun LogInWithMosRu(context: Context) {
         val issueCall = NetworkService.mosAuthApi().register(
             body = RegisterBody(
-                softwareId = APIConfig.softwareId,
-                deviceType = APIConfig.deviceType,
-                softwareStatement = APIConfig.mockSoftwareStatement
+                softwareId = APIConfig.SOFTWARE_ID,
+                deviceType = APIConfig.DEVICE_TYPE,
+                softwareStatement = APIConfig.MOCK_SOFTWARE_STATEMENT
             ),
-            authHeader = APIConfig.authIssuerSecret
+            authHeader = APIConfig.AUTH_ISSUER_SECRET
         )
         issueCall.enqueue(object : BaseCallback<RegisterResponse>({ result ->
             result.body().let {
@@ -42,17 +42,17 @@ object LoginService {
                         putString("client_id", it.clientId)
                         putString("client_secret", it.clientSecret)
                     }
-                    val openUri = Uri.parse(NetworkService.BaseUrl.auth + "sps/oauth/ae")
+                    val openUri = Uri.parse(NetworkService.BaseUrl.AUTH + "sps/oauth/ae")
                         .buildUpon()
-                        .appendQueryParameter("scope", APIConfig.scope)
-                        .appendQueryParameter("access_type", APIConfig.accessType)
-                        .appendQueryParameter("response_type", APIConfig.responseType)
+                        .appendQueryParameter("scope", APIConfig.SCOPE)
+                        .appendQueryParameter("access_type", APIConfig.ACCESS_TYPE)
+                        .appendQueryParameter("response_type", APIConfig.RESPONSE_TYPE)
                         .appendQueryParameter("client_id", it.clientId)
-                        .appendQueryParameter("redirect_uri", APIConfig.redirectUri)
-                        .appendQueryParameter("prompt", APIConfig.prompt)
+                        .appendQueryParameter("redirect_uri", APIConfig.REDIRECT_URI)
+                        .appendQueryParameter("prompt", APIConfig.PROMPT)
                         .appendQueryParameter("code_challenge", codeChallenge)
-                        .appendQueryParameter("code_challenge_method", APIConfig.codeChallengeMethod)
-                        .appendQueryParameter("bip_action_hint", APIConfig.bipActionHint)
+                        .appendQueryParameter("code_challenge_method", APIConfig.CODE_CHALLENGE_METHOD)
+                        .appendQueryParameter("bip_action_hint", APIConfig.BIP_ACTION_HINT)
                         .build()
                     val tabIntent = CustomTabsIntent.Builder().build()
                     tabIntent.launchUrl(context, openUri)
@@ -74,8 +74,8 @@ object LoginService {
             val authHeader = "Basic $authorization"
 
             val exchangeCall = NetworkService.mosAuthApi().tokenExchange(
-                grantType = APIConfig.grantType,
-                redirectUri = APIConfig.redirectUri,
+                grantType = APIConfig.GRANT_TYPE,
+                redirectUri = APIConfig.REDIRECT_URI,
                 code,
                 codeVerifier,
                 authHeader
