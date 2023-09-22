@@ -8,22 +8,20 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import org.bxkr.octodiary.screens.CallbackScreen
 import org.bxkr.octodiary.screens.LoginScreen
 import org.bxkr.octodiary.ui.theme.OctoDiaryTheme
@@ -52,7 +50,7 @@ class MainActivity : ComponentActivity() {
 private fun MyApp(
     modifier: Modifier = Modifier
 ) {
-    var title by rememberSaveable { mutableStateOf(R.string.app_name) }
+    var title by rememberSaveable { mutableIntStateOf(R.string.app_name) }
     var currentScreen by rememberSaveable { mutableStateOf(Screen.Login) }
     Scaffold(
         modifier,
@@ -62,10 +60,6 @@ private fun MyApp(
                     title = {
                         Text(stringResource(title))
                     }
-                )
-                Divider(
-                    modifier = Modifier.padding(horizontal = 8.dp),
-                    color = MaterialTheme.colorScheme.surfaceVariant
                 )
             }
         }

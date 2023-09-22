@@ -132,4 +132,7 @@
     <string name="log_in_on_mosru">Войти на mos.ru</string>
     <string name="or">или</string>
     <string name="exchanging_code_to_token">Меняю код на токен…</string>
+    <string name="mes">МЭШ</string>
+    <string name="myschool">Моя Школа</string>
+    <string name="log_in_on_gosuslugi">Войти через Госуслуги (ЕСИА)</string>
 </resources>
