@@ -9,7 +9,7 @@ import androidx.compose.runtime.MutableState
 import androidx.core.content.edit
 import org.bxkr.octodiary.BaseCallback
 import org.bxkr.octodiary.NetworkService
-import org.bxkr.octodiary.NetworkService.APIConfig
+import org.bxkr.octodiary.NetworkService.MESAPIConfig
 import org.bxkr.octodiary.NetworkService.mesAuthApi
 import org.bxkr.octodiary.encodeToBase64
 import org.bxkr.octodiary.getRandomString
@@ -21,16 +21,15 @@ import org.bxkr.octodiary.models.SchoolAuthResponse
 import org.bxkr.octodiary.models.TokenExchange
 import org.bxkr.octodiary.models.UserAuthenticationForMobileRequest
 
-object LoginService {
-    @Composable
-    fun LogInWithMosRu(context: Context) {
+object MESLoginService {
+    fun logInWithMosRu(context: Context) {
         val issueCall = NetworkService.mosAuthApi().register(
             body = RegisterBody(
-                softwareId = APIConfig.SOFTWARE_ID,
-                deviceType = APIConfig.DEVICE_TYPE,
-                softwareStatement = APIConfig.MOCK_SOFTWARE_STATEMENT
+                softwareId = MESAPIConfig.SOFTWARE_ID,
+                deviceType = MESAPIConfig.DEVICE_TYPE,
+                softwareStatement = MESAPIConfig.MOCK_SOFTWARE_STATEMENT
             ),
-            authHeader = APIConfig.AUTH_ISSUER_SECRET
+            authHeader = MESAPIConfig.AUTH_ISSUER_SECRET
         )
         issueCall.enqueue(object : BaseCallback<RegisterResponse>({ result ->
             result.body().let {
@@ -44,15 +43,18 @@ object LoginService {
                     }
                     val openUri = Uri.parse(NetworkService.BaseUrl.AUTH + "sps/oauth/ae")
                         .buildUpon()
-                        .appendQueryParameter("scope", APIConfig.SCOPE)
-                        .appendQueryParameter("access_type", APIConfig.ACCESS_TYPE)
-                        .appendQueryParameter("response_type", APIConfig.RESPONSE_TYPE)
+                        .appendQueryParameter("scope", MESAPIConfig.SCOPE)
+                        .appendQueryParameter("access_type", MESAPIConfig.ACCESS_TYPE)
+                        .appendQueryParameter("response_type", MESAPIConfig.RESPONSE_TYPE)
                         .appendQueryParameter("client_id", it.clientId)
-                        .appendQueryParameter("redirect_uri", APIConfig.REDIRECT_URI)
-                        .appendQueryParameter("prompt", APIConfig.PROMPT)
+                        .appendQueryParameter("redirect_uri", MESAPIConfig.REDIRECT_URI)
+                        .appendQueryParameter("prompt", MESAPIConfig.PROMPT)
                         .appendQueryParameter("code_challenge", codeChallenge)
-                        .appendQueryParameter("code_challenge_method", APIConfig.CODE_CHALLENGE_METHOD)
-                        .appendQueryParameter("bip_action_hint", APIConfig.BIP_ACTION_HINT)
+                        .appendQueryParameter(
+                            "code_challenge_method",
+                            MESAPIConfig.CODE_CHALLENGE_METHOD
+                        )
+                        .appendQueryParameter("bip_action_hint", MESAPIConfig.BIP_ACTION_HINT)
                         .build()
                     val tabIntent = CustomTabsIntent.Builder().build()
                     tabIntent.launchUrl(context, openUri)
@@ -74,8 +76,8 @@ object LoginService {
             val authHeader = "Basic $authorization"
 
             val exchangeCall = NetworkService.mosAuthApi().tokenExchange(
-                grantType = APIConfig.GRANT_TYPE,
-                redirectUri = APIConfig.REDIRECT_URI,
+                grantType = MESAPIConfig.GRANT_TYPE,
+                redirectUri = MESAPIConfig.REDIRECT_URI,
                 code,
                 codeVerifier,
                 authHeader

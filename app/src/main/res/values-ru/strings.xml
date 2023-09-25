@@ -134,5 +134,5 @@
     <string name="exchanging_code_to_token">Меняю код на токен…</string>
     <string name="mes">МЭШ</string>
     <string name="myschool">Моя Школа</string>
-    <string name="log_in_on_gosuslugi">Войти через Госуслуги (ЕСИА)</string>
+    <string name="log_in_on_gosuslugi">Войти через Госуслуги</string>
 </resources>

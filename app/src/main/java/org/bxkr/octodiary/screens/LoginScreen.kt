@@ -2,6 +2,7 @@ package org.bxkr.octodiary.screens
 
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -44,6 +45,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -52,7 +54,6 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import org.bxkr.octodiary.Diary
 import org.bxkr.octodiary.R
-import org.bxkr.octodiary.screens.LoginService.LogInWithMosRu
 import org.bxkr.octodiary.ui.theme.OctoDiaryTheme
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -63,7 +64,6 @@ fun LoginScreen(
     val context = LocalContext.current
     var loginText by rememberSaveable { mutableStateOf("") }
     var passwordText by rememberSaveable { mutableStateOf("") }
-    var goAuth by rememberSaveable { mutableStateOf(false) }
     val pagerState = rememberPagerState(pageCount = { 2 })
     var currentPage by rememberSaveable { mutableStateOf(Diary.MES) }
     val coroutineScope = rememberCoroutineScope()
@@ -73,8 +73,6 @@ fun LoginScreen(
             currentPage = Diary.values()[page]
         }
     }
-
-    if (goAuth) LogInWithMosRu(context)
 
     Column(modifier.fillMaxSize()) {
         TabRow(
@@ -121,15 +119,25 @@ fun LoginScreen(
                                 .map { colorResource(it) }), MaterialTheme.shapes.medium
                         )
                         .clip(MaterialTheme.shapes.medium)
-                        .clickable { goAuth = true },
+                        .clickable { Diary.values()[page].logInFunction(context) },
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Icon(
-                        Icons.AutoMirrored.Rounded.OpenInNew,
-                        contentDescription = stringResource(id = R.string.log_in_on_mosru),
-                        modifier = Modifier.padding(start = 16.dp, end = 8.dp),
-                        tint = Color.White
-                    )
+                    if (page == Diary.MES.ordinal) {
+                        Image(
+                            painterResource(R.drawable.ic_mos_ru),
+                            stringResource(id = R.string.log_in),
+                            modifier = Modifier
+                                .padding(start = 16.dp, end = 8.dp)
+                                .width(16.dp)
+                        )
+                    } else {
+                        Icon(
+                            Icons.AutoMirrored.Rounded.OpenInNew,
+                            contentDescription = stringResource(id = R.string.log_in),
+                            modifier = Modifier.padding(start = 16.dp, end = 8.dp),
+                            tint = Color.White
+                        )
+                    }
                     Text(
                         stringResource(id = Diary.values()[page].logInLabel),
                         color = Color.White

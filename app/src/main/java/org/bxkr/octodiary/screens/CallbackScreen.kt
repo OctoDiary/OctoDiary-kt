@@ -17,7 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import org.bxkr.octodiary.R
-import org.bxkr.octodiary.screens.LoginService.ExchangeToken
+import org.bxkr.octodiary.screens.MESLoginService.ExchangeToken
 
 @Composable
 fun CallbackScreen(modifier: Modifier, code: String) {

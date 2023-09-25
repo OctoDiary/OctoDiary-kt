@@ -14,7 +14,7 @@ import retrofit2.http.POST
 import retrofit2.http.Query
 
 object NetworkService {
-    object APIConfig {
+    object MESAPIConfig {
         const val SCOPE = "birthday contacts openid profile snils blitz_change_password blitz_user_rights blitz_qr_auth"
         const val RESPONSE_TYPE = "code"
         const val PROMPT = "login"
@@ -27,6 +27,12 @@ object NetworkService {
         const val SOFTWARE_ID = "dnevnik.mos.ru"
         const val DEVICE_TYPE = "android_phone"
         const val GRANT_TYPE = "authorization_code"
+    }
+
+    object MySchoolAPIConfig {
+        const val AUTH_URL_TEMPLATE =
+            "https://authedu.mosreg.ru/v3/auth/esia/login?redirect_url=%s&state=%s"
+        const val REDIRECT_URI = "dnevnik-mes://authRegionRedirect"
     }
 
     object BaseUrl {

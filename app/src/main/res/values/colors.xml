@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="orange">#FF8400</color>
-    <color name="light_purple">#9B77FF</color>
-    <color name="purple">#842EFF</color>
+    <color name="red">#EF3E58</color>
+    <color name="blue">#0F67B1</color>
+    <color name="mosru_primary">#CC2222</color>
 </resources>
