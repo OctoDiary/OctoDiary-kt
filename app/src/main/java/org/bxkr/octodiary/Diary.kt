@@ -31,8 +31,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import org.bxkr.octodiary.screens.MESLoginService
-import org.bxkr.octodiary.screens.MySchoolLoginService
+import org.bxkr.octodiary.network.MESLoginService
+import org.bxkr.octodiary.network.MySchoolLoginService
 
 enum class Diary(
     @StringRes val title: Int,

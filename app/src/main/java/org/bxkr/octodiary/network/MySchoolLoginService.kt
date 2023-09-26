@@ -1,9 +1,8 @@
-package org.bxkr.octodiary.screens
+package org.bxkr.octodiary.network
 
 import android.content.Context
 import android.net.Uri
 import androidx.browser.customtabs.CustomTabsIntent
-import org.bxkr.octodiary.NetworkService
 import java.util.UUID
 
 object MySchoolLoginService {

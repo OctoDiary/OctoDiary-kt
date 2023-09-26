@@ -1,4 +1,4 @@
-package org.bxkr.octodiary
+package org.bxkr.octodiary.network
 
 import org.bxkr.octodiary.models.RegisterBody
 import org.bxkr.octodiary.models.RegisterResponse

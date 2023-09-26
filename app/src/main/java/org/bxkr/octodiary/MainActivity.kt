@@ -24,6 +24,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import org.bxkr.octodiary.screens.CallbackScreen
 import org.bxkr.octodiary.screens.LoginScreen
+import org.bxkr.octodiary.screens.NavScreen
 import org.bxkr.octodiary.ui.theme.OctoDiaryTheme
 
 class MainActivity : ComponentActivity() {
@@ -34,57 +35,66 @@ class MainActivity : ComponentActivity() {
                 MyApp(modifier = Modifier.fillMaxSize())
             }
         }
+    }
+
+    @OptIn(ExperimentalMaterial3Api::class)
+    @Composable
+    private fun MyApp(
+        modifier: Modifier = Modifier
+    ) {
+        var title by rememberSaveable { mutableIntStateOf(R.string.app_name) }
+        val currentScreen = rememberSaveable { mutableStateOf(Screen.Login) }
+
         val intentData = intent.dataString
         if (intentData != null) {
-            setContent {
-                OctoDiaryTheme {
-                    CallbackScreen(Modifier.fillMaxSize(), code = Uri.parse(intentData).getQueryParameter("code")!!)
-                }
-            }
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun MyApp(
-    modifier: Modifier = Modifier
-) {
-    var title by rememberSaveable { mutableIntStateOf(R.string.app_name) }
-    var currentScreen by rememberSaveable { mutableStateOf(Screen.Login) }
-    Scaffold(
-        modifier,
-        topBar = {
-            Column {
-                TopAppBar(
-                    title = {
-                        Text(stringResource(title))
+            CallbackScreen(
+                Modifier.fillMaxSize(),
+                Uri.parse(intentData).getQueryParameter("code")!!,
+                currentScreen
+            )
+        } else {
+            Scaffold(
+                modifier,
+                topBar = {
+                    Column {
+                        TopAppBar(
+                            title = {
+                                Text(stringResource(title))
+                            }
+                        )
                     }
-                )
-            }
-        }
-    ) { padding ->
-        Surface {
-            when (currentScreen) {
-                Screen.Login -> {
-                    LoginScreen(Modifier.padding(padding))
-                    title = R.string.log_in
+                }
+            ) { padding ->
+                Surface {
+                    title = when (currentScreen.value) {
+                        Screen.Login -> {
+                            LoginScreen(Modifier.padding(padding))
+                            R.string.log_in
+                        }
+
+                        Screen.MainNav -> {
+                            NavScreen(Modifier.padding(padding))
+                            R.string.app_name
+                        }
+                    }
                 }
             }
         }
     }
-}
 
-@Preview(
-    name = "Not Night",
-    locale = "ru")
-@Preview(
-    name = "Night",
-    uiMode = Configuration.UI_MODE_NIGHT_YES,
-    locale = "ru")
-@Composable
-fun AppPreview() {
-    OctoDiaryTheme {
-        MyApp()
+    @Preview(
+        name = "Not Night",
+        locale = "ru"
+    )
+    @Preview(
+        name = "Night",
+        uiMode = Configuration.UI_MODE_NIGHT_YES,
+        locale = "ru"
+    )
+    @Composable
+    fun AppPreview() {
+        OctoDiaryTheme {
+            MyApp()
+        }
     }
 }

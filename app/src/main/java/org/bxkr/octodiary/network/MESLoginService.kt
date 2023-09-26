@@ -1,4 +1,4 @@
-package org.bxkr.octodiary.screens
+package org.bxkr.octodiary.network
 
 import android.content.Context
 import android.net.Uri
@@ -6,11 +6,7 @@ import android.util.Log
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
-import androidx.core.content.edit
-import org.bxkr.octodiary.BaseCallback
-import org.bxkr.octodiary.NetworkService
-import org.bxkr.octodiary.NetworkService.MESAPIConfig
-import org.bxkr.octodiary.NetworkService.mesAuthApi
+import org.bxkr.octodiary.Diary
 import org.bxkr.octodiary.encodeToBase64
 import org.bxkr.octodiary.getRandomString
 import org.bxkr.octodiary.hash
@@ -20,6 +16,9 @@ import org.bxkr.octodiary.models.SchoolAuthBody
 import org.bxkr.octodiary.models.SchoolAuthResponse
 import org.bxkr.octodiary.models.TokenExchange
 import org.bxkr.octodiary.models.UserAuthenticationForMobileRequest
+import org.bxkr.octodiary.network.NetworkService.MESAPIConfig
+import org.bxkr.octodiary.network.NetworkService.mesAuthApi
+import org.bxkr.octodiary.saveToAuthPrefs
 
 object MESLoginService {
     fun logInWithMosRu(context: Context) {
@@ -36,11 +35,11 @@ object MESLoginService {
                 if (it != null) {
                     val codeVerifier = getRandomString(80)
                     val codeChallenge = encodeToBase64(hash(codeVerifier))
-                    context.getSharedPreferences("auth", Context.MODE_PRIVATE).edit(commit = true) {
-                        putString("code_verifier", codeVerifier)
-                        putString("client_id", it.clientId)
-                        putString("client_secret", it.clientSecret)
-                    }
+                    context.saveToAuthPrefs(
+                        "code_verifier" to codeVerifier,
+                        "client_id" to it.clientId,
+                        "client_secret" to it.clientSecret
+                    )
                     val openUri = Uri.parse(NetworkService.BaseUrl.AUTH + "sps/oauth/ae")
                         .buildUpon()
                         .appendQueryParameter("scope", MESAPIConfig.SCOPE)
@@ -85,21 +84,28 @@ object MESLoginService {
             exchangeCall.enqueue(object : BaseCallback<TokenExchange>({ result ->
                 result.body().let {
                     if (it != null) {
-                        mosToMesToken(mosToken = it.accessToken, mesToken = token)
+                        mosToMesToken(context, mosToken = it.accessToken, mesToken = token)
                     }
                 }
             }) {})
         }
     }
 
-    fun mosToMesToken(mosToken: String, mesToken: MutableState<String?>) {
+    fun mosToMesToken(context: Context, mosToken: String, mesToken: MutableState<String?>) {
         val schoolAuthCall = mesAuthApi().mosTokenToMes(SchoolAuthBody(
             UserAuthenticationForMobileRequest(
                 mosAccessToken = mosToken
             )
         ))
         schoolAuthCall.enqueue(object : BaseCallback<SchoolAuthResponse>({
-            mesToken.value = it.body()!!.userAuthenticationForMobileResponse.meshAccessToken
+            it.body()!!.userAuthenticationForMobileResponse.meshAccessToken.also { token ->
+                mesToken.value = token
+                context.saveToAuthPrefs(
+                    "auth" to true,
+                    "subsystem" to Diary.MES.ordinal,
+                    "access_token" to token
+                )
+            }
         }) {})
     }
 }

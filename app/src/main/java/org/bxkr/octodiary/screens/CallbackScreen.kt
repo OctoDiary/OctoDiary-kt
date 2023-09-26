@@ -14,13 +14,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import org.bxkr.octodiary.R
-import org.bxkr.octodiary.screens.MESLoginService.ExchangeToken
+import org.bxkr.octodiary.Screen
+import org.bxkr.octodiary.network.MESLoginService.ExchangeToken
 
 @Composable
-fun CallbackScreen(modifier: Modifier, code: String) {
+fun CallbackScreen(modifier: Modifier, code: String, screenState: MutableState<Screen>) {
     val token: MutableState<String?> = remember { mutableStateOf(null) }
 
     ExchangeToken(LocalContext.current, code, token)
@@ -35,7 +35,7 @@ fun CallbackScreen(modifier: Modifier, code: String) {
                 CircularProgressIndicator()
 
             } else {
-                Text(text = token.value!!, maxLines = 2, overflow = TextOverflow.Ellipsis)
+                screenState.value = Screen.MainNav
             }
         }
     }
