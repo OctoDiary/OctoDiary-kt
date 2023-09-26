@@ -1,4 +1,4 @@
-package org.bxkr.octodiary.models
+package org.bxkr.octodiary.models.auth
 
 import com.google.gson.annotations.SerializedName
 

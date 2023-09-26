@@ -39,3 +39,16 @@ fun Context.saveToAuthPrefs(vararg addPrefs: Pair<String, Any?>) {
         }
     }
 }
+
+inline fun <reified T> Context.getAuthPrefs(prefId: String): T? {
+    getSharedPreferences("auth", Context.MODE_PRIVATE).run {
+        return when (T::class) {
+            String::class -> getString(prefId, "") as T
+            Boolean::class -> getBoolean(prefId, false) as T
+            Int::class -> getInt(prefId, -1) as T
+            Long::class -> getLong(prefId, -1L) as T
+            Float::class -> getFloat(prefId, -1F) as T
+            else -> null
+        }
+    }
+}

@@ -10,12 +10,12 @@ import org.bxkr.octodiary.Diary
 import org.bxkr.octodiary.encodeToBase64
 import org.bxkr.octodiary.getRandomString
 import org.bxkr.octodiary.hash
-import org.bxkr.octodiary.models.RegisterBody
-import org.bxkr.octodiary.models.RegisterResponse
-import org.bxkr.octodiary.models.SchoolAuthBody
-import org.bxkr.octodiary.models.SchoolAuthResponse
-import org.bxkr.octodiary.models.TokenExchange
-import org.bxkr.octodiary.models.UserAuthenticationForMobileRequest
+import org.bxkr.octodiary.models.auth.RegisterBody
+import org.bxkr.octodiary.models.auth.RegisterResponse
+import org.bxkr.octodiary.models.auth.SchoolAuthBody
+import org.bxkr.octodiary.models.auth.SchoolAuthResponse
+import org.bxkr.octodiary.models.auth.TokenExchange
+import org.bxkr.octodiary.models.auth.UserAuthenticationForMobileRequest
 import org.bxkr.octodiary.network.NetworkService.MESAPIConfig
 import org.bxkr.octodiary.network.NetworkService.mesAuthApi
 import org.bxkr.octodiary.saveToAuthPrefs
@@ -92,11 +92,13 @@ object MESLoginService {
     }
 
     fun mosToMesToken(context: Context, mosToken: String, mesToken: MutableState<String?>) {
-        val schoolAuthCall = mesAuthApi().mosTokenToMes(SchoolAuthBody(
+        val schoolAuthCall = mesAuthApi().mosTokenToMes(
+            SchoolAuthBody(
             UserAuthenticationForMobileRequest(
                 mosAccessToken = mosToken
             )
-        ))
+            )
+        )
         schoolAuthCall.enqueue(object : BaseCallback<SchoolAuthResponse>({
             it.body()!!.userAuthenticationForMobileResponse.meshAccessToken.also { token ->
                 mesToken.value = token

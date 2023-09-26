@@ -1,10 +1,10 @@
 package org.bxkr.octodiary.network
 
-import org.bxkr.octodiary.models.RegisterBody
-import org.bxkr.octodiary.models.RegisterResponse
-import org.bxkr.octodiary.models.SchoolAuthBody
-import org.bxkr.octodiary.models.SchoolAuthResponse
-import org.bxkr.octodiary.models.TokenExchange
+import org.bxkr.octodiary.models.auth.RegisterBody
+import org.bxkr.octodiary.models.auth.RegisterResponse
+import org.bxkr.octodiary.models.auth.SchoolAuthBody
+import org.bxkr.octodiary.models.auth.SchoolAuthResponse
+import org.bxkr.octodiary.models.auth.TokenExchange
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
