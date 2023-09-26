@@ -16,4 +16,8 @@ object MySchoolLoginService {
             )
         }))
     }
+
+    fun logInWithPassword() {
+
+    }
 }

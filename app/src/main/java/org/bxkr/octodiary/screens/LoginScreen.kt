@@ -14,11 +14,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.OpenInNew
-import androidx.compose.material3.Button
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -28,7 +25,6 @@ import androidx.compose.material3.TabRow
 import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -47,8 +43,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
@@ -62,8 +56,6 @@ fun LoginScreen(
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
-    var loginText by rememberSaveable { mutableStateOf("") }
-    var passwordText by rememberSaveable { mutableStateOf("") }
     val pagerState = rememberPagerState(pageCount = { 2 })
     var currentPage by rememberSaveable { mutableStateOf(Diary.MES) }
     val coroutineScope = rememberCoroutineScope()
@@ -115,11 +107,12 @@ fun LoginScreen(
                         .height(TextFieldDefaults.MinHeight)
                         .align(Alignment.CenterHorizontally)
                         .background(
-                            Brush.linearGradient(Diary.values()[page].gradientColors
-                                .map { colorResource(it) }), MaterialTheme.shapes.medium
+                            Brush.linearGradient(
+                                Diary.values()[page].primaryLogGradientColors
+                                    .map { colorResource(it) }), MaterialTheme.shapes.medium
                         )
                         .clip(MaterialTheme.shapes.medium)
-                        .clickable { Diary.values()[page].logInFunction(context) },
+                        .clickable { Diary.values()[page].primaryLogInFunction(context) },
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     if (page == Diary.MES.ordinal) {
@@ -139,10 +132,11 @@ fun LoginScreen(
                         )
                     }
                     Text(
-                        stringResource(id = Diary.values()[page].logInLabel),
+                        stringResource(id = Diary.values()[page].primaryLogInLabel),
                         color = Color.White
                     )
                 }
+
                 Row(
                     modifier = Modifier
                         .align(Alignment.CenterHorizontally)
@@ -167,50 +161,10 @@ fun LoginScreen(
                         color = MaterialTheme.colorScheme.surfaceVariant
                     )
                 }
-                TextField(
-                    value = loginText,
-                    onValueChange = { loginText = it },
-                    modifier = Modifier
-                        .align(Alignment.CenterHorizontally)
-                        .padding(vertical = 1.dp),
-                    label = { Text(stringResource(id = R.string.username)) },
-                    shape = RoundedCornerShape(
-                        topStart = MaterialTheme.shapes.medium.topStart,
-                        topEnd = MaterialTheme.shapes.medium.topEnd,
-                        bottomStart = MaterialTheme.shapes.extraSmall.bottomStart,
-                        bottomEnd = MaterialTheme.shapes.extraSmall.bottomEnd
-                    ),
-                    colors = TextFieldDefaults.colors(
-                        focusedIndicatorColor = Color.Unspecified,
-                        unfocusedIndicatorColor = Color.Unspecified
-                    )
+
+                Diary.values()[page].alternativeLogIn(
+                    Modifier.align(Alignment.CenterHorizontally)
                 )
-                TextField(
-                    value = passwordText,
-                    onValueChange = { passwordText = it },
-                    modifier = Modifier
-                        .align(Alignment.CenterHorizontally)
-                        .padding(vertical = 1.dp),
-                    label = { Text(stringResource(id = R.string.password)) },
-                    visualTransformation = PasswordVisualTransformation(),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                    shape = MaterialTheme.shapes.medium.copy(
-                        topStart = MaterialTheme.shapes.extraSmall.topStart,
-                        topEnd = MaterialTheme.shapes.extraSmall.topEnd
-                    ),
-                    colors = TextFieldDefaults.colors(
-                        focusedIndicatorColor = Color.Unspecified,
-                        unfocusedIndicatorColor = Color.Unspecified
-                    )
-                )
-                Button(
-                    onClick = { /*TODO*/ },
-                    modifier = Modifier
-                        .padding(top = 32.dp)
-                        .align(Alignment.CenterHorizontally)
-                ) {
-                    Text(stringResource(id = R.string.log_in))
-                }
             }
         }
     }
