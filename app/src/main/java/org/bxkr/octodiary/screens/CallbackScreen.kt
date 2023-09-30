@@ -2,6 +2,7 @@ package org.bxkr.octodiary.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Surface
@@ -20,12 +21,14 @@ import org.bxkr.octodiary.Screen
 import org.bxkr.octodiary.network.MESLoginService.ExchangeToken
 
 @Composable
-fun CallbackScreen(modifier: Modifier, code: String, screenState: MutableState<Screen>) {
+fun CallbackScreen(code: String, screenState: MutableState<Screen>) {
     val token: MutableState<String?> = remember { mutableStateOf(null) }
 
-    ExchangeToken(LocalContext.current, code, token)
+    if (token.value == null) {
+        ExchangeToken(LocalContext.current, code, token)
+    }
 
-    Surface(modifier) {
+    Surface(Modifier.fillMaxSize()) {
         Column(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally

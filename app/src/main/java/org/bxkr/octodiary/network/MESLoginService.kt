@@ -7,9 +7,11 @@ import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import org.bxkr.octodiary.Diary
+import org.bxkr.octodiary.authPrefs
 import org.bxkr.octodiary.encodeToBase64
 import org.bxkr.octodiary.getRandomString
 import org.bxkr.octodiary.hash
+import org.bxkr.octodiary.mainPrefs
 import org.bxkr.octodiary.models.auth.RegisterBody
 import org.bxkr.octodiary.models.auth.RegisterResponse
 import org.bxkr.octodiary.models.auth.SchoolAuthBody
@@ -18,7 +20,7 @@ import org.bxkr.octodiary.models.auth.TokenExchange
 import org.bxkr.octodiary.models.auth.UserAuthenticationForMobileRequest
 import org.bxkr.octodiary.network.NetworkService.MESAPIConfig
 import org.bxkr.octodiary.network.NetworkService.mesAuthApi
-import org.bxkr.octodiary.saveToAuthPrefs
+import org.bxkr.octodiary.save
 
 object MESLoginService {
     fun logInWithMosRu(context: Context) {
@@ -35,7 +37,7 @@ object MESLoginService {
                 if (it != null) {
                     val codeVerifier = getRandomString(80)
                     val codeChallenge = encodeToBase64(hash(codeVerifier))
-                    context.saveToAuthPrefs(
+                    context.authPrefs.save(
                         "code_verifier" to codeVerifier,
                         "client_id" to it.clientId,
                         "client_secret" to it.clientSecret
@@ -101,12 +103,15 @@ object MESLoginService {
         )
         schoolAuthCall.enqueue(object : BaseCallback<SchoolAuthResponse>({
             it.body()!!.userAuthenticationForMobileResponse.meshAccessToken.also { token ->
-                mesToken.value = token
-                context.saveToAuthPrefs(
+                context.authPrefs.save(
                     "auth" to true,
                     "subsystem" to Diary.MES.ordinal,
                     "access_token" to token
                 )
+                context.mainPrefs.save(
+                    "first_launch" to true
+                )
+                mesToken.value = token
             }
         }) {})
     }

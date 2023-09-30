@@ -6,6 +6,24 @@ import java.security.MessageDigest
 import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
 
+abstract class Prefs(
+    val prefPath: String,
+    val ctx: Context
+)
+
+class AuthPrefs(ctx: Context) : Prefs("auth", ctx)
+class MainPrefs(ctx: Context) : Prefs("main", ctx)
+
+val Context.authPrefs: AuthPrefs
+    get() {
+        return AuthPrefs(this)
+    }
+
+val Context.mainPrefs: MainPrefs
+    get() {
+        return MainPrefs(this)
+    }
+
 fun getRandomString(length: Int) : String {
     val allowedChars = ('A'..'Z') + ('a'..'z') + ('0'..'9') + '_' + '-'
     return (1..length)
@@ -24,8 +42,8 @@ fun encodeToBase64(byteArray: ByteArray): String {
     return Base64.UrlSafe.encode(byteArray).replace("=", "")
 }
 
-fun Context.saveToAuthPrefs(vararg addPrefs: Pair<String, Any?>) {
-    getSharedPreferences("auth", Context.MODE_PRIVATE).edit(commit = true) {
+fun Prefs.save(vararg addPrefs: Pair<String, Any?>) {
+    ctx.getSharedPreferences(prefPath, Context.MODE_PRIVATE).edit(commit = true) {
         addPrefs.map {
             when (it.second) {
                 is String -> putString(it.first, it.second as String)
@@ -40,8 +58,8 @@ fun Context.saveToAuthPrefs(vararg addPrefs: Pair<String, Any?>) {
     }
 }
 
-inline fun <reified T> Context.getAuthPrefs(prefId: String): T? {
-    getSharedPreferences("auth", Context.MODE_PRIVATE).run {
+inline fun <reified T> Prefs.get(prefId: String): T? {
+    ctx.getSharedPreferences(prefPath, Context.MODE_PRIVATE).run {
         return when (T::class) {
             String::class -> getString(prefId, "") as T
             Boolean::class -> getBoolean(prefId, false) as T

@@ -187,4 +187,8 @@
     <string name="mes">MES</string>
     <string name="myschool">My School</string>
     <string name="log_in_on_gosuslugi">Log in on Gosuslugi</string>
+    <string name="skip">Skip</string>
+    <string name="enter_new_pin">Enter new PIN</string>
+    <string name="repeat_pin">Repeat your PIN</string>
+    <string name="pins_are_diff">PINs don\'t match</string>
 </resources>

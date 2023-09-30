@@ -135,4 +135,8 @@
     <string name="mes">МЭШ</string>
     <string name="myschool">Моя Школа</string>
     <string name="log_in_on_gosuslugi">Войти через Госуслуги</string>
+    <string name="skip">Пропустить</string>
+    <string name="enter_new_pin">Введите новый ПИН-код</string>
+    <string name="repeat_pin">Повторите свой ПИН-код</string>
+    <string name="pins_are_diff">ПИН-коды не совпадают</string>
 </resources>

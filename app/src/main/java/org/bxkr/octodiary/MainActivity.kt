@@ -17,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -43,39 +44,48 @@ class MainActivity : ComponentActivity() {
         modifier: Modifier = Modifier
     ) {
         var title by rememberSaveable { mutableIntStateOf(R.string.app_name) }
-        val currentScreen = rememberSaveable { mutableStateOf(Screen.Login) }
+        val currentScreen = remember {
+            mutableStateOf(
+                if (authPrefs.get<Boolean>("auth") == true) {
+                    Screen.MainNav
+                } else Screen.Login
+            )
+        }
 
         val intentData = intent.dataString
-        if (intentData != null) {
-            CallbackScreen(
-                Modifier.fillMaxSize(),
-                Uri.parse(intentData).getQueryParameter("code")!!,
-                currentScreen
-            )
-        } else {
-            Scaffold(
-                modifier,
-                topBar = {
-                    Column {
-                        TopAppBar(
-                            title = {
-                                Text(stringResource(title))
-                            }
-                        )
-                    }
+        if (intentData != null && authPrefs.get<Boolean>("auth") != true) {
+            currentScreen.value = Screen.Callback
+        }
+        Scaffold(
+            modifier,
+            topBar = {
+                Column {
+                    TopAppBar(
+                        title = {
+                            Text(stringResource(title))
+                        }
+                    )
                 }
-            ) { padding ->
-                Surface {
-                    title = when (currentScreen.value) {
-                        Screen.Login -> {
-                            LoginScreen(Modifier.padding(padding))
-                            R.string.log_in
-                        }
+            }
+        ) { padding ->
+            Surface {
+                title = when (currentScreen.value) {
+                    Screen.Login -> {
+                        LoginScreen(Modifier.padding(padding))
+                        R.string.log_in
+                    }
 
-                        Screen.MainNav -> {
-                            NavScreen(Modifier.padding(padding))
-                            R.string.app_name
-                        }
+                    Screen.Callback -> {
+                        CallbackScreen(
+                            Uri.parse(intentData).getQueryParameter("code")!!,
+                            currentScreen
+                        )
+                        R.string.log_in
+                    }
+
+                    Screen.MainNav -> {
+                        NavScreen(Modifier.padding(padding), currentScreen)
+                        R.string.app_name
                     }
                 }
             }
