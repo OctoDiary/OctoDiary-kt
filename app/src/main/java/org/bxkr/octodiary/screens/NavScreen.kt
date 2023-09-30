@@ -185,6 +185,7 @@ fun SetPinDialog(
     initialPin: MutableState<List<Int>>,
     secondPin: MutableState<List<Int>>
 ) {
+    val context = LocalContext.current
     Dialog(
         properties = DialogProperties(
             dismissOnBackPress = false,
@@ -207,6 +208,10 @@ fun SetPinDialog(
                     FilledTonalButton(
                         onClick = {
                             pinFinished.value = true
+                            context.mainPrefs.save(
+                                "has_pin" to false,
+                                "first_launch" to false
+                            )
                         },
                         contentPadding = ButtonDefaults.ButtonWithIconContentPadding
                     ) {
