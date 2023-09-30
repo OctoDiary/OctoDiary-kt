@@ -16,7 +16,7 @@ Android 8.0+, target: Android 14.0
 
 <div align=center style="padding: 30px">
 
-```В разарботке!```
+```В разработке!```
 
 
 </div>
