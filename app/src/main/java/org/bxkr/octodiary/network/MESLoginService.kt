@@ -8,18 +8,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import org.bxkr.octodiary.Diary
 import org.bxkr.octodiary.authPrefs
+import org.bxkr.octodiary.baseEnqueue
 import org.bxkr.octodiary.encodeToBase64
 import org.bxkr.octodiary.getRandomString
 import org.bxkr.octodiary.hash
 import org.bxkr.octodiary.mainPrefs
 import org.bxkr.octodiary.models.auth.RegisterBody
-import org.bxkr.octodiary.models.auth.RegisterResponse
 import org.bxkr.octodiary.models.auth.SchoolAuthBody
-import org.bxkr.octodiary.models.auth.SchoolAuthResponse
-import org.bxkr.octodiary.models.auth.TokenExchange
 import org.bxkr.octodiary.models.auth.UserAuthenticationForMobileRequest
 import org.bxkr.octodiary.network.NetworkService.MESAPIConfig
-import org.bxkr.octodiary.network.NetworkService.mesAuthApi
+import org.bxkr.octodiary.network.NetworkService.mesApi
 import org.bxkr.octodiary.save
 
 object MESLoginService {
@@ -32,7 +30,11 @@ object MESLoginService {
             ),
             authHeader = MESAPIConfig.AUTH_ISSUER_SECRET
         )
-        issueCall.enqueue(object : BaseCallback<RegisterResponse>({ result ->
+        issueCall.baseEnqueue(
+            errorFunction = { errorBody, httpCode ->
+                Log.e("LogInWithMosRu", "$httpCode: ${errorBody.string()}")
+            }
+        ) { result ->
             result.body().let {
                 if (it != null) {
                     val codeVerifier = getRandomString(80)
@@ -61,9 +63,7 @@ object MESLoginService {
                     tabIntent.launchUrl(context, openUri)
                 }
             }
-        }, errorFunction = { errorBody, httpCode ->
-            Log.e("LogInWithMosRu", "$httpCode: ${errorBody.string()}")
-        }) {})
+        }
     }
 
     @Composable
@@ -83,13 +83,13 @@ object MESLoginService {
                 codeVerifier,
                 authHeader
             )
-            exchangeCall.enqueue(object : BaseCallback<TokenExchange>({ result ->
+            exchangeCall.baseEnqueue { result ->
                 result.body().let {
                     if (it != null) {
                         mosToMesToken(context, mosToken = it.accessToken, mesToken = token)
                     }
                 }
-            }) {})
+            }
         }
     }
 
@@ -101,7 +101,7 @@ object MESLoginService {
             )
             )
         )
-        schoolAuthCall.enqueue(object : BaseCallback<SchoolAuthResponse>({
+        schoolAuthCall.baseEnqueue {
             it.body()!!.userAuthenticationForMobileResponse.meshAccessToken.also { token ->
                 context.authPrefs.save(
                     "auth" to true,
@@ -113,6 +113,6 @@ object MESLoginService {
                 )
                 mesToken.value = token
             }
-        }) {})
+        }
     }
 }

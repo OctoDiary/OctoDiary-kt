@@ -70,3 +70,28 @@ inline fun <reified T> Prefs.get(prefId: String): T? {
         }
     }
 }
+
+fun <T> Call<T>.baseEnqueue(
+    errorFunction: ((errorBody: ResponseBody, httpCode: Int) -> Unit)? = null,
+    noConnectionFunction: ((t: Throwable) -> Unit)? = null,
+    function: (response: Response<T>) -> Unit,
+) {
+    enqueue(object : Callback<T> {
+        override fun onResponse(
+            call: Call<T>,
+            response: Response<T>
+        ) {
+            if (response.isSuccessful) {
+                function(response)
+            } else {
+                errorFunction?.let {
+                    response.errorBody()?.let { it1 -> it(it1, response.code()) }
+                }
+            }
+        }
+
+        override fun onFailure(call: Call<T>, t: Throwable) {
+            noConnectionFunction?.invoke(t)
+        }
+    })
+}
