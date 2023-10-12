@@ -31,38 +31,35 @@ object MESLoginService {
             authHeader = MESAPIConfig.AUTH_ISSUER_SECRET
         )
         issueCall.baseEnqueue(
-            errorFunction = { errorBody, httpCode ->
-                Log.e("LogInWithMosRu", "$httpCode: ${errorBody.string()}")
+            errorFunction = { errorBody, httpCode, className ->
+                Log.e(className, "$httpCode: ${errorBody.string()}")
             }
-        ) { result ->
-            result.body().let {
-                if (it != null) {
-                    val codeVerifier = getRandomString(80)
-                    val codeChallenge = encodeToBase64(hash(codeVerifier))
-                    context.authPrefs.save(
-                        "code_verifier" to codeVerifier,
-                        "client_id" to it.clientId,
-                        "client_secret" to it.clientSecret
-                    )
-                    val openUri = Uri.parse(NetworkService.BaseUrl.AUTH + "sps/oauth/ae")
-                        .buildUpon()
-                        .appendQueryParameter("scope", MESAPIConfig.SCOPE)
-                        .appendQueryParameter("access_type", MESAPIConfig.ACCESS_TYPE)
-                        .appendQueryParameter("response_type", MESAPIConfig.RESPONSE_TYPE)
-                        .appendQueryParameter("client_id", it.clientId)
-                        .appendQueryParameter("redirect_uri", MESAPIConfig.REDIRECT_URI)
-                        .appendQueryParameter("prompt", MESAPIConfig.PROMPT)
-                        .appendQueryParameter("code_challenge", codeChallenge)
-                        .appendQueryParameter(
-                            "code_challenge_method",
-                            MESAPIConfig.CODE_CHALLENGE_METHOD
-                        )
-                        .appendQueryParameter("bip_action_hint", MESAPIConfig.BIP_ACTION_HINT)
-                        .build()
-                    val tabIntent = CustomTabsIntent.Builder().build()
-                    tabIntent.launchUrl(context, openUri)
-                }
-            }
+        ) { body ->
+            val codeVerifier = getRandomString(80)
+            val codeChallenge = encodeToBase64(hash(codeVerifier))
+            context.authPrefs.save(
+                "code_verifier" to codeVerifier,
+                "client_id" to body.clientId,
+                "client_secret" to body.clientSecret
+            )
+            val openUri = Uri.parse(NetworkService.BaseUrl.AUTH + "sps/oauth/ae")
+                .buildUpon()
+                .appendQueryParameter("scope", MESAPIConfig.SCOPE)
+                .appendQueryParameter("access_type", MESAPIConfig.ACCESS_TYPE)
+                .appendQueryParameter("response_type", MESAPIConfig.RESPONSE_TYPE)
+                .appendQueryParameter("client_id", body.clientId)
+                .appendQueryParameter("redirect_uri", MESAPIConfig.REDIRECT_URI)
+                .appendQueryParameter("prompt", MESAPIConfig.PROMPT)
+                .appendQueryParameter("code_challenge", codeChallenge)
+                .appendQueryParameter(
+                    "code_challenge_method",
+                    MESAPIConfig.CODE_CHALLENGE_METHOD
+                )
+                .appendQueryParameter("bip_action_hint", MESAPIConfig.BIP_ACTION_HINT)
+                .build()
+            val tabIntent = CustomTabsIntent.Builder().build()
+            tabIntent.launchUrl(context, openUri)
+
         }
     }
 
@@ -83,26 +80,22 @@ object MESLoginService {
                 codeVerifier,
                 authHeader
             )
-            exchangeCall.baseEnqueue { result ->
-                result.body().let {
-                    if (it != null) {
-                        mosToMesToken(context, mosToken = it.accessToken, mesToken = token)
-                    }
-                }
+            exchangeCall.baseEnqueue { body ->
+                mosToMesToken(context, mosToken = body.accessToken, mesToken = token)
             }
         }
     }
 
-    fun mosToMesToken(context: Context, mosToken: String, mesToken: MutableState<String?>) {
-        val schoolAuthCall = mesAuthApi().mosTokenToMes(
+    private fun mosToMesToken(context: Context, mosToken: String, mesToken: MutableState<String?>) {
+        val schoolAuthCall = mesApi().mosTokenToMes(
             SchoolAuthBody(
-            UserAuthenticationForMobileRequest(
-                mosAccessToken = mosToken
-            )
+                UserAuthenticationForMobileRequest(
+                    mosAccessToken = mosToken
+                )
             )
         )
-        schoolAuthCall.baseEnqueue {
-            it.body()!!.userAuthenticationForMobileResponse.meshAccessToken.also { token ->
+        schoolAuthCall.baseEnqueue { body ->
+            body.userAuthenticationForMobileResponse.meshAccessToken.also { token ->
                 context.authPrefs.save(
                     "auth" to true,
                     "subsystem" to Diary.MES.ordinal,

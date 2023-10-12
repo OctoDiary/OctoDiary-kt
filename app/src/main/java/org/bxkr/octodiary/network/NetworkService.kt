@@ -5,10 +5,15 @@ import org.bxkr.octodiary.models.auth.RegisterResponse
 import org.bxkr.octodiary.models.auth.SchoolAuthBody
 import org.bxkr.octodiary.models.auth.SchoolAuthResponse
 import org.bxkr.octodiary.models.auth.TokenExchange
+import org.bxkr.octodiary.models.events.EventsResponse
+import org.bxkr.octodiary.models.profilesid.ProfileId
+import org.bxkr.octodiary.models.profilesid.ProfilesId
+import org.bxkr.octodiary.models.sessionuser.SessionUser
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Query
@@ -27,6 +32,12 @@ object NetworkService {
         const val SOFTWARE_ID = "dnevnik.mos.ru"
         const val DEVICE_TYPE = "android_phone"
         const val GRANT_TYPE = "authorization_code"
+        const val FAMILYMP = "familymp"
+        const val DIARY_MOBILE = "diary-mobile"
+    }
+
+    object MESRole {
+        const val STUDENT = "student"
     }
 
     object MySchoolAPIConfig {
@@ -37,16 +48,42 @@ object NetworkService {
 
     object BaseUrl {
         const val AUTH = "https://login.mos.ru/"
+        const val DNEVNIK = "https://dnevnik.mos.ru/"
         const val SCHOOL = "https://school.mos.ru/"
     }
 
+    /**
+     * Authorization gate of mos.ru.
+     *
+     * baseUrl - [BaseUrl.AUTH]
+     */
     interface MosAuthAPI {
+        /**
+         * Issues a client registration config for
+         * building the link for authorization.
+         *
+         * @param body Fully mocked required JSON body.
+         * @param authHeader Server secret.
+         * @return Authorization config - [RegisterResponse].
+         * @see MESAPIConfig.AUTH_ISSUER_SECRET
+         */
         @POST("/sps/oauth/register")
         fun register(
             @Body body: RegisterBody,
             @Header("Authorization") authHeader: String
         ): Call<RegisterResponse>
 
+        /**
+         * Exchanges code to token.
+         *
+         * @param grantType Constant grant type.
+         * @param redirectUri Constant redirect URI (apparently unnecessary).
+         * @param code Code caught from user's web gate auth session.
+         * @param codeVerifier Code verifier remembered by the app since the [auth link generation][MESLoginService.logInWithMosRu].
+         * @param authHeader "clientId:clientSecret" ([received in auth config][MESLoginService.logInWithMosRu]) pair encoded in base64.
+         * @return [TokenExchange] containing mos.ru access token.
+         * @see MESLoginService.ExchangeToken
+         */
         @POST("/sps/oauth/te")
         fun tokenExchange(
             @Query("grant_type") grantType: String,
@@ -57,11 +94,75 @@ object NetworkService {
         ): Call<TokenExchange>
     }
 
-    interface MESAuthAPI {
+    /**
+     * Old MES API which however is used.
+     *
+     * baseUrl - [BaseUrl.DNEVNIK]
+     */
+    interface DSchoolAPI {
+        /**
+         * This is a final **REQUIRED** stage of authorization.
+         * Token that haven't been used in this request is not eligible for other requests.
+         * Basically, this method just returns list containing all user's profiles id.
+         * @param authHeader Token to be activated.
+         * @return List of [ProfileId]s.
+         **/
+        @GET("/acl/api/users/profile_info")
+        fun profilesId(
+            @Header("auth-token") authHeader: String
+        ): Call<ProfilesId>
+    }
+
+    /**
+     * Main MES API.
+     *
+     * baseUrl - [BaseUrl.SCHOOL]
+     */
+    interface SchoolAPI {
+        /**
+         * Issues a MES access token by a mos.ru access token.
+         *
+         * @param body JSON body containing a mos.ru access token.
+         * @return [SchoolAuthResponse] containing MES token.
+         */
         @POST("/v3/auth/sudir/auth")
         fun mosTokenToMes(
             @Body body: SchoolAuthBody
         ): Call<SchoolAuthResponse>
+
+        /**
+         * Gets info about current session user.
+         *
+         * @param body Access token inside the JSON body.
+         * @return [SessionUser]
+         */
+        @POST("/lms/api/sessions")
+        fun sessionUser(
+            @Body body: SessionUser.Body
+        ): Call<SessionUser>
+
+        /**
+         * Gets events for student.
+         *
+         * @param authHeader Bearer-like string ("Bearer $accessToken").
+         * @param personIds ID of students to parse events.
+         * @param beginDate Start of event calendar in yyyy-MM-dd format.
+         * @param endDate End of event calendar in yyyy-MM-dd format.
+         * @param mesSubsystem MES subsystem (["familymp"][MESAPIConfig.FAMILYMP] by default).
+         * @param mesRole MES role.
+         * @param clientType Client type (["diary-mobile"][MESAPIConfig.DIARY_MOBILE]).
+         * @return [EventsResponse]
+         */
+        @GET("/api/eventcalendar/v1/api/events")
+        fun events(
+            @Header("Authorization") authHeader: String,
+            @Query("person_ids") personIds: String,
+            @Query("begin_date") beginDate: String,
+            @Query("end_date") endDate: String,
+            @Header("X-Mes-Subsystem") mesSubsystem: String = MESAPIConfig.FAMILYMP,
+            @Header("X-Mes-Role") mesRole: String = MESRole.STUDENT, // FUTURE: USES_STUDENT_ROLE
+            @Header("Client-Type") clientType: String = MESAPIConfig.DIARY_MOBILE
+        ): Call<EventsResponse>
     }
 
     fun mosAuthApi(): MosAuthAPI {
@@ -72,11 +173,19 @@ object NetworkService {
         return retrofit.create(MosAuthAPI::class.java)
     }
 
-    fun mesAuthApi(): MESAuthAPI {
+    fun dnevnikApi(): DSchoolAPI {
+        val retrofit = Retrofit.Builder()
+            .baseUrl(BaseUrl.DNEVNIK)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+        return retrofit.create(DSchoolAPI::class.java)
+    }
+
+    fun mesApi(): SchoolAPI {
         val retrofit = Retrofit.Builder()
             .baseUrl(BaseUrl.SCHOOL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-        return retrofit.create(MESAuthAPI::class.java)
+        return retrofit.create(SchoolAPI::class.java)
     }
 }

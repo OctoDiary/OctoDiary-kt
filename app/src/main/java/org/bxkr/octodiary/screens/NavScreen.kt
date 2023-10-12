@@ -48,6 +48,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.zIndex
+import org.bxkr.octodiary.DataService
 import org.bxkr.octodiary.R
 import org.bxkr.octodiary.Screen
 import org.bxkr.octodiary.authPrefs
@@ -85,7 +86,17 @@ fun NavScreen(modifier: Modifier, currentScreen: MutableState<Screen>) {
 
         Surface(modifier.fillMaxSize()) {
             if (mainPrefs.get<Boolean>("has_pin") != true || pinFinished.value) {
-                Text(stringResource(id = R.string.diary))
+                DataService.token = authPrefs.get<String>("access_token")!!
+                DataService.tokenExpirationHandler = {
+                    println(DataService.token)
+                    authPrefs.save(
+                        "auth" to false,
+                        "access_token" to null
+                    )
+                    currentScreen.value = Screen.Login
+                }
+
+                HomeScreen()
             } else if (mainPrefs.get<Boolean>("has_pin") == true && !pinFinished.value) {
                 EnterPinDialog(pinFinished = pinFinished, currentScreen = currentScreen)
             }
@@ -141,7 +152,7 @@ fun EnterPinDialog(
                     onClick = {
                         context.authPrefs.save(
                             "auth" to false,
-                            "access_token" to false
+                            "access_token" to null
                         )
                         currentScreen.value = Screen.Login
                     },

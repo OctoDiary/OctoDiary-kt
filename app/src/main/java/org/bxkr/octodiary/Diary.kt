@@ -49,6 +49,7 @@ enum class Diary(
         R.string.log_in_on_mosru,
         { MESLoginService.logInWithMosRu(it) },
         @Composable { modifier ->
+            Context.MODE_PRIVATE
             val context = androidx.compose.ui.platform.LocalContext.current
             Row(
                 modifier = modifier

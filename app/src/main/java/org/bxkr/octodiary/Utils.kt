@@ -2,7 +2,14 @@ package org.bxkr.octodiary
 
 import android.content.Context
 import androidx.core.content.edit
+import okhttp3.ResponseBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.security.MessageDigest
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
 
@@ -71,27 +78,33 @@ inline fun <reified T> Prefs.get(prefId: String): T? {
     }
 }
 
-fun <T> Call<T>.baseEnqueue(
-    errorFunction: ((errorBody: ResponseBody, httpCode: Int) -> Unit)? = null,
-    noConnectionFunction: ((t: Throwable) -> Unit)? = null,
-    function: (response: Response<T>) -> Unit,
-) {
-    enqueue(object : Callback<T> {
-        override fun onResponse(
-            call: Call<T>,
-            response: Response<T>
-        ) {
-            if (response.isSuccessful) {
-                function(response)
-            } else {
-                errorFunction?.let {
-                    response.errorBody()?.let { it1 -> it(it1, response.code()) }
-                }
-            }
+inline fun <reified T> Call<T>.baseEnqueue(
+    noinline errorFunction: ((errorBody: ResponseBody, httpCode: Int, className: String?) -> Unit) = { _, _, _ -> },
+    noinline noConnectionFunction: ((t: Throwable) -> Unit) = {},
+    noinline function: (body: T) -> Unit,
+) = enqueue(object : Callback<T> {
+    override fun onResponse(
+        call: Call<T>,
+        response: Response<T>
+    ) {
+        val body = response.body()
+        if (response.isSuccessful && body != null) {
+            function(body)
+        } else {
+            response.errorBody()
+                ?.let { it1 -> errorFunction(it1, response.code(), T::class.simpleName) }
         }
+    }
 
-        override fun onFailure(call: Call<T>, t: Throwable) {
-            noConnectionFunction?.invoke(t)
-        }
-    })
+    override fun onFailure(call: Call<T>, t: Throwable) {
+        noConnectionFunction(t)
+    }
+})
+
+fun DataService.baseErrorFunction(errorBody: ResponseBody, httpCode: Int, className: String?) {
+    if (httpCode == 401) {
+        tokenExpirationHandler?.invoke()
+    } else println("Error in $className: ${errorBody.string()}")
 }
+
+fun Date.formatToDay(): String = SimpleDateFormat("yyyy-MM-dd", Locale.ROOT).format(this)
