@@ -4,7 +4,6 @@ import org.bxkr.octodiary.models.events.Event
 import org.bxkr.octodiary.models.sessionuser.SessionUser
 import org.bxkr.octodiary.network.NetworkService
 import java.util.Calendar
-import java.util.Date
 
 object DataService {
     lateinit var token: String
@@ -38,9 +37,11 @@ object DataService {
         NetworkService.mesApi().events(
             "Bearer $token",
             personIds = sessionUser.personId,
-            beginDate = Date().formatToDay(),
+            beginDate = Calendar.getInstance().also {
+                it.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
+            }.time.formatToDay(),
             endDate = Calendar.getInstance().also {
-                it.set(Calendar.DAY_OF_YEAR, it.get(Calendar.DAY_OF_YEAR) + 18)
+                it.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY)
             }.time.formatToDay()
         ).baseEnqueue(::baseErrorFunction) { body ->
             eventCalendar = body.response

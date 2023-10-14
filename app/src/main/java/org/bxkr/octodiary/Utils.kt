@@ -8,6 +8,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.security.MessageDigest
 import java.text.SimpleDateFormat
+import java.time.OffsetDateTime
 import java.util.Date
 import java.util.Locale
 import kotlin.io.encoding.Base64
@@ -108,3 +109,5 @@ fun DataService.baseErrorFunction(errorBody: ResponseBody, httpCode: Int, classN
 }
 
 fun Date.formatToDay(): String = SimpleDateFormat("yyyy-MM-dd", Locale.ROOT).format(this)
+fun String.parseLongDate(): Date =
+    OffsetDateTime.parse(this).toInstant().toEpochMilli().let { Date(it) }

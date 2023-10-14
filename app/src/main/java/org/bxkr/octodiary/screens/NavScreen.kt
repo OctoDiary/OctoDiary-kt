@@ -97,6 +97,7 @@ fun NavScreen(modifier: Modifier, currentScreen: MutableState<Screen>) {
                 }
 
                 HomeScreen()
+                currentScreen.value = Screen.MainNav
             } else if (mainPrefs.get<Boolean>("has_pin") == true && !pinFinished.value) {
                 EnterPinDialog(pinFinished = pinFinished, currentScreen = currentScreen)
             }
