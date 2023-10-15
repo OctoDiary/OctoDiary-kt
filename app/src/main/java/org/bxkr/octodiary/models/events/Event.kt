@@ -35,7 +35,7 @@ data class Event(
     @SerializedName("comments")
     val comments: Any?,
     @SerializedName("conference_link")
-    val conferenceLink: Any?,
+    val conferenceLink: String?,
     @SerializedName("contact_email")
     val contactEmail: Any?,
     @SerializedName("contact_name")
@@ -49,7 +49,7 @@ data class Event(
     @SerializedName("created_at")
     val createdAt: String?,
     @SerializedName("description")
-    val description: Any?,
+    val description: String?,
     @SerializedName("esz_field_id")
     val eszFieldId: Int?,
     @SerializedName("external_activities_type")
@@ -97,7 +97,7 @@ data class Event(
     @SerializedName("outdoor")
     val outdoor: Boolean?,
     @SerializedName("place")
-    val place: Any?,
+    val place: String?,
     @SerializedName("place_comment")
     val placeComment: Any?,
     @SerializedName("place_latitude")

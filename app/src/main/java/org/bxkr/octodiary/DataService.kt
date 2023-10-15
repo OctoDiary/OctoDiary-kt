@@ -1,6 +1,7 @@
 package org.bxkr.octodiary
 
 import org.bxkr.octodiary.models.events.Event
+import org.bxkr.octodiary.models.mark.MarkInfo
 import org.bxkr.octodiary.models.sessionuser.SessionUser
 import org.bxkr.octodiary.network.NetworkService
 import java.util.Calendar
@@ -42,10 +43,21 @@ object DataService {
             }.time.formatToDay(),
             endDate = Calendar.getInstance().also {
                 it.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY)
-            }.time.formatToDay()
+            }.time.formatToDay(),
+            expandFields = "homework,marks"
         ).baseEnqueue(::baseErrorFunction) { body ->
             eventCalendar = body.response
             onUpdated()
         }
+    }
+
+    fun getMarkInfo(markId: Int, listener: (MarkInfo) -> Unit) {
+        assert(this::token.isInitialized)
+        assert(this::sessionUser.isInitialized)
+        NetworkService.mesApi().markInfo(
+            token,
+            markId = markId,
+            studentId = sessionUser.profiles[0].id // FUTURE: USES_FIRST_CHILD
+        ).baseEnqueue(::baseErrorFunction) { listener(it) }
     }
 }

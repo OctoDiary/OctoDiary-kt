@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="ru">
     <string name="hello_world">Привет, Мир!</string>
     <string name="log_in">Войти</string>
     <string name="username">Имя пользователя</string>
@@ -139,4 +139,12 @@
     <string name="enter_new_pin">Введите новый ПИН-код</string>
     <string name="repeat_pin">Повторите свой ПИН-код</string>
     <string name="pins_are_diff">ПИН-коды не совпадают</string>
+    <string name="no_description">Нет описания</string>
+    <string name="lesson_location">Место проведения</string>
+    <string name="at_time">в</string>
+    <string name="mark_created">Выставлена %s</string>
+    <string name="all_day">Весь день</string>
+    <string name="conference">Конференция</string>
+    <string name="unsupported_url">Неподдерживаемая ссылка</string>
+    <string name="url_copied_to_clipboard">URL скопирован в буфер обмена</string>
 </resources>

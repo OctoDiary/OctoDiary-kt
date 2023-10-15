@@ -191,4 +191,12 @@
     <string name="enter_new_pin">Enter new PIN</string>
     <string name="repeat_pin">Repeat your PIN</string>
     <string name="pins_are_diff">PINs don\'t match</string>
+    <string name="no_description">No description</string>
+    <string name="lesson_location">Location</string>
+    <string name="at_time">at</string>
+    <string name="mark_created">Created on %s</string>
+    <string name="all_day">All day</string>
+    <string name="conference">Conference</string>
+    <string name="unsupported_url">Unsupported link</string>
+    <string name="url_copied_to_clipboard">URL was copied to clipboard</string>
 </resources>

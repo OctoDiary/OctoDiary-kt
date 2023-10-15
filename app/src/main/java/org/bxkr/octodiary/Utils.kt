@@ -32,7 +32,7 @@ val Context.mainPrefs: MainPrefs
         return MainPrefs(this)
     }
 
-fun getRandomString(length: Int) : String {
+fun getRandomString(length: Int): String {
     val allowedChars = ('A'..'Z') + ('a'..'z') + ('0'..'9') + '_' + '-'
     return (1..length)
         .map { allowedChars.random() }
@@ -111,3 +111,12 @@ fun DataService.baseErrorFunction(errorBody: ResponseBody, httpCode: Int, classN
 fun Date.formatToDay(): String = SimpleDateFormat("yyyy-MM-dd", Locale.ROOT).format(this)
 fun String.parseLongDate(): Date =
     OffsetDateTime.parse(this).toInstant().toEpochMilli().let { Date(it) }
+
+fun String.parseSimpleLongDate(): Date =
+    SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ROOT).parse(this)!!
+
+fun Date.formatToTime(): String = SimpleDateFormat("HH:mm", Locale.ROOT).format(this)
+fun Context.parseSimpleLongAndFormatToLong(toFormat: String, joiner: String): String =
+    SimpleDateFormat("d LLL yyyy '$joiner' H:mm", resources.configuration.locales[0]).format(
+        toFormat.parseSimpleLongDate()
+    )

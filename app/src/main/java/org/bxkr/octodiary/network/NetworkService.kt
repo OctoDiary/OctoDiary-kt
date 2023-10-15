@@ -6,6 +6,7 @@ import org.bxkr.octodiary.models.auth.SchoolAuthBody
 import org.bxkr.octodiary.models.auth.SchoolAuthResponse
 import org.bxkr.octodiary.models.auth.TokenExchange
 import org.bxkr.octodiary.models.events.EventsResponse
+import org.bxkr.octodiary.models.mark.MarkInfo
 import org.bxkr.octodiary.models.profilesid.ProfileId
 import org.bxkr.octodiary.models.profilesid.ProfilesId
 import org.bxkr.octodiary.models.sessionuser.SessionUser
@@ -16,6 +17,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 object NetworkService {
@@ -148,6 +150,7 @@ object NetworkService {
          * @param personIds ID of students to parse events.
          * @param beginDate Start of event calendar in yyyy-MM-dd format.
          * @param endDate End of event calendar in yyyy-MM-dd format.
+         * @param expandFields Fields of events to expand (e.g. 'homework,marks').
          * @param mesSubsystem MES subsystem (["familymp"][MESAPIConfig.FAMILYMP] by default).
          * @param mesRole MES role.
          * @param clientType Client type (["diary-mobile"][MESAPIConfig.DIARY_MOBILE]).
@@ -159,10 +162,28 @@ object NetworkService {
             @Query("person_ids") personIds: String,
             @Query("begin_date") beginDate: String,
             @Query("end_date") endDate: String,
+            @Query("expand") expandFields: String? = null,
             @Header("X-Mes-Subsystem") mesSubsystem: String = MESAPIConfig.FAMILYMP,
             @Header("X-Mes-Role") mesRole: String = MESRole.STUDENT, // FUTURE: USES_STUDENT_ROLE
             @Header("Client-Type") clientType: String = MESAPIConfig.DIARY_MOBILE
         ): Call<EventsResponse>
+
+        /**
+         * Gets info about mark.
+         *
+         * @param accessToken Access token.
+         * @param markId Mark ID.
+         * @param studentId Student ID.
+         * @param mesSubsystem MES subsystem (["familymp"][MESAPIConfig.FAMILYMP] by default).
+         * @return [MarkInfo]
+         */
+        @GET("/api/family/mobile/v1/marks/{mark_id}")
+        fun markInfo(
+            @Header("auth-token") accessToken: String,
+            @Path("mark_id") markId: Int,
+            @Query("student_id") studentId: Int,
+            @Header("X-Mes-Subsystem") mesSubsystem: String = MESAPIConfig.FAMILYMP
+        ): Call<MarkInfo>
     }
 
     fun mosAuthApi(): MosAuthAPI {

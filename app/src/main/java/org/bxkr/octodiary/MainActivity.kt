@@ -10,14 +10,19 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -27,10 +32,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.MutableLiveData
 import org.bxkr.octodiary.screens.CallbackScreen
 import org.bxkr.octodiary.screens.LoginScreen
 import org.bxkr.octodiary.screens.NavScreen
 import org.bxkr.octodiary.ui.theme.OctoDiaryTheme
+
+val modalBottomSheetStateLive = MutableLiveData(false)
+val modalBottomSheetContentLive = MutableLiveData<@Composable () -> Unit> {}
+val snackbarHostStateLive = MutableLiveData(SnackbarHostState())
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,6 +65,10 @@ class MainActivity : ComponentActivity() {
                 } else Screen.Login
             )
         }
+        val showBottomSheet by modalBottomSheetStateLive.observeAsState()
+        val bottomSheetContent by modalBottomSheetContentLive.observeAsState()
+        val sheetState = rememberModalBottomSheetState()
+        val snackbarHostState = snackbarHostStateLive.value!!
 
         val intentData = intent.dataString
         if (intentData != null && authPrefs.get<Boolean>("auth") != true) {
@@ -69,11 +83,20 @@ class MainActivity : ComponentActivity() {
                             Text(stringResource(title))
                         },
                         colors = TopAppBarDefaults.topAppBarColors(
-                            containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(1.dp)
+                            containerColor = when (currentScreen.value) {
+                                Screen.MainNav -> {
+                                    MaterialTheme.colorScheme.surfaceColorAtElevation(1.dp)
+                                }
+
+                                else -> {
+                                    MaterialTheme.colorScheme.surface
+                                }
+                            }
                         )
                     )
                 }
-            }
+            },
+            snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
         ) { padding ->
             Surface {
                 title = when (currentScreen.value) {
@@ -94,6 +117,14 @@ class MainActivity : ComponentActivity() {
                         NavScreen(Modifier.padding(padding), currentScreen)
                         R.string.diary
                     }
+                }
+            }
+            if (showBottomSheet == true) {
+                ModalBottomSheet(
+                    onDismissRequest = { modalBottomSheetStateLive.postValue(false) },
+                    sheetState = sheetState
+                ) {
+                    bottomSheetContent?.invoke()
                 }
             }
         }

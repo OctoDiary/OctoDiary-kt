@@ -67,6 +67,7 @@ dependencies {
     implementation(libs.androidx.browser)
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
+    implementation(libs.androidx.runtime.livedata)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
