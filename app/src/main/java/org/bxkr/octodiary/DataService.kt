@@ -9,8 +9,14 @@ import java.util.Calendar
 object DataService {
     lateinit var token: String
     lateinit var userId: Number
+    val hasUserId get() = this::userId.isInitialized
+
     lateinit var sessionUser: SessionUser
+    val hasSessionUser get() = this::sessionUser.isInitialized
+
     lateinit var eventCalendar: List<Event>
+    val hasEventCalendar get() = this::eventCalendar.isInitialized
+
     var tokenExpirationHandler: (() -> Unit)? = null
 
     fun updateUserId(onUpdated: () -> Unit) {

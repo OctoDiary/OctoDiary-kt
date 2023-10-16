@@ -32,6 +32,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -48,12 +49,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.zIndex
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import org.bxkr.octodiary.DataService
+import org.bxkr.octodiary.NavSection
 import org.bxkr.octodiary.R
 import org.bxkr.octodiary.Screen
 import org.bxkr.octodiary.authPrefs
 import org.bxkr.octodiary.get
 import org.bxkr.octodiary.mainPrefs
+import org.bxkr.octodiary.navControllerLive
 import org.bxkr.octodiary.save
 import org.bxkr.octodiary.ui.theme.OctoDiaryTheme
 import java.util.Collections
@@ -64,6 +69,7 @@ fun NavScreen(modifier: Modifier, currentScreen: MutableState<Screen>) {
         val pinFinished = remember { mutableStateOf(false) }
         val initialPin = remember { mutableStateOf(emptyList<Int>()) }
         val secondPin = remember { mutableStateOf(emptyList<Int>()) }
+        val navController = navControllerLive.observeAsState()
 
         if (
             initialPin.value.size == 4 &&
@@ -96,7 +102,14 @@ fun NavScreen(modifier: Modifier, currentScreen: MutableState<Screen>) {
                     currentScreen.value = Screen.Login
                 }
 
-                HomeScreen()
+                NavHost(
+                    navController = navController.value!!,
+                    startDestination = NavSection.Dashboard.route
+                ) {
+                    NavSection.values().forEach {
+                        composable(it.route) { _ -> it.composable() }
+                    }
+                }
                 currentScreen.value = Screen.MainNav
             } else if (mainPrefs.get<Boolean>("has_pin") == true && !pinFinished.value) {
                 EnterPinDialog(pinFinished = pinFinished, currentScreen = currentScreen)

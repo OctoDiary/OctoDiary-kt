@@ -84,49 +84,58 @@ import kotlin.math.roundToInt
 @OptIn(ExperimentalFoundationApi::class)
 fun EventCalendar(modifier: Modifier, eventCalendar: List<Event>) {
     if (eventCalendar.isNotEmpty()) {
-        val firstDayOfWeek = eventCalendar[0].startAt.parseLongDate().let {
-            Calendar.getInstance().run {
-                time = it
-                set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
-                time
+        val firstDayOfWeek = remember {
+            eventCalendar[0].startAt.parseLongDate().let {
+                Calendar.getInstance().run {
+                    time = it
+                    set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
+                    time
+                }
             }
         }
-        val weekDays = (0..6).toList().map {
-            Calendar.getInstance().run {
-                time = firstDayOfWeek
-                set(
-                    Calendar.DAY_OF_WEEK, listOf(
-                        Calendar.MONDAY,
-                        Calendar.TUESDAY,
-                        Calendar.WEDNESDAY,
-                        Calendar.THURSDAY,
-                        Calendar.FRIDAY,
-                        Calendar.SATURDAY,
-                        Calendar.SUNDAY
-                    )[it]
-                )
-                time
+        val weekDays = remember {
+            (0..6).toList().map {
+                Calendar.getInstance().run {
+                    time = firstDayOfWeek
+                    set(
+                        Calendar.DAY_OF_WEEK, listOf(
+                            Calendar.MONDAY,
+                            Calendar.TUESDAY,
+                            Calendar.WEDNESDAY,
+                            Calendar.THURSDAY,
+                            Calendar.FRIDAY,
+                            Calendar.SATURDAY,
+                            Calendar.SUNDAY
+                        )[it]
+                    )
+                    time
+                }
             }
         }
         val today =
-            Date().formatToDay().let { weekDays.indexOfFirst { it1 -> it1.formatToDay() == it } }
-
-        val daySplitCalendar = eventCalendar.fold(mutableListOf<MutableList<Event>>()) { sum, it ->
-            if (sum.isEmpty() || sum.last().first().startAt.parseLongDate()
-                    .formatToDay() != it.startAt.parseLongDate().formatToDay()
-            ) {
-                sum.add(mutableListOf(it))
-            } else {
-                sum.last().add(it)
+            remember {
+                Date().formatToDay()
+                    .let { weekDays.indexOfFirst { it1 -> it1.formatToDay() == it } }
             }
-            sum
+
+        val daySplitCalendar = remember {
+            eventCalendar.fold(mutableListOf<MutableList<Event>>()) { sum, it ->
+                if (sum.isEmpty() || sum.last().first().startAt.parseLongDate()
+                        .formatToDay() != it.startAt.parseLongDate().formatToDay()
+                ) {
+                    sum.add(mutableListOf(it))
+                } else {
+                    sum.last().add(it)
+                }
+                sum
+            }
         }
         val dayPosition = rememberPagerState(today, pageCount = { 7 })
         val weekPosition = remember { mutableFloatStateOf(1f) }
         Column(modifier) {
             DateSeeker(weekPosition, dayPosition)
             HorizontalPager(state = dayPosition, beyondBoundsPageCount = 6) { page ->
-                Column(Modifier.padding(16.dp)) {
+                Column(Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp)) {
                     Text(
                         weekDays[page].let {
                             SimpleDateFormat(
@@ -263,18 +272,17 @@ fun DayItem(modifier: Modifier, day: List<Event>) {
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun EventItem(event: Event) {
     var isExpanded by remember { mutableStateOf(false) }
     val enterTransition = remember {
         expandVertically(
-            expandFrom = Alignment.Top, animationSpec = tween(100)
+            expandFrom = Alignment.Top, animationSpec = tween(200)
         )
     }
     val exitTransition = remember {
         shrinkVertically(
-            shrinkTowards = Alignment.Top, animationSpec = tween(100)
+            shrinkTowards = Alignment.Top, animationSpec = tween(200)
         )
     }
     Column(Modifier.clickable {
