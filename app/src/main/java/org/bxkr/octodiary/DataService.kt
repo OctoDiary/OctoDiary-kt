@@ -1,11 +1,13 @@
 package org.bxkr.octodiary
 
 import androidx.compose.runtime.mutableStateOf
+import org.bxkr.octodiary.models.classranking.RankingMember
 import org.bxkr.octodiary.models.events.Event
 import org.bxkr.octodiary.models.mark.MarkInfo
 import org.bxkr.octodiary.models.sessionuser.SessionUser
 import org.bxkr.octodiary.network.NetworkService
 import java.util.Calendar
+import java.util.Date
 
 object DataService {
     lateinit var token: String
@@ -17,6 +19,9 @@ object DataService {
 
     lateinit var eventCalendar: List<Event>
     val hasEventCalendar get() = this::eventCalendar.isInitialized
+
+    lateinit var ranking: List<RankingMember>
+    val hasRanking get() = this::ranking.isInitialized
     val loadedEverything = mutableStateOf(false)
 
     var tokenExpirationHandler: (() -> Unit)? = null
@@ -69,11 +74,28 @@ object DataService {
         ).baseEnqueue(::baseErrorFunction) { listener(it) }
     }
 
+    fun updateRanking(onUpdated: () -> Unit) {
+        assert(this::token.isInitialized)
+        assert(this::sessionUser.isInitialized)
+        NetworkService.mesApi().classRanking(
+            token,
+            personId = sessionUser.personId,
+            date = Date().formatToDay()
+        ).baseEnqueue(::baseErrorFunction) {
+            ranking = it
+            onUpdated()
+        }
+    }
+
     fun updateAll() {
+        val onLoad = { loadedEverything.value = true }
         updateUserId {
             updateSessionUser {
                 updateEventCalendar {
-                    loadedEverything.value = true
+                    if (hasRanking) onLoad()
+                }
+                updateRanking {
+                    if (hasEventCalendar) onLoad()
                 }
             }
         }
