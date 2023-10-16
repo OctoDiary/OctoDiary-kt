@@ -193,6 +193,7 @@ object NetworkService {
          * @param personId Person ID.
          * @param date Rankin date in yyyy-MM-dd format.
          * @param mesSubsystem MES subsystem (["familymp"][MESAPIConfig.FAMILYMP] by default).
+         * @return List of [RankingMember].
          */
         @GET("/api/ej/rating/v1/rank/class")
         fun classRanking(
