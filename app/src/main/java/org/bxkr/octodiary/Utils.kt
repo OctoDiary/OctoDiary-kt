@@ -108,14 +108,21 @@ fun DataService.baseErrorFunction(errorBody: ResponseBody, httpCode: Int, classN
     } else println("Error in $className: ${errorBody.string()}")
 }
 
+/** Formats [Date] to yyyy-MM-dd format [String] **/
 fun Date.formatToDay(): String = SimpleDateFormat("yyyy-MM-dd", Locale.ROOT).format(this)
+
+/** Parses [String] of [OffsetDateTime] (very long with TZ) to [Date] **/
 fun String.parseLongDate(): Date =
     OffsetDateTime.parse(this).toInstant().toEpochMilli().let { Date(it) }
 
+/** Parses [String] of long date without TZ to [Date] **/
 fun String.parseSimpleLongDate(): Date =
     SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ROOT).parse(this)!!
 
+/** Formats [Date] to human time [String] **/
 fun Date.formatToTime(): String = SimpleDateFormat("HH:mm", Locale.ROOT).format(this)
+
+/** Parses [String] of long date without TZ and then formats it to human date [String] **/
 fun Context.parseSimpleLongAndFormatToLong(toFormat: String, joiner: String): String =
     SimpleDateFormat("d LLL yyyy '$joiner' H:mm", resources.configuration.locales[0]).format(
         toFormat.parseSimpleLongDate()
