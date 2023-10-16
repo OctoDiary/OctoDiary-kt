@@ -31,12 +31,15 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -52,6 +55,8 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.zIndex
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import org.bxkr.octodiary.DataService
 import org.bxkr.octodiary.NavSection
 import org.bxkr.octodiary.R
@@ -104,6 +109,11 @@ fun NavScreen(modifier: Modifier, currentScreen: MutableState<Screen>) {
                 }
 
                 var localLoadedState by remember { mutableStateOf(false) }
+                LaunchedEffect(rememberCoroutineScope()) {
+                    snapshotFlow { DataService.loadedEverything.value }
+                        .onEach { localLoadedState = it }
+                        .launchIn(this)
+                }
                 if (localLoadedState) {
                     NavHost(
                         navController = navController.value!!,
@@ -115,7 +125,7 @@ fun NavScreen(modifier: Modifier, currentScreen: MutableState<Screen>) {
                     }
                 } else {
                     // FUTURE: ARCHIVE_RESTORE_DATA
-                    DataService.updateAll(onUpdated = { localLoadedState = true })
+                    DataService.updateAll()
                     Column(
                         Modifier.fillMaxSize(),
                         horizontalAlignment = Alignment.CenterHorizontally,

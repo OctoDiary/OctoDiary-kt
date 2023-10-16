@@ -1,5 +1,6 @@
 package org.bxkr.octodiary
 
+import androidx.compose.runtime.mutableStateOf
 import org.bxkr.octodiary.models.events.Event
 import org.bxkr.octodiary.models.mark.MarkInfo
 import org.bxkr.octodiary.models.sessionuser.SessionUser
@@ -16,12 +17,7 @@ object DataService {
 
     lateinit var eventCalendar: List<Event>
     val hasEventCalendar get() = this::eventCalendar.isInitialized
-    val loadedEverything
-        get() =
-            ::token.isInitialized
-                    && hasUserId
-                    && hasSessionUser
-                    && hasEventCalendar
+    val loadedEverything = mutableStateOf(false)
 
     var tokenExpirationHandler: (() -> Unit)? = null
 
@@ -73,11 +69,12 @@ object DataService {
         ).baseEnqueue(::baseErrorFunction) { listener(it) }
     }
 
-    /** [loadedEverything] becomes true **/
-    fun updateAll(onUpdated: () -> Unit) {
+    fun updateAll() {
         updateUserId {
             updateSessionUser {
-                updateEventCalendar { onUpdated() }
+                updateEventCalendar {
+                    loadedEverything.value = true
+                }
             }
         }
     }
