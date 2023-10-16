@@ -269,12 +269,12 @@ fun EventItem(event: Event) {
     var isExpanded by remember { mutableStateOf(false) }
     val enterTransition = remember {
         expandVertically(
-            expandFrom = Alignment.Top, animationSpec = tween(300)
+            expandFrom = Alignment.Top, animationSpec = tween(100)
         )
     }
     val exitTransition = remember {
         shrinkVertically(
-            shrinkTowards = Alignment.Top, animationSpec = tween(300)
+            shrinkTowards = Alignment.Top, animationSpec = tween(100)
         )
     }
     Column(Modifier.clickable {
