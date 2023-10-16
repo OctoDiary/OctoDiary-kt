@@ -106,7 +106,10 @@ class MainActivity : ComponentActivity() {
                 )
             }
         }, snackbarHost = { SnackbarHost(hostState = snackbarHostState) }, bottomBar = {
-            if (currentScreen.value != Screen.MainNav) return@Scaffold
+            if (
+                (currentScreen.value != Screen.MainNav)
+                || !DataService.loadedEverything
+            ) return@Scaffold
             NavigationBar {
                 val navBackStackEntry by navController.value!!.currentBackStackEntryAsState()
                 val currentDestination = navBackStackEntry?.destination

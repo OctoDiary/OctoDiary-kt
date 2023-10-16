@@ -16,6 +16,12 @@ object DataService {
 
     lateinit var eventCalendar: List<Event>
     val hasEventCalendar get() = this::eventCalendar.isInitialized
+    val loadedEverything
+        get() =
+            ::token.isInitialized
+                    && hasUserId
+                    && hasSessionUser
+                    && hasEventCalendar
 
     var tokenExpirationHandler: (() -> Unit)? = null
 
@@ -65,5 +71,14 @@ object DataService {
             markId = markId,
             studentId = sessionUser.profiles[0].id // FUTURE: USES_FIRST_CHILD
         ).baseEnqueue(::baseErrorFunction) { listener(it) }
+    }
+
+    /** [loadedEverything] becomes true **/
+    fun updateAll(onUpdated: () -> Unit) {
+        updateUserId {
+            updateSessionUser {
+                updateEventCalendar { onUpdated() }
+            }
+        }
     }
 }

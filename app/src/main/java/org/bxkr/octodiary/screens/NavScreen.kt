@@ -24,6 +24,7 @@ import androidx.compose.material.icons.automirrored.rounded.Logout
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -102,12 +103,25 @@ fun NavScreen(modifier: Modifier, currentScreen: MutableState<Screen>) {
                     currentScreen.value = Screen.Login
                 }
 
-                NavHost(
-                    navController = navController.value!!,
-                    startDestination = NavSection.Dashboard.route
-                ) {
-                    NavSection.values().forEach {
-                        composable(it.route) { _ -> it.composable() }
+                var localLoadedState by remember { mutableStateOf(false) }
+                if (localLoadedState) {
+                    NavHost(
+                        navController = navController.value!!,
+                        startDestination = NavSection.Dashboard.route
+                    ) {
+                        NavSection.values().forEach {
+                            composable(it.route) { _ -> it.composable() }
+                        }
+                    }
+                } else {
+                    // FUTURE: ARCHIVE_RESTORE_DATA
+                    DataService.updateAll(onUpdated = { localLoadedState = true })
+                    Column(
+                        Modifier.fillMaxSize(),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        CircularProgressIndicator()
                     }
                 }
                 currentScreen.value = Screen.MainNav
