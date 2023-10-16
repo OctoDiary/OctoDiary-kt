@@ -25,6 +25,7 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableIntStateOf
@@ -39,6 +40,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.MutableLiveData
+import androidx.navigation.NavController
+import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
@@ -87,6 +90,26 @@ class MainActivity : ComponentActivity() {
             navControllerLive.value = rememberNavController()
         }
         val navController = navControllerLive.observeAsState()
+        val surfaceColor = MaterialTheme.colorScheme.surface
+        val elevatedColor = MaterialTheme.colorScheme.surfaceColorAtElevation(1.dp)
+        var topAppBarColor by remember { mutableStateOf(surfaceColor) }
+
+        SideEffect {
+            navController.value?.addOnDestinationChangedListener(object :
+                NavController.OnDestinationChangedListener {
+                override fun onDestinationChanged(
+                    controller: NavController,
+                    destination: NavDestination,
+                    arguments: Bundle?
+                ) {
+                    if (destination.route == NavSection.Daybook.route) {
+                        topAppBarColor = elevatedColor
+                    } else {
+                        topAppBarColor = surfaceColor
+                    }
+                }
+            })
+        }
 
         val intentData = intent.dataString
         if (intentData != null && authPrefs.get<Boolean>("auth") != true) {
@@ -98,15 +121,7 @@ class MainActivity : ComponentActivity() {
                     title = {
                         Text(stringResource(title))
                     }, colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = when (currentScreen.value) {
-                            Screen.MainNav -> {
-                                MaterialTheme.colorScheme.surfaceColorAtElevation(1.dp)
-                            }
-
-                            else -> {
-                                MaterialTheme.colorScheme.surface
-                            }
-                        }
+                        containerColor = topAppBarColor
                     )
                 )
             }
