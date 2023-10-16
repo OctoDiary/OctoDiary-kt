@@ -120,12 +120,18 @@ object NetworkService {
         /**
          * Gets class members.
          *
-         *
+         * @param accessToken Access token.
+         * @param classUnitId Class unit ID.
+         * @param perPage Per page users count ([Int.MAX_VALUE] by default).
+         * @param types Types to filter ("student" by default).
+         * @return List of [ClassMember]s.
          */
         @GET("/core/api/profiles")
         fun classMembers(
             @Header("auth-token") accessToken: String,
-            @Query("class_unit_id") classUnitId: Int
+            @Query("class_unit_id") classUnitId: Int,
+            @Query("per_page") perPage: Int = Int.MAX_VALUE,
+            @Query("types") types: String = "student"
         ): Call<List<ClassMember>>
     }
 
