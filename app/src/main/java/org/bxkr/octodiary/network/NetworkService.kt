@@ -5,6 +5,7 @@ import org.bxkr.octodiary.models.auth.RegisterResponse
 import org.bxkr.octodiary.models.auth.SchoolAuthBody
 import org.bxkr.octodiary.models.auth.SchoolAuthResponse
 import org.bxkr.octodiary.models.auth.TokenExchange
+import org.bxkr.octodiary.models.classranking.RankingMember
 import org.bxkr.octodiary.models.events.EventsResponse
 import org.bxkr.octodiary.models.mark.MarkInfo
 import org.bxkr.octodiary.models.profilesid.ProfileId
@@ -184,6 +185,22 @@ object NetworkService {
             @Query("student_id") studentId: Int,
             @Header("X-Mes-Subsystem") mesSubsystem: String = MESAPIConfig.FAMILYMP
         ): Call<MarkInfo>
+
+        /**
+         * Gets ranking in class.
+         *
+         * @param accessToken Access token.
+         * @param personId Person ID.
+         * @param date Rankin date in yyyy-MM-dd format.
+         * @param mesSubsystem MES subsystem (["familymp"][MESAPIConfig.FAMILYMP] by default).
+         */
+        @GET("/api/ej/rating/v1/rank/class")
+        fun classRanking(
+            @Header("auth-token") accessToken: String,
+            @Query("personId") personId: String,
+            @Query("date") date: String,
+            @Header("X-Mes-Subsystem") mesSubsystem: String = MESAPIConfig.FAMILYMP
+        ): Call<List<RankingMember>>
     }
 
     fun mosAuthApi(): MosAuthAPI {
