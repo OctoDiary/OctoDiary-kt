@@ -1,9 +1,11 @@
 package org.bxkr.octodiary
 
 import androidx.compose.runtime.mutableStateOf
+import org.bxkr.octodiary.models.classmembers.ClassMember
 import org.bxkr.octodiary.models.classranking.RankingMember
 import org.bxkr.octodiary.models.events.Event
 import org.bxkr.octodiary.models.mark.MarkInfo
+import org.bxkr.octodiary.models.profile.ProfileResponse
 import org.bxkr.octodiary.models.sessionuser.SessionUser
 import org.bxkr.octodiary.network.NetworkService
 import java.util.Calendar
@@ -22,6 +24,13 @@ object DataService {
 
     lateinit var ranking: List<RankingMember>
     val hasRanking get() = this::ranking.isInitialized
+
+    lateinit var classMembers: List<ClassMember>
+    val hasClassMembers get() = this::classMembers.isInitialized
+
+    lateinit var profile: ProfileResponse
+    val hasProfile get() = this::profile.isInitialized
+
     val loadedEverything = mutableStateOf(false)
 
     var tokenExpirationHandler: (() -> Unit)? = null
@@ -77,12 +86,37 @@ object DataService {
     fun updateRanking(onUpdated: () -> Unit) {
         assert(this::token.isInitialized)
         assert(this::sessionUser.isInitialized)
+
+        var rankingFinished = false
+        var classMembersFinished = false
+
+        // Ranking request:
         NetworkService.mesApi().classRanking(
             token,
             personId = sessionUser.personId,
             date = Date().formatToDay()
         ).baseEnqueue(::baseErrorFunction) {
             ranking = it
+            rankingFinished = true
+            if (classMembersFinished) onUpdated()
+        }
+
+        // Class members request for matching names:
+        NetworkService.dnevnikApi().classMembers(
+            token,
+            classUnitId = profile.children[0].classUnitId // FUTURE: USES_FIRST_CHILD
+        ).baseEnqueue {
+            classMembers = it
+            classMembersFinished = true
+            if (rankingFinished) onUpdated()
+        }
+    }
+
+    fun updateProfile(onUpdated: () -> Unit) {
+        assert(this::token.isInitialized)
+
+        NetworkService.mesApi().profile(token).baseEnqueue(::baseErrorFunction) {
+            profile = it
             onUpdated()
         }
     }
@@ -94,8 +128,10 @@ object DataService {
                 updateEventCalendar {
                     if (hasRanking) onLoad()
                 }
-                updateRanking {
-                    if (hasEventCalendar) onLoad()
+                updateProfile {
+                    updateRanking {
+                        if (hasEventCalendar) onLoad()
+                    }
                 }
             }
         }

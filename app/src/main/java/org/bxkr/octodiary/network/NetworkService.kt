@@ -5,9 +5,11 @@ import org.bxkr.octodiary.models.auth.RegisterResponse
 import org.bxkr.octodiary.models.auth.SchoolAuthBody
 import org.bxkr.octodiary.models.auth.SchoolAuthResponse
 import org.bxkr.octodiary.models.auth.TokenExchange
+import org.bxkr.octodiary.models.classmembers.ClassMember
 import org.bxkr.octodiary.models.classranking.RankingMember
 import org.bxkr.octodiary.models.events.EventsResponse
 import org.bxkr.octodiary.models.mark.MarkInfo
+import org.bxkr.octodiary.models.profile.ProfileResponse
 import org.bxkr.octodiary.models.profilesid.ProfileId
 import org.bxkr.octodiary.models.profilesid.ProfilesId
 import org.bxkr.octodiary.models.sessionuser.SessionUser
@@ -114,6 +116,17 @@ object NetworkService {
         fun profilesId(
             @Header("auth-token") authHeader: String
         ): Call<ProfilesId>
+
+        /**
+         * Gets class members.
+         *
+         *
+         */
+        @GET("/core/api/profiles")
+        fun classMembers(
+            @Header("auth-token") accessToken: String,
+            @Query("class_unit_id") classUnitId: Int
+        ): Call<List<ClassMember>>
     }
 
     /**
@@ -202,6 +215,19 @@ object NetworkService {
             @Query("date") date: String,
             @Header("X-Mes-Subsystem") mesSubsystem: String = MESAPIConfig.FAMILYMP
         ): Call<List<RankingMember>>
+
+        /**
+         * Gets user's profile details.
+         *
+         * @param accessToken Access token.
+         * @param mesSubsystem MES subsystem (["familymp"][MESAPIConfig.FAMILYMP] by default).
+         * @return [ProfileResponse]
+         */
+        @GET("/api/family/mobile/v1/profile")
+        fun profile(
+            @Header("auth-token") accessToken: String,
+            @Header("X-Mes-Subsystem") mesSubsystem: String = MESAPIConfig.FAMILYMP
+        ): Call<ProfileResponse>
     }
 
     fun mosAuthApi(): MosAuthAPI {
