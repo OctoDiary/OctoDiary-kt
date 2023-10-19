@@ -13,6 +13,7 @@ import org.bxkr.octodiary.models.profile.ProfileResponse
 import org.bxkr.octodiary.models.profilesid.ProfileId
 import org.bxkr.octodiary.models.profilesid.ProfilesId
 import org.bxkr.octodiary.models.sessionuser.SessionUser
+import org.bxkr.octodiary.models.visits.VisitsResponse
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -234,6 +235,25 @@ object NetworkService {
             @Header("auth-token") accessToken: String,
             @Header("X-Mes-Subsystem") mesSubsystem: String = MESAPIConfig.FAMILYMP
         ): Call<ProfileResponse>
+
+        /**
+         * Gets info about visits.
+         *
+         * @param accessToken Access token.
+         * @param contractId Contract ID.
+         * @param fromDate Start date to get visits.
+         * @param toDate End date to get visits.
+         * @param mesSubsystem MES subsystem (["familymp"][MESAPIConfig.FAMILYMP] by default).
+         * @return [VisitsResponse]
+         */
+        @GET("/api/family/mobile/v1/visits")
+        fun visits(
+            @Header("auth-token") accessToken: String,
+            @Query("contract_id") contractId: Int,
+            @Query("from") fromDate: String,
+            @Query("to") toDate: String,
+            @Header("X-Mes-Subsystem") mesSubsystem: String = MESAPIConfig.FAMILYMP
+        ): Call<VisitsResponse>
     }
 
     fun mosAuthApi(): MosAuthAPI {
