@@ -8,13 +8,17 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.rounded.ArrowForward
 import androidx.compose.material3.Card
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -22,16 +26,22 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastJoinToString
 import org.bxkr.octodiary.DataService
 import org.bxkr.octodiary.R
+import org.bxkr.octodiary.formatToDay
+import org.bxkr.octodiary.formatToHumanDay
 import org.bxkr.octodiary.modalBottomSheetContentLive
 import org.bxkr.octodiary.modalBottomSheetStateLive
+import org.bxkr.octodiary.parseFromDay
+import java.util.Date
 
 @Composable
 fun DashboardScreen() {
-    Column(verticalArrangement = Arrangement.Bottom) {
+    val currentDay = remember { Date().formatToDay() }
+    Column(verticalArrangement = Arrangement.Bottom, modifier = Modifier.padding(16.dp)) {
+        Text(stringResource(id = R.string.rating), style = MaterialTheme.typography.labelLarge)
         Card(
             Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
+                .padding(bottom = 16.dp)
                 .clickable {
                     modalBottomSheetContentLive.value = { RankingList() }
                     modalBottomSheetStateLive.postValue(true)
@@ -49,6 +59,34 @@ fun DashboardScreen() {
                             ?.rank?.rankPlace ?: "?"
                     )
                 )
+            }
+        }
+        if (DataService.visits.payload.any { it.date == currentDay }) {
+            Text(
+                text = "Посещение сегодня",
+                style = MaterialTheme.typography.labelLarge
+            ) // FUTURE: UNTRANSLATED
+            Card(
+                Modifier
+                    .fillMaxWidth()
+                    .clickable {
+                        modalBottomSheetContentLive.value = { VisitsList() }
+                        modalBottomSheetStateLive.postValue(true)
+                    }
+            ) {
+                Row(
+                    Modifier
+                        .padding(16.dp)
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(DataService.visits.payload.first { it.date == currentDay }.visits[0].inX)
+                    Icon(
+                        Icons.AutoMirrored.Rounded.ArrowForward,
+                        stringResource(id = R.string.to)
+                    )
+                    Text(DataService.visits.payload.first { it.date == currentDay }.visits[0].out)
+                }
             }
         }
     }
@@ -84,6 +122,46 @@ fun RankingList() {
                         Text(
                             memberName,
                             maxLines = 1, overflow = TextOverflow.Ellipsis,
+                            modifier = Modifier
+                                .padding(end = 4.dp)
+                                .fillMaxWidth()
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun VisitsList() {
+    val context = LocalContext.current
+    LazyColumn(
+        Modifier
+            .padding(8.dp)
+            .fillMaxWidth()
+    ) {
+        items(DataService.visits.payload) {
+            OutlinedCard(Modifier.padding(bottom = 8.dp)) {
+                Row {
+                    Row(Modifier.padding(8.dp)) {
+                        Text(
+                            context.formatToHumanDay(it.date.parseFromDay()),
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.padding(end = 4.dp)
+                        )
+                        Text(
+                            it.visits[0].inX, // FUTURE: MULTIPLE_DAY_VISITS
+                            modifier = Modifier.padding(end = 4.dp)
+                        )
+                        Icon(
+                            Icons.AutoMirrored.Rounded.ArrowForward,
+                            stringResource(id = R.string.to),
+                            modifier = Modifier.padding(end = 4.dp)
+                        )
+                        Text(
+                            it.visits[0].out,
                             modifier = Modifier
                                 .padding(end = 4.dp)
                                 .fillMaxWidth()

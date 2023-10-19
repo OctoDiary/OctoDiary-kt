@@ -137,8 +137,12 @@ object DataService {
                 set(Calendar.DAY_OF_YEAR, get(Calendar.DAY_OF_YEAR) - 7)
             }.time.formatToDay(),
             toDate = Date().formatToDay()
-        ).baseEnqueue(::baseErrorFunction) {
-            visits = it
+        ).baseEnqueue(::baseErrorFunction) { visitsResponse ->
+            visits = VisitsResponse(
+                payload = visitsResponse.payload.sortedByDescending {
+                    it.date.parseFromDay().toInstant().toEpochMilli()
+                }
+            )
             onUpdated()
         }
     }
