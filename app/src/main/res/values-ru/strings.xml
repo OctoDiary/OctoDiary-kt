@@ -148,4 +148,5 @@
     <string name="unsupported_url">Неподдерживаемая ссылка</string>
     <string name="url_copied_to_clipboard">URL скопирован в буфер обмена</string>
     <string name="homeworks">Задания</string>
+    <string name="to">по</string>
 </resources>

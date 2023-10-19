@@ -5,11 +5,15 @@ import org.bxkr.octodiary.models.auth.RegisterResponse
 import org.bxkr.octodiary.models.auth.SchoolAuthBody
 import org.bxkr.octodiary.models.auth.SchoolAuthResponse
 import org.bxkr.octodiary.models.auth.TokenExchange
+import org.bxkr.octodiary.models.classmembers.ClassMember
+import org.bxkr.octodiary.models.classranking.RankingMember
 import org.bxkr.octodiary.models.events.EventsResponse
 import org.bxkr.octodiary.models.mark.MarkInfo
+import org.bxkr.octodiary.models.profile.ProfileResponse
 import org.bxkr.octodiary.models.profilesid.ProfileId
 import org.bxkr.octodiary.models.profilesid.ProfilesId
 import org.bxkr.octodiary.models.sessionuser.SessionUser
+import org.bxkr.octodiary.models.visits.VisitsResponse
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -113,6 +117,23 @@ object NetworkService {
         fun profilesId(
             @Header("auth-token") authHeader: String
         ): Call<ProfilesId>
+
+        /**
+         * Gets class members.
+         *
+         * @param accessToken Access token.
+         * @param classUnitId Class unit ID.
+         * @param perPage Per page users count ([Int.MAX_VALUE] by default).
+         * @param types Types to filter ("student" by default).
+         * @return List of [ClassMember]s.
+         */
+        @GET("/core/api/profiles")
+        fun classMembers(
+            @Header("auth-token") accessToken: String,
+            @Query("class_unit_id") classUnitId: Int,
+            @Query("per_page") perPage: Int = Int.MAX_VALUE,
+            @Query("types") types: String = "student"
+        ): Call<List<ClassMember>>
     }
 
     /**
@@ -184,6 +205,55 @@ object NetworkService {
             @Query("student_id") studentId: Int,
             @Header("X-Mes-Subsystem") mesSubsystem: String = MESAPIConfig.FAMILYMP
         ): Call<MarkInfo>
+
+        /**
+         * Gets ranking in class.
+         *
+         * @param accessToken Access token.
+         * @param personId Person ID.
+         * @param date Rankin date in yyyy-MM-dd format.
+         * @param mesSubsystem MES subsystem (["familymp"][MESAPIConfig.FAMILYMP] by default).
+         * @return List of [RankingMember].
+         */
+        @GET("/api/ej/rating/v1/rank/class")
+        fun classRanking(
+            @Header("auth-token") accessToken: String,
+            @Query("personId") personId: String,
+            @Query("date") date: String,
+            @Header("X-Mes-Subsystem") mesSubsystem: String = MESAPIConfig.FAMILYMP
+        ): Call<List<RankingMember>>
+
+        /**
+         * Gets user's profile details.
+         *
+         * @param accessToken Access token.
+         * @param mesSubsystem MES subsystem (["familymp"][MESAPIConfig.FAMILYMP] by default).
+         * @return [ProfileResponse]
+         */
+        @GET("/api/family/mobile/v1/profile")
+        fun profile(
+            @Header("auth-token") accessToken: String,
+            @Header("X-Mes-Subsystem") mesSubsystem: String = MESAPIConfig.FAMILYMP
+        ): Call<ProfileResponse>
+
+        /**
+         * Gets info about visits.
+         *
+         * @param accessToken Access token.
+         * @param contractId Contract ID.
+         * @param fromDate Start date to get visits.
+         * @param toDate End date to get visits.
+         * @param mesSubsystem MES subsystem (["familymp"][MESAPIConfig.FAMILYMP] by default).
+         * @return [VisitsResponse]
+         */
+        @GET("/api/family/mobile/v1/visits")
+        fun visits(
+            @Header("auth-token") accessToken: String,
+            @Query("contract_id") contractId: Int,
+            @Query("from") fromDate: String,
+            @Query("to") toDate: String,
+            @Header("X-Mes-Subsystem") mesSubsystem: String = MESAPIConfig.FAMILYMP
+        ): Call<VisitsResponse>
     }
 
     fun mosAuthApi(): MosAuthAPI {

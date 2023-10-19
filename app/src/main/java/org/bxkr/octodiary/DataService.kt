@@ -1,10 +1,16 @@
 package org.bxkr.octodiary
 
+import androidx.compose.runtime.mutableStateOf
+import org.bxkr.octodiary.models.classmembers.ClassMember
+import org.bxkr.octodiary.models.classranking.RankingMember
 import org.bxkr.octodiary.models.events.Event
 import org.bxkr.octodiary.models.mark.MarkInfo
+import org.bxkr.octodiary.models.profile.ProfileResponse
 import org.bxkr.octodiary.models.sessionuser.SessionUser
+import org.bxkr.octodiary.models.visits.VisitsResponse
 import org.bxkr.octodiary.network.NetworkService
 import java.util.Calendar
+import java.util.Date
 
 object DataService {
     lateinit var token: String
@@ -16,6 +22,20 @@ object DataService {
 
     lateinit var eventCalendar: List<Event>
     val hasEventCalendar get() = this::eventCalendar.isInitialized
+
+    lateinit var ranking: List<RankingMember>
+    val hasRanking get() = this::ranking.isInitialized
+
+    lateinit var classMembers: List<ClassMember>
+    val hasClassMembers get() = this::classMembers.isInitialized
+
+    lateinit var profile: ProfileResponse
+    val hasProfile get() = this::profile.isInitialized
+
+    lateinit var visits: VisitsResponse // FUTURE: REGIONAL_FEATURE
+    val hasVisits get() = this::visits.isInitialized
+
+    val loadedEverything = mutableStateOf(false)
 
     var tokenExpirationHandler: (() -> Unit)? = null
 
@@ -65,5 +85,84 @@ object DataService {
             markId = markId,
             studentId = sessionUser.profiles[0].id // FUTURE: USES_FIRST_CHILD
         ).baseEnqueue(::baseErrorFunction) { listener(it) }
+    }
+
+    fun updateRanking(onUpdated: () -> Unit) {
+        assert(this::token.isInitialized)
+        assert(this::sessionUser.isInitialized)
+
+        var rankingFinished = false
+        var classMembersFinished = false
+
+        // Ranking request:
+        NetworkService.mesApi().classRanking(
+            token,
+            personId = sessionUser.personId,
+            date = Date().formatToDay()
+        ).baseEnqueue(::baseErrorFunction) {
+            ranking = it
+            rankingFinished = true
+            if (classMembersFinished) onUpdated()
+        }
+
+        // Class members request for matching names:
+        NetworkService.dnevnikApi().classMembers(
+            token,
+            classUnitId = profile.children[0].classUnitId // FUTURE: USES_FIRST_CHILD
+        ).baseEnqueue {
+            classMembers = it
+            classMembersFinished = true
+            if (rankingFinished) onUpdated()
+        }
+    }
+
+    fun updateProfile(onUpdated: () -> Unit) {
+        assert(this::token.isInitialized)
+
+        NetworkService.mesApi().profile(token).baseEnqueue(::baseErrorFunction) {
+            profile = it
+            onUpdated()
+        }
+    }
+
+    fun updateVisits(onUpdated: () -> Unit) {
+        assert(this::token.isInitialized)
+        assert(this::sessionUser.isInitialized)
+
+        NetworkService.mesApi().visits(
+            token,
+            profile.children[0].contractId,
+            fromDate = Calendar.getInstance().apply {
+                time = Date()
+                set(Calendar.DAY_OF_YEAR, get(Calendar.DAY_OF_YEAR) - 7)
+            }.time.formatToDay(),
+            toDate = Date().formatToDay()
+        ).baseEnqueue(::baseErrorFunction) { visitsResponse ->
+            visits = VisitsResponse(
+                payload = visitsResponse.payload.sortedByDescending {
+                    it.date.parseFromDay().toInstant().toEpochMilli()
+                }
+            )
+            onUpdated()
+        }
+    }
+
+    fun updateAll() {
+        val onLoad = { loadedEverything.value = true }
+        updateUserId {
+            updateSessionUser {
+                updateEventCalendar {
+                    if (hasRanking && hasVisits) onLoad()
+                }
+                updateProfile {
+                    updateRanking {
+                        if (hasEventCalendar && hasVisits) onLoad()
+                    }
+                    updateVisits {
+                        if (hasEventCalendar && hasRanking) onLoad()
+                    }
+                }
+            }
+        }
     }
 }

@@ -200,4 +200,5 @@
     <string name="unsupported_url">Unsupported link</string>
     <string name="url_copied_to_clipboard">URL was copied to clipboard</string>
     <string name="homeworks">Homeworks</string>
+    <string name="to">to</string>
 </resources>

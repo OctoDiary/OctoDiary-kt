@@ -24,23 +24,31 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.MutableLiveData
+import androidx.navigation.NavController
+import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import org.bxkr.octodiary.screens.CallbackScreen
 import org.bxkr.octodiary.screens.LoginScreen
 import org.bxkr.octodiary.screens.NavScreen
@@ -82,6 +90,26 @@ class MainActivity : ComponentActivity() {
             navControllerLive.value = rememberNavController()
         }
         val navController = navControllerLive.observeAsState()
+        val surfaceColor = MaterialTheme.colorScheme.surface
+        val elevatedColor = MaterialTheme.colorScheme.surfaceColorAtElevation(1.dp)
+        var topAppBarColor by remember { mutableStateOf(surfaceColor) }
+
+        SideEffect {
+            navController.value?.addOnDestinationChangedListener(object :
+                NavController.OnDestinationChangedListener {
+                override fun onDestinationChanged(
+                    controller: NavController,
+                    destination: NavDestination,
+                    arguments: Bundle?
+                ) {
+                    if (destination.route == NavSection.Daybook.route) {
+                        topAppBarColor = elevatedColor
+                    } else {
+                        topAppBarColor = surfaceColor
+                    }
+                }
+            })
+        }
 
         val intentData = intent.dataString
         if (intentData != null && authPrefs.get<Boolean>("auth") != true) {
@@ -93,20 +121,21 @@ class MainActivity : ComponentActivity() {
                     title = {
                         Text(stringResource(title))
                     }, colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = when (currentScreen.value) {
-                            Screen.MainNav -> {
-                                MaterialTheme.colorScheme.surfaceColorAtElevation(1.dp)
-                            }
-
-                            else -> {
-                                MaterialTheme.colorScheme.surface
-                            }
-                        }
+                        containerColor = topAppBarColor
                     )
                 )
             }
         }, snackbarHost = { SnackbarHost(hostState = snackbarHostState) }, bottomBar = {
-            if (currentScreen.value != Screen.MainNav) return@Scaffold
+            var localLoadedState by remember { mutableStateOf(false) }
+            LaunchedEffect(rememberCoroutineScope()) {
+                snapshotFlow { DataService.loadedEverything.value }
+                    .onEach { localLoadedState = it }
+                    .launchIn(this)
+            }
+            if (
+                (currentScreen.value != Screen.MainNav)
+                || !localLoadedState
+            ) return@Scaffold
             NavigationBar {
                 val navBackStackEntry by navController.value!!.currentBackStackEntryAsState()
                 val currentDestination = navBackStackEntry?.destination
