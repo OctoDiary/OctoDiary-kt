@@ -7,6 +7,7 @@ import org.bxkr.octodiary.models.events.Event
 import org.bxkr.octodiary.models.mark.MarkInfo
 import org.bxkr.octodiary.models.profile.ProfileResponse
 import org.bxkr.octodiary.models.sessionuser.SessionUser
+import org.bxkr.octodiary.models.visits.VisitsResponse
 import org.bxkr.octodiary.network.NetworkService
 import java.util.Calendar
 import java.util.Date
@@ -30,6 +31,9 @@ object DataService {
 
     lateinit var profile: ProfileResponse
     val hasProfile get() = this::profile.isInitialized
+
+    lateinit var visits: VisitsResponse // FUTURE: REGIONAL_FEATURE
+    val hasVisits get() = this::visits.isInitialized
 
     val loadedEverything = mutableStateOf(false)
 
@@ -121,16 +125,37 @@ object DataService {
         }
     }
 
+    fun updateVisits(onUpdated: () -> Unit) {
+        assert(this::token.isInitialized)
+        assert(this::sessionUser.isInitialized)
+
+        NetworkService.mesApi().visits(
+            token,
+            profile.children[0].contractId,
+            fromDate = Calendar.getInstance().apply {
+                time = Date()
+                set(Calendar.DAY_OF_YEAR, get(Calendar.DAY_OF_YEAR) - 7)
+            }.time.formatToDay(),
+            toDate = Date().formatToDay()
+        ).baseEnqueue(::baseErrorFunction) {
+            visits = it
+            onUpdated()
+        }
+    }
+
     fun updateAll() {
         val onLoad = { loadedEverything.value = true }
         updateUserId {
             updateSessionUser {
                 updateEventCalendar {
-                    if (hasRanking) onLoad()
+                    if (hasRanking && hasVisits) onLoad()
                 }
                 updateProfile {
                     updateRanking {
-                        if (hasEventCalendar) onLoad()
+                        if (hasEventCalendar && hasVisits) onLoad()
+                    }
+                    updateVisits {
+                        if (hasEventCalendar && hasRanking) onLoad()
                     }
                 }
             }
