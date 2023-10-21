@@ -31,12 +31,23 @@ import org.bxkr.octodiary.formatToHumanDay
 import org.bxkr.octodiary.modalBottomSheetContentLive
 import org.bxkr.octodiary.modalBottomSheetStateLive
 import org.bxkr.octodiary.parseFromDay
+import org.bxkr.octodiary.parseLongDate
 import java.util.Date
 
 @Composable
 fun DashboardScreen() {
     val currentDay = remember { Date().formatToDay() }
     Column(verticalArrangement = Arrangement.Bottom, modifier = Modifier.padding(16.dp)) {
+        Text(
+            stringResource(id = R.string.schedule_today),
+            style = MaterialTheme.typography.labelLarge
+        )
+        DayItem(
+            modifier = Modifier
+                .padding(bottom = 16.dp),
+            day = DataService.eventCalendar.filter {
+                it.startAt.parseLongDate().formatToDay() == currentDay
+            }) // FUTURE: > This day has no constrained height, so it can overlap other components
         Text(stringResource(id = R.string.rating), style = MaterialTheme.typography.labelLarge)
         Card(
             Modifier
@@ -61,9 +72,15 @@ fun DashboardScreen() {
                 )
             }
         }
-        if (DataService.visits.payload.any { it.date == currentDay }) {
+        if (DataService.visits.payload.isNotEmpty()) {
+            val lastVisit = DataService.visits.payload.maxBy {
+                it.date.parseFromDay().toInstant().toEpochMilli()
+            }
             Text(
-                text = "Посещение сегодня",
+                text = "Посещение ${
+                    lastVisit.date.parseFromDay()
+                        .let { LocalContext.current.formatToHumanDay(it) }
+                }",
                 style = MaterialTheme.typography.labelLarge
             ) // FUTURE: UNTRANSLATED
             Card(
@@ -80,12 +97,12 @@ fun DashboardScreen() {
                         .fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text(DataService.visits.payload.first { it.date == currentDay }.visits[0].inX)
+                    Text(lastVisit.visits[0].inX)
                     Icon(
                         Icons.AutoMirrored.Rounded.ArrowForward,
                         stringResource(id = R.string.to)
                     )
-                    Text(DataService.visits.payload.first { it.date == currentDay }.visits[0].out)
+                    Text(lastVisit.visits[0].out)
                 }
             }
         }
