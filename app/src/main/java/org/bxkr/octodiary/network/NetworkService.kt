@@ -141,7 +141,7 @@ object NetworkService {
         @GET("/api/meals/v1/clients")
         fun mealBalance(
             @Header("auth-token") accessToken: String,
-            @Query("contract_id") contractId: Int,
+            @Query("contractId") contractId: Int,
             @Header("X-Mes-Subsystem") mesSubsystem: String = MESAPIConfig.FAMILYMP
         ): Call<MealBalance>
     }
