@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.text.capitalize
 import androidx.core.content.edit
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -122,12 +121,17 @@ fun String.parseFromDay(): Date = SimpleDateFormat("yyyy-MM-dd", Locale.ROOT).pa
 fun Context.formatToHumanDay(date: Date): String =
     SimpleDateFormat("dd LLL", resources.configuration.locales[0]).format(date)
 
-/** Formats [Date] to EEEE, dd LLL format [String] **/
+/** Formats [Date] to dd MMMM format [String] **/
 @ReadOnlyComposable
 @Composable
-fun formatToWeekdayAndDay(date: Date): String =
-    SimpleDateFormat("EEEE, dd LLL", LocalConfiguration.current.locales[0]).format(date)
-        .capitalize(androidx.compose.ui.text.intl.Locale.current)
+fun formatToLongHumanDay(date: Date): String =
+    SimpleDateFormat("dd MMMM", LocalConfiguration.current.locales[0]).format(date)
+
+/** Formats [Date] to EEEE format [String] **/
+@ReadOnlyComposable
+@Composable
+fun formatToWeekday(date: Date): String =
+    SimpleDateFormat("EEEE", LocalConfiguration.current.locales[0]).format(date)
 
 /** Parses [String] of [OffsetDateTime] (very long with TZ) to [Date] **/
 fun String.parseLongDate(): Date =
