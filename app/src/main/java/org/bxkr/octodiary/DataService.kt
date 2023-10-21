@@ -6,6 +6,7 @@ import org.bxkr.octodiary.models.classranking.RankingMember
 import org.bxkr.octodiary.models.events.Event
 import org.bxkr.octodiary.models.mark.MarkInfo
 import org.bxkr.octodiary.models.marklist.MarkList
+import org.bxkr.octodiary.models.mealbalance.MealBalance
 import org.bxkr.octodiary.models.profile.ProfileResponse
 import org.bxkr.octodiary.models.sessionuser.SessionUser
 import org.bxkr.octodiary.models.visits.VisitsResponse
@@ -38,6 +39,9 @@ object DataService {
 
     lateinit var marks: MarkList
     val hasMarks get() = this::marks.isInitialized
+
+    lateinit var mealBalance: MealBalance
+    val hasMealBalance get() = this::mealBalance.isInitialized
 
     val loadedEverything = mutableStateOf(false)
 
@@ -163,31 +167,53 @@ object DataService {
                 time
             }.formatToDay(),
             toDate = Date().formatToDay()
-        ).baseEnqueue {
+        ).baseEnqueue(::baseErrorFunction) {
             marks = it
             onUpdated()
         }
     }
 
+    fun updateMealBalance(onUpdated: () -> Unit) {
+        assert(this::token.isInitialized)
+        assert(this::profile.isInitialized)
+
+        NetworkService.dnevnikApi().mealBalance(
+            token,
+            contractId = profile.children[0].contractId // FUTURE: USES_FIRST_CHILD
+        ).baseEnqueue(::baseErrorFunction) {
+            mealBalance = it
+            onUpdated()
+        }
+    }
+
     fun updateAll() {
-        val onLoad = { loadedEverything.value = true }
+        val onSingleItemLoad = {
+            if (
+                !(listOf(
+                    hasUserId,
+                    hasSessionUser,
+                    hasEventCalendar,
+                    hasRanking,
+                    hasClassMembers,
+                    hasProfile,
+                    hasVisits,
+                    hasMarks,
+                    hasMealBalance
+                ).contains(false))
+            ) {
+                loadedEverything.value = true
+            }
+        }
         updateUserId {
             updateSessionUser {
-                updateEventCalendar {
-                    if (hasRanking && hasVisits && hasMarks) onLoad()
-                }
+                updateEventCalendar { onSingleItemLoad() }
                 updateProfile {
-                    updateRanking {
-                        if (hasEventCalendar && hasVisits && hasMarks) onLoad()
-                    }
-                    updateVisits {
-                        if (hasEventCalendar && hasRanking && hasMarks) onLoad()
-                    }
+                    updateRanking { onSingleItemLoad() }
+                    updateVisits { onSingleItemLoad() }
+                    updateMealBalance { onSingleItemLoad() }
                 }
             }
-            updateMarks {
-                if (hasRanking && hasVisits && hasEventCalendar) onLoad()
-            }
+            updateMarks { onSingleItemLoad() }
         }
     }
 }
