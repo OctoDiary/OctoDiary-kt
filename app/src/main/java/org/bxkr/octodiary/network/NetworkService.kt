@@ -10,6 +10,7 @@ import org.bxkr.octodiary.models.classranking.RankingMember
 import org.bxkr.octodiary.models.events.EventsResponse
 import org.bxkr.octodiary.models.mark.MarkInfo
 import org.bxkr.octodiary.models.marklist.MarkList
+import org.bxkr.octodiary.models.mealbalance.MealBalance
 import org.bxkr.octodiary.models.profile.ProfileResponse
 import org.bxkr.octodiary.models.profilesid.ProfileId
 import org.bxkr.octodiary.models.profilesid.ProfilesId
@@ -135,6 +136,14 @@ object NetworkService {
             @Query("per_page") perPage: Int = Int.MAX_VALUE,
             @Query("types") types: String = "student"
         ): Call<List<ClassMember>>
+
+        // FUTURE: TO_BE_DOCUMENTED
+        @GET("/api/meals/v1/clients")
+        fun mealBalance(
+            @Header("auth-token") accessToken: String,
+            @Query("contract_id") contractId: Int,
+            @Header("X-Mes-Subsystem") mesSubsystem: String = MESAPIConfig.FAMILYMP
+        ): Call<MealBalance>
     }
 
     /**
