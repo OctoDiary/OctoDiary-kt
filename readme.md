@@ -10,14 +10,16 @@
 Android-клиент [МЭШ](https://school.mos.ru/)
 и [Моей школы МО](https://authedu.mosreg.ru/).  
 Использует Jetpack Compose.  
-Android 8.0+, target: Android 14.0
+Android 8.0+
 
 &nbsp;
 
 <div align=center style="padding: 30px">
 
-```В разработке!```
-
+<img src=https://github.com/OctoDiary/OctoDiary-kt/assets/66333241/fdb72a5d-9f7a-4fb9-bb9d-a26c3a735169 width=150>
+<img src=https://github.com/OctoDiary/OctoDiary-kt/assets/66333241/6e4b7741-058e-4926-97d9-cb7022794744 width=150>
+<img src=https://github.com/OctoDiary/OctoDiary-kt/assets/66333241/6904bac2-c2a5-43ce-97ef-3eeed403eba1 width=150>
+<img src=https://github.com/OctoDiary/OctoDiary-kt/assets/66333241/0929a1e5-814a-4013-bb72-c8cd97b4d474 width=150>
 
 </div>
 &nbsp; 
