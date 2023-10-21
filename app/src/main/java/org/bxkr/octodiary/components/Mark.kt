@@ -18,7 +18,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import org.bxkr.octodiary.DataService
@@ -79,7 +78,7 @@ fun MarkSheetContent(mark: Mark) {
                     Text(
                         stringResource(
                             R.string.mark_created,
-                            LocalContext.current.parseSimpleLongAndFormatToLong(
+                            parseSimpleLongAndFormatToLong(
                                 updatedAt,
                                 stringResource(id = R.string.at_time)
                             )

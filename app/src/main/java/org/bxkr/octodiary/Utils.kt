@@ -1,6 +1,10 @@
 package org.bxkr.octodiary
 
 import android.content.Context
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ReadOnlyComposable
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.text.capitalize
 import androidx.core.content.edit
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -118,6 +122,13 @@ fun String.parseFromDay(): Date = SimpleDateFormat("yyyy-MM-dd", Locale.ROOT).pa
 fun Context.formatToHumanDay(date: Date): String =
     SimpleDateFormat("dd LLL", resources.configuration.locales[0]).format(date)
 
+/** Formats [Date] to EEEE, dd LLL format [String] **/
+@ReadOnlyComposable
+@Composable
+fun formatToWeekdayAndDay(date: Date): String =
+    SimpleDateFormat("EEEE, dd LLL", LocalConfiguration.current.locales[0]).format(date)
+        .capitalize(androidx.compose.ui.text.intl.Locale.current)
+
 /** Parses [String] of [OffsetDateTime] (very long with TZ) to [Date] **/
 fun String.parseLongDate(): Date =
     OffsetDateTime.parse(this).toInstant().toEpochMilli().let { Date(it) }
@@ -130,7 +141,9 @@ fun String.parseSimpleLongDate(): Date =
 fun Date.formatToTime(): String = SimpleDateFormat("HH:mm", Locale.ROOT).format(this)
 
 /** Parses [String] of long date without TZ and then formats it to human date [String] **/
-fun Context.parseSimpleLongAndFormatToLong(toFormat: String, joiner: String): String =
-    SimpleDateFormat("d LLL yyyy '$joiner' H:mm", resources.configuration.locales[0]).format(
+@ReadOnlyComposable
+@Composable
+fun parseSimpleLongAndFormatToLong(toFormat: String, joiner: String): String =
+    SimpleDateFormat("d LLL yyyy '$joiner' H:mm", LocalConfiguration.current.locales[0]).format(
         toFormat.parseSimpleLongDate()
     )
