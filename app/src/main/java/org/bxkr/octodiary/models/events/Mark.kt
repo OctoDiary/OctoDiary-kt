@@ -11,7 +11,7 @@ data class Mark(
     @SerializedName("control_form_name")
     val controlFormName: String,
     @SerializedName("criteria")
-    val criteria: List<Criteria>,
+    val criteria: List<Criteria>?,
     @SerializedName("id")
     val id: Int,
     @SerializedName("is_exam")
@@ -25,7 +25,28 @@ data class Mark(
     @SerializedName("value")
     val value: String,
     @SerializedName("values")
-    val values: List<Value>,
+    val values: List<Value>?,
     @SerializedName("weight")
     val weight: Int
-)
+) {
+    companion object MarkCompanion {
+        fun fromMarkList(mark: org.bxkr.octodiary.models.marklist.Mark): Mark {
+            return mark.run {
+                Mark(
+                    comment,
+                    commentExists,
+                    controlFormName,
+                    criteria = null,
+                    id,
+                    isExam,
+                    isPoint,
+                    originalGradeSystemType,
+                    pointDate,
+                    value,
+                    values = null,
+                    weight
+                )
+            }
+        }
+    }
+}

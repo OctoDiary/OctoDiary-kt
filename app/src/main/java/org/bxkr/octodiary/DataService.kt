@@ -5,6 +5,8 @@ import org.bxkr.octodiary.models.classmembers.ClassMember
 import org.bxkr.octodiary.models.classranking.RankingMember
 import org.bxkr.octodiary.models.events.Event
 import org.bxkr.octodiary.models.mark.MarkInfo
+import org.bxkr.octodiary.models.marklist.MarkList
+import org.bxkr.octodiary.models.mealbalance.MealBalance
 import org.bxkr.octodiary.models.profile.ProfileResponse
 import org.bxkr.octodiary.models.sessionuser.SessionUser
 import org.bxkr.octodiary.models.visits.VisitsResponse
@@ -34,6 +36,12 @@ object DataService {
 
     lateinit var visits: VisitsResponse // FUTURE: REGIONAL_FEATURE
     val hasVisits get() = this::visits.isInitialized
+
+    lateinit var marks: MarkList
+    val hasMarks get() = this::marks.isInitialized
+
+    lateinit var mealBalance: MealBalance
+    val hasMealBalance get() = this::mealBalance.isInitialized
 
     val loadedEverything = mutableStateOf(false)
 
@@ -147,22 +155,65 @@ object DataService {
         }
     }
 
+    fun updateMarks(onUpdated: () -> Unit) {
+        assert(this::token.isInitialized)
+        assert(this::userId.isInitialized)
+
+        NetworkService.mesApi().markList(
+            token,
+            studentId = userId.toInt(),
+            fromDate = Calendar.getInstance().run {
+                set(Calendar.WEEK_OF_YEAR, get(Calendar.WEEK_OF_YEAR) - 1)
+                time
+            }.formatToDay(),
+            toDate = Date().formatToDay()
+        ).baseEnqueue(::baseErrorFunction) {
+            marks = it
+            onUpdated()
+        }
+    }
+
+    fun updateMealBalance(onUpdated: () -> Unit) {
+        assert(this::token.isInitialized)
+        assert(this::profile.isInitialized)
+
+        NetworkService.dnevnikApi().mealBalance(
+            token,
+            contractId = profile.children[0].contractId // FUTURE: USES_FIRST_CHILD
+        ).baseEnqueue(::baseErrorFunction) {
+            mealBalance = it
+            onUpdated()
+        }
+    }
+
     fun updateAll() {
-        val onLoad = { loadedEverything.value = true }
+        val onSingleItemLoad = {
+            if (
+                !(listOf(
+                    hasUserId,
+                    hasSessionUser,
+                    hasEventCalendar,
+                    hasRanking,
+                    hasClassMembers,
+                    hasProfile,
+                    hasVisits,
+                    hasMarks,
+                    hasMealBalance
+                ).contains(false))
+            ) {
+                loadedEverything.value = true
+            }
+        }
         updateUserId {
             updateSessionUser {
-                updateEventCalendar {
-                    if (hasRanking && hasVisits) onLoad()
-                }
+                updateEventCalendar { onSingleItemLoad() }
                 updateProfile {
-                    updateRanking {
-                        if (hasEventCalendar && hasVisits) onLoad()
-                    }
-                    updateVisits {
-                        if (hasEventCalendar && hasRanking) onLoad()
-                    }
+                    updateRanking { onSingleItemLoad() }
+                    updateVisits { onSingleItemLoad() }
+                    updateMealBalance { onSingleItemLoad() }
                 }
             }
+            updateMarks { onSingleItemLoad() }
         }
     }
 }

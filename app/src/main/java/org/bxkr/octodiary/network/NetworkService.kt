@@ -9,6 +9,8 @@ import org.bxkr.octodiary.models.classmembers.ClassMember
 import org.bxkr.octodiary.models.classranking.RankingMember
 import org.bxkr.octodiary.models.events.EventsResponse
 import org.bxkr.octodiary.models.mark.MarkInfo
+import org.bxkr.octodiary.models.marklist.MarkList
+import org.bxkr.octodiary.models.mealbalance.MealBalance
 import org.bxkr.octodiary.models.profile.ProfileResponse
 import org.bxkr.octodiary.models.profilesid.ProfileId
 import org.bxkr.octodiary.models.profilesid.ProfilesId
@@ -134,6 +136,14 @@ object NetworkService {
             @Query("per_page") perPage: Int = Int.MAX_VALUE,
             @Query("types") types: String = "student"
         ): Call<List<ClassMember>>
+
+        // FUTURE: TO_BE_DOCUMENTED
+        @GET("/api/meals/v1/clients")
+        fun mealBalance(
+            @Header("auth-token") accessToken: String,
+            @Query("contractId") contractId: Int,
+            @Header("X-Mes-Subsystem") mesSubsystem: String = MESAPIConfig.FAMILYMP
+        ): Call<MealBalance>
     }
 
     /**
@@ -254,6 +264,16 @@ object NetworkService {
             @Query("to") toDate: String,
             @Header("X-Mes-Subsystem") mesSubsystem: String = MESAPIConfig.FAMILYMP
         ): Call<VisitsResponse>
+
+        // FUTURE: TO_BE_DOCUMENTED
+        @GET("/api/family/mobile/v1/marks")
+        fun markList(
+            @Header("auth-token") accessToken: String,
+            @Query("student_id") studentId: Int,
+            @Query("from") fromDate: String,
+            @Query("to") toDate: String,
+            @Header("X-Mes-Subsystem") mesSubsystem: String = MESAPIConfig.FAMILYMP
+        ): Call<MarkList>
     }
 
     fun mosAuthApi(): MosAuthAPI {

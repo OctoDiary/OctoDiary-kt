@@ -5,6 +5,7 @@ import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -40,8 +41,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.MutableLiveData
-import androidx.navigation.NavController
-import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
@@ -95,20 +94,10 @@ class MainActivity : ComponentActivity() {
         var topAppBarColor by remember { mutableStateOf(surfaceColor) }
 
         SideEffect {
-            navController.value?.addOnDestinationChangedListener(object :
-                NavController.OnDestinationChangedListener {
-                override fun onDestinationChanged(
-                    controller: NavController,
-                    destination: NavDestination,
-                    arguments: Bundle?
-                ) {
-                    if (destination.route == NavSection.Daybook.route) {
-                        topAppBarColor = elevatedColor
-                    } else {
-                        topAppBarColor = surfaceColor
-                    }
-                }
-            })
+            navController.value?.addOnDestinationChangedListener { _, destination, _ ->
+                topAppBarColor =
+                    (if (destination.route == NavSection.Daybook.route) elevatedColor else surfaceColor)
+            }
         }
 
         val intentData = intent.dataString
@@ -119,7 +108,9 @@ class MainActivity : ComponentActivity() {
             Column {
                 TopAppBar(
                     title = {
-                        Text(stringResource(title))
+                        AnimatedContent(targetState = title, label = "title_anim") {
+                            Text(stringResource(it))
+                        }
                     }, colors = TopAppBarDefaults.topAppBarColors(
                         containerColor = topAppBarColor
                     )
@@ -177,7 +168,10 @@ class MainActivity : ComponentActivity() {
 
                     Screen.MainNav -> {
                         NavScreen(Modifier.padding(padding), currentScreen)
-                        R.string.diary
+                        val navBackStackEntry by navController.value!!.currentBackStackEntryAsState()
+                        val currentRoute = navBackStackEntry?.destination?.route
+                        NavSection.values().firstOrNull { it.route == currentRoute }?.title
+                            ?: R.string.app_name
                     }
                 }
             }
