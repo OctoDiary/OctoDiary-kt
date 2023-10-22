@@ -109,7 +109,9 @@ fun PersonalData() {
                                 .clip(MaterialTheme.shapes.large)
                                 .rotate(
                                     animateFloatAsState(
-                                        targetValue = rotation, label = "rotate_anim"
+                                        targetValue = rotation,
+                                        animationSpec = tween(600),
+                                        label = "rotate_anim"
                                     ).value
                                 )
                                 .background(MaterialTheme.colorScheme.secondaryContainer),
