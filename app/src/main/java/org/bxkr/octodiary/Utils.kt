@@ -118,20 +118,28 @@ fun Date.formatToDay(): String = SimpleDateFormat("yyyy-MM-dd", Locale.ROOT).for
 fun String.parseFromDay(): Date = SimpleDateFormat("yyyy-MM-dd", Locale.ROOT).parse(this)!!
 
 /** Formats [Date] to dd LLL format [String] **/
-fun Context.formatToHumanDay(date: Date): String =
-    SimpleDateFormat("dd LLL", resources.configuration.locales[0]).format(date)
+@ReadOnlyComposable
+@Composable
+fun Date.formatToHumanDay(): String =
+    SimpleDateFormat("dd LLL", LocalConfiguration.current.locales[0]).format(this)
 
 /** Formats [Date] to dd MMMM format [String] **/
 @ReadOnlyComposable
 @Composable
-fun formatToLongHumanDay(date: Date): String =
-    SimpleDateFormat("dd MMMM", LocalConfiguration.current.locales[0]).format(date)
+fun Date.formatToLongHumanDay(): String =
+    SimpleDateFormat("dd MMMM", LocalConfiguration.current.locales[0]).format(this)
+
+/** Formats [Date] to dd.MM.yyyy format [String] **/
+@ReadOnlyComposable
+@Composable
+fun Date.formatToHumanDate(): String =
+    SimpleDateFormat("dd.MM.yyyy", LocalConfiguration.current.locales[0]).format(this)
 
 /** Formats [Date] to EEEE format [String] **/
 @ReadOnlyComposable
 @Composable
-fun formatToWeekday(date: Date): String =
-    SimpleDateFormat("EEEE", LocalConfiguration.current.locales[0]).format(date)
+fun Date.formatToWeekday(): String =
+    SimpleDateFormat("EEEE", LocalConfiguration.current.locales[0]).format(this)
 
 /** Parses [String] of [OffsetDateTime] (very long with TZ) to [Date] **/
 fun String.parseLongDate(): Date =
