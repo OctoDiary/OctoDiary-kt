@@ -186,28 +186,31 @@ object DataService {
         }
     }
 
-    fun updateAll() {
+    fun updateAll(sendEachValueLoaded: (percent: Float) -> Unit) {
         val onSingleItemLoad = {
-            if (
-                !(listOf(
-                    hasUserId,
-                    hasSessionUser,
-                    hasEventCalendar,
-                    hasRanking,
-                    hasClassMembers,
-                    hasProfile,
-                    hasVisits,
-                    hasMarks,
-                    hasMealBalance
-                ).contains(false))
-            ) {
+            val allStates = listOf(
+                hasUserId,
+                hasSessionUser,
+                hasEventCalendar,
+                hasRanking,
+                hasClassMembers,
+                hasProfile,
+                hasVisits,
+                hasMarks,
+                hasMealBalance
+            )
+            sendEachValueLoaded((allStates.count { it }.toFloat()) / (allStates.size.toFloat()))
+            if (!(allStates.contains(false))) {
                 loadedEverything.value = true
             }
         }
         updateUserId {
+            onSingleItemLoad()
             updateSessionUser {
+                onSingleItemLoad()
                 updateEventCalendar { onSingleItemLoad() }
                 updateProfile {
+                    onSingleItemLoad()
                     updateRanking { onSingleItemLoad() }
                     updateVisits { onSingleItemLoad() }
                     updateMealBalance { onSingleItemLoad() }

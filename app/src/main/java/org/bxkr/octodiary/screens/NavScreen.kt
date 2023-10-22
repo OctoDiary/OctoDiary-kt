@@ -3,6 +3,7 @@ package org.bxkr.octodiary.screens
 import android.content.res.Configuration
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -24,9 +25,9 @@ import androidx.compose.material.icons.automirrored.rounded.Logout
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -35,6 +36,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -57,6 +59,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import org.bxkr.octodiary.DataService
 import org.bxkr.octodiary.NavSection
 import org.bxkr.octodiary.R
@@ -114,7 +117,7 @@ fun NavScreen(modifier: Modifier, currentScreen: MutableState<Screen>) {
                         .onEach { localLoadedState = it }
                         .launchIn(this)
                 }
-                if (localLoadedState) {
+                AnimatedVisibility(localLoadedState) {
                     NavHost(
                         navController = navController.value!!,
                         startDestination = NavSection.Dashboard.route
@@ -123,15 +126,27 @@ fun NavScreen(modifier: Modifier, currentScreen: MutableState<Screen>) {
                             composable(it.route) { _ -> it.composable() }
                         }
                     }
-                } else {
+                }
+                AnimatedVisibility(!localLoadedState) {
                     // FUTURE: ARCHIVE_RESTORE_DATA
-                    DataService.updateAll()
+                    var progress by remember { mutableFloatStateOf(0f) }
+                    val progressAnimated by animateFloatAsState(
+                        progress,
+                        tween(200),
+                        label = "progress_anim"
+                    )
+                    val coroutineScope = rememberCoroutineScope()
+                    DataService.updateAll {
+                        coroutineScope.launch {
+                            progress = it
+                        }
+                    }
                     Column(
                         Modifier.fillMaxSize(),
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center
                     ) {
-                        CircularProgressIndicator()
+                        LinearProgressIndicator(progressAnimated)
                     }
                 }
                 currentScreen.value = Screen.MainNav
