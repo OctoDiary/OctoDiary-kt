@@ -57,7 +57,10 @@ fun HomeworksScreen() {
         enabledSubjectsLive.postValue(DataService.homeworks.map { it.subjectId })
         contentDependentActionLive.postValue {
             DataService.homeworks.map { it.subjectId to it.subjectName }.toSet().forEach {
-                var checked by rememberSaveable { mutableStateOf(true) }
+                var checked by rememberSaveable(key = it.first.toString()) {
+                    mutableStateOf(
+                        enabledSubjectsLive.value!!.any { it1 -> it1 == it.first })
+                }
                 DropdownMenuItem(text = {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Checkbox(checked,
