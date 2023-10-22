@@ -15,6 +15,7 @@ import org.bxkr.octodiary.models.mealbalance.MealBalance
 import org.bxkr.octodiary.models.profile.ProfileResponse
 import org.bxkr.octodiary.models.profilesid.ProfileId
 import org.bxkr.octodiary.models.profilesid.ProfilesId
+import org.bxkr.octodiary.models.schoolinfo.SchoolInfo
 import org.bxkr.octodiary.models.sessionuser.SessionUser
 import org.bxkr.octodiary.models.visits.VisitsResponse
 import retrofit2.Call
@@ -290,6 +291,15 @@ object NetworkService {
             @Query("sort_direction") sortDirection: String = MESAPIConfig.ASCENDING,
             @Header("X-Mes-Subsystem") mesSubsystem: String = MESAPIConfig.FAMILYMP
         ): Call<HomeworksResponse>
+
+        // FUTURE: TO_BE_DOCUMENTED
+        @GET("/api/family/mobile/v1/school_info")
+        fun schoolInfo(
+            @Header("auth-token") accessToken: String,
+            @Query("school_id") schoolId: Int,
+            @Query("class_unit_id") classUnitId: Int,
+            @Header("X-Mes-Subsystem") mesSubsystem: String = MESAPIConfig.FAMILYMP
+        ): Call<SchoolInfo>
     }
 
     fun mosAuthApi(): MosAuthAPI {
