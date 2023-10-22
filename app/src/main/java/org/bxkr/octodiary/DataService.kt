@@ -4,6 +4,7 @@ import androidx.compose.runtime.mutableStateOf
 import org.bxkr.octodiary.models.classmembers.ClassMember
 import org.bxkr.octodiary.models.classranking.RankingMember
 import org.bxkr.octodiary.models.events.Event
+import org.bxkr.octodiary.models.homeworks.Homework
 import org.bxkr.octodiary.models.mark.MarkInfo
 import org.bxkr.octodiary.models.marklist.MarkList
 import org.bxkr.octodiary.models.mealbalance.MealBalance
@@ -39,6 +40,9 @@ object DataService {
 
     lateinit var marks: MarkList
     val hasMarks get() = this::marks.isInitialized
+
+    lateinit var homeworks: List<Homework>
+    val hasHomeworks get() = this::homeworks.isInitialized
 
     lateinit var mealBalance: MealBalance // FUTURE: REGIONAL_FEATURE
     val hasMealBalance get() = this::mealBalance.isInitialized
@@ -173,6 +177,23 @@ object DataService {
         }
     }
 
+    fun updateHomeworks(onUpdated: () -> Unit) {
+        assert(this::token.isInitialized)
+        assert(this::userId.isInitialized)
+
+        NetworkService.mesApi().homeworks(
+            token,
+            studentId = userId.toInt(),
+            fromDate = Date().formatToDay(),
+            toDate = Calendar.getInstance().run {
+                set(Calendar.WEEK_OF_YEAR, get(Calendar.WEEK_OF_YEAR) + 1)
+                time
+            }.formatToDay()
+        ).baseEnqueue(::baseErrorFunction) {
+            homeworks = it.payload
+        }
+    }
+
     fun updateMealBalance(onUpdated: () -> Unit) {
         assert(this::token.isInitialized)
         assert(this::profile.isInitialized)
@@ -197,6 +218,7 @@ object DataService {
                 hasProfile,
                 hasVisits,
                 hasMarks,
+                hasHomeworks,
                 hasMealBalance
             )
             sendEachValueLoaded((allStates.count { it }.toFloat()) / (allStates.size.toFloat()))
@@ -217,6 +239,7 @@ object DataService {
                 }
             }
             updateMarks { onSingleItemLoad() }
+            updateHomeworks { onSingleItemLoad() }
         }
     }
 }
