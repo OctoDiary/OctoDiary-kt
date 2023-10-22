@@ -55,8 +55,25 @@ fun PersonalData() {
                     birthDate.parseFromDay().formatToHumanDate()
                 }"
             ) // FUTURE: UNTRANSLATED
-            Text("СНИЛС: $snils",
-                Modifier.clickable { clipboardManager.setText(AnnotatedString(snils)) }) // FUTURE: UNTRANSLATED
+            Row {
+                Text("СНИЛС: ") // FUTURE: UNTRANSLATED
+                var snilsShown by remember { mutableStateOf(false) }
+                var snilsCopied by remember { mutableStateOf(false) }
+                AnimatedVisibility(!snilsShown) {
+                    Text("показать", Modifier.clickable {
+                        if (!snilsCopied) {
+                            clipboardManager.setText(AnnotatedString(snils))
+                            snilsCopied = true
+                        }
+                        snilsShown = true
+                    }, color = MaterialTheme.colorScheme.secondary) // FUTURE: UNTRANSLATED
+                }
+                AnimatedVisibility(snilsShown) {
+                    Text(snils, Modifier.clickable {
+                        snilsShown = false
+                    })
+                }
+            }
 
 
             var representativesExpanded by remember { mutableStateOf(false) }
