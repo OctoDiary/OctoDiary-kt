@@ -40,7 +40,7 @@ object DataService {
     lateinit var marks: MarkList
     val hasMarks get() = this::marks.isInitialized
 
-    lateinit var mealBalance: MealBalance
+    lateinit var mealBalance: MealBalance // FUTURE: REGIONAL_FEATURE
     val hasMealBalance get() = this::mealBalance.isInitialized
 
     val loadedEverything = mutableStateOf(false)

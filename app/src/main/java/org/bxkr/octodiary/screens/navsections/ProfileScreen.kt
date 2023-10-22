@@ -50,7 +50,10 @@ fun ProfileScreen() {
                     "${profile.children[0].className} класс",
                     style = MaterialTheme.typography.titleMedium
                 ) // FUTURE: USES_FIRST_CHILD UNTRANSLATED
-                Text("${mealBalance.balance / 100} ₽", style = MaterialTheme.typography.titleSmall)
+                Text(
+                    "${mealBalance.balance / 100} ₽",
+                    style = MaterialTheme.typography.titleSmall
+                ) // FUTURE: REGIONAL_FEATURE UNTRANSLATED
             }
         }
         Column(
@@ -68,7 +71,7 @@ fun ProfileScreen() {
             Row(horizontalArrangement = Arrangement.spacedBy(2.dp)) {
                 SectionGridItem("Еда", Icons.Rounded.Restaurant) {
 
-                } // FUTURE: UNTRANSLATED
+                } // FUTURE: UNTRANSLATED REGIONAL_FEATURE
                 SectionGridItem("Школа", Icons.Rounded.Apartment) {
 
                 } // FUTURE: UNTRANSLATED
