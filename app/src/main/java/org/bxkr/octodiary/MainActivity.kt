@@ -7,11 +7,14 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.FilterAlt
 import androidx.compose.material.icons.rounded.Settings
+import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -40,6 +43,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -61,6 +65,7 @@ val modalBottomSheetStateLive = MutableLiveData(false)
 val modalBottomSheetContentLive = MutableLiveData<@Composable () -> Unit> {}
 val snackbarHostStateLive = MutableLiveData(SnackbarHostState())
 val navControllerLive = MutableLiveData<NavHostController?>(null)
+val contentDependentActionLive = MutableLiveData<@Composable () -> Unit> {}
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -96,6 +101,7 @@ class MainActivity : ComponentActivity() {
         val surfaceColor = MaterialTheme.colorScheme.surface
         val elevatedColor = MaterialTheme.colorScheme.surfaceColorAtElevation(1.dp)
         var topAppBarColor by remember { mutableStateOf(surfaceColor) }
+        val contentDependentAction = contentDependentActionLive.observeAsState()
 
         SideEffect {
             navController.value?.addOnDestinationChangedListener { _, destination, _ ->
@@ -117,9 +123,25 @@ class MainActivity : ComponentActivity() {
                         }
                     },
                     actions = {
-                        AnimatedVisibility(visible = navController.value!!.currentBackStackEntryAsState().value?.destination?.route == NavSection.Profile.route) {
+                        val currentRoute =
+                            navController.value!!.currentBackStackEntryAsState().value?.destination?.route
+                        AnimatedVisibility(currentRoute == NavSection.Profile.route) {
                             IconButton(onClick = {}) {
                                 Icon(Icons.Rounded.Settings, stringResource(id = R.string.settings))
+                            }
+                        }
+                        AnimatedVisibility(currentRoute == NavSection.Homeworks.route) {
+                            var expanded by remember {
+                                mutableStateOf(false)
+                            }
+                            Box(contentAlignment = Alignment.Center) {
+                                IconButton(onClick = { expanded = !expanded }) {
+                                    Icon(Icons.Rounded.FilterAlt, "Фильтр")
+                                }
+                                DropdownMenu(expanded, { expanded = false }) {
+                                    contentDependentAction.value?.invoke()
+                                }
+
                             }
                         }
                     },

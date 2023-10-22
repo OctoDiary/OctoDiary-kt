@@ -1,7 +1,9 @@
 package org.bxkr.octodiary.screens.navsections
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,10 +13,13 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -22,16 +27,56 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.MutableLiveData
 import org.bxkr.octodiary.DataService
+import org.bxkr.octodiary.contentDependentActionLive
 import org.bxkr.octodiary.formatToLongHumanDay
 import org.bxkr.octodiary.formatToWeekday
 import org.bxkr.octodiary.models.homeworks.Homework
 import org.bxkr.octodiary.parseFromDay
 
+val enabledSubjectsLive = MutableLiveData<List<Int>>(emptyList())
+
 @Composable
 fun HomeworksScreen() {
+    LaunchedEffect(Unit) {
+        val enable = { enabled: Boolean, id: Int ->
+            if (enabledSubjectsLive.value != null) {
+                if (enabled && enabledSubjectsLive.value?.contains(id) == false) {
+                    enabledSubjectsLive.postValue(enabledSubjectsLive.value!! + listOf(id))
+                } else if (!enabled && enabledSubjectsLive.value?.contains(id) == true) {
+                    enabledSubjectsLive.postValue(enabledSubjectsLive.value!!.filter {
+                        it != id
+                    })
+                }
+            }
+        }
+        enabledSubjectsLive.postValue(DataService.homeworks.map { it.subjectId })
+        contentDependentActionLive.postValue {
+            DataService.homeworks.map { it.subjectId to it.subjectName }.toSet().forEach {
+                var checked by rememberSaveable { mutableStateOf(true) }
+                DropdownMenuItem(text = {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Checkbox(checked,
+                            { isChecked -> checked = isChecked; enable(isChecked, it.first) })
+                        Text(
+                            it.second,
+                            maxLines = 2,
+                            overflow = TextOverflow.Ellipsis,
+                            style = MaterialTheme.typography.titleMedium
+                        )
+                    }
+                }, onClick = {
+                    checked = !checked
+                    enable(checked, it.first)
+                })
+            }
+        }
+    }
+
     val daySplitMarks = remember {
         DataService.homeworks.sortedBy {
             it.date.parseFromDay().toInstant().toEpochMilli()
@@ -67,46 +112,48 @@ fun HomeworksScreen() {
 
 @Composable
 fun HomeworkDay(homeworks: List<Homework>) {
-    Column(Modifier.padding(bottom = 16.dp)) {
-        val date = homeworks[0].date.parseFromDay()
-        Row {
-            Text(
-                date.formatToLongHumanDay(),
-                Modifier.padding(end = 3.dp),
-                style = MaterialTheme.typography.titleSmall
-            )
-            Text(
-                date.formatToWeekday(),
-                Modifier.alpha(.8f),
-                style = MaterialTheme.typography.titleSmall
-            )
-        }
-        val subjectSplitHomeworks =
-            homeworks.fold(mutableListOf<MutableList<Homework>>()) { sum, it ->
-                if (sum.isEmpty() || sum.last().first().subjectId != it.subjectId) {
-                    sum.add(mutableListOf(it))
-                } else {
-                    sum.last().add(it)
-                }
-                sum
+    val enabledSubjects = enabledSubjectsLive.observeAsState()
+    AnimatedVisibility(visible = homeworks.any { it.subjectId in enabledSubjects.value!! }) {
+        Column(Modifier.padding(bottom = 16.dp)) {
+            val date = homeworks[0].date.parseFromDay()
+            Row {
+                Text(
+                    date.formatToLongHumanDay(),
+                    Modifier.padding(end = 3.dp),
+                    style = MaterialTheme.typography.titleSmall
+                )
+                Text(
+                    date.formatToWeekday(),
+                    Modifier.alpha(.8f),
+                    style = MaterialTheme.typography.titleSmall
+                )
             }
-        subjectSplitHomeworks.forEach {
-            val cardShape =
-                if (homeworks.size == 1) MaterialTheme.shapes.large else if (homeworks.indexOf(it.first()) == 0) MaterialTheme.shapes.extraSmall.copy(
-                    topStart = MaterialTheme.shapes.large.topStart,
-                    topEnd = MaterialTheme.shapes.large.topEnd
-                ) else if (homeworks.indexOf(it.last()) == homeworks.lastIndex) MaterialTheme.shapes.extraSmall.copy(
-                    bottomStart = MaterialTheme.shapes.large.bottomStart,
-                    bottomEnd = MaterialTheme.shapes.large.bottomEnd
-                ) else MaterialTheme.shapes.extraSmall
-            Card(
-                Modifier
-                    .padding(bottom = 2.dp)
-                    .fillMaxWidth(),
-                shape = cardShape,
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer)
+            val subjectSplitHomeworks =
+                remember {
+                    homeworks.fold(mutableListOf<MutableList<Homework>>()) { sum, it ->
+                        if (sum.isEmpty() || sum.last().first().subjectId != it.subjectId) {
+                            sum.add(mutableListOf(it))
+                        } else {
+                            sum.last().add(it)
+                        }
+                        sum
+                    }
+                }
+            Column(
+                Modifier.clip(MaterialTheme.shapes.large),
+                verticalArrangement = Arrangement.spacedBy(2.dp)
             ) {
-                HomeworkSubject(homeworks = it)
+                subjectSplitHomeworks.forEach {
+                    Card(
+                        Modifier.fillMaxWidth(),
+                        shape = MaterialTheme.shapes.extraSmall,
+                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer)
+                    ) {
+                        AnimatedVisibility(visible = it.first().subjectId in enabledSubjects.value!!) {
+                            HomeworkSubject(homeworks = it)
+                        }
+                    }
+                }
             }
         }
     }
@@ -127,11 +174,8 @@ fun HomeworkSubject(homeworks: List<Homework>) {
                 Modifier
                     .clickable { expanded = !expanded } // FUTURE: SEND_HOMEWORK_DONE_STATE
                     .padding(
-                        start = 8.dp,
-                        end = 16.dp,
-                        bottom = 16.dp
-                    )
-            ) {
+                        start = 8.dp, end = 16.dp, bottom = 16.dp
+                    )) {
                 Column(Modifier.padding(start = 8.dp)) {
                     if (it.materialsCount.isNotEmpty()) {
                         if (it.materialsCount.any { it.selectedMode == "learn" }) {
@@ -149,14 +193,9 @@ fun HomeworkSubject(homeworks: List<Homework>) {
                     }
                 }
                 Row(
-                    Modifier
-                        .fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically
+                    Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Checkbox(
-                        isDone,
-                        { isDone = it }
-                    ) // FUTURE: SEND_HOMEWORK_DONE_STATE
+                    Checkbox(isDone, { isDone = it }) // FUTURE: SEND_HOMEWORK_DONE_STATE
                     Text(
                         it.description,
                         Modifier.animateContentSize(),

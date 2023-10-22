@@ -28,7 +28,7 @@ enum class NavSection(
     val composable: @Composable () -> Unit
 ) {
     Daybook(Icons.AutoMirrored.Rounded.MenuBook, R.string.diary, "daybook", { DaybookScreen() }),
-    Homework(Icons.Rounded.HomeWork, R.string.homeworks, "homeworks", { HomeworksScreen() }),
+    Homeworks(Icons.Rounded.HomeWork, R.string.homeworks, "homeworks", { HomeworksScreen() }),
     Dashboard(Icons.Rounded.Dashboard, R.string.dashboard, "dashboard", { DashboardScreen() }),
     Marks(Icons.AutoMirrored.Rounded.TrendingUp, R.string.marks, "marks", { MarksScreen() }),
     Profile(Icons.Rounded.Person, R.string.profile, "profile", { ProfileScreen() })
