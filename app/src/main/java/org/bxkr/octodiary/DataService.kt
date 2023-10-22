@@ -9,6 +9,7 @@ import org.bxkr.octodiary.models.mark.MarkInfo
 import org.bxkr.octodiary.models.marklist.MarkList
 import org.bxkr.octodiary.models.mealbalance.MealBalance
 import org.bxkr.octodiary.models.profile.ProfileResponse
+import org.bxkr.octodiary.models.schoolinfo.SchoolInfo
 import org.bxkr.octodiary.models.sessionuser.SessionUser
 import org.bxkr.octodiary.models.visits.VisitsResponse
 import org.bxkr.octodiary.network.NetworkService
@@ -46,6 +47,9 @@ object DataService {
 
     lateinit var mealBalance: MealBalance // FUTURE: REGIONAL_FEATURE
     val hasMealBalance get() = this::mealBalance.isInitialized
+
+    lateinit var schoolInfo: SchoolInfo
+    val hasSchoolInfo get() = this::schoolInfo.isInitialized
 
     val loadedEverything = mutableStateOf(false)
 
@@ -207,6 +211,20 @@ object DataService {
         }
     }
 
+    fun updateSchoolInfo(onUpdated: () -> Unit) {
+        assert(this::token.isInitialized)
+        assert(this::profile.isInitialized)
+
+        NetworkService.mesApi().schoolInfo(
+            token,
+            schoolId = profile.children[0].school.id, // FUTURE: USES_FIRST_CHILD
+            classUnitId = profile.children[0].classUnitId // FUTURE: USES_FIRST_CHILD
+        ).baseEnqueue(::baseErrorFunction) {
+            schoolInfo = it
+            onUpdated()
+        }
+    }
+
     fun updateAll(sendEachValueLoaded: (percent: Float) -> Unit) {
         val onSingleItemLoad = {
             val allStates = listOf(
@@ -219,7 +237,8 @@ object DataService {
                 hasVisits,
                 hasMarks,
                 hasHomeworks,
-                hasMealBalance
+                hasMealBalance,
+                hasSchoolInfo
             )
             sendEachValueLoaded((allStates.count { it }.toFloat()) / (allStates.size.toFloat()))
             if (!(allStates.contains(false))) {
@@ -236,6 +255,7 @@ object DataService {
                     updateRanking { onSingleItemLoad() }
                     updateVisits { onSingleItemLoad() }
                     updateMealBalance { onSingleItemLoad() }
+                    updateSchoolInfo { onSingleItemLoad() }
                 }
             }
             updateMarks { onSingleItemLoad() }
