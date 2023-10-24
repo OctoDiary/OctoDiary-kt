@@ -26,6 +26,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import org.bxkr.octodiary.DataService
+import org.bxkr.octodiary.components.profile.ClassInfo
+import org.bxkr.octodiary.components.profile.Documents
+import org.bxkr.octodiary.components.profile.Meal
+import org.bxkr.octodiary.components.profile.PersonalData
+import org.bxkr.octodiary.components.profile.School
+import org.bxkr.octodiary.modalBottomSheetContentLive
+import org.bxkr.octodiary.modalBottomSheetStateLive
 
 @Composable
 fun ProfileScreen() {
@@ -50,7 +57,10 @@ fun ProfileScreen() {
                     "${profile.children[0].className} класс",
                     style = MaterialTheme.typography.titleMedium
                 ) // FUTURE: USES_FIRST_CHILD UNTRANSLATED
-                Text("${mealBalance.balance / 100} ₽", style = MaterialTheme.typography.titleSmall)
+                Text(
+                    "${mealBalance.balance / 100} ₽",
+                    style = MaterialTheme.typography.titleSmall
+                ) // FUTURE: REGIONAL_FEATURE UNTRANSLATED
             }
         }
         Column(
@@ -59,21 +69,21 @@ fun ProfileScreen() {
         ) {
             Row(horizontalArrangement = Arrangement.spacedBy(2.dp)) {
                 SectionGridItem("Личные данные", Icons.Rounded.Person) {
-
+                    openBottomSheet { PersonalData() }
                 } // FUTURE: UNTRANSLATED
                 SectionGridItem("Класс", Icons.Rounded.Group) {
-
+                    openBottomSheet { ClassInfo() }
                 } // FUTURE: UNTRANSLATED
             }
             Row(horizontalArrangement = Arrangement.spacedBy(2.dp)) {
                 SectionGridItem("Еда", Icons.Rounded.Restaurant) {
-
-                } // FUTURE: UNTRANSLATED
+                    openBottomSheet { Meal() }
+                } // FUTURE: UNTRANSLATED REGIONAL_FEATURE
                 SectionGridItem("Школа", Icons.Rounded.Apartment) {
-
+                    openBottomSheet { School() }
                 } // FUTURE: UNTRANSLATED
                 SectionGridItem("Документы", Icons.Rounded.Description) {
-
+                    openBottomSheet { Documents() }
                 } // FUTURE: UNTRANSLATED
             }
         }
@@ -104,4 +114,9 @@ fun RowScope.SectionGridItem(title: String, icon: ImageVector, onClick: () -> Un
             Text(title, color = MaterialTheme.colorScheme.secondary)
         }
     }
+}
+
+fun openBottomSheet(content: @Composable () -> Unit) {
+    modalBottomSheetStateLive.postValue(true)
+    modalBottomSheetContentLive.postValue(content)
 }

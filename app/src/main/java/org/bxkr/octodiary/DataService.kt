@@ -4,10 +4,12 @@ import androidx.compose.runtime.mutableStateOf
 import org.bxkr.octodiary.models.classmembers.ClassMember
 import org.bxkr.octodiary.models.classranking.RankingMember
 import org.bxkr.octodiary.models.events.Event
+import org.bxkr.octodiary.models.homeworks.Homework
 import org.bxkr.octodiary.models.mark.MarkInfo
 import org.bxkr.octodiary.models.marklist.MarkList
 import org.bxkr.octodiary.models.mealbalance.MealBalance
 import org.bxkr.octodiary.models.profile.ProfileResponse
+import org.bxkr.octodiary.models.schoolinfo.SchoolInfo
 import org.bxkr.octodiary.models.sessionuser.SessionUser
 import org.bxkr.octodiary.models.visits.VisitsResponse
 import org.bxkr.octodiary.network.NetworkService
@@ -40,8 +42,14 @@ object DataService {
     lateinit var marks: MarkList
     val hasMarks get() = this::marks.isInitialized
 
-    lateinit var mealBalance: MealBalance
+    lateinit var homeworks: List<Homework>
+    val hasHomeworks get() = this::homeworks.isInitialized
+
+    lateinit var mealBalance: MealBalance // FUTURE: REGIONAL_FEATURE
     val hasMealBalance get() = this::mealBalance.isInitialized
+
+    lateinit var schoolInfo: SchoolInfo
+    val hasSchoolInfo get() = this::schoolInfo.isInitialized
 
     val loadedEverything = mutableStateOf(false)
 
@@ -173,6 +181,23 @@ object DataService {
         }
     }
 
+    fun updateHomeworks(onUpdated: () -> Unit) {
+        assert(this::token.isInitialized)
+        assert(this::userId.isInitialized)
+
+        NetworkService.mesApi().homeworks(
+            token,
+            studentId = userId.toInt(),
+            fromDate = Date().formatToDay(),
+            toDate = Calendar.getInstance().run {
+                set(Calendar.WEEK_OF_YEAR, get(Calendar.WEEK_OF_YEAR) + 1)
+                time
+            }.formatToDay()
+        ).baseEnqueue(::baseErrorFunction) {
+            homeworks = it.payload
+        }
+    }
+
     fun updateMealBalance(onUpdated: () -> Unit) {
         assert(this::token.isInitialized)
         assert(this::profile.isInitialized)
@@ -186,34 +211,55 @@ object DataService {
         }
     }
 
-    fun updateAll() {
+    fun updateSchoolInfo(onUpdated: () -> Unit) {
+        assert(this::token.isInitialized)
+        assert(this::profile.isInitialized)
+
+        NetworkService.mesApi().schoolInfo(
+            token,
+            schoolId = profile.children[0].school.id, // FUTURE: USES_FIRST_CHILD
+            classUnitId = profile.children[0].classUnitId // FUTURE: USES_FIRST_CHILD
+        ).baseEnqueue(::baseErrorFunction) {
+            schoolInfo = it
+            onUpdated()
+        }
+    }
+
+    fun updateAll(sendEachValueLoaded: (percent: Float) -> Unit) {
         val onSingleItemLoad = {
-            if (
-                !(listOf(
-                    hasUserId,
-                    hasSessionUser,
-                    hasEventCalendar,
-                    hasRanking,
-                    hasClassMembers,
-                    hasProfile,
-                    hasVisits,
-                    hasMarks,
-                    hasMealBalance
-                ).contains(false))
-            ) {
+            val allStates = listOf(
+                hasUserId,
+                hasSessionUser,
+                hasEventCalendar,
+                hasRanking,
+                hasClassMembers,
+                hasProfile,
+                hasVisits,
+                hasMarks,
+                hasHomeworks,
+                hasMealBalance,
+                hasSchoolInfo
+            )
+            sendEachValueLoaded((allStates.count { it }.toFloat()) / (allStates.size.toFloat()))
+            if (!(allStates.contains(false))) {
                 loadedEverything.value = true
             }
         }
         updateUserId {
+            onSingleItemLoad()
             updateSessionUser {
+                onSingleItemLoad()
                 updateEventCalendar { onSingleItemLoad() }
                 updateProfile {
+                    onSingleItemLoad()
                     updateRanking { onSingleItemLoad() }
                     updateVisits { onSingleItemLoad() }
                     updateMealBalance { onSingleItemLoad() }
+                    updateSchoolInfo { onSingleItemLoad() }
                 }
             }
             updateMarks { onSingleItemLoad() }
+            updateHomeworks { onSingleItemLoad() }
         }
     }
 }

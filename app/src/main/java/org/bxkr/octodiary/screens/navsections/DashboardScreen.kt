@@ -18,7 +18,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -78,8 +77,7 @@ fun DashboardScreen() {
             }
             Text(
                 text = "Посещение ${
-                    lastVisit.date.parseFromDay()
-                        .let { LocalContext.current.formatToHumanDay(it) }
+                    lastVisit.date.parseFromDay().formatToHumanDay()
                 }",
                 style = MaterialTheme.typography.labelLarge
             ) // FUTURE: UNTRANSLATED
@@ -152,7 +150,6 @@ fun RankingList() {
 
 @Composable
 fun VisitsList() {
-    val context = LocalContext.current
     LazyColumn(
         Modifier
             .padding(8.dp)
@@ -163,7 +160,7 @@ fun VisitsList() {
                 Row {
                     Row(Modifier.padding(8.dp)) {
                         Text(
-                            context.formatToHumanDay(it.date.parseFromDay()),
+                            it.date.parseFromDay().formatToHumanDay(),
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.primary,
                             modifier = Modifier.padding(end = 4.dp)

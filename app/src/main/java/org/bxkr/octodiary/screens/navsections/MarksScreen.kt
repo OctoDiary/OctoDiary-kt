@@ -67,12 +67,12 @@ fun MarkDay(marks: List<Mark>) {
         val date = marks[0].date.parseFromDay()
         Row {
             Text(
-                formatToLongHumanDay(date),
+                date.formatToLongHumanDay(),
                 Modifier.padding(end = 3.dp),
                 style = MaterialTheme.typography.titleSmall
             )
             Text(
-                formatToWeekday(date),
+                date.formatToWeekday(),
                 Modifier.alpha(.8f),
                 style = MaterialTheme.typography.titleSmall
             )

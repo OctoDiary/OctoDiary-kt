@@ -8,12 +8,14 @@ import org.bxkr.octodiary.models.auth.TokenExchange
 import org.bxkr.octodiary.models.classmembers.ClassMember
 import org.bxkr.octodiary.models.classranking.RankingMember
 import org.bxkr.octodiary.models.events.EventsResponse
+import org.bxkr.octodiary.models.homeworks.HomeworksResponse
 import org.bxkr.octodiary.models.mark.MarkInfo
 import org.bxkr.octodiary.models.marklist.MarkList
 import org.bxkr.octodiary.models.mealbalance.MealBalance
 import org.bxkr.octodiary.models.profile.ProfileResponse
 import org.bxkr.octodiary.models.profilesid.ProfileId
 import org.bxkr.octodiary.models.profilesid.ProfilesId
+import org.bxkr.octodiary.models.schoolinfo.SchoolInfo
 import org.bxkr.octodiary.models.sessionuser.SessionUser
 import org.bxkr.octodiary.models.visits.VisitsResponse
 import retrofit2.Call
@@ -42,6 +44,9 @@ object NetworkService {
         const val GRANT_TYPE = "authorization_code"
         const val FAMILYMP = "familymp"
         const val DIARY_MOBILE = "diary-mobile"
+        const val DATE_FIELD = "date"
+        const val ASCENDING = "asc"
+        const val DESCENDING = "desc"
     }
 
     object MESRole {
@@ -274,6 +279,27 @@ object NetworkService {
             @Query("to") toDate: String,
             @Header("X-Mes-Subsystem") mesSubsystem: String = MESAPIConfig.FAMILYMP
         ): Call<MarkList>
+
+        // FUTURE: TO_BE_DOCUMENTED
+        @GET("/api/family/mobile/v1/homeworks/short")
+        fun homeworks(
+            @Header("auth-token") accessToken: String,
+            @Query("student_id") studentId: Int,
+            @Query("from") fromDate: String,
+            @Query("to") toDate: String,
+            @Query("sort_column") sortField: String = MESAPIConfig.DATE_FIELD,
+            @Query("sort_direction") sortDirection: String = MESAPIConfig.ASCENDING,
+            @Header("X-Mes-Subsystem") mesSubsystem: String = MESAPIConfig.FAMILYMP
+        ): Call<HomeworksResponse>
+
+        // FUTURE: TO_BE_DOCUMENTED
+        @GET("/api/family/mobile/v1/school_info")
+        fun schoolInfo(
+            @Header("auth-token") accessToken: String,
+            @Query("school_id") schoolId: Int,
+            @Query("class_unit_id") classUnitId: Int,
+            @Header("X-Mes-Subsystem") mesSubsystem: String = MESAPIConfig.FAMILYMP
+        ): Call<SchoolInfo>
     }
 
     fun mosAuthApi(): MosAuthAPI {
