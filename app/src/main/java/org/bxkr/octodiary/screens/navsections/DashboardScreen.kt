@@ -118,7 +118,7 @@ fun RankingList() {
             val memberName = remember {
                 DataService.classMembers.firstOrNull { classMember ->
                     rankingMember.personId == classMember.personId
-                }?.user?.run { listOf(lastName, firstName, middleName).fastJoinToString(" ") }
+                }?.user?.run { listOf(lastName, firstName, middleName ?: "").fastJoinToString(" ") }
                     ?: rankingMember.personId
             }
             OutlinedCard(Modifier.padding(bottom = 8.dp)) {
