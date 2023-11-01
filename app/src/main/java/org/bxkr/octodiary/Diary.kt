@@ -65,7 +65,12 @@ enum class Diary(
                         ), MaterialTheme.shapes.medium
                     )
                     .clip(MaterialTheme.shapes.medium)
-                    .clickable { MySchoolLoginService.logInWithEsia(context) },
+                    .clickable {
+                        MySchoolLoginService.logInWithEsia(
+                            context,
+                            MES
+                        )
+                    },
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(
@@ -86,7 +91,7 @@ enum class Diary(
         Icons.Rounded.Landscape,
         listOf(R.color.blue, R.color.red),
         R.string.log_in_on_gosuslugi,
-        { MySchoolLoginService.logInWithEsia(it) },
+        { MySchoolLoginService.logInWithEsia(it, MySchool) },
         @Composable { modifier ->
 
             var loginText by rememberSaveable { mutableStateOf("") }

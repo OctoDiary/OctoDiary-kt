@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.ui.platform.LocalContext
 import org.bxkr.octodiary.Diary
 import org.bxkr.octodiary.authPrefs
 import org.bxkr.octodiary.baseEnqueue
@@ -64,7 +65,8 @@ object MESLoginService {
     }
 
     @Composable
-    fun ExchangeToken(context: Context, code: String, token: MutableState<String?>) {
+    fun MosExchangeToken(code: String, token: MutableState<String?>) {
+        val context = LocalContext.current
         context.getSharedPreferences("auth", Context.MODE_PRIVATE).apply {
             val codeVerifier = getString("code_verifier", "")!!
             val clientId = getString("client_id", "")

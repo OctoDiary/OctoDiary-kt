@@ -121,14 +121,6 @@ fun NavScreen(modifier: Modifier) {
                 DataService.secondaryApi =
                     NetworkService.secondaryApi(SecondaryAPI.getBaseUrl(diary))
 
-                DataService.tokenExpirationHandler = {
-                    authPrefs.save(
-                        "auth" to false,
-                        "access_token" to null
-                    )
-                    screenLive.value = Screen.Login
-                }
-
                 var localLoadedState by remember { mutableStateOf(false) }
                 LaunchedEffect(rememberCoroutineScope()) {
                     snapshotFlow { DataService.loadedEverything.value }
@@ -159,6 +151,14 @@ fun NavScreen(modifier: Modifier) {
                             progress = it
                         }
                     }
+                    DataService.tokenExpirationHandler = {
+                        authPrefs.save(
+                            "auth" to false,
+                            "access_token" to null
+                        )
+                        screenLive.value = Screen.Login
+                    }
+
                     DataService.updateAll()
                     Column(
                         Modifier.fillMaxSize(),

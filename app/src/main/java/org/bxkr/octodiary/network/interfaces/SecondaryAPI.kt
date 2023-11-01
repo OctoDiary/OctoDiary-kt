@@ -1,6 +1,7 @@
 package org.bxkr.octodiary.network.interfaces
 
 import org.bxkr.octodiary.Diary
+import org.bxkr.octodiary.models.auth.EsiaExchange
 import org.bxkr.octodiary.models.classranking.RankingMember
 import org.bxkr.octodiary.models.events.EventsResponse
 import org.bxkr.octodiary.network.NetworkService
@@ -25,6 +26,19 @@ interface SecondaryAPI {
             }
         }
     }
+
+    /**
+     * Exchanges code to token.
+     *
+     * @param code Code caught from user's web gate auth session.
+     * @param state State remembered on the auth initialization.
+     * @return Token inside of [EsiaExchange]
+     */
+    @GET("v3/auth/token")
+    fun esiaExchangeToken(
+        @Query("code") code: String,
+        @Query("state") state: String
+    ): Call<EsiaExchange>
 
     /**
      * Gets events for student.

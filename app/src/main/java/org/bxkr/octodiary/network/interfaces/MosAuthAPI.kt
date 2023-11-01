@@ -52,7 +52,7 @@ interface MosAuthAPI {
      * @param codeVerifier Code verifier remembered by the app since the [auth link generation][MESLoginService.logInWithMosRu].
      * @param authHeader "clientId:clientSecret" ([received in auth config][MESLoginService.logInWithMosRu]) pair encoded in base64.
      * @return [TokenExchange] containing mos.ru access token.
-     * @see MESLoginService.ExchangeToken
+     * @see MESLoginService.MosExchangeToken
      */
     @POST("sps/oauth/te")
     fun tokenExchange(

@@ -57,6 +57,7 @@ import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.bxkr.octodiary.screens.CallbackScreen
+import org.bxkr.octodiary.screens.CallbackType
 import org.bxkr.octodiary.screens.LoginScreen
 import org.bxkr.octodiary.screens.NavScreen
 import org.bxkr.octodiary.ui.theme.OctoDiaryTheme
@@ -193,7 +194,10 @@ class MainActivity : ComponentActivity() {
 
                     Screen.Callback -> {
                         CallbackScreen(
-                            Uri.parse(intentData).getQueryParameter("code")!!
+                            Uri.parse(intentData).getQueryParameter("code")!!,
+                            Uri.parse(intentData).host!!.let { host ->
+                                CallbackType.values().first { it.host == host }
+                            }
                         )
                         R.string.log_in
                     }

@@ -27,7 +27,6 @@ object NetworkService {
         const val DIARY_MOBILE = "diary-mobile"
         const val DATE_FIELD = "date"
         const val ASCENDING = "asc"
-        const val DESCENDING = "desc"
     }
 
     object MESRole {
@@ -35,8 +34,8 @@ object NetworkService {
     }
 
     object MySchoolAPIConfig {
-        const val AUTH_URL_TEMPLATE =
-            "https://authedu.mosreg.ru/v3/auth/esia/login?redirect_url=%s&state=%s"
+        const val ESIA_AUTH_URL_TEMPLATE =
+            "%sv3/auth/esia/login?redirect_url=%s&state=%s"
         const val REDIRECT_URI = "dnevnik-mes://authRegionRedirect"
     }
 

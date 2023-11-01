@@ -72,9 +72,13 @@ object DataService {
         assert(this::token.isInitialized)
         dSchoolApi.profilesId(token)
             .baseEnqueue(::baseErrorFunction, ::baseInternalExceptionFunction) { body ->
-            userId = body[0].id // FUTURE: USES_FIRST_CHILD
-            onUpdated()
-        }
+                if (body.size == 0) {
+                    tokenExpirationHandler?.invoke()
+                } else {
+                    userId = body[0].id // FUTURE: USES_FIRST_CHILD
+                    onUpdated()
+                }
+            }
     }
 
     fun updateSessionUser(onUpdated: () -> Unit) {
@@ -151,9 +155,9 @@ object DataService {
 
         mainSchoolApi.profile(token)
             .baseEnqueue(::baseErrorFunction, ::baseInternalExceptionFunction) {
-            profile = it
-            onUpdated()
-        }
+                profile = it
+                onUpdated()
+            }
     }
 
     fun updateVisits(onUpdated: () -> Unit) {
