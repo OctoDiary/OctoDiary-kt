@@ -202,4 +202,24 @@
     <string name="homeworks">Homeworks</string>
     <string name="to">to</string>
     <string name="schedule_today">Schedule today</string>
+    <string name="last_week_marks_are_shown">last week marks are shown</string>
+    <string name="birth_date_t">Birth date: %1$s</string>
+    <string name="snils_t">"SNILS: "</string>
+    <string name="show">show</string>
+    <string name="visits_t">Attendance %1$s</string>
+    <string name="hello_t">Hello, %1$s!</string>
+    <string name="class_t">Class %1$s</string>
+    <string name="balance_t">%1$s rubles</string>
+    <string name="personal_data">Personal data</string>
+    <string name="class_label">Class</string>
+    <string name="meal">Meal</string>
+    <string name="documents">Documents</string>
+    <string name="representatives">Representatives</string>
+    <string name="expand">Expand</string>
+    <string name="phone_t" translatable="false">+7 %1$s</string>
+    <string name="phone_minimized_t" translatable="false">+7%1$s</string>
+    <string name="next_week_homeworks_are_shown">next week homeworks are shown</string>
+    <string name="name_column">name</string>
+    <string name="rating_column">rank</string>
+    <string name="teachers">Teachers</string>
 </resources>

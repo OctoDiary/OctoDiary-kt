@@ -38,9 +38,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import org.bxkr.octodiary.DataService
+import org.bxkr.octodiary.R
 
 @Composable
 fun School() {
@@ -109,11 +111,12 @@ fun School() {
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         Text(
-                            "Учителя", style = MaterialTheme.typography.titleMedium
-                        ) // FUTURE: UNTRANSLATED
+                            stringResource(R.string.teachers),
+                            style = MaterialTheme.typography.titleMedium
+                        )
                         Icon(
                             Icons.Rounded.ArrowDropDown,
-                            "Развернуть",
+                            stringResource(R.string.expand),
                             modifier = Modifier
                                 .clip(MaterialTheme.shapes.large)
                                 .rotate(
@@ -125,7 +128,7 @@ fun School() {
                                 )
                                 .background(MaterialTheme.colorScheme.secondaryContainer),
                             tint = MaterialTheme.colorScheme.onSecondaryContainer
-                        ) // FUTURE: UNTRANSLATED
+                        )
                     }
                     AnimatedVisibility(
                         teachersExpanded, enter = enterTransition, exit = exitTransition

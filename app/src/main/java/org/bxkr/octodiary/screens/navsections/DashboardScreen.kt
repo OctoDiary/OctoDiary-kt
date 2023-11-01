@@ -77,11 +77,12 @@ fun DashboardScreen() {
                     it.date.parseFromDay().toInstant().toEpochMilli()
                 }
                 Text(
-                    text = "Посещение ${
+                    text = stringResource(
+                        R.string.visits_t,
                         lastVisit.date.parseFromDay().formatToHumanDay()
-                    }",
+                    ),
                     style = MaterialTheme.typography.labelLarge
-                ) // FUTURE: UNTRANSLATED
+                )
                 Card(
                     Modifier
                         .fillMaxWidth()

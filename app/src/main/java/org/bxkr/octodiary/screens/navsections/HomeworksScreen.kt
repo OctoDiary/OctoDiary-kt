@@ -28,10 +28,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.MutableLiveData
 import org.bxkr.octodiary.DataService
+import org.bxkr.octodiary.R
 import org.bxkr.octodiary.contentDependentActionLive
 import org.bxkr.octodiary.formatToLongHumanDay
 import org.bxkr.octodiary.formatToWeekday
@@ -104,10 +106,10 @@ fun HomeworksScreen() {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    "показаны домашние задания на неделю вперёд",
+                    stringResource(R.string.next_week_homeworks_are_shown),
                     Modifier.alpha(.8f),
                     style = MaterialTheme.typography.labelMedium
-                ) // FUTURE: UNTRANSLATED
+                )
             }
         }
     }

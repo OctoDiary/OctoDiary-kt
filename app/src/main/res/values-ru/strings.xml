@@ -150,4 +150,22 @@
     <string name="homeworks">Задания</string>
     <string name="to">по</string>
     <string name="schedule_today">Расписание на сегодня</string>
+    <string name="last_week_marks_are_shown">показаны оценки за последнюю неделю</string>
+    <string name="birth_date_t">Дата рождения: %1$s</string>
+    <string name="snils_t">"СНИЛС: "</string>
+    <string name="show">показать</string>
+    <string name="visits_t">Посещение %1$s</string>
+    <string name="hello_t">Привет, %1$s!</string>
+    <string name="class_t">%1$s класс</string>
+    <string name="balance_t">%1$s ₽</string>
+    <string name="personal_data">Личные данные</string>
+    <string name="class_label">Класс</string>
+    <string name="meal">Еда</string>
+    <string name="documents">Документы</string>
+    <string name="representatives">Представители</string>
+    <string name="expand">Развернуть</string>
+    <string name="next_week_homeworks_are_shown">показаны домашние задания на неделю вперёд</string>
+    <string name="name_column">имя</string>
+    <string name="rating_column">рейтинг</string>
+    <string name="teachers">Учителя</string>
 </resources>
