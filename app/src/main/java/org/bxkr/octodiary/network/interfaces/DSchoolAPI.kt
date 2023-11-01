@@ -7,6 +7,7 @@ import org.bxkr.octodiary.models.profilesid.ProfileId
 import org.bxkr.octodiary.models.profilesid.ProfilesId
 import org.bxkr.octodiary.network.NetworkService
 import org.bxkr.octodiary.network.NetworkService.BaseUrl
+import org.bxkr.octodiary.network.NetworkService.MESAPIConfig
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Header
@@ -56,7 +57,14 @@ interface DSchoolAPI {
         @Query("types") types: String = "student"
     ): Call<List<ClassMember>>
 
-    // FUTURE: TO_BE_DOCUMENTED
+    /**
+     * Gets meal balance.
+     *
+     * @param accessToken Access token.
+     * @param contractId Contract ID.
+     * @param mesSubsystem MES subsystem (["familymp"][MESAPIConfig.FAMILYMP] by default).
+     * @return [MealBalance]
+     */
     @GET("api/meals/v1/clients")
     fun mealBalance(
         @Header("auth-token") accessToken: String,

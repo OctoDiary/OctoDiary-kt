@@ -79,7 +79,16 @@ interface MainSchoolAPI {
         @Header("X-Mes-Subsystem") mesSubsystem: String = MESAPIConfig.FAMILYMP
     ): Call<VisitsResponse>
 
-    // FUTURE: TO_BE_DOCUMENTED
+    /**
+     * Gets marks for date range.
+     *
+     * @param accessToken Access token.
+     * @param studentId Student ID.
+     * @param fromDate Start of mark list in yyyy-MM-dd format.
+     * @param toDate End of mark list in yyyy-MM-dd format.
+     * @param mesSubsystem MES subsystem (["familymp"][MESAPIConfig.FAMILYMP] by default).
+     * @return [MarkList]
+     */
     @GET("family/mobile/v1/marks")
     fun markList(
         @Header("auth-token") accessToken: String,
@@ -89,7 +98,18 @@ interface MainSchoolAPI {
         @Header("X-Mes-Subsystem") mesSubsystem: String = MESAPIConfig.FAMILYMP
     ): Call<MarkList>
 
-    // FUTURE: TO_BE_DOCUMENTED
+    /**
+     * Gets homeworks for date range.
+     *
+     * @param accessToken Access token.
+     * @param studentId Student ID.
+     * @param fromDate Start of homework list in yyyy-MM-dd format.
+     * @param toDate End of homework list in yyyy-MM-dd format.
+     * @param sortField Field by which sorting is performed (["date"][MESAPIConfig.DATE_FIELD] by default).
+     * @param sortDirection Sorting direction (["asc"][MESAPIConfig.ASCENDING] by default).
+     * @param mesSubsystem MES subsystem (["familymp"][MESAPIConfig.FAMILYMP] by default).
+     * @return [HomeworksResponse]
+     */
     @GET("family/mobile/v1/homeworks/short")
     fun homeworks(
         @Header("auth-token") accessToken: String,
@@ -101,7 +121,15 @@ interface MainSchoolAPI {
         @Header("X-Mes-Subsystem") mesSubsystem: String = MESAPIConfig.FAMILYMP
     ): Call<HomeworksResponse>
 
-    // FUTURE: TO_BE_DOCUMENTED
+    /**
+     * Gets school info.
+     *
+     * @param accessToken Access token.
+     * @param schoolId School ID.
+     * @param classUnitId Class unit ID.
+     * @param mesSubsystem MES subsystem (["familymp"][MESAPIConfig.FAMILYMP] by default).
+     * @return [SchoolInfo]
+     */
     @GET("family/mobile/v1/school_info")
     fun schoolInfo(
         @Header("auth-token") accessToken: String,
