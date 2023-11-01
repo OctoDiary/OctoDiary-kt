@@ -15,7 +15,7 @@ data class Homework(
     @SerializedName("materials")
     val materials: Materials?,
     @SerializedName("presence_status_id")
-    val presenceStatusId: Int,
+    val presenceStatusId: Long,
     @SerializedName("total_count")
     val totalCount: Int
 )

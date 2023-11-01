@@ -13,7 +13,7 @@ data class Profile(
     @SerializedName("first_name")
     val firstName: String,
     @SerializedName("id")
-    val id: Int,
+    val id: Long,
     @SerializedName("last_name")
     val lastName: String,
     @SerializedName("middle_name")
@@ -27,5 +27,5 @@ data class Profile(
     @SerializedName("type")
     val type: String,
     @SerializedName("user_id")
-    val userId: Int
+    val userId: Long
 )

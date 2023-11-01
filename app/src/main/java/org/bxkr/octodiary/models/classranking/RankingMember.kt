@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 data class RankingMember(
     @SerializedName("imageId")
-    val imageId: Int,
+    val imageId: Long,
     @SerializedName("personId")
     val personId: String,
     @SerializedName("previousRank")

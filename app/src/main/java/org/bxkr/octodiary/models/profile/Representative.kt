@@ -13,7 +13,7 @@ data class Representative(
     @SerializedName("first_name")
     val firstName: String,
     @SerializedName("id")
-    val id: Int,
+    val id: Long,
     @SerializedName("last_name")
     val lastName: String,
     @SerializedName("middle_name")

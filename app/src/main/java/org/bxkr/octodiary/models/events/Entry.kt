@@ -17,7 +17,7 @@ data class Entry(
     @SerializedName("duration")
     val duration: Int,
     @SerializedName("homework_entry_id")
-    val homeworkEntryId: Int,
+    val homeworkEntryId: Long,
     @SerializedName("materials")
     val materials: String?,
     @SerializedName("student_ids")

@@ -66,6 +66,7 @@ val modalBottomSheetContentLive = MutableLiveData<@Composable () -> Unit> {}
 val snackbarHostStateLive = MutableLiveData(SnackbarHostState())
 val navControllerLive = MutableLiveData<NavHostController?>(null)
 val contentDependentActionLive = MutableLiveData<@Composable () -> Unit> {}
+val screenLive = MutableLiveData<Screen>()
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -83,13 +84,10 @@ class MainActivity : ComponentActivity() {
         modifier: Modifier = Modifier
     ) {
         var title by rememberSaveable { mutableIntStateOf(R.string.app_name) }
-        val currentScreen = remember {
-            mutableStateOf(
-                if (authPrefs.get<Boolean>("auth") == true) {
-                    Screen.MainNav
-                } else Screen.Login
-            )
-        }
+        screenLive.value = if (authPrefs.get<Boolean>("auth") == true) {
+            Screen.MainNav
+        } else Screen.Login
+        val currentScreen = screenLive.observeAsState()
         val showBottomSheet by modalBottomSheetStateLive.observeAsState()
         val bottomSheetContent by modalBottomSheetContentLive.observeAsState()
         val sheetState = rememberModalBottomSheetState()
@@ -112,7 +110,7 @@ class MainActivity : ComponentActivity() {
 
         val intentData = intent.dataString
         if (intentData != null && authPrefs.get<Boolean>("auth") != true) {
-            currentScreen.value = Screen.Callback
+            screenLive.value = Screen.Callback
         }
         Scaffold(modifier, topBar = {
             Column {
@@ -187,7 +185,7 @@ class MainActivity : ComponentActivity() {
             }
         }) { padding ->
             Surface {
-                title = when (currentScreen.value) {
+                title = when (currentScreen.value!!) {
                     Screen.Login -> {
                         LoginScreen(Modifier.padding(padding))
                         R.string.log_in
@@ -195,13 +193,13 @@ class MainActivity : ComponentActivity() {
 
                     Screen.Callback -> {
                         CallbackScreen(
-                            Uri.parse(intentData).getQueryParameter("code")!!, currentScreen
+                            Uri.parse(intentData).getQueryParameter("code")!!
                         )
                         R.string.log_in
                     }
 
                     Screen.MainNav -> {
-                        NavScreen(Modifier.padding(padding), currentScreen)
+                        NavScreen(Modifier.padding(padding))
                         val navBackStackEntry by navController.value!!.currentBackStackEntryAsState()
                         val currentRoute = navBackStackEntry?.destination?.route
                         NavSection.values().firstOrNull { it.route == currentRoute }?.title

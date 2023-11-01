@@ -7,7 +7,7 @@ data class Value(
     @SerializedName("grade")
     val grade: Grade,
     @SerializedName("grade_system_id")
-    val gradeSystemId: Int,
+    val gradeSystemId: Long,
     @SerializedName("grade_system_type")
     val gradeSystemType: String,
     @SerializedName("name")

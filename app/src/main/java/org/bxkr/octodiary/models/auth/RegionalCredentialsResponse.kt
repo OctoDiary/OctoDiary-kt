@@ -1,13 +1,15 @@
-package org.bxkr.octodiary.models.sessionuser
+package org.bxkr.octodiary.models.auth
 
 
 import com.google.gson.annotations.SerializedName
 
-data class SessionUser(
+data class RegionalCredentialsResponse(
     @SerializedName("authentication_token")
     val authenticationToken: String,
     @SerializedName("date_of_birth")
     val dateOfBirth: String,
+    @SerializedName("email")
+    val email: String,
     @SerializedName("first_name")
     val firstName: String,
     @SerializedName("guid")
@@ -25,16 +27,18 @@ data class SessionUser(
     @SerializedName("phone_number")
     val phoneNumber: String,
     @SerializedName("profiles")
-    val profiles: List<Profile>,
+    val profiles: List<RegionalProfile>,
     @SerializedName("regional_auth")
     val regionalAuth: String,
-    @SerializedName("sex")
-    val sex: String,
     @SerializedName("snils")
-    val snils: String
+    val snils: String,
+    @SerializedName("sso_id")
+    val ssoId: String
 ) {
     data class Body(
-        @SerializedName("auth_token")
-        val accessToken: String,
+        @SerializedName("login")
+        val login: String,
+        @SerializedName("password_plain")
+        val password: String
     )
 }

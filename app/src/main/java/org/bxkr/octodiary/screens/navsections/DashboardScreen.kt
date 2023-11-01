@@ -71,7 +71,7 @@ fun DashboardScreen() {
                 )
             }
         }
-        if (DataService.visits.payload.isNotEmpty()) {
+        if (DataService.hasVisits && DataService.visits.payload.isNotEmpty()) {
             val lastVisit = DataService.visits.payload.maxBy {
                 it.date.parseFromDay().toInstant().toEpochMilli()
             }

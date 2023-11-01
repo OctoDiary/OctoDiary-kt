@@ -26,6 +26,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import org.bxkr.octodiary.DataService
+import org.bxkr.octodiary.Diary
 import org.bxkr.octodiary.components.profile.ClassInfo
 import org.bxkr.octodiary.components.profile.Documents
 import org.bxkr.octodiary.components.profile.Meal
@@ -57,10 +58,12 @@ fun ProfileScreen() {
                     "${profile.children[0].className} класс",
                     style = MaterialTheme.typography.titleMedium
                 ) // FUTURE: USES_FIRST_CHILD UNTRANSLATED
-                Text(
-                    "${mealBalance.balance / 100} ₽",
-                    style = MaterialTheme.typography.titleSmall
-                ) // FUTURE: REGIONAL_FEATURE UNTRANSLATED
+                if (subsystem == Diary.MES) {
+                    Text(
+                        "${mealBalance.balance / 100} ₽",
+                        style = MaterialTheme.typography.titleSmall
+                    ) // FUTURE: UNTRANSLATED
+                }
             }
         }
         Column(
@@ -76,9 +79,11 @@ fun ProfileScreen() {
                 } // FUTURE: UNTRANSLATED
             }
             Row(horizontalArrangement = Arrangement.spacedBy(2.dp)) {
-                SectionGridItem("Еда", Icons.Rounded.Restaurant) {
-                    openBottomSheet { Meal() }
-                } // FUTURE: UNTRANSLATED REGIONAL_FEATURE
+                if (DataService.subsystem == Diary.MES) {
+                    SectionGridItem("Еда", Icons.Rounded.Restaurant) {
+                        openBottomSheet { Meal() }
+                    } // FUTURE: UNTRANSLATED
+                }
                 SectionGridItem("Школа", Icons.Rounded.Apartment) {
                     openBottomSheet { School() }
                 } // FUTURE: UNTRANSLATED

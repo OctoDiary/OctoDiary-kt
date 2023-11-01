@@ -7,9 +7,9 @@ data class School(
     @SerializedName("county")
     val county: String,
     @SerializedName("global_school_id")
-    val globalSchoolId: Int,
+    val globalSchoolId: Long,
     @SerializedName("id")
-    val id: Int,
+    val id: Long,
     @SerializedName("name")
     val name: String,
     @SerializedName("phone")

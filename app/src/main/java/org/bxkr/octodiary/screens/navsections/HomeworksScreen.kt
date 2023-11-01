@@ -38,12 +38,12 @@ import org.bxkr.octodiary.formatToWeekday
 import org.bxkr.octodiary.models.homeworks.Homework
 import org.bxkr.octodiary.parseFromDay
 
-val enabledSubjectsLive = MutableLiveData<List<Int>>(emptyList())
+val enabledSubjectsLive = MutableLiveData<List<Long>>(emptyList())
 
 @Composable
 fun HomeworksScreen() {
     LaunchedEffect(Unit) {
-        val enable = { enabled: Boolean, id: Int ->
+        val enable = { enabled: Boolean, id: Long ->
             if (enabledSubjectsLive.value != null) {
                 if (enabled && enabledSubjectsLive.value?.contains(id) == false) {
                     enabledSubjectsLive.postValue(enabledSubjectsLive.value!! + listOf(id))

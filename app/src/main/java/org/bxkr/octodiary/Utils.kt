@@ -105,6 +105,29 @@ inline fun <reified T> Call<T>.baseEnqueue(
     }
 })
 
+inline fun <reified T> Call<T>.extendedEnqueue(
+    noinline errorFunction: ((errorBody: ResponseBody, httpCode: Int, className: String?) -> Unit) = { _, _, _ -> },
+    noinline noConnectionFunction: ((t: Throwable) -> Unit) = {},
+    noinline function: (response: Response<T>) -> Unit,
+) = enqueue(object : Callback<T> {
+    override fun onResponse(
+        call: Call<T>,
+        response: Response<T>
+    ) {
+        val body = response.body()
+        if (response.isSuccessful && body != null) {
+            function(response)
+        } else {
+            response.errorBody()
+                ?.let { it1 -> errorFunction(it1, response.code(), T::class.simpleName) }
+        }
+    }
+
+    override fun onFailure(call: Call<T>, t: Throwable) {
+        noConnectionFunction(t)
+    }
+})
+
 fun DataService.baseErrorFunction(errorBody: ResponseBody, httpCode: Int, className: String?) {
     if (httpCode == 401) {
         tokenExpirationHandler?.invoke()

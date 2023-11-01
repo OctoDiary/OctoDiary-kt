@@ -33,6 +33,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import org.bxkr.octodiary.network.MESLoginService
 import org.bxkr.octodiary.network.MySchoolLoginService
+import org.bxkr.octodiary.network.MySchoolLoginService.logInWithPassword
 
 enum class Diary(
     @StringRes val title: Int,
@@ -90,6 +91,7 @@ enum class Diary(
 
             var loginText by rememberSaveable { mutableStateOf("") }
             var passwordText by rememberSaveable { mutableStateOf("") }
+            val context = androidx.compose.ui.platform.LocalContext.current
 
             androidx.compose.material3.TextField(
                 value = loginText,
@@ -126,7 +128,7 @@ enum class Diary(
                 )
             )
             androidx.compose.material3.Button(
-                onClick = { MySchoolLoginService.logInWithPassword() },
+                onClick = { context.logInWithPassword(loginText, passwordText) },
                 modifier = modifier
                     .padding(top = 32.dp)
             ) {

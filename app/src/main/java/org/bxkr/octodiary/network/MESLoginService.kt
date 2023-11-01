@@ -17,7 +17,7 @@ import org.bxkr.octodiary.models.auth.RegisterBody
 import org.bxkr.octodiary.models.auth.SchoolAuthBody
 import org.bxkr.octodiary.models.auth.UserAuthenticationForMobileRequest
 import org.bxkr.octodiary.network.NetworkService.MESAPIConfig
-import org.bxkr.octodiary.network.NetworkService.mesApi
+import org.bxkr.octodiary.network.interfaces.SchoolSessionAPI
 import org.bxkr.octodiary.save
 
 object MESLoginService {
@@ -42,7 +42,7 @@ object MESLoginService {
                 "client_id" to body.clientId,
                 "client_secret" to body.clientSecret
             )
-            val openUri = Uri.parse(NetworkService.BaseUrl.AUTH + "sps/oauth/ae")
+            val openUri = Uri.parse(NetworkService.BaseUrl.MOS_AUTH + "sps/oauth/ae")
                 .buildUpon()
                 .appendQueryParameter("scope", MESAPIConfig.SCOPE)
                 .appendQueryParameter("access_type", MESAPIConfig.ACCESS_TYPE)
@@ -87,13 +87,14 @@ object MESLoginService {
     }
 
     private fun mosToMesToken(context: Context, mosToken: String, mesToken: MutableState<String?>) {
-        val schoolAuthCall = mesApi().mosTokenToMes(
-            SchoolAuthBody(
-                UserAuthenticationForMobileRequest(
-                    mosAccessToken = mosToken
+        val schoolAuthCall =
+            NetworkService.schoolSessionApi(SchoolSessionAPI.getBaseUrl(Diary.MES)).mosTokenToMes(
+                SchoolAuthBody(
+                    UserAuthenticationForMobileRequest(
+                        mosAccessToken = mosToken
+                    )
                 )
             )
-        )
         schoolAuthCall.baseEnqueue { body ->
             body.userAuthenticationForMobileResponse.meshAccessToken.also { token ->
                 context.authPrefs.save(

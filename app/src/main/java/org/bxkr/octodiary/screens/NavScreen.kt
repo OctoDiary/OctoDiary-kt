@@ -61,6 +61,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.bxkr.octodiary.DataService
+import org.bxkr.octodiary.Diary
 import org.bxkr.octodiary.NavSection
 import org.bxkr.octodiary.R
 import org.bxkr.octodiary.Screen
@@ -68,12 +69,18 @@ import org.bxkr.octodiary.authPrefs
 import org.bxkr.octodiary.get
 import org.bxkr.octodiary.mainPrefs
 import org.bxkr.octodiary.navControllerLive
+import org.bxkr.octodiary.network.NetworkService
+import org.bxkr.octodiary.network.interfaces.DSchoolAPI
+import org.bxkr.octodiary.network.interfaces.MainSchoolAPI
+import org.bxkr.octodiary.network.interfaces.SchoolSessionAPI
+import org.bxkr.octodiary.network.interfaces.SecondaryAPI
 import org.bxkr.octodiary.save
+import org.bxkr.octodiary.screenLive
 import org.bxkr.octodiary.ui.theme.OctoDiaryTheme
 import java.util.Collections
 
 @Composable
-fun NavScreen(modifier: Modifier, currentScreen: MutableState<Screen>) {
+fun NavScreen(modifier: Modifier) {
     with(LocalContext.current) {
         val pinFinished = remember { mutableStateOf(false) }
         val initialPin = remember { mutableStateOf(emptyList<Int>()) }
@@ -102,13 +109,24 @@ fun NavScreen(modifier: Modifier, currentScreen: MutableState<Screen>) {
         Surface(modifier.fillMaxSize()) {
             if (mainPrefs.get<Boolean>("has_pin") != true || pinFinished.value) {
                 DataService.token = authPrefs.get<String>("access_token")!!
+
+                DataService.subsystem = Diary.values()[authPrefs.get<Int>("subsystem")!!]
+
+                val diary = DataService.subsystem
+                DataService.mainSchoolApi =
+                    NetworkService.mainSchoolApi(MainSchoolAPI.getBaseUrl(diary))
+                DataService.dSchoolApi = NetworkService.dSchoolApi(DSchoolAPI.getBaseUrl(diary))
+                DataService.schoolSessionApi =
+                    NetworkService.schoolSessionApi(SchoolSessionAPI.getBaseUrl(diary))
+                DataService.secondaryApi =
+                    NetworkService.secondaryApi(SecondaryAPI.getBaseUrl(diary))
+
                 DataService.tokenExpirationHandler = {
-                    println(DataService.token)
                     authPrefs.save(
                         "auth" to false,
                         "access_token" to null
                     )
-                    currentScreen.value = Screen.Login
+                    screenLive.value = Screen.Login
                 }
 
                 var localLoadedState by remember { mutableStateOf(false) }
@@ -149,9 +167,9 @@ fun NavScreen(modifier: Modifier, currentScreen: MutableState<Screen>) {
                         LinearProgressIndicator(progressAnimated)
                     }
                 }
-                currentScreen.value = Screen.MainNav
+                screenLive.value = Screen.MainNav
             } else if (mainPrefs.get<Boolean>("has_pin") == true && !pinFinished.value) {
-                EnterPinDialog(pinFinished = pinFinished, currentScreen = currentScreen)
+                EnterPinDialog(pinFinished = pinFinished)
             }
             if ((mainPrefs.get<Boolean>("first_launch") == true) && !pinFinished.value) {
                 SetPinDialog(
@@ -166,8 +184,7 @@ fun NavScreen(modifier: Modifier, currentScreen: MutableState<Screen>) {
 
 @Composable
 fun EnterPinDialog(
-    pinFinished: MutableState<Boolean>,
-    currentScreen: MutableState<Screen>
+    pinFinished: MutableState<Boolean>
 ) {
     val currentPin = remember { mutableStateOf(emptyList<Int>()) }
     var wrongPin by remember { mutableStateOf(false) }
@@ -207,7 +224,7 @@ fun EnterPinDialog(
                             "auth" to false,
                             "access_token" to null
                         )
-                        currentScreen.value = Screen.Login
+                        screenLive.value = Screen.Login
                     },
                     contentPadding = ButtonDefaults.ButtonWithIconContentPadding
                 ) {

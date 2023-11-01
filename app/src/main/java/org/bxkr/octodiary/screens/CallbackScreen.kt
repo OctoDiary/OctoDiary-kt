@@ -19,9 +19,10 @@ import androidx.compose.ui.unit.dp
 import org.bxkr.octodiary.R
 import org.bxkr.octodiary.Screen
 import org.bxkr.octodiary.network.MESLoginService.ExchangeToken
+import org.bxkr.octodiary.screenLive
 
 @Composable
-fun CallbackScreen(code: String, screenState: MutableState<Screen>) {
+fun CallbackScreen(code: String) {
     val token: MutableState<String?> = remember { mutableStateOf(null) }
 
     if (token.value == null) {
@@ -38,7 +39,7 @@ fun CallbackScreen(code: String, screenState: MutableState<Screen>) {
                 CircularProgressIndicator()
 
             } else {
-                screenState.value = Screen.MainNav
+                screenLive.value = Screen.MainNav
             }
         }
     }
