@@ -12,6 +12,7 @@ import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -62,7 +63,7 @@ fun Mark(
 @Composable
 fun MarkSheetContent(mark: Mark) {
     var markInfo by remember { mutableStateOf<MarkInfo?>(null) }
-    DataService.getMarkInfo(mark.id) { markInfo = it }
+    LaunchedEffect(Unit) { DataService.getMarkInfo(mark.id) { markInfo = it } }
 
     Box(
         Modifier

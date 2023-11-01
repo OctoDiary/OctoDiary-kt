@@ -64,11 +64,14 @@ object DataService {
 
     var tokenExpirationHandler: (() -> Unit)? = null
 
+    var onSingleItemInUpdateAllLoadedHandler: ((progress: Float) -> Unit)? = null
+
     var loadingStarted = false
 
     fun updateUserId(onUpdated: () -> Unit) {
         assert(this::token.isInitialized)
-        dSchoolApi.profilesId(token).baseEnqueue(::baseErrorFunction) { body ->
+        dSchoolApi.profilesId(token)
+            .baseEnqueue(::baseErrorFunction, ::baseInternalExceptionFunction) { body ->
             userId = body[0].id // FUTURE: USES_FIRST_CHILD
             onUpdated()
         }
@@ -78,7 +81,7 @@ object DataService {
         assert(this::token.isInitialized)
         assert(this::userId.isInitialized)
         schoolSessionApi.sessionUser(SessionUser.Body(token)).baseEnqueue(
-            ::baseErrorFunction
+            ::baseErrorFunction, ::baseInternalExceptionFunction
         ) { body ->
             sessionUser = body
             onUpdated()
@@ -98,7 +101,7 @@ object DataService {
                 it.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY)
             }.time.formatToDay(),
             expandFields = "homework,marks"
-        ).baseEnqueue(::baseErrorFunction) { body ->
+        ).baseEnqueue(::baseErrorFunction, ::baseInternalExceptionFunction) { body ->
             eventCalendar = body.response
             onUpdated()
         }
@@ -126,7 +129,7 @@ object DataService {
             token,
             personId = sessionUser.personId,
             date = Date().formatToDay()
-        ).baseEnqueue(::baseErrorFunction) {
+        ).baseEnqueue(::baseErrorFunction, ::baseInternalExceptionFunction) {
             ranking = it
             rankingFinished = true
             if (classMembersFinished) onUpdated()
@@ -136,7 +139,7 @@ object DataService {
         dSchoolApi.classMembers(
             token,
             classUnitId = profile.children[0].classUnitId // FUTURE: USES_FIRST_CHILD
-        ).baseEnqueue {
+        ).baseEnqueue(::baseErrorFunction, ::baseInternalExceptionFunction) {
             classMembers = it
             classMembersFinished = true
             if (rankingFinished) onUpdated()
@@ -146,7 +149,8 @@ object DataService {
     fun updateProfile(onUpdated: () -> Unit) {
         assert(this::token.isInitialized)
 
-        mainSchoolApi.profile(token).baseEnqueue(::baseErrorFunction) {
+        mainSchoolApi.profile(token)
+            .baseEnqueue(::baseErrorFunction, ::baseInternalExceptionFunction) {
             profile = it
             onUpdated()
         }
@@ -165,7 +169,7 @@ object DataService {
                 set(Calendar.DAY_OF_YEAR, get(Calendar.DAY_OF_YEAR) - 7)
             }.time.formatToDay(),
             toDate = Date().formatToDay()
-        ).baseEnqueue(::baseErrorFunction) { visitsResponse ->
+        ).baseEnqueue(::baseErrorFunction, ::baseInternalExceptionFunction) { visitsResponse ->
             visits = VisitsResponse(
                 payload = visitsResponse.payload.sortedByDescending {
                     it.date.parseFromDay().toInstant().toEpochMilli()
@@ -187,7 +191,7 @@ object DataService {
                 time
             }.formatToDay(),
             toDate = Date().formatToDay()
-        ).baseEnqueue(::baseErrorFunction) {
+        ).baseEnqueue(::baseErrorFunction, ::baseInternalExceptionFunction) {
             marks = it
             onUpdated()
         }
@@ -205,7 +209,7 @@ object DataService {
                 set(Calendar.WEEK_OF_YEAR, get(Calendar.WEEK_OF_YEAR) + 1)
                 time
             }.formatToDay()
-        ).baseEnqueue(::baseErrorFunction) {
+        ).baseEnqueue(::baseErrorFunction, ::baseInternalExceptionFunction) {
             homeworks = it.payload
             onUpdated()
         }
@@ -219,7 +223,7 @@ object DataService {
         dSchoolApi.mealBalance(
             token,
             contractId = profile.children[0].contractId // FUTURE: USES_FIRST_CHILD
-        ).baseEnqueue(::baseErrorFunction) {
+        ).baseEnqueue(::baseErrorFunction, ::baseInternalExceptionFunction) {
             mealBalance = it
             onUpdated()
         }
@@ -233,15 +237,15 @@ object DataService {
             token,
             schoolId = profile.children[0].school.id, // FUTURE: USES_FIRST_CHILD
             classUnitId = profile.children[0].classUnitId // FUTURE: USES_FIRST_CHILD
-        ).baseEnqueue(::baseErrorFunction) {
+        ).baseEnqueue(::baseErrorFunction, ::baseInternalExceptionFunction) {
             schoolInfo = it
             onUpdated()
         }
     }
 
-    fun updateAll(sendEachValueLoaded: (percent: Float) -> Unit) {
+    fun updateAll() {
         if (loadingStarted) return else loadingStarted = true
-        val onSingleItemLoad = { _: String ->
+        val onSingleItemLoad = { name: String ->
             val allStates = listOf(
                 hasUserId,
                 hasSessionUser,
@@ -255,10 +259,12 @@ object DataService {
                 hasMealBalance.takeIf { subsystem == Diary.MES } ?: true,
                 hasSchoolInfo
             )
-            sendEachValueLoaded((allStates.count { it }.toFloat()) / (allStates.size.toFloat()))
+            onSingleItemInUpdateAllLoadedHandler?.invoke((allStates.count { it }
+                .toFloat()) / (allStates.size.toFloat()))
             if (!(allStates.contains(false))) {
                 loadedEverything.value = true
             }
+            println("$name response is loaded")
         }
         updateUserId {
             onSingleItemLoad(::userId.name)

@@ -11,19 +11,19 @@ data class SchoolInfo(
     @SerializedName("classroom_teachers")
     val classroomTeachers: List<ClassroomTeacher>,
     @SerializedName("email")
-    val email: String,
+    val email: String?,
     @SerializedName("id")
     val id: Long,
     @SerializedName("name")
     val name: String,
     @SerializedName("phone")
-    val phone: String,
+    val phone: String?,
     @SerializedName("principal")
-    val principal: String,
+    val principal: String?,
     @SerializedName("teachers")
     val teachers: List<Teacher>,
     @SerializedName("type")
-    val type: String,
+    val type: String?,
     @SerializedName("website_link")
-    val websiteLink: String
+    val websiteLink: String?
 )

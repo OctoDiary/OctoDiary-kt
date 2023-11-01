@@ -84,7 +84,7 @@ inline fun <reified T> Prefs.get(prefId: String): T? {
 
 inline fun <reified T> Call<T>.baseEnqueue(
     noinline errorFunction: ((errorBody: ResponseBody, httpCode: Int, className: String?) -> Unit) = { _, _, _ -> },
-    noinline noConnectionFunction: ((t: Throwable) -> Unit) = {},
+    noinline noConnectionFunction: ((t: Throwable, className: String?) -> Unit) = { _, _ -> },
     noinline function: (body: T) -> Unit,
 ) = enqueue(object : Callback<T> {
     override fun onResponse(
@@ -101,7 +101,7 @@ inline fun <reified T> Call<T>.baseEnqueue(
     }
 
     override fun onFailure(call: Call<T>, t: Throwable) {
-        noConnectionFunction(t)
+        noConnectionFunction(t, T::class.simpleName)
     }
 })
 
@@ -132,6 +132,12 @@ fun DataService.baseErrorFunction(errorBody: ResponseBody, httpCode: Int, classN
     if (httpCode == 401) {
         tokenExpirationHandler?.invoke()
     } else println("Error in $className: ${errorBody.string()}")
+}
+
+fun DataService.baseInternalExceptionFunction(t: Throwable, className: String?) {
+    println("Error in $className:\n    ${t.message}\nTrying to reload everything...")
+    loadingStarted = false
+    updateAll()
 }
 
 /** Formats [Date] to yyyy-MM-dd format [String] **/

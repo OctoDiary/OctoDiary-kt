@@ -51,31 +51,39 @@ fun School() {
     ) {
         with(DataService.schoolInfo) {
             Text(name, style = MaterialTheme.typography.titleMedium)
-            TextWithIcon(icon = Icons.Rounded.LocationCity) {
-                Text(
-                    address.run { "$county $district $address" },
-                    Modifier.clickable { /*FUTURE: COPY*/ }
-                )
+            if (null !in listOf(address.county, address.district, address.address)) {
+                TextWithIcon(icon = Icons.Rounded.LocationCity) {
+                    Text(
+                        address.run { "${county ?: ""} ${district ?: ""} ${address ?: ""}" },
+                        Modifier.clickable { /*FUTURE: COPY*/ }
+                    )
+                }
             }
-            TextWithIcon(icon = Icons.Rounded.Phone) {
-                Text(
-                    "+7 $phone",
-                    Modifier.clickable { /*FUTURE: CALL*/ }
-                )
+            if (phone != null) {
+                TextWithIcon(icon = Icons.Rounded.Phone) {
+                    Text(
+                        "+7 $phone",
+                        Modifier.clickable { /*FUTURE: CALL*/ }
+                    )
+                }
             }
-            TextWithIcon(icon = Icons.Rounded.AlternateEmail) {
-                Text(
-                    email,
-                    Modifier.clickable { /*FUTURE: SEND_EMAIL*/ }
-                )
+            if (email != null) {
+                TextWithIcon(icon = Icons.Rounded.AlternateEmail) {
+                    Text(
+                        email,
+                        Modifier.clickable { /*FUTURE: SEND_EMAIL*/ }
+                    )
+                }
             }
-            TextWithIcon(icon = Icons.Rounded.Language) {
-                Text(
-                    websiteLink,
-                    Modifier.clickable { /*FUTURE: GO_TO_BROWSER*/ },
-                    textDecoration = TextDecoration.Underline,
-                    color = MaterialTheme.colorScheme.secondary
-                )
+            if (websiteLink != null) {
+                TextWithIcon(icon = Icons.Rounded.Language) {
+                    Text(
+                        websiteLink,
+                        Modifier.clickable { /*FUTURE: GO_TO_BROWSER*/ },
+                        textDecoration = TextDecoration.Underline,
+                        color = MaterialTheme.colorScheme.secondary
+                    )
+                }
             }
             var teachersExpanded by remember { mutableStateOf(false) }
             var rotation by remember { mutableFloatStateOf(0f) }

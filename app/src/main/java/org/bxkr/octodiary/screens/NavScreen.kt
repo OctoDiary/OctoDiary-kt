@@ -154,11 +154,12 @@ fun NavScreen(modifier: Modifier) {
                         label = "progress_anim"
                     )
                     val coroutineScope = rememberCoroutineScope()
-                    DataService.updateAll {
+                    DataService.onSingleItemInUpdateAllLoadedHandler = {
                         coroutineScope.launch {
                             progress = it
                         }
                     }
+                    DataService.updateAll()
                     Column(
                         Modifier.fillMaxSize(),
                         horizontalAlignment = Alignment.CenterHorizontally,
