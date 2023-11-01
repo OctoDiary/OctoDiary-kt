@@ -240,7 +240,11 @@ fun DateSeeker(weekPosition: MutableState<Float>, dayPosition: PagerState) {
 }
 
 @Composable
-fun DayItem(modifier: Modifier, day: List<Event>) {
+fun DayItem(
+    modifier: Modifier = Modifier,
+    day: List<Event>,
+    addBelow: @Composable () -> Unit = {}
+) {
     Column(modifier) {
         LazyColumn {
             items(day) {
@@ -269,6 +273,9 @@ fun DayItem(modifier: Modifier, day: List<Event>) {
                 ) {
                     EventItem(event = it)
                 }
+            }
+            item {
+                addBelow()
             }
         }
     }
