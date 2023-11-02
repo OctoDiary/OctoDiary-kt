@@ -222,4 +222,5 @@
     <string name="name_column">name</string>
     <string name="rating_column">rank</string>
     <string name="teachers">Teachers</string>
+    <string name="choose_context_profile">Choose student profile</string>
 </resources>

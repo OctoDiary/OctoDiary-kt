@@ -1,5 +1,6 @@
 package org.bxkr.octodiary.network.interfaces
 
+import android.net.Uri
 import org.bxkr.octodiary.Diary
 import org.bxkr.octodiary.models.auth.EsiaExchange
 import org.bxkr.octodiary.models.classranking.RankingMember
@@ -24,6 +25,17 @@ interface SecondaryAPI {
                 Diary.MES -> BaseUrl.MOS_SCHOOL
                 Diary.MySchool -> BaseUrl.MOSREG_SECONDARY
             }
+        }
+
+        /**
+         * Creates avatar Uri from person ID.
+         *
+         * @param diary [Diary].
+         * @param personId Person ID (guid-like).
+         * @return A Uri of avatar on one of MES' servers.
+         */
+        fun getAvatarUrl(diary: Diary, personId: String): Uri {
+            return Uri.parse(getBaseUrl(diary) + "avatars/" + personId)
         }
     }
 

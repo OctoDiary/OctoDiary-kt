@@ -9,6 +9,7 @@ import org.bxkr.octodiary.models.mark.MarkInfo
 import org.bxkr.octodiary.models.marklist.MarkList
 import org.bxkr.octodiary.models.mealbalance.MealBalance
 import org.bxkr.octodiary.models.profile.ProfileResponse
+import org.bxkr.octodiary.models.profilesid.ProfilesId
 import org.bxkr.octodiary.models.schoolinfo.SchoolInfo
 import org.bxkr.octodiary.models.sessionuser.SessionUser
 import org.bxkr.octodiary.models.visits.VisitsResponse
@@ -27,7 +28,7 @@ object DataService {
     lateinit var schoolSessionApi: SchoolSessionAPI
 
     lateinit var token: String
-    lateinit var userId: Number
+    lateinit var userId: ProfilesId
     val hasUserId get() = this::userId.isInitialized
 
     lateinit var sessionUser: SessionUser
@@ -68,6 +69,8 @@ object DataService {
 
     var loadingStarted = false
 
+    var currentProfile = 0
+
     fun updateUserId(onUpdated: () -> Unit) {
         assert(this::token.isInitialized)
         dSchoolApi.profilesId(token)
@@ -75,7 +78,7 @@ object DataService {
                 if (body.size == 0) {
                     tokenExpirationHandler?.invoke()
                 } else {
-                    userId = body[0].id // FUTURE: USES_FIRST_CHILD
+                    userId = body
                     onUpdated()
                 }
             }
@@ -94,10 +97,10 @@ object DataService {
 
     fun updateEventCalendar(onUpdated: () -> Unit) {
         assert(this::token.isInitialized)
-        assert(this::sessionUser.isInitialized)
+        assert(this::profile.isInitialized)
         secondaryApi.events(
             "Bearer $token",
-            personIds = sessionUser.personId,
+            personIds = profile.children[currentProfile].contingentGuid,
             beginDate = Calendar.getInstance().also {
                 it.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
             }.time.formatToDay(),
@@ -113,17 +116,17 @@ object DataService {
 
     fun getMarkInfo(markId: Long, listener: (MarkInfo) -> Unit) {
         assert(this::token.isInitialized)
-        assert(this::sessionUser.isInitialized)
+        assert(this::profile.isInitialized)
         mainSchoolApi.markInfo(
             token,
             markId = markId,
-            studentId = sessionUser.profiles[0].id // FUTURE: USES_FIRST_CHILD
+            studentId = profile.children[currentProfile].id
         ).baseEnqueue(::baseErrorFunction) { listener(it) }
     }
 
     fun updateRanking(onUpdated: () -> Unit) {
         assert(this::token.isInitialized)
-        assert(this::sessionUser.isInitialized)
+        assert(this::profile.isInitialized)
 
         var rankingFinished = false
         var classMembersFinished = false
@@ -131,7 +134,7 @@ object DataService {
         // Ranking request:
         secondaryApi.classRanking(
             token,
-            personId = sessionUser.personId,
+            personId = profile.children[currentProfile].contingentGuid,
             date = Date().formatToDay()
         ).baseEnqueue(::baseErrorFunction, ::baseInternalExceptionFunction) {
             ranking = it
@@ -142,7 +145,7 @@ object DataService {
         // Class members request for matching names:
         dSchoolApi.classMembers(
             token,
-            classUnitId = profile.children[0].classUnitId // FUTURE: USES_FIRST_CHILD
+            classUnitId = profile.children[currentProfile].classUnitId
         ).baseEnqueue(::baseErrorFunction, ::baseInternalExceptionFunction) {
             classMembers = it
             classMembersFinished = true
@@ -162,7 +165,7 @@ object DataService {
 
     fun updateVisits(onUpdated: () -> Unit) {
         assert(this::token.isInitialized)
-        assert(this::sessionUser.isInitialized)
+        assert(this::profile.isInitialized)
         assert(subsystem == Diary.MES)
 
         mainSchoolApi.visits(
@@ -185,11 +188,11 @@ object DataService {
 
     fun updateMarks(onUpdated: () -> Unit) {
         assert(this::token.isInitialized)
-        assert(this::userId.isInitialized)
+        assert(this::profile.isInitialized)
 
         mainSchoolApi.markList(
             token,
-            studentId = userId.toLong(),
+            studentId = profile.children[currentProfile].id,
             fromDate = Calendar.getInstance().run {
                 set(Calendar.WEEK_OF_YEAR, get(Calendar.WEEK_OF_YEAR) - 1)
                 time
@@ -203,11 +206,11 @@ object DataService {
 
     fun updateHomeworks(onUpdated: () -> Unit) {
         assert(this::token.isInitialized)
-        assert(this::userId.isInitialized)
+        assert(this::profile.isInitialized)
 
         mainSchoolApi.homeworks(
             token,
-            studentId = userId.toLong(),
+            studentId = profile.children[currentProfile].id,
             fromDate = Date().formatToDay(),
             toDate = Calendar.getInstance().run {
                 set(Calendar.WEEK_OF_YEAR, get(Calendar.WEEK_OF_YEAR) + 1)
@@ -226,7 +229,7 @@ object DataService {
 
         dSchoolApi.mealBalance(
             token,
-            contractId = profile.children[0].contractId // FUTURE: USES_FIRST_CHILD
+            contractId = profile.children[currentProfile].contractId
         ).baseEnqueue(::baseErrorFunction, ::baseInternalExceptionFunction) {
             mealBalance = it
             onUpdated()
@@ -239,8 +242,8 @@ object DataService {
 
         mainSchoolApi.schoolInfo(
             token,
-            schoolId = profile.children[0].school.id, // FUTURE: USES_FIRST_CHILD
-            classUnitId = profile.children[0].classUnitId // FUTURE: USES_FIRST_CHILD
+            schoolId = profile.children[currentProfile].school.id,
+            classUnitId = profile.children[currentProfile].classUnitId
         ).baseEnqueue(::baseErrorFunction, ::baseInternalExceptionFunction) {
             schoolInfo = it
             onUpdated()
@@ -274,9 +277,11 @@ object DataService {
             onSingleItemLoad(::userId.name)
             updateSessionUser {
                 onSingleItemLoad(::sessionUser.name)
-                updateEventCalendar { onSingleItemLoad(::eventCalendar.name) }
                 updateProfile {
                     onSingleItemLoad(::profile.name)
+                    updateEventCalendar { onSingleItemLoad(::eventCalendar.name) }
+                    updateMarks { onSingleItemLoad(::marks.name) }
+                    updateHomeworks { onSingleItemLoad(::homeworks.name) }
                     updateRanking {
                         onSingleItemLoad(::classMembers.name)
                         onSingleItemLoad(::ranking.name)
@@ -286,8 +291,6 @@ object DataService {
                     updateSchoolInfo { onSingleItemLoad(::schoolInfo.name) }
                 }
             }
-            updateMarks { onSingleItemLoad(::marks.name) }
-            updateHomeworks { onSingleItemLoad(::homeworks.name) }
         }
     }
 }

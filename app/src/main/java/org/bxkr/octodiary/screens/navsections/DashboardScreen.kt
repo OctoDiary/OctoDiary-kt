@@ -66,7 +66,7 @@ fun DashboardScreen() {
                         stringResource(
                             id = R.string.rating_place,
                             DataService
-                                .run { ranking.firstOrNull { it.personId == sessionUser.personId } }
+                                .run { ranking.firstOrNull { it.personId == profile.children[currentProfile].contingentGuid } }
                                 ?.rank?.rankPlace ?: "?"
                         )
                     )

@@ -9,11 +9,16 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.FilterAlt
+import androidx.compose.material.icons.rounded.Groups
 import androidx.compose.material.icons.rounded.Settings
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -48,6 +53,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -56,6 +62,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import org.bxkr.octodiary.components.ProfileChooser
 import org.bxkr.octodiary.screens.CallbackScreen
 import org.bxkr.octodiary.screens.CallbackType
 import org.bxkr.octodiary.screens.LoginScreen
@@ -68,6 +75,8 @@ val snackbarHostStateLive = MutableLiveData(SnackbarHostState())
 val navControllerLive = MutableLiveData<NavHostController?>(null)
 val contentDependentActionLive = MutableLiveData<@Composable () -> Unit> {}
 val screenLive = MutableLiveData<Screen>()
+val modalDialogStateLive = MutableLiveData(false)
+val modalDialogContentLive = MutableLiveData<@Composable () -> Unit> {}
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -101,6 +110,8 @@ class MainActivity : ComponentActivity() {
         val elevatedColor = MaterialTheme.colorScheme.surfaceColorAtElevation(1.dp)
         var topAppBarColor by remember { mutableStateOf(surfaceColor) }
         val contentDependentAction = contentDependentActionLive.observeAsState()
+        val showDialog = modalDialogStateLive.observeAsState()
+        val dialogContent = modalDialogContentLive.observeAsState()
 
         SideEffect {
             navController.value?.addOnDestinationChangedListener { _, destination, _ ->
@@ -125,8 +136,22 @@ class MainActivity : ComponentActivity() {
                         val currentRoute =
                             navController.value!!.currentBackStackEntryAsState().value?.destination?.route
                         AnimatedVisibility(currentRoute == NavSection.Profile.route) {
-                            IconButton(onClick = {}) {
-                                Icon(Icons.Rounded.Settings, stringResource(id = R.string.settings))
+                            Row(Modifier) {
+                                IconButton(onClick = {
+                                    modalDialogContentLive.value = { ProfileChooser() }
+                                    modalDialogStateLive.postValue(true)
+                                }) {
+                                    Icon(
+                                        Icons.Rounded.Groups,
+                                        stringResource(id = R.string.choose_context_profile)
+                                    )
+                                }
+                                IconButton(onClick = {}) {
+                                    Icon(
+                                        Icons.Rounded.Settings,
+                                        stringResource(id = R.string.settings)
+                                    )
+                                }
                             }
                         }
                         AnimatedVisibility(currentRoute == NavSection.Homeworks.route) {
@@ -217,6 +242,18 @@ class MainActivity : ComponentActivity() {
                     sheetState = sheetState
                 ) {
                     bottomSheetContent?.invoke()
+                }
+            }
+            if (showDialog.value == true) {
+                Dialog(onDismissRequest = { modalDialogStateLive.postValue(false) }) {
+                    Card(
+                        Modifier
+                            .fillMaxWidth(),
+                        shape = MaterialTheme.shapes.large,
+                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+                    ) {
+                        dialogContent.value?.invoke()
+                    }
                 }
             }
         }

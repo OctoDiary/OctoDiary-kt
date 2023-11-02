@@ -81,9 +81,12 @@ fun ClassInfo() {
             Column(Modifier.padding(16.dp)) {
                 with(DataService) {
                     Text(
-                        stringResource(R.string.class_t, profile.children[0].className),
+                        stringResource(
+                            R.string.class_t,
+                            profile.children[currentProfile].className
+                        ),
                         style = MaterialTheme.typography.titleMedium
-                    ) // FUTURE: USES_FIRST_CHILD
+                    )
                     Text(
                         LocalContext.current.resources.getQuantityString(
                             R.plurals.student_count,

@@ -168,4 +168,5 @@
     <string name="name_column">имя</string>
     <string name="rating_column">рейтинг</string>
     <string name="teachers">Учителя</string>
+    <string name="choose_context_profile">Выбрать профиль ученика</string>
 </resources>

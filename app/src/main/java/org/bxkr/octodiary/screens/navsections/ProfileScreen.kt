@@ -53,13 +53,13 @@ fun ProfileScreen() {
         ) {
             with(DataService) {
                 Text(
-                    stringResource(R.string.hello_t, profile.children[0].firstName),
+                    stringResource(R.string.hello_t, profile.children[currentProfile].firstName),
                     style = MaterialTheme.typography.titleLarge
-                ) // FUTURE: USES_FIRST_CHILD
+                )
                 Text(
-                    stringResource(R.string.class_t, profile.children[0].className),
+                    stringResource(R.string.class_t, profile.children[currentProfile].className),
                     style = MaterialTheme.typography.titleMedium
-                ) // FUTURE: USES_FIRST_CHILD
+                )
                 if (subsystem == Diary.MES) {
                     Text(
                         stringResource(R.string.balance_t, mealBalance.balance / 100),
