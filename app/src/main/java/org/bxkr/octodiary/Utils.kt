@@ -1,6 +1,8 @@
 package org.bxkr.octodiary
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.ui.platform.LocalConfiguration
@@ -196,3 +198,17 @@ val Date.weekOfYear: Int
             time = this@weekOfYear
             get(Calendar.WEEK_OF_YEAR)
         }
+
+fun Activity.logOut() {
+    authPrefs.save(
+        "auth" to false,
+        "access_token" to null
+    )
+    mainPrefs.save(
+        "first_launch" to true,
+        "has_pin" to false
+    )
+    screenLive.value = Screen.Login
+    startActivity(Intent(this, MainActivity::class.java))
+    finish()
+}

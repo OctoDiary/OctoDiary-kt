@@ -62,11 +62,13 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.bxkr.octodiary.DataService
 import org.bxkr.octodiary.Diary
+import org.bxkr.octodiary.LocalActivity
 import org.bxkr.octodiary.NavSection
 import org.bxkr.octodiary.R
 import org.bxkr.octodiary.Screen
 import org.bxkr.octodiary.authPrefs
 import org.bxkr.octodiary.get
+import org.bxkr.octodiary.logOut
 import org.bxkr.octodiary.mainPrefs
 import org.bxkr.octodiary.navControllerLive
 import org.bxkr.octodiary.network.NetworkService
@@ -161,12 +163,10 @@ fun NavScreen(modifier: Modifier) {
                             progress = it
                         }
                     }
+
+                    val activity = LocalActivity.current
                     DataService.tokenExpirationHandler = {
-                        authPrefs.save(
-                            "auth" to false,
-                            "access_token" to null
-                        )
-                        screenLive.value = Screen.Login
+                        activity.logOut()
                     }
 
                     DataService.updateAll()
@@ -199,7 +199,6 @@ fun EnterPinDialog(
 ) {
     val currentPin = remember { mutableStateOf(emptyList<Int>()) }
     var wrongPin by remember { mutableStateOf(false) }
-    val context = LocalContext.current
     if (
         currentPin.value.size == 4
     ) {
@@ -228,14 +227,11 @@ fun EnterPinDialog(
                 horizontalAlignment = Alignment.End,
                 verticalArrangement = Arrangement.Center
             ) {
+                val activity = LocalActivity.current
                 FilledTonalButton(
                     modifier = Modifier.padding(16.dp),
                     onClick = {
-                        context.authPrefs.save(
-                            "auth" to false,
-                            "access_token" to null
-                        )
-                        screenLive.value = Screen.Login
+                        activity.logOut()
                     },
                     contentPadding = ButtonDefaults.ButtonWithIconContentPadding
                 ) {

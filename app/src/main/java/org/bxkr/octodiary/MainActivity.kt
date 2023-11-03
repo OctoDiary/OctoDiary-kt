@@ -37,6 +37,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
@@ -48,6 +49,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -63,6 +65,7 @@ import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.bxkr.octodiary.components.ProfileChooser
+import org.bxkr.octodiary.components.SettingsDialog
 import org.bxkr.octodiary.screens.CallbackScreen
 import org.bxkr.octodiary.screens.CallbackType
 import org.bxkr.octodiary.screens.LoginScreen
@@ -78,6 +81,9 @@ val screenLive = MutableLiveData<Screen>()
 val modalDialogStateLive = MutableLiveData(false)
 val modalDialogContentLive = MutableLiveData<@Composable () -> Unit> {}
 val reloadEverythingLive = MutableLiveData {}
+val LocalActivity = staticCompositionLocalOf<ComponentActivity> {
+    error("No LocalActivity provided!")
+}
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -127,25 +133,24 @@ class MainActivity : ComponentActivity() {
         }
 
         var localLoadedState by remember { mutableStateOf(false) }
+        var settingsShown by remember { mutableStateOf(false) }
         LaunchedEffect(rememberCoroutineScope()) {
-            snapshotFlow { DataService.loadedEverything.value }
-                .onEach { localLoadedState = it }
+            snapshotFlow { DataService.loadedEverything.value }.onEach { localLoadedState = it }
                 .launchIn(this)
         }
-        Scaffold(modifier, topBar = {
-            Column {
-                TopAppBar(
-                    title = {
+        CompositionLocalProvider(LocalActivity provides this) {
+            Scaffold(modifier, topBar = {
+                Column {
+                    TopAppBar(title = {
                         AnimatedContent(targetState = title, label = "title_anim") {
-                            if (localLoadedState) {
+                            if ((currentScreen.value == Screen.MainNav && localLoadedState) || currentScreen.value != Screen.MainNav) {
                                 Text(stringResource(it))
                             } else {
                                 Text(stringResource(R.string.app_name))
                             }
                         }
-                    },
-                    actions = {
-                        if (localLoadedState) {
+                    }, actions = {
+                        if (localLoadedState && currentScreen.value == Screen.MainNav) {
                             val currentRoute =
                                 navController.value!!.currentBackStackEntryAsState().value?.destination?.route
                             AnimatedVisibility(currentRoute == NavSection.Profile.route) {
@@ -159,7 +164,7 @@ class MainActivity : ComponentActivity() {
                                             stringResource(id = R.string.choose_context_profile)
                                         )
                                     }
-                                    IconButton(onClick = {}) {
+                                    IconButton(onClick = { settingsShown = true }) {
                                         Icon(
                                             Icons.Rounded.Settings,
                                             stringResource(id = R.string.settings)
@@ -182,86 +187,81 @@ class MainActivity : ComponentActivity() {
                                 }
                             }
                         }
-                    },
-                    colors = TopAppBarDefaults.topAppBarColors(
+                    }, colors = TopAppBarDefaults.topAppBarColors(
                         containerColor = topAppBarColor
                     )
-                )
-            }
-        }, snackbarHost = { SnackbarHost(hostState = snackbarHostState) }, bottomBar = {
-            if (
-                (currentScreen.value != Screen.MainNav)
-                || !localLoadedState
-            ) return@Scaffold
-            NavigationBar {
-                val navBackStackEntry by navController.value!!.currentBackStackEntryAsState()
-                val currentDestination = navBackStackEntry?.destination
-                NavSection.values().forEach {
-                    NavigationBarItem(
-                        selected = currentDestination?.hierarchy?.any { destination -> destination.route == it.route } == true,
-                        onClick = {
-                            navController.value!!.navigate(it.route) {
-                                popUpTo(navController.value!!.graph.findStartDestination().id) {
-                                    saveState = true
-                                }
-                                launchSingleTop = true
-                                restoreState = true
-                            }
-                        },
-                        icon = {
-                            Icon(it.icon, stringResource(id = it.title))
-                        },
-                        label = {
-                            Text(stringResource(id = it.title))
-                        }
                     )
                 }
-            }
-        }) { padding ->
-            Surface {
-                title = when (currentScreen.value!!) {
-                    Screen.Login -> {
-                        LoginScreen(Modifier.padding(padding))
-                        R.string.log_in
-                    }
-
-                    Screen.Callback -> {
-                        CallbackScreen(
-                            Uri.parse(intentData).getQueryParameter("code")!!,
-                            Uri.parse(intentData).host!!.let { host ->
-                                CallbackType.values().first { it.host == host }
-                            }
-                        )
-                        R.string.log_in
-                    }
-
-                    Screen.MainNav -> {
-                        NavScreen(Modifier.padding(padding))
-                        val navBackStackEntry by navController.value!!.currentBackStackEntryAsState()
-                        val currentRoute = navBackStackEntry?.destination?.route
-                        NavSection.values().firstOrNull { it.route == currentRoute }?.title
-                            ?: R.string.app_name
+            }, snackbarHost = { SnackbarHost(hostState = snackbarHostState) }, bottomBar = {
+                if ((currentScreen.value != Screen.MainNav) || !localLoadedState) return@Scaffold
+                NavigationBar {
+                    val navBackStackEntry by navController.value!!.currentBackStackEntryAsState()
+                    val currentDestination = navBackStackEntry?.destination
+                    NavSection.values().forEach {
+                        NavigationBarItem(selected = currentDestination?.hierarchy?.any { destination -> destination.route == it.route } == true,
+                            onClick = {
+                                navController.value!!.navigate(it.route) {
+                                    popUpTo(navController.value!!.graph.findStartDestination().id) {
+                                        saveState = true
+                                    }
+                                    launchSingleTop = true
+                                    restoreState = true
+                                }
+                            },
+                            icon = {
+                                Icon(it.icon, stringResource(id = it.title))
+                            },
+                            label = {
+                                Text(stringResource(id = it.title))
+                            })
                     }
                 }
-            }
-            if (showBottomSheet == true) {
-                ModalBottomSheet(
-                    onDismissRequest = { modalBottomSheetStateLive.postValue(false) },
-                    sheetState = sheetState
-                ) {
-                    bottomSheetContent?.invoke()
+            }) { padding ->
+                Surface {
+                    title = when (currentScreen.value!!) {
+                        Screen.Login -> {
+                            LoginScreen(Modifier.padding(padding))
+                            R.string.log_in
+                        }
+
+                        Screen.Callback -> {
+                            CallbackScreen(Uri.parse(intentData).getQueryParameter("code")!!,
+                                Uri.parse(intentData).host!!.let { host ->
+                                    CallbackType.values().first { it.host == host }
+                                })
+                            R.string.log_in
+                        }
+
+                        Screen.MainNav -> {
+                            NavScreen(Modifier.padding(padding))
+                            val navBackStackEntry by navController.value!!.currentBackStackEntryAsState()
+                            val currentRoute = navBackStackEntry?.destination?.route
+                            NavSection.values().firstOrNull { it.route == currentRoute }?.title
+                                ?: R.string.app_name
+                        }
+                    }
                 }
-            }
-            if (showDialog.value == true) {
-                Dialog(onDismissRequest = { modalDialogStateLive.postValue(false) }) {
-                    Card(
-                        Modifier
-                            .fillMaxWidth(),
-                        shape = MaterialTheme.shapes.large,
-                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+                if (showBottomSheet == true) {
+                    ModalBottomSheet(
+                        onDismissRequest = { modalBottomSheetStateLive.postValue(false) },
+                        sheetState = sheetState
                     ) {
-                        dialogContent.value?.invoke()
+                        bottomSheetContent?.invoke()
                     }
+                }
+                if (showDialog.value == true) {
+                    Dialog(onDismissRequest = { modalDialogStateLive.postValue(false) }) {
+                        Card(
+                            Modifier.fillMaxWidth(),
+                            shape = MaterialTheme.shapes.large,
+                            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+                        ) {
+                            dialogContent.value?.invoke()
+                        }
+                    }
+                }
+                AnimatedVisibility(visible = settingsShown) {
+                    SettingsDialog { settingsShown = false }
                 }
             }
         }
