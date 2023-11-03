@@ -12,10 +12,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -26,14 +22,15 @@ import com.bumptech.glide.integration.compose.GlideImage
 import org.bxkr.octodiary.DataService
 import org.bxkr.octodiary.R
 import org.bxkr.octodiary.formatToHumanDate
+import org.bxkr.octodiary.modalDialogStateLive
 import org.bxkr.octodiary.network.interfaces.SecondaryAPI
 import org.bxkr.octodiary.parseFromDay
+import org.bxkr.octodiary.reloadEverythingLive
 
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun ProfileChooser() {
-    var currentProfile by remember { mutableIntStateOf(DataService.currentProfile) }
     Column(Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp)) {
         Text(
             stringResource(id = R.string.choose_context_profile),
@@ -46,8 +43,12 @@ fun ProfileChooser() {
                     .padding(bottom = 16.dp)
                     .fillMaxWidth()
                     .clip(CardDefaults.outlinedShape)
-                    .clickable { DataService.currentProfile = index; currentProfile = index },
-                border = if (currentProfile == index) {
+                    .clickable {
+                        modalDialogStateLive.postValue(false)
+                        DataService.currentProfile = index
+                        reloadEverythingLive.value?.invoke()
+                    },
+                border = if (DataService.currentProfile == index) {
                     BorderStroke(2.dp, MaterialTheme.colorScheme.primary)
                 } else CardDefaults.outlinedCardBorder()
             ) {

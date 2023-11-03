@@ -29,37 +29,37 @@ object DataService {
 
     lateinit var token: String
     lateinit var userId: ProfilesId
-    val hasUserId get() = this::userId.isInitialized
+    var hasUserId = false
 
     lateinit var sessionUser: SessionUser
-    val hasSessionUser get() = this::sessionUser.isInitialized
+    var hasSessionUser = false
 
     lateinit var eventCalendar: List<Event>
-    val hasEventCalendar get() = this::eventCalendar.isInitialized
+    var hasEventCalendar = false
 
     lateinit var ranking: List<RankingMember>
-    val hasRanking get() = this::ranking.isInitialized
+    var hasRanking = false
 
     lateinit var classMembers: List<ClassMember>
-    val hasClassMembers get() = this::classMembers.isInitialized
+    var hasClassMembers = false
 
     lateinit var profile: ProfileResponse
-    val hasProfile get() = this::profile.isInitialized
+    var hasProfile = false
 
-    lateinit var visits: VisitsResponse // FUTURE: REGIONAL_FEATURE
-    val hasVisits get() = this::visits.isInitialized
+    lateinit var visits: VisitsResponse
+    var hasVisits = false
 
     lateinit var marks: MarkList
-    val hasMarks get() = this::marks.isInitialized
+    var hasMarks = false
 
     lateinit var homeworks: List<Homework>
-    val hasHomeworks get() = this::homeworks.isInitialized
+    var hasHomeworks = false
 
-    lateinit var mealBalance: MealBalance // FUTURE: REGIONAL_FEATURE
-    val hasMealBalance get() = this::mealBalance.isInitialized
+    lateinit var mealBalance: MealBalance
+    var hasMealBalance = false
 
     lateinit var schoolInfo: SchoolInfo
-    val hasSchoolInfo get() = this::schoolInfo.isInitialized
+    var hasSchoolInfo = false
 
     val loadedEverything = mutableStateOf(false)
 
@@ -79,6 +79,7 @@ object DataService {
                     tokenExpirationHandler?.invoke()
                 } else {
                     userId = body
+                    hasUserId = true
                     onUpdated()
                 }
             }
@@ -91,6 +92,7 @@ object DataService {
             ::baseErrorFunction, ::baseInternalExceptionFunction
         ) { body ->
             sessionUser = body
+            hasSessionUser = true
             onUpdated()
         }
     }
@@ -112,6 +114,7 @@ object DataService {
             expandFields = "homework,marks"
         ).baseEnqueue(::baseErrorFunction, ::baseInternalExceptionFunction) { body ->
             eventCalendar = body.response
+            hasEventCalendar = true
             onUpdated()
         }
     }
@@ -140,6 +143,7 @@ object DataService {
             date = Date().formatToDay()
         ).baseEnqueue(::baseErrorFunction, ::baseInternalExceptionFunction) {
             ranking = it
+            hasRanking = true
             rankingFinished = true
             if (classMembersFinished) onUpdated()
         }
@@ -150,6 +154,7 @@ object DataService {
             classUnitId = profile.children[currentProfile].classUnitId
         ).baseEnqueue(::baseErrorFunction, ::baseInternalExceptionFunction) {
             classMembers = it
+            hasClassMembers = true
             classMembersFinished = true
             if (rankingFinished) onUpdated()
         }
@@ -161,6 +166,7 @@ object DataService {
         mainSchoolApi.profile(token)
             .baseEnqueue(::baseErrorFunction, ::baseInternalExceptionFunction) {
                 profile = it
+                hasProfile = true
                 onUpdated()
             }
     }
@@ -184,6 +190,7 @@ object DataService {
                     it.date.parseFromDay().toInstant().toEpochMilli()
                 }
             )
+            hasVisits = true
             onUpdated()
         }
     }
@@ -202,6 +209,7 @@ object DataService {
             toDate = Date().formatToDay()
         ).baseEnqueue(::baseErrorFunction, ::baseInternalExceptionFunction) {
             marks = it
+            hasMarks = true
             onUpdated()
         }
     }
@@ -220,6 +228,7 @@ object DataService {
             }.formatToDay()
         ).baseEnqueue(::baseErrorFunction, ::baseInternalExceptionFunction) {
             homeworks = it.payload
+            hasHomeworks = true
             onUpdated()
         }
     }
@@ -234,6 +243,7 @@ object DataService {
             contractId = profile.children[currentProfile].contractId
         ).baseEnqueue(::baseErrorFunction, ::baseInternalExceptionFunction) {
             mealBalance = it
+            hasMealBalance = true
             onUpdated()
         }
     }
@@ -248,32 +258,35 @@ object DataService {
             classUnitId = profile.children[currentProfile].classUnitId
         ).baseEnqueue(::baseErrorFunction, ::baseInternalExceptionFunction) {
             schoolInfo = it
+            hasSchoolInfo = true
             onUpdated()
         }
     }
 
     fun updateAll() {
         if (loadingStarted) return else loadingStarted = true
+        val states = listOfNotNull(
+            ::hasUserId,
+            ::hasSessionUser,
+            ::hasEventCalendar,
+            ::hasRanking,
+            ::hasClassMembers,
+            ::hasProfile,
+            ::hasVisits.takeIf { subsystem == Diary.MES },
+            ::hasMarks,
+            ::hasHomeworks,
+            ::hasMealBalance.takeIf { subsystem == Diary.MES },
+            ::hasSchoolInfo
+        )
+        states.forEach { it.set(false) }
         val onSingleItemLoad = { name: String ->
-            val allStates = listOf(
-                hasUserId,
-                hasSessionUser,
-                hasEventCalendar,
-                hasRanking,
-                hasClassMembers,
-                hasProfile,
-                hasVisits.takeIf { subsystem == Diary.MES } ?: true,
-                hasMarks,
-                hasHomeworks,
-                hasMealBalance.takeIf { subsystem == Diary.MES } ?: true,
-                hasSchoolInfo
-            )
-            onSingleItemInUpdateAllLoadedHandler?.invoke((allStates.count { it }
-                .toFloat()) / (allStates.size.toFloat()))
-            if (!(allStates.contains(false))) {
+            val statesInit = states.map { it.get() }
+            onSingleItemInUpdateAllLoadedHandler?.invoke((statesInit.count { it }
+                .toFloat()) / (statesInit.size.toFloat()))
+            if (!(statesInit.contains(false))) {
                 loadedEverything.value = true
             }
-            println("$name response is loaded")
+            println("$name response is loaded, $statesInit")
         }
         updateUserId {
             onSingleItemLoad(::userId.name)

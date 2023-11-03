@@ -74,6 +74,7 @@ import org.bxkr.octodiary.network.interfaces.DSchoolAPI
 import org.bxkr.octodiary.network.interfaces.MainSchoolAPI
 import org.bxkr.octodiary.network.interfaces.SchoolSessionAPI
 import org.bxkr.octodiary.network.interfaces.SecondaryAPI
+import org.bxkr.octodiary.reloadEverythingLive
 import org.bxkr.octodiary.save
 import org.bxkr.octodiary.screenLive
 import org.bxkr.octodiary.ui.theme.OctoDiaryTheme
@@ -126,6 +127,15 @@ fun NavScreen(modifier: Modifier) {
                     snapshotFlow { DataService.loadedEverything.value }
                         .onEach { localLoadedState = it }
                         .launchIn(this)
+                }
+                LaunchedEffect(Unit) {
+                    reloadEverythingLive.postValue {
+                        DataService.run {
+                            loadingStarted = false
+                            loadedEverything.value = false
+
+                        }
+                    }
                 }
                 AnimatedVisibility(localLoadedState) {
                     NavHost(

@@ -77,6 +77,7 @@ val contentDependentActionLive = MutableLiveData<@Composable () -> Unit> {}
 val screenLive = MutableLiveData<Screen>()
 val modalDialogStateLive = MutableLiveData(false)
 val modalDialogContentLive = MutableLiveData<@Composable () -> Unit> {}
+val reloadEverythingLive = MutableLiveData {}
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -124,48 +125,61 @@ class MainActivity : ComponentActivity() {
         if (intentData != null && authPrefs.get<Boolean>("auth") != true) {
             screenLive.value = Screen.Callback
         }
+
+        var localLoadedState by remember { mutableStateOf(false) }
+        LaunchedEffect(rememberCoroutineScope()) {
+            snapshotFlow { DataService.loadedEverything.value }
+                .onEach { localLoadedState = it }
+                .launchIn(this)
+        }
         Scaffold(modifier, topBar = {
             Column {
                 TopAppBar(
                     title = {
                         AnimatedContent(targetState = title, label = "title_anim") {
-                            Text(stringResource(it))
+                            if (localLoadedState) {
+                                Text(stringResource(it))
+                            } else {
+                                Text(stringResource(R.string.app_name))
+                            }
                         }
                     },
                     actions = {
-                        val currentRoute =
-                            navController.value!!.currentBackStackEntryAsState().value?.destination?.route
-                        AnimatedVisibility(currentRoute == NavSection.Profile.route) {
-                            Row(Modifier) {
-                                IconButton(onClick = {
-                                    modalDialogContentLive.value = { ProfileChooser() }
-                                    modalDialogStateLive.postValue(true)
-                                }) {
-                                    Icon(
-                                        Icons.Rounded.Groups,
-                                        stringResource(id = R.string.choose_context_profile)
-                                    )
-                                }
-                                IconButton(onClick = {}) {
-                                    Icon(
-                                        Icons.Rounded.Settings,
-                                        stringResource(id = R.string.settings)
-                                    )
+                        if (localLoadedState) {
+                            val currentRoute =
+                                navController.value!!.currentBackStackEntryAsState().value?.destination?.route
+                            AnimatedVisibility(currentRoute == NavSection.Profile.route) {
+                                Row(Modifier) {
+                                    IconButton(onClick = {
+                                        modalDialogContentLive.value = { ProfileChooser() }
+                                        modalDialogStateLive.postValue(true)
+                                    }) {
+                                        Icon(
+                                            Icons.Rounded.Groups,
+                                            stringResource(id = R.string.choose_context_profile)
+                                        )
+                                    }
+                                    IconButton(onClick = {}) {
+                                        Icon(
+                                            Icons.Rounded.Settings,
+                                            stringResource(id = R.string.settings)
+                                        )
+                                    }
                                 }
                             }
-                        }
-                        AnimatedVisibility(currentRoute == NavSection.Homeworks.route) {
-                            var expanded by remember {
-                                mutableStateOf(false)
-                            }
-                            Box(contentAlignment = Alignment.Center) {
-                                IconButton(onClick = { expanded = !expanded }) {
-                                    Icon(Icons.Rounded.FilterAlt, "Фильтр")
+                            AnimatedVisibility(currentRoute == NavSection.Homeworks.route) {
+                                var expanded by remember {
+                                    mutableStateOf(false)
                                 }
-                                DropdownMenu(expanded, { expanded = false }) {
-                                    contentDependentAction.value?.invoke()
-                                }
+                                Box(contentAlignment = Alignment.Center) {
+                                    IconButton(onClick = { expanded = !expanded }) {
+                                        Icon(Icons.Rounded.FilterAlt, "Фильтр")
+                                    }
+                                    DropdownMenu(expanded, { expanded = false }) {
+                                        contentDependentAction.value?.invoke()
+                                    }
 
+                                }
                             }
                         }
                     },
@@ -175,12 +189,6 @@ class MainActivity : ComponentActivity() {
                 )
             }
         }, snackbarHost = { SnackbarHost(hostState = snackbarHostState) }, bottomBar = {
-            var localLoadedState by remember { mutableStateOf(false) }
-            LaunchedEffect(rememberCoroutineScope()) {
-                snapshotFlow { DataService.loadedEverything.value }
-                    .onEach { localLoadedState = it }
-                    .launchIn(this)
-            }
             if (
                 (currentScreen.value != Screen.MainNav)
                 || !localLoadedState
