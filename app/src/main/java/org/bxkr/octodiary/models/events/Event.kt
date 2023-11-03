@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 data class Event(
     @SerializedName("absence_reason_id")
-    val absenceReasonId: Int?,
+    val absenceReasonId: Long?,
     @SerializedName("activities")
     val activities: Any?,
     @SerializedName("address")
@@ -17,7 +17,7 @@ data class Event(
     @SerializedName("author_name")
     val authorName: Any?,
     @SerializedName("building_id")
-    val buildingId: Int?,
+    val buildingId: Long?,
     @SerializedName("building_name")
     val buildingName: String?,
     @SerializedName("cancelled")
@@ -51,7 +51,7 @@ data class Event(
     @SerializedName("description")
     val description: String?,
     @SerializedName("esz_field_id")
-    val eszFieldId: Int?,
+    val eszFieldId: Long?,
     @SerializedName("external_activities_type")
     val externalActivitiesType: Any?,
     @SerializedName("finish_at")
@@ -59,7 +59,7 @@ data class Event(
     @SerializedName("format_name")
     val formatName: Any?,
     @SerializedName("group_id")
-    val groupId: Int?,
+    val groupId: Long?,
     @SerializedName("group_name")
     val groupName: String?,
     @SerializedName("health_status")
@@ -67,7 +67,7 @@ data class Event(
     @SerializedName("homework")
     val homework: Homework?,
     @SerializedName("id")
-    val id: Int,
+    val id: Long,
     @SerializedName("is_all_day")
     val isAllDay: Boolean?,
     @SerializedName("is_metagroup")
@@ -93,7 +93,7 @@ data class Event(
     @SerializedName("need_document")
     val needDocument: Any?,
     @SerializedName("nonattendance_reason_id")
-    val nonattendanceReasonId: Int?,
+    val nonattendanceReasonId: Long?,
     @SerializedName("outdoor")
     val outdoor: Boolean?,
     @SerializedName("place")
@@ -113,7 +113,7 @@ data class Event(
     @SerializedName("replaced")
     val replaced: Boolean?,
     @SerializedName("replaced_teacher_id")
-    val replacedTeacherId: Int?,
+    val replacedTeacherId: Long?,
     @SerializedName("room_name")
     val roomName: String?,
     @SerializedName("room_number")
@@ -127,7 +127,7 @@ data class Event(
     @SerializedName("student_count")
     val studentCount: Any?,
     @SerializedName("subject_id")
-    val subjectId: Int?,
+    val subjectId: Long?,
     @SerializedName("subject_name")
     val subjectName: String?,
     @SerializedName("title")

@@ -21,7 +21,7 @@ data class Homework(
     @SerializedName("materials_count")
     val materialsCount: List<Material>,
     @SerializedName("subject_id")
-    val subjectId: Int,
+    val subjectId: Long,
     @SerializedName("subject_name")
     val subjectName: String,
     @SerializedName("type")

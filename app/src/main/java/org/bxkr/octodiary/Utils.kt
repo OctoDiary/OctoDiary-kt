@@ -1,6 +1,8 @@
 package org.bxkr.octodiary
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.ui.platform.LocalConfiguration
@@ -12,6 +14,7 @@ import retrofit2.Response
 import java.security.MessageDigest
 import java.text.SimpleDateFormat
 import java.time.OffsetDateTime
+import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 import kotlin.io.encoding.Base64
@@ -84,7 +87,7 @@ inline fun <reified T> Prefs.get(prefId: String): T? {
 
 inline fun <reified T> Call<T>.baseEnqueue(
     noinline errorFunction: ((errorBody: ResponseBody, httpCode: Int, className: String?) -> Unit) = { _, _, _ -> },
-    noinline noConnectionFunction: ((t: Throwable) -> Unit) = {},
+    noinline noConnectionFunction: ((t: Throwable, className: String?) -> Unit) = { _, _ -> },
     noinline function: (body: T) -> Unit,
 ) = enqueue(object : Callback<T> {
     override fun onResponse(
@@ -101,6 +104,29 @@ inline fun <reified T> Call<T>.baseEnqueue(
     }
 
     override fun onFailure(call: Call<T>, t: Throwable) {
+        noConnectionFunction(t, T::class.simpleName)
+    }
+})
+
+inline fun <reified T> Call<T>.extendedEnqueue(
+    noinline errorFunction: ((errorBody: ResponseBody, httpCode: Int, className: String?) -> Unit) = { _, _, _ -> },
+    noinline noConnectionFunction: ((t: Throwable) -> Unit) = {},
+    noinline function: (response: Response<T>) -> Unit,
+) = enqueue(object : Callback<T> {
+    override fun onResponse(
+        call: Call<T>,
+        response: Response<T>
+    ) {
+        val body = response.body()
+        if (response.isSuccessful && body != null) {
+            function(response)
+        } else {
+            response.errorBody()
+                ?.let { it1 -> errorFunction(it1, response.code(), T::class.simpleName) }
+        }
+    }
+
+    override fun onFailure(call: Call<T>, t: Throwable) {
         noConnectionFunction(t)
     }
 })
@@ -109,6 +135,12 @@ fun DataService.baseErrorFunction(errorBody: ResponseBody, httpCode: Int, classN
     if (httpCode == 401) {
         tokenExpirationHandler?.invoke()
     } else println("Error in $className: ${errorBody.string()}")
+}
+
+fun DataService.baseInternalExceptionFunction(t: Throwable, className: String?) {
+    println("Error in $className:\n    ${t.message}\nTrying to reload everything...")
+    loadingStarted = false
+    updateAll()
 }
 
 /** Formats [Date] to yyyy-MM-dd format [String] **/
@@ -159,3 +191,24 @@ fun parseSimpleLongAndFormatToLong(toFormat: String, joiner: String): String =
     SimpleDateFormat("d LLL yyyy '$joiner' H:mm", LocalConfiguration.current.locales[0]).format(
         toFormat.parseSimpleLongDate()
     )
+
+val Date.weekOfYear: Int
+    get() =
+        Calendar.getInstance().run {
+            time = this@weekOfYear
+            get(Calendar.WEEK_OF_YEAR)
+        }
+
+fun Activity.logOut() {
+    authPrefs.save(
+        "auth" to false,
+        "access_token" to null
+    )
+    mainPrefs.save(
+        "first_launch" to true,
+        "has_pin" to false
+    )
+    screenLive.value = Screen.Login
+    startActivity(Intent(this, MainActivity::class.java))
+    finish()
+}

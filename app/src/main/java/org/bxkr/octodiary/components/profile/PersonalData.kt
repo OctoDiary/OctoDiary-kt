@@ -34,9 +34,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import org.bxkr.octodiary.DataService
+import org.bxkr.octodiary.R
 import org.bxkr.octodiary.formatToHumanDate
 import org.bxkr.octodiary.parseFromDay
 
@@ -51,22 +54,20 @@ fun PersonalData() {
         with(DataService.profile.children[0]) {
             Text("$lastName $firstName $middleName", style = MaterialTheme.typography.titleMedium)
             Text(
-                "Дата рождения: ${
-                    birthDate.parseFromDay().formatToHumanDate()
-                }"
-            ) // FUTURE: UNTRANSLATED
+                stringResource(R.string.birth_date_t, birthDate.parseFromDay().formatToHumanDate())
+            )
             Row {
-                Text("СНИЛС: ") // FUTURE: UNTRANSLATED
+                Text(stringResource(R.string.snils_t))
                 var snilsShown by remember { mutableStateOf(false) }
                 var snilsCopied by remember { mutableStateOf(false) }
                 AnimatedVisibility(!snilsShown) {
-                    Text("показать", Modifier.clickable {
+                    Text(stringResource(R.string.show), Modifier.clickable {
                         if (!snilsCopied) {
                             clipboardManager.setText(AnnotatedString(snils))
                             snilsCopied = true
                         }
                         snilsShown = true
-                    }, color = MaterialTheme.colorScheme.secondary) // FUTURE: UNTRANSLATED
+                    }, color = MaterialTheme.colorScheme.secondary)
                 }
                 AnimatedVisibility(snilsShown) {
                     Text(snils, Modifier.clickable {
@@ -100,11 +101,12 @@ fun PersonalData() {
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         Text(
-                            "Представители", style = MaterialTheme.typography.titleMedium
-                        ) // FUTURE: UNTRANSLATED
+                            stringResource(R.string.representatives),
+                            style = MaterialTheme.typography.titleMedium
+                        )
                         Icon(
                             Icons.Rounded.ArrowDropDown,
-                            "Развернуть",
+                            stringResource(R.string.expand),
                             modifier = Modifier
                                 .clip(MaterialTheme.shapes.large)
                                 .rotate(
@@ -116,7 +118,7 @@ fun PersonalData() {
                                 )
                                 .background(MaterialTheme.colorScheme.secondaryContainer),
                             tint = MaterialTheme.colorScheme.onSecondaryContainer
-                        ) // FUTURE: UNTRANSLATED
+                        )
                     }
                     AnimatedVisibility(
                         representativesExpanded, enter = enterTransition, exit = exitTransition
@@ -133,14 +135,23 @@ fun PersonalData() {
                                         )
                                     )
                                 ) {
+                                    val context = LocalContext.current
                                     Column(Modifier.padding(16.dp)) {
                                         Text(
                                             "${it.lastName} ${it.firstName} ${it.middleName}",
                                             style = MaterialTheme.typography.titleMedium
                                         )
-                                        Text("+7 ${it.phone}", Modifier.clickable {
-                                            clipboardManager.setText(AnnotatedString("+7${it.phone}"))
-                                        }) // FUTURE: UNTRANSLATED
+                                        Text(
+                                            stringResource(R.string.phone_t, it.phone),
+                                            Modifier.clickable {
+                                                clipboardManager.setText(
+                                                    AnnotatedString(
+                                                        context.getString(
+                                                            R.string.phone_minimized_t, it.phone
+                                                        )
+                                                    )
+                                                )
+                                            })
                                     }
                                 }
                             }

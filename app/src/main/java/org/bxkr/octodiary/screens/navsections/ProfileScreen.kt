@@ -24,8 +24,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import org.bxkr.octodiary.DataService
+import org.bxkr.octodiary.Diary
+import org.bxkr.octodiary.R
 import org.bxkr.octodiary.components.profile.ClassInfo
 import org.bxkr.octodiary.components.profile.Documents
 import org.bxkr.octodiary.components.profile.Meal
@@ -50,17 +53,19 @@ fun ProfileScreen() {
         ) {
             with(DataService) {
                 Text(
-                    "Привет, ${profile.children[0].firstName}!",
+                    stringResource(R.string.hello_t, profile.children[currentProfile].firstName),
                     style = MaterialTheme.typography.titleLarge
-                ) // FUTURE: USES_FIRST_CHILD UNTRANSLATED
+                )
                 Text(
-                    "${profile.children[0].className} класс",
+                    stringResource(R.string.class_t, profile.children[currentProfile].className),
                     style = MaterialTheme.typography.titleMedium
-                ) // FUTURE: USES_FIRST_CHILD UNTRANSLATED
-                Text(
-                    "${mealBalance.balance / 100} ₽",
-                    style = MaterialTheme.typography.titleSmall
-                ) // FUTURE: REGIONAL_FEATURE UNTRANSLATED
+                )
+                if (subsystem == Diary.MES) {
+                    Text(
+                        stringResource(R.string.balance_t, mealBalance.balance / 100),
+                        style = MaterialTheme.typography.titleSmall
+                    )
+                }
             }
         }
         Column(
@@ -68,23 +73,25 @@ fun ProfileScreen() {
             verticalArrangement = Arrangement.spacedBy(2.dp)
         ) {
             Row(horizontalArrangement = Arrangement.spacedBy(2.dp)) {
-                SectionGridItem("Личные данные", Icons.Rounded.Person) {
+                SectionGridItem(stringResource(R.string.personal_data), Icons.Rounded.Person) {
                     openBottomSheet { PersonalData() }
-                } // FUTURE: UNTRANSLATED
-                SectionGridItem("Класс", Icons.Rounded.Group) {
+                }
+                SectionGridItem(stringResource(R.string.class_label), Icons.Rounded.Group) {
                     openBottomSheet { ClassInfo() }
-                } // FUTURE: UNTRANSLATED
+                }
             }
             Row(horizontalArrangement = Arrangement.spacedBy(2.dp)) {
-                SectionGridItem("Еда", Icons.Rounded.Restaurant) {
-                    openBottomSheet { Meal() }
-                } // FUTURE: UNTRANSLATED REGIONAL_FEATURE
-                SectionGridItem("Школа", Icons.Rounded.Apartment) {
+                if (DataService.subsystem == Diary.MES) {
+                    SectionGridItem(stringResource(R.string.meal), Icons.Rounded.Restaurant) {
+                        openBottomSheet { Meal() }
+                    }
+                }
+                SectionGridItem(stringResource(R.string.school), Icons.Rounded.Apartment) {
                     openBottomSheet { School() }
-                } // FUTURE: UNTRANSLATED
-                SectionGridItem("Документы", Icons.Rounded.Description) {
+                }
+                SectionGridItem(stringResource(R.string.documents), Icons.Rounded.Description) {
                     openBottomSheet { Documents() }
-                } // FUTURE: UNTRANSLATED
+                }
             }
         }
     }

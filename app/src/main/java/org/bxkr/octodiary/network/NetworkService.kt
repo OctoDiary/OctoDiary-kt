@@ -1,32 +1,13 @@
 package org.bxkr.octodiary.network
 
-import org.bxkr.octodiary.models.auth.RegisterBody
-import org.bxkr.octodiary.models.auth.RegisterResponse
-import org.bxkr.octodiary.models.auth.SchoolAuthBody
-import org.bxkr.octodiary.models.auth.SchoolAuthResponse
-import org.bxkr.octodiary.models.auth.TokenExchange
-import org.bxkr.octodiary.models.classmembers.ClassMember
-import org.bxkr.octodiary.models.classranking.RankingMember
-import org.bxkr.octodiary.models.events.EventsResponse
-import org.bxkr.octodiary.models.homeworks.HomeworksResponse
-import org.bxkr.octodiary.models.mark.MarkInfo
-import org.bxkr.octodiary.models.marklist.MarkList
-import org.bxkr.octodiary.models.mealbalance.MealBalance
-import org.bxkr.octodiary.models.profile.ProfileResponse
-import org.bxkr.octodiary.models.profilesid.ProfileId
-import org.bxkr.octodiary.models.profilesid.ProfilesId
-import org.bxkr.octodiary.models.schoolinfo.SchoolInfo
-import org.bxkr.octodiary.models.sessionuser.SessionUser
-import org.bxkr.octodiary.models.visits.VisitsResponse
-import retrofit2.Call
+import org.bxkr.octodiary.network.interfaces.DSchoolAPI
+import org.bxkr.octodiary.network.interfaces.MainSchoolAPI
+import org.bxkr.octodiary.network.interfaces.MosAuthAPI
+import org.bxkr.octodiary.network.interfaces.RegionalAuthAPI
+import org.bxkr.octodiary.network.interfaces.SchoolSessionAPI
+import org.bxkr.octodiary.network.interfaces.SecondaryAPI
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.POST
-import retrofit2.http.Path
-import retrofit2.http.Query
 
 object NetworkService {
     object MESAPIConfig {
@@ -46,7 +27,6 @@ object NetworkService {
         const val DIARY_MOBILE = "diary-mobile"
         const val DATE_FIELD = "date"
         const val ASCENDING = "asc"
-        const val DESCENDING = "desc"
     }
 
     object MESRole {
@@ -54,275 +34,35 @@ object NetworkService {
     }
 
     object MySchoolAPIConfig {
-        const val AUTH_URL_TEMPLATE =
-            "https://authedu.mosreg.ru/v3/auth/esia/login?redirect_url=%s&state=%s"
+        const val ESIA_AUTH_URL_TEMPLATE =
+            "%sv3/auth/esia/login?redirect_url=%s&state=%s"
         const val REDIRECT_URI = "dnevnik-mes://authRegionRedirect"
     }
 
     object BaseUrl {
-        const val AUTH = "https://login.mos.ru/"
-        const val DNEVNIK = "https://dnevnik.mos.ru/"
-        const val SCHOOL = "https://school.mos.ru/"
+        const val MOS_AUTH = "https://login.mos.ru/"
+        const val MOS_DNEVNIK = "https://dnevnik.mos.ru/"
+        const val MOS_SCHOOL = "https://school.mos.ru/"
+        const val MOS_SCHOOL_API = "https://school.mos.ru/api/"
+
+        const val MOSREG_SECONDARY = "https://authedu.mosreg.ru/"
+        const val MOSREG_SCHOOL_API = "https://api.myschool.mosreg.ru/"
+        const val MOSREG_DNEVNIK = "https://myschool.mosreg.ru/"
     }
 
-    /**
-     * Authorization gate of mos.ru.
-     *
-     * baseUrl - [BaseUrl.AUTH]
-     */
-    interface MosAuthAPI {
-        /**
-         * Issues a client registration config for
-         * building the link for authorization.
-         *
-         * @param body Fully mocked required JSON body.
-         * @param authHeader Server secret.
-         * @return Authorization config - [RegisterResponse].
-         * @see MESAPIConfig.AUTH_ISSUER_SECRET
-         */
-        @POST("/sps/oauth/register")
-        fun register(
-            @Body body: RegisterBody,
-            @Header("Authorization") authHeader: String
-        ): Call<RegisterResponse>
-
-        /**
-         * Exchanges code to token.
-         *
-         * @param grantType Constant grant type.
-         * @param redirectUri Constant redirect URI (apparently unnecessary).
-         * @param code Code caught from user's web gate auth session.
-         * @param codeVerifier Code verifier remembered by the app since the [auth link generation][MESLoginService.logInWithMosRu].
-         * @param authHeader "clientId:clientSecret" ([received in auth config][MESLoginService.logInWithMosRu]) pair encoded in base64.
-         * @return [TokenExchange] containing mos.ru access token.
-         * @see MESLoginService.ExchangeToken
-         */
-        @POST("/sps/oauth/te")
-        fun tokenExchange(
-            @Query("grant_type") grantType: String,
-            @Query("redirect_uri") redirectUri: String,
-            @Query("code") code: String,
-            @Query("code_verifier") codeVerifier: String,
-            @Header("Authorization") authHeader: String
-        ): Call<TokenExchange>
-    }
-
-    /**
-     * Old MES API which however is used.
-     *
-     * baseUrl - [BaseUrl.DNEVNIK]
-     */
-    interface DSchoolAPI {
-        /**
-         * This is a final **REQUIRED** stage of authorization.
-         * Token that haven't been used in this request is not eligible for other requests.
-         * Basically, this method just returns list containing all user's profiles id.
-         * @param authHeader Token to be activated.
-         * @return List of [ProfileId]s.
-         **/
-        @GET("/acl/api/users/profile_info")
-        fun profilesId(
-            @Header("auth-token") authHeader: String
-        ): Call<ProfilesId>
-
-        /**
-         * Gets class members.
-         *
-         * @param accessToken Access token.
-         * @param classUnitId Class unit ID.
-         * @param perPage Per page users count ([Int.MAX_VALUE] by default).
-         * @param types Types to filter ("student" by default).
-         * @return List of [ClassMember]s.
-         */
-        @GET("/core/api/profiles")
-        fun classMembers(
-            @Header("auth-token") accessToken: String,
-            @Query("class_unit_id") classUnitId: Int,
-            @Query("per_page") perPage: Int = Int.MAX_VALUE,
-            @Query("types") types: String = "student"
-        ): Call<List<ClassMember>>
-
-        // FUTURE: TO_BE_DOCUMENTED
-        @GET("/api/meals/v1/clients")
-        fun mealBalance(
-            @Header("auth-token") accessToken: String,
-            @Query("contractId") contractId: Int,
-            @Header("X-Mes-Subsystem") mesSubsystem: String = MESAPIConfig.FAMILYMP
-        ): Call<MealBalance>
-    }
-
-    /**
-     * Main MES API.
-     *
-     * baseUrl - [BaseUrl.SCHOOL]
-     */
-    interface SchoolAPI {
-        /**
-         * Issues a MES access token by a mos.ru access token.
-         *
-         * @param body JSON body containing a mos.ru access token.
-         * @return [SchoolAuthResponse] containing MES token.
-         */
-        @POST("/v3/auth/sudir/auth")
-        fun mosTokenToMes(
-            @Body body: SchoolAuthBody
-        ): Call<SchoolAuthResponse>
-
-        /**
-         * Gets info about current session user.
-         *
-         * @param body Access token inside the JSON body.
-         * @return [SessionUser]
-         */
-        @POST("/lms/api/sessions")
-        fun sessionUser(
-            @Body body: SessionUser.Body
-        ): Call<SessionUser>
-
-        /**
-         * Gets events for student.
-         *
-         * @param authHeader Bearer-like string ("Bearer $accessToken").
-         * @param personIds ID of students to parse events.
-         * @param beginDate Start of event calendar in yyyy-MM-dd format.
-         * @param endDate End of event calendar in yyyy-MM-dd format.
-         * @param expandFields Fields of events to expand (e.g. 'homework,marks').
-         * @param mesSubsystem MES subsystem (["familymp"][MESAPIConfig.FAMILYMP] by default).
-         * @param mesRole MES role.
-         * @param clientType Client type (["diary-mobile"][MESAPIConfig.DIARY_MOBILE]).
-         * @return [EventsResponse]
-         */
-        @GET("/api/eventcalendar/v1/api/events")
-        fun events(
-            @Header("Authorization") authHeader: String,
-            @Query("person_ids") personIds: String,
-            @Query("begin_date") beginDate: String,
-            @Query("end_date") endDate: String,
-            @Query("expand") expandFields: String? = null,
-            @Header("X-Mes-Subsystem") mesSubsystem: String = MESAPIConfig.FAMILYMP,
-            @Header("X-Mes-Role") mesRole: String = MESRole.STUDENT, // FUTURE: USES_STUDENT_ROLE
-            @Header("Client-Type") clientType: String = MESAPIConfig.DIARY_MOBILE
-        ): Call<EventsResponse>
-
-        /**
-         * Gets info about mark.
-         *
-         * @param accessToken Access token.
-         * @param markId Mark ID.
-         * @param studentId Student ID.
-         * @param mesSubsystem MES subsystem (["familymp"][MESAPIConfig.FAMILYMP] by default).
-         * @return [MarkInfo]
-         */
-        @GET("/api/family/mobile/v1/marks/{mark_id}")
-        fun markInfo(
-            @Header("auth-token") accessToken: String,
-            @Path("mark_id") markId: Int,
-            @Query("student_id") studentId: Int,
-            @Header("X-Mes-Subsystem") mesSubsystem: String = MESAPIConfig.FAMILYMP
-        ): Call<MarkInfo>
-
-        /**
-         * Gets ranking in class.
-         *
-         * @param accessToken Access token.
-         * @param personId Person ID.
-         * @param date Rankin date in yyyy-MM-dd format.
-         * @param mesSubsystem MES subsystem (["familymp"][MESAPIConfig.FAMILYMP] by default).
-         * @return List of [RankingMember].
-         */
-        @GET("/api/ej/rating/v1/rank/class")
-        fun classRanking(
-            @Header("auth-token") accessToken: String,
-            @Query("personId") personId: String,
-            @Query("date") date: String,
-            @Header("X-Mes-Subsystem") mesSubsystem: String = MESAPIConfig.FAMILYMP
-        ): Call<List<RankingMember>>
-
-        /**
-         * Gets user's profile details.
-         *
-         * @param accessToken Access token.
-         * @param mesSubsystem MES subsystem (["familymp"][MESAPIConfig.FAMILYMP] by default).
-         * @return [ProfileResponse]
-         */
-        @GET("/api/family/mobile/v1/profile")
-        fun profile(
-            @Header("auth-token") accessToken: String,
-            @Header("X-Mes-Subsystem") mesSubsystem: String = MESAPIConfig.FAMILYMP
-        ): Call<ProfileResponse>
-
-        /**
-         * Gets info about visits.
-         *
-         * @param accessToken Access token.
-         * @param contractId Contract ID.
-         * @param fromDate Start date to get visits.
-         * @param toDate End date to get visits.
-         * @param mesSubsystem MES subsystem (["familymp"][MESAPIConfig.FAMILYMP] by default).
-         * @return [VisitsResponse]
-         */
-        @GET("/api/family/mobile/v1/visits")
-        fun visits(
-            @Header("auth-token") accessToken: String,
-            @Query("contract_id") contractId: Int,
-            @Query("from") fromDate: String,
-            @Query("to") toDate: String,
-            @Header("X-Mes-Subsystem") mesSubsystem: String = MESAPIConfig.FAMILYMP
-        ): Call<VisitsResponse>
-
-        // FUTURE: TO_BE_DOCUMENTED
-        @GET("/api/family/mobile/v1/marks")
-        fun markList(
-            @Header("auth-token") accessToken: String,
-            @Query("student_id") studentId: Int,
-            @Query("from") fromDate: String,
-            @Query("to") toDate: String,
-            @Header("X-Mes-Subsystem") mesSubsystem: String = MESAPIConfig.FAMILYMP
-        ): Call<MarkList>
-
-        // FUTURE: TO_BE_DOCUMENTED
-        @GET("/api/family/mobile/v1/homeworks/short")
-        fun homeworks(
-            @Header("auth-token") accessToken: String,
-            @Query("student_id") studentId: Int,
-            @Query("from") fromDate: String,
-            @Query("to") toDate: String,
-            @Query("sort_column") sortField: String = MESAPIConfig.DATE_FIELD,
-            @Query("sort_direction") sortDirection: String = MESAPIConfig.ASCENDING,
-            @Header("X-Mes-Subsystem") mesSubsystem: String = MESAPIConfig.FAMILYMP
-        ): Call<HomeworksResponse>
-
-        // FUTURE: TO_BE_DOCUMENTED
-        @GET("/api/family/mobile/v1/school_info")
-        fun schoolInfo(
-            @Header("auth-token") accessToken: String,
-            @Query("school_id") schoolId: Int,
-            @Query("class_unit_id") classUnitId: Int,
-            @Header("X-Mes-Subsystem") mesSubsystem: String = MESAPIConfig.FAMILYMP
-        ): Call<SchoolInfo>
-    }
-
-    fun mosAuthApi(): MosAuthAPI {
+    private inline fun <reified T> baseApiConstructor(baseUrl: String): T {
         val retrofit = Retrofit.Builder()
-            .baseUrl(BaseUrl.AUTH)
+            .baseUrl(baseUrl)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-        return retrofit.create(MosAuthAPI::class.java)
+        return retrofit.create(T::class.java)
     }
 
-    fun dnevnikApi(): DSchoolAPI {
-        val retrofit = Retrofit.Builder()
-            .baseUrl(BaseUrl.DNEVNIK)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-        return retrofit.create(DSchoolAPI::class.java)
-    }
+    fun mosAuthApi() = baseApiConstructor<MosAuthAPI>(BaseUrl.MOS_AUTH)
+    fun regionalAuthApi() = baseApiConstructor<RegionalAuthAPI>(BaseUrl.MOSREG_SECONDARY)
 
-    fun mesApi(): SchoolAPI {
-        val retrofit = Retrofit.Builder()
-            .baseUrl(BaseUrl.SCHOOL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-        return retrofit.create(SchoolAPI::class.java)
-    }
+    fun dSchoolApi(baseUrl: String) = baseApiConstructor<DSchoolAPI>(baseUrl)
+    fun mainSchoolApi(baseUrl: String) = baseApiConstructor<MainSchoolAPI>(baseUrl)
+    fun schoolSessionApi(baseUrl: String) = baseApiConstructor<SchoolSessionAPI>(baseUrl)
+    fun secondaryApi(baseUrl: String) = baseApiConstructor<SecondaryAPI>(baseUrl)
 }

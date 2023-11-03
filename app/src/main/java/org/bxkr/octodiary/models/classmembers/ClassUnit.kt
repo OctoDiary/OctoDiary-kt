@@ -7,7 +7,7 @@ data class ClassUnit(
     @SerializedName("home_based")
     val homeBased: Boolean,
     @SerializedName("id")
-    val id: Int,
+    val id: Long,
     @SerializedName("name")
     val name: String
 )

@@ -4,7 +4,9 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -36,73 +38,83 @@ import java.util.Date
 @Composable
 fun DashboardScreen() {
     val currentDay = remember { Date().formatToDay() }
-    Column(verticalArrangement = Arrangement.Bottom, modifier = Modifier.padding(16.dp)) {
+    Column(
+        verticalArrangement = Arrangement.Bottom,
+        modifier = Modifier.padding(horizontal = 16.dp)
+    ) {
         Text(
             stringResource(id = R.string.schedule_today),
+            modifier = Modifier.padding(top = 8.dp),
             style = MaterialTheme.typography.labelLarge
         )
         DayItem(
-            modifier = Modifier
-                .padding(bottom = 16.dp),
             day = DataService.eventCalendar.filter {
                 it.startAt.parseLongDate().formatToDay() == currentDay
-            }) // FUTURE: > This day has no constrained height, so it can overlap other components
-        Text(stringResource(id = R.string.rating), style = MaterialTheme.typography.labelLarge)
-        Card(
-            Modifier
-                .fillMaxWidth()
-                .padding(bottom = 16.dp)
-                .clickable {
-                    modalBottomSheetContentLive.value = { RankingList() }
-                    modalBottomSheetStateLive.postValue(true)
-                }
+            }
         ) {
-            Column(
-                Modifier
-                    .padding(16.dp)
-            ) {
-                Text(
-                    stringResource(
-                        id = R.string.rating_place,
-                        DataService
-                            .run { ranking.firstOrNull { it.personId == sessionUser.personId } }
-                            ?.rank?.rankPlace ?: "?"
-                    )
-                )
-            }
-        }
-        if (DataService.visits.payload.isNotEmpty()) {
-            val lastVisit = DataService.visits.payload.maxBy {
-                it.date.parseFromDay().toInstant().toEpochMilli()
-            }
             Text(
-                text = "Посещение ${
-                    lastVisit.date.parseFromDay().formatToHumanDay()
-                }",
+                stringResource(id = R.string.rating),
+                modifier = Modifier.padding(top = 8.dp),
                 style = MaterialTheme.typography.labelLarge
-            ) // FUTURE: UNTRANSLATED
+            )
             Card(
                 Modifier
                     .fillMaxWidth()
                     .clickable {
-                        modalBottomSheetContentLive.value = { VisitsList() }
+                        modalBottomSheetContentLive.value = { RankingList() }
                         modalBottomSheetStateLive.postValue(true)
                     }
             ) {
-                Row(
+                Column(
                     Modifier
                         .padding(16.dp)
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text(lastVisit.visits[0].inX)
-                    Icon(
-                        Icons.AutoMirrored.Rounded.ArrowForward,
-                        stringResource(id = R.string.to)
+                    Text(
+                        stringResource(
+                            id = R.string.rating_place,
+                            DataService
+                                .run { ranking.firstOrNull { it.personId == profile.children[currentProfile].contingentGuid } }
+                                ?.rank?.rankPlace ?: "?"
+                        )
                     )
-                    Text(lastVisit.visits[0].out)
                 }
             }
+            if (DataService.hasVisits && DataService.visits.payload.isNotEmpty()) {
+                val lastVisit = DataService.visits.payload.maxBy {
+                    it.date.parseFromDay().toInstant().toEpochMilli()
+                }
+                Text(
+                    text = stringResource(
+                        R.string.visits_t,
+                        lastVisit.date.parseFromDay().formatToHumanDay()
+                    ),
+                    modifier = Modifier.padding(top = 8.dp),
+                    style = MaterialTheme.typography.labelLarge
+                )
+                Card(
+                    Modifier
+                        .fillMaxWidth()
+                        .clickable {
+                            modalBottomSheetContentLive.value = { VisitsList() }
+                            modalBottomSheetStateLive.postValue(true)
+                        }
+                ) {
+                    Row(
+                        Modifier
+                            .padding(16.dp)
+                            .fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(lastVisit.visits[0].inX)
+                        Icon(
+                            Icons.AutoMirrored.Rounded.ArrowForward,
+                            stringResource(id = R.string.to)
+                        )
+                        Text(lastVisit.visits[0].out)
+                    }
+                }
+            }
+            Spacer(Modifier.height(16.dp))
         }
     }
 }
@@ -118,7 +130,7 @@ fun RankingList() {
             val memberName = remember {
                 DataService.classMembers.firstOrNull { classMember ->
                     rankingMember.personId == classMember.personId
-                }?.user?.run { listOf(lastName, firstName, middleName).fastJoinToString(" ") }
+                }?.user?.run { listOf(lastName, firstName, middleName ?: "").fastJoinToString(" ") }
                     ?: rankingMember.personId
             }
             OutlinedCard(Modifier.padding(bottom = 8.dp)) {

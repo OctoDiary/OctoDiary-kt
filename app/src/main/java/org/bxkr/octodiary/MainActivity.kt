@@ -9,11 +9,16 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.FilterAlt
+import androidx.compose.material.icons.rounded.Groups
 import androidx.compose.material.icons.rounded.Settings
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -32,6 +37,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
@@ -43,11 +49,13 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -56,7 +64,10 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import org.bxkr.octodiary.components.ProfileChooser
+import org.bxkr.octodiary.components.SettingsDialog
 import org.bxkr.octodiary.screens.CallbackScreen
+import org.bxkr.octodiary.screens.CallbackType
 import org.bxkr.octodiary.screens.LoginScreen
 import org.bxkr.octodiary.screens.NavScreen
 import org.bxkr.octodiary.ui.theme.OctoDiaryTheme
@@ -66,6 +77,13 @@ val modalBottomSheetContentLive = MutableLiveData<@Composable () -> Unit> {}
 val snackbarHostStateLive = MutableLiveData(SnackbarHostState())
 val navControllerLive = MutableLiveData<NavHostController?>(null)
 val contentDependentActionLive = MutableLiveData<@Composable () -> Unit> {}
+val screenLive = MutableLiveData<Screen>()
+val modalDialogStateLive = MutableLiveData(false)
+val modalDialogContentLive = MutableLiveData<@Composable () -> Unit> {}
+val reloadEverythingLive = MutableLiveData {}
+val LocalActivity = staticCompositionLocalOf<ComponentActivity> {
+    error("No LocalActivity provided!")
+}
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -83,13 +101,10 @@ class MainActivity : ComponentActivity() {
         modifier: Modifier = Modifier
     ) {
         var title by rememberSaveable { mutableIntStateOf(R.string.app_name) }
-        val currentScreen = remember {
-            mutableStateOf(
-                if (authPrefs.get<Boolean>("auth") == true) {
-                    Screen.MainNav
-                } else Screen.Login
-            )
-        }
+        screenLive.value = if (authPrefs.get<Boolean>("auth") == true) {
+            Screen.MainNav
+        } else Screen.Login
+        val currentScreen = screenLive.observeAsState()
         val showBottomSheet by modalBottomSheetStateLive.observeAsState()
         val bottomSheetContent by modalBottomSheetContentLive.observeAsState()
         val sheetState = rememberModalBottomSheetState()
@@ -102,6 +117,8 @@ class MainActivity : ComponentActivity() {
         val elevatedColor = MaterialTheme.colorScheme.surfaceColorAtElevation(1.dp)
         var topAppBarColor by remember { mutableStateOf(surfaceColor) }
         val contentDependentAction = contentDependentActionLive.observeAsState()
+        val showDialog = modalDialogStateLive.observeAsState()
+        val dialogContent = modalDialogContentLive.observeAsState()
 
         SideEffect {
             navController.value?.addOnDestinationChangedListener { _, destination, _ ->
@@ -112,109 +129,139 @@ class MainActivity : ComponentActivity() {
 
         val intentData = intent.dataString
         if (intentData != null && authPrefs.get<Boolean>("auth") != true) {
-            currentScreen.value = Screen.Callback
+            screenLive.value = Screen.Callback
         }
-        Scaffold(modifier, topBar = {
-            Column {
-                TopAppBar(
-                    title = {
-                        AnimatedContent(targetState = title, label = "title_anim") {
-                            Text(stringResource(it))
-                        }
-                    },
-                    actions = {
-                        val currentRoute =
-                            navController.value!!.currentBackStackEntryAsState().value?.destination?.route
-                        AnimatedVisibility(currentRoute == NavSection.Profile.route) {
-                            IconButton(onClick = {}) {
-                                Icon(Icons.Rounded.Settings, stringResource(id = R.string.settings))
-                            }
-                        }
-                        AnimatedVisibility(currentRoute == NavSection.Homeworks.route) {
-                            var expanded by remember {
-                                mutableStateOf(false)
-                            }
-                            Box(contentAlignment = Alignment.Center) {
-                                IconButton(onClick = { expanded = !expanded }) {
-                                    Icon(Icons.Rounded.FilterAlt, "Фильтр")
-                                }
-                                DropdownMenu(expanded, { expanded = false }) {
-                                    contentDependentAction.value?.invoke()
-                                }
 
+        var localLoadedState by remember { mutableStateOf(false) }
+        var settingsShown by remember { mutableStateOf(false) }
+        LaunchedEffect(rememberCoroutineScope()) {
+            snapshotFlow { DataService.loadedEverything.value }.onEach { localLoadedState = it }
+                .launchIn(this)
+        }
+        CompositionLocalProvider(LocalActivity provides this) {
+            Scaffold(modifier, topBar = {
+                Column {
+                    TopAppBar(title = {
+                        AnimatedContent(targetState = title, label = "title_anim") {
+                            if ((currentScreen.value == Screen.MainNav && localLoadedState) || currentScreen.value != Screen.MainNav) {
+                                Text(stringResource(it))
+                            } else {
+                                Text(stringResource(R.string.app_name))
                             }
                         }
-                    },
-                    colors = TopAppBarDefaults.topAppBarColors(
+                    }, actions = {
+                        if (localLoadedState && currentScreen.value == Screen.MainNav) {
+                            val currentRoute =
+                                navController.value!!.currentBackStackEntryAsState().value?.destination?.route
+                            AnimatedVisibility(currentRoute == NavSection.Profile.route) {
+                                Row(Modifier) {
+                                    IconButton(onClick = {
+                                        modalDialogContentLive.value = { ProfileChooser() }
+                                        modalDialogStateLive.postValue(true)
+                                    }) {
+                                        Icon(
+                                            Icons.Rounded.Groups,
+                                            stringResource(id = R.string.choose_context_profile)
+                                        )
+                                    }
+                                    IconButton(onClick = { settingsShown = true }) {
+                                        Icon(
+                                            Icons.Rounded.Settings,
+                                            stringResource(id = R.string.settings)
+                                        )
+                                    }
+                                }
+                            }
+                            AnimatedVisibility(currentRoute == NavSection.Homeworks.route) {
+                                var expanded by remember {
+                                    mutableStateOf(false)
+                                }
+                                Box(contentAlignment = Alignment.Center) {
+                                    IconButton(onClick = { expanded = !expanded }) {
+                                        Icon(Icons.Rounded.FilterAlt, "Фильтр")
+                                    }
+                                    DropdownMenu(expanded, { expanded = false }) {
+                                        contentDependentAction.value?.invoke()
+                                    }
+
+                                }
+                            }
+                        }
+                    }, colors = TopAppBarDefaults.topAppBarColors(
                         containerColor = topAppBarColor
                     )
-                )
-            }
-        }, snackbarHost = { SnackbarHost(hostState = snackbarHostState) }, bottomBar = {
-            var localLoadedState by remember { mutableStateOf(false) }
-            LaunchedEffect(rememberCoroutineScope()) {
-                snapshotFlow { DataService.loadedEverything.value }
-                    .onEach { localLoadedState = it }
-                    .launchIn(this)
-            }
-            if (
-                (currentScreen.value != Screen.MainNav)
-                || !localLoadedState
-            ) return@Scaffold
-            NavigationBar {
-                val navBackStackEntry by navController.value!!.currentBackStackEntryAsState()
-                val currentDestination = navBackStackEntry?.destination
-                NavSection.values().forEach {
-                    NavigationBarItem(
-                        selected = currentDestination?.hierarchy?.any { destination -> destination.route == it.route } == true,
-                        onClick = {
-                            navController.value!!.navigate(it.route) {
-                                popUpTo(navController.value!!.graph.findStartDestination().id) {
-                                    saveState = true
-                                }
-                                launchSingleTop = true
-                                restoreState = true
-                            }
-                        },
-                        icon = {
-                            Icon(it.icon, stringResource(id = it.title))
-                        },
-                        label = {
-                            Text(stringResource(id = it.title))
-                        }
                     )
                 }
-            }
-        }) { padding ->
-            Surface {
-                title = when (currentScreen.value) {
-                    Screen.Login -> {
-                        LoginScreen(Modifier.padding(padding))
-                        R.string.log_in
-                    }
-
-                    Screen.Callback -> {
-                        CallbackScreen(
-                            Uri.parse(intentData).getQueryParameter("code")!!, currentScreen
-                        )
-                        R.string.log_in
-                    }
-
-                    Screen.MainNav -> {
-                        NavScreen(Modifier.padding(padding), currentScreen)
-                        val navBackStackEntry by navController.value!!.currentBackStackEntryAsState()
-                        val currentRoute = navBackStackEntry?.destination?.route
-                        NavSection.values().firstOrNull { it.route == currentRoute }?.title
-                            ?: R.string.app_name
+            }, snackbarHost = { SnackbarHost(hostState = snackbarHostState) }, bottomBar = {
+                if ((currentScreen.value != Screen.MainNav) || !localLoadedState) return@Scaffold
+                NavigationBar {
+                    val navBackStackEntry by navController.value!!.currentBackStackEntryAsState()
+                    val currentDestination = navBackStackEntry?.destination
+                    NavSection.values().forEach {
+                        NavigationBarItem(selected = currentDestination?.hierarchy?.any { destination -> destination.route == it.route } == true,
+                            onClick = {
+                                navController.value!!.navigate(it.route) {
+                                    popUpTo(navController.value!!.graph.findStartDestination().id) {
+                                        saveState = true
+                                    }
+                                    launchSingleTop = true
+                                    restoreState = true
+                                }
+                            },
+                            icon = {
+                                Icon(it.icon, stringResource(id = it.title))
+                            },
+                            label = {
+                                Text(stringResource(id = it.title))
+                            })
                     }
                 }
-            }
-            if (showBottomSheet == true) {
-                ModalBottomSheet(
-                    onDismissRequest = { modalBottomSheetStateLive.postValue(false) },
-                    sheetState = sheetState
-                ) {
-                    bottomSheetContent?.invoke()
+            }) { padding ->
+                Surface {
+                    title = when (currentScreen.value!!) {
+                        Screen.Login -> {
+                            LoginScreen(Modifier.padding(padding))
+                            R.string.log_in
+                        }
+
+                        Screen.Callback -> {
+                            CallbackScreen(Uri.parse(intentData).getQueryParameter("code")!!,
+                                Uri.parse(intentData).host!!.let { host ->
+                                    CallbackType.values().first { it.host == host }
+                                })
+                            R.string.log_in
+                        }
+
+                        Screen.MainNav -> {
+                            NavScreen(Modifier.padding(padding))
+                            val navBackStackEntry by navController.value!!.currentBackStackEntryAsState()
+                            val currentRoute = navBackStackEntry?.destination?.route
+                            NavSection.values().firstOrNull { it.route == currentRoute }?.title
+                                ?: R.string.app_name
+                        }
+                    }
+                }
+                if (showBottomSheet == true) {
+                    ModalBottomSheet(
+                        onDismissRequest = { modalBottomSheetStateLive.postValue(false) },
+                        sheetState = sheetState
+                    ) {
+                        bottomSheetContent?.invoke()
+                    }
+                }
+                if (showDialog.value == true) {
+                    Dialog(onDismissRequest = { modalDialogStateLive.postValue(false) }) {
+                        Card(
+                            Modifier.fillMaxWidth(),
+                            shape = MaterialTheme.shapes.large,
+                            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+                        ) {
+                            dialogContent.value?.invoke()
+                        }
+                    }
+                }
+                AnimatedVisibility(visible = settingsShown) {
+                    SettingsDialog { settingsShown = false }
                 }
             }
         }

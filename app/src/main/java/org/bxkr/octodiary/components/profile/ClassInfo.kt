@@ -30,6 +30,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import org.bxkr.octodiary.DataService
@@ -80,22 +81,31 @@ fun ClassInfo() {
             Column(Modifier.padding(16.dp)) {
                 with(DataService) {
                     Text(
-                        "Класс ${profile.children[0].className}",
+                        stringResource(
+                            R.string.class_t,
+                            profile.children[currentProfile].className
+                        ),
                         style = MaterialTheme.typography.titleMedium
-                    ) // FUTURE: USES_FIRST_CHILD UNTRANSLATED
-                    Text("${classMembers.size} ученика") // FUTURE: UNTRANSLATED NEED_PLURAL
+                    )
+                    Text(
+                        LocalContext.current.resources.getQuantityString(
+                            R.plurals.student_count,
+                            classMembers.size,
+                            classMembers.size
+                        )
+                    )
                     Row(
                         Modifier
                             .padding(top = 16.dp, start = 16.dp, end = 16.dp)
                             .fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         Text(
-                            "имя", // FUTURE: UNTRANSLATED
+                            stringResource(R.string.name_column),
                             Modifier.alpha(.8f),
                             style = MaterialTheme.typography.labelLarge
                         )
                         Text(
-                            "рейтинг", // FUTURE: UNTRANSLATED
+                            stringResource(R.string.rating_column),
                             Modifier.alpha(.8f),
                             style = MaterialTheme.typography.labelLarge
                         )
@@ -123,7 +133,7 @@ fun ClassInfo() {
                                             it.user.lastName,
                                             style = MaterialTheme.typography.titleMedium
                                         )
-                                        Text(it.user.run { "$firstName $middleName" })
+                                        Text(it.user.run { "$firstName ${middleName ?: ""}" })
                                     }
                                     FilledTonalIconButton(
                                         onClick = { showRanking = true },

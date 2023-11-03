@@ -61,19 +61,29 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.bxkr.octodiary.DataService
+import org.bxkr.octodiary.Diary
+import org.bxkr.octodiary.LocalActivity
 import org.bxkr.octodiary.NavSection
 import org.bxkr.octodiary.R
 import org.bxkr.octodiary.Screen
 import org.bxkr.octodiary.authPrefs
 import org.bxkr.octodiary.get
+import org.bxkr.octodiary.logOut
 import org.bxkr.octodiary.mainPrefs
 import org.bxkr.octodiary.navControllerLive
+import org.bxkr.octodiary.network.NetworkService
+import org.bxkr.octodiary.network.interfaces.DSchoolAPI
+import org.bxkr.octodiary.network.interfaces.MainSchoolAPI
+import org.bxkr.octodiary.network.interfaces.SchoolSessionAPI
+import org.bxkr.octodiary.network.interfaces.SecondaryAPI
+import org.bxkr.octodiary.reloadEverythingLive
 import org.bxkr.octodiary.save
+import org.bxkr.octodiary.screenLive
 import org.bxkr.octodiary.ui.theme.OctoDiaryTheme
 import java.util.Collections
 
 @Composable
-fun NavScreen(modifier: Modifier, currentScreen: MutableState<Screen>) {
+fun NavScreen(modifier: Modifier) {
     with(LocalContext.current) {
         val pinFinished = remember { mutableStateOf(false) }
         val initialPin = remember { mutableStateOf(emptyList<Int>()) }
@@ -102,20 +112,32 @@ fun NavScreen(modifier: Modifier, currentScreen: MutableState<Screen>) {
         Surface(modifier.fillMaxSize()) {
             if (mainPrefs.get<Boolean>("has_pin") != true || pinFinished.value) {
                 DataService.token = authPrefs.get<String>("access_token")!!
-                DataService.tokenExpirationHandler = {
-                    println(DataService.token)
-                    authPrefs.save(
-                        "auth" to false,
-                        "access_token" to null
-                    )
-                    currentScreen.value = Screen.Login
-                }
+
+                DataService.subsystem = Diary.values()[authPrefs.get<Int>("subsystem")!!]
+
+                val diary = DataService.subsystem
+                DataService.mainSchoolApi =
+                    NetworkService.mainSchoolApi(MainSchoolAPI.getBaseUrl(diary))
+                DataService.dSchoolApi = NetworkService.dSchoolApi(DSchoolAPI.getBaseUrl(diary))
+                DataService.schoolSessionApi =
+                    NetworkService.schoolSessionApi(SchoolSessionAPI.getBaseUrl(diary))
+                DataService.secondaryApi =
+                    NetworkService.secondaryApi(SecondaryAPI.getBaseUrl(diary))
 
                 var localLoadedState by remember { mutableStateOf(false) }
                 LaunchedEffect(rememberCoroutineScope()) {
                     snapshotFlow { DataService.loadedEverything.value }
                         .onEach { localLoadedState = it }
                         .launchIn(this)
+                }
+                LaunchedEffect(Unit) {
+                    reloadEverythingLive.postValue {
+                        DataService.run {
+                            loadingStarted = false
+                            loadedEverything.value = false
+
+                        }
+                    }
                 }
                 AnimatedVisibility(localLoadedState) {
                     NavHost(
@@ -136,22 +158,31 @@ fun NavScreen(modifier: Modifier, currentScreen: MutableState<Screen>) {
                         label = "progress_anim"
                     )
                     val coroutineScope = rememberCoroutineScope()
-                    DataService.updateAll {
+                    DataService.onSingleItemInUpdateAllLoadedHandler = {
                         coroutineScope.launch {
                             progress = it
                         }
                     }
+
+                    val activity = LocalActivity.current
+                    DataService.tokenExpirationHandler = {
+                        activity.logOut()
+                    }
+
+                    DataService.updateAll()
                     Column(
                         Modifier.fillMaxSize(),
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center
                     ) {
-                        LinearProgressIndicator(progressAnimated)
+                        LinearProgressIndicator(
+                            progress = { progressAnimated },
+                        )
                     }
                 }
-                currentScreen.value = Screen.MainNav
+                screenLive.value = Screen.MainNav
             } else if (mainPrefs.get<Boolean>("has_pin") == true && !pinFinished.value) {
-                EnterPinDialog(pinFinished = pinFinished, currentScreen = currentScreen)
+                EnterPinDialog(pinFinished = pinFinished)
             }
             if ((mainPrefs.get<Boolean>("first_launch") == true) && !pinFinished.value) {
                 SetPinDialog(
@@ -166,12 +197,10 @@ fun NavScreen(modifier: Modifier, currentScreen: MutableState<Screen>) {
 
 @Composable
 fun EnterPinDialog(
-    pinFinished: MutableState<Boolean>,
-    currentScreen: MutableState<Screen>
+    pinFinished: MutableState<Boolean>
 ) {
     val currentPin = remember { mutableStateOf(emptyList<Int>()) }
     var wrongPin by remember { mutableStateOf(false) }
-    val context = LocalContext.current
     if (
         currentPin.value.size == 4
     ) {
@@ -200,14 +229,11 @@ fun EnterPinDialog(
                 horizontalAlignment = Alignment.End,
                 verticalArrangement = Arrangement.Center
             ) {
+                val activity = LocalActivity.current
                 FilledTonalButton(
                     modifier = Modifier.padding(16.dp),
                     onClick = {
-                        context.authPrefs.save(
-                            "auth" to false,
-                            "access_token" to null
-                        )
-                        currentScreen.value = Screen.Login
+                        activity.logOut()
                     },
                     contentPadding = ButtonDefaults.ButtonWithIconContentPadding
                 ) {

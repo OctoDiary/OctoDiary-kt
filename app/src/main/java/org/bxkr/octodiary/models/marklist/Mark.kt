@@ -17,7 +17,7 @@ data class Mark(
     @SerializedName("date")
     val date: String,
     @SerializedName("id")
-    val id: Int,
+    val id: Long,
     @SerializedName("is_exam")
     val isExam: Boolean,
     @SerializedName("is_point")
@@ -27,7 +27,7 @@ data class Mark(
     @SerializedName("point_date")
     val pointDate: Any?,
     @SerializedName("subject_id")
-    val subjectId: Int,
+    val subjectId: Long,
     @SerializedName("subject_name")
     val subjectName: String,
     @SerializedName("updated_at")

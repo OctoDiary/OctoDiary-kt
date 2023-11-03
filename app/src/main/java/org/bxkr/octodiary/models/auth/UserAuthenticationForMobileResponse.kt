@@ -9,7 +9,7 @@ data class UserAuthenticationForMobileResponse(
     @SerializedName("mesh_id")
     val meshId: String,
     @SerializedName("obr_id")
-    val obrId: Int,
+    val obrId: Long,
     @SerializedName("request_parameters")
     val requestParameters: RequestParameters,
     @SerializedName("sso_id")

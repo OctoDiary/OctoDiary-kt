@@ -28,22 +28,24 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.MutableLiveData
 import org.bxkr.octodiary.DataService
+import org.bxkr.octodiary.R
 import org.bxkr.octodiary.contentDependentActionLive
 import org.bxkr.octodiary.formatToLongHumanDay
 import org.bxkr.octodiary.formatToWeekday
 import org.bxkr.octodiary.models.homeworks.Homework
 import org.bxkr.octodiary.parseFromDay
 
-val enabledSubjectsLive = MutableLiveData<List<Int>>(emptyList())
+val enabledSubjectsLive = MutableLiveData<List<Long>>(emptyList())
 
 @Composable
 fun HomeworksScreen() {
     LaunchedEffect(Unit) {
-        val enable = { enabled: Boolean, id: Int ->
+        val enable = { enabled: Boolean, id: Long ->
             if (enabledSubjectsLive.value != null) {
                 if (enabled && enabledSubjectsLive.value?.contains(id) == false) {
                     enabledSubjectsLive.postValue(enabledSubjectsLive.value!! + listOf(id))
@@ -104,10 +106,10 @@ fun HomeworksScreen() {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    "показаны домашние задания на неделю вперёд",
+                    stringResource(R.string.next_week_homeworks_are_shown),
                     Modifier.alpha(.8f),
                     style = MaterialTheme.typography.labelMedium
-                ) // FUTURE: UNTRANSLATED
+                )
             }
         }
     }
@@ -183,13 +185,19 @@ fun HomeworkSubject(homeworks: List<Homework>) {
                     if (it.materialsCount.isNotEmpty()) {
                         if (it.materialsCount.any { it.selectedMode == "learn" }) {
                             Text(
-                                "${it.materialsCount.first { it.selectedMode == "learn" }.amount} выучить", // FUTURE: UNTRANSLATED
+                                stringResource(
+                                    R.string.learn_t,
+                                    it.materialsCount.first { it.selectedMode == "learn" }.amount
+                                ),
                                 color = MaterialTheme.colorScheme.secondary
                             )
                         }
                         if (it.materialsCount.any { it.selectedMode == "execute" }) {
                             Text(
-                                "${it.materialsCount.first { it.selectedMode == "execute" }.amount} выполнить", // FUTURE: UNTRANSLATED
+                                stringResource(
+                                    R.string.do_t,
+                                    it.materialsCount.first { it.selectedMode == "execute" }.amount
+                                ), // FUTURE: UNTRANSLATED
                                 color = MaterialTheme.colorScheme.tertiary
                             )
                         }

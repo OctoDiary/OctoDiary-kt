@@ -38,9 +38,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import org.bxkr.octodiary.DataService
+import org.bxkr.octodiary.R
 
 @Composable
 fun School() {
@@ -51,31 +53,39 @@ fun School() {
     ) {
         with(DataService.schoolInfo) {
             Text(name, style = MaterialTheme.typography.titleMedium)
-            TextWithIcon(icon = Icons.Rounded.LocationCity) {
-                Text(
-                    address.run { "$county $district $address" },
-                    Modifier.clickable { /*FUTURE: COPY*/ }
-                )
+            if (null !in listOf(address.county, address.district, address.address)) {
+                TextWithIcon(icon = Icons.Rounded.LocationCity) {
+                    Text(
+                        address.run { "${county ?: ""} ${district ?: ""} ${address ?: ""}" },
+                        Modifier.clickable { /*FUTURE: COPY*/ }
+                    )
+                }
             }
-            TextWithIcon(icon = Icons.Rounded.Phone) {
-                Text(
-                    "+7 $phone",
-                    Modifier.clickable { /*FUTURE: CALL*/ }
-                )
+            if (phone != null) {
+                TextWithIcon(icon = Icons.Rounded.Phone) {
+                    Text(
+                        "+7 $phone",
+                        Modifier.clickable { /*FUTURE: CALL*/ }
+                    )
+                }
             }
-            TextWithIcon(icon = Icons.Rounded.AlternateEmail) {
-                Text(
-                    email,
-                    Modifier.clickable { /*FUTURE: SEND_EMAIL*/ }
-                )
+            if (email != null) {
+                TextWithIcon(icon = Icons.Rounded.AlternateEmail) {
+                    Text(
+                        email,
+                        Modifier.clickable { /*FUTURE: SEND_EMAIL*/ }
+                    )
+                }
             }
-            TextWithIcon(icon = Icons.Rounded.Language) {
-                Text(
-                    websiteLink,
-                    Modifier.clickable { /*FUTURE: GO_TO_BROWSER*/ },
-                    textDecoration = TextDecoration.Underline,
-                    color = MaterialTheme.colorScheme.secondary
-                )
+            if (websiteLink != null) {
+                TextWithIcon(icon = Icons.Rounded.Language) {
+                    Text(
+                        websiteLink,
+                        Modifier.clickable { /*FUTURE: GO_TO_BROWSER*/ },
+                        textDecoration = TextDecoration.Underline,
+                        color = MaterialTheme.colorScheme.secondary
+                    )
+                }
             }
             var teachersExpanded by remember { mutableStateOf(false) }
             var rotation by remember { mutableFloatStateOf(0f) }
@@ -101,11 +111,12 @@ fun School() {
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         Text(
-                            "Учителя", style = MaterialTheme.typography.titleMedium
-                        ) // FUTURE: UNTRANSLATED
+                            stringResource(R.string.teachers),
+                            style = MaterialTheme.typography.titleMedium
+                        )
                         Icon(
                             Icons.Rounded.ArrowDropDown,
-                            "Развернуть",
+                            stringResource(R.string.expand),
                             modifier = Modifier
                                 .clip(MaterialTheme.shapes.large)
                                 .rotate(
@@ -117,7 +128,7 @@ fun School() {
                                 )
                                 .background(MaterialTheme.colorScheme.secondaryContainer),
                             tint = MaterialTheme.colorScheme.onSecondaryContainer
-                        ) // FUTURE: UNTRANSLATED
+                        )
                     }
                     AnimatedVisibility(
                         teachersExpanded, enter = enterTransition, exit = exitTransition

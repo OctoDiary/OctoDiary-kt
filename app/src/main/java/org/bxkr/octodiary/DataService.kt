@@ -9,124 +9,152 @@ import org.bxkr.octodiary.models.mark.MarkInfo
 import org.bxkr.octodiary.models.marklist.MarkList
 import org.bxkr.octodiary.models.mealbalance.MealBalance
 import org.bxkr.octodiary.models.profile.ProfileResponse
+import org.bxkr.octodiary.models.profilesid.ProfilesId
 import org.bxkr.octodiary.models.schoolinfo.SchoolInfo
 import org.bxkr.octodiary.models.sessionuser.SessionUser
 import org.bxkr.octodiary.models.visits.VisitsResponse
-import org.bxkr.octodiary.network.NetworkService
+import org.bxkr.octodiary.network.interfaces.DSchoolAPI
+import org.bxkr.octodiary.network.interfaces.MainSchoolAPI
+import org.bxkr.octodiary.network.interfaces.SchoolSessionAPI
+import org.bxkr.octodiary.network.interfaces.SecondaryAPI
 import java.util.Calendar
 import java.util.Date
 
 object DataService {
+    lateinit var subsystem: Diary
+    lateinit var mainSchoolApi: MainSchoolAPI
+    lateinit var dSchoolApi: DSchoolAPI
+    lateinit var secondaryApi: SecondaryAPI
+    lateinit var schoolSessionApi: SchoolSessionAPI
+
     lateinit var token: String
-    lateinit var userId: Number
-    val hasUserId get() = this::userId.isInitialized
+    lateinit var userId: ProfilesId
+    var hasUserId = false
 
     lateinit var sessionUser: SessionUser
-    val hasSessionUser get() = this::sessionUser.isInitialized
+    var hasSessionUser = false
 
     lateinit var eventCalendar: List<Event>
-    val hasEventCalendar get() = this::eventCalendar.isInitialized
+    var hasEventCalendar = false
 
     lateinit var ranking: List<RankingMember>
-    val hasRanking get() = this::ranking.isInitialized
+    var hasRanking = false
 
     lateinit var classMembers: List<ClassMember>
-    val hasClassMembers get() = this::classMembers.isInitialized
+    var hasClassMembers = false
 
     lateinit var profile: ProfileResponse
-    val hasProfile get() = this::profile.isInitialized
+    var hasProfile = false
 
-    lateinit var visits: VisitsResponse // FUTURE: REGIONAL_FEATURE
-    val hasVisits get() = this::visits.isInitialized
+    lateinit var visits: VisitsResponse
+    var hasVisits = false
 
     lateinit var marks: MarkList
-    val hasMarks get() = this::marks.isInitialized
+    var hasMarks = false
 
     lateinit var homeworks: List<Homework>
-    val hasHomeworks get() = this::homeworks.isInitialized
+    var hasHomeworks = false
 
-    lateinit var mealBalance: MealBalance // FUTURE: REGIONAL_FEATURE
-    val hasMealBalance get() = this::mealBalance.isInitialized
+    lateinit var mealBalance: MealBalance
+    var hasMealBalance = false
 
     lateinit var schoolInfo: SchoolInfo
-    val hasSchoolInfo get() = this::schoolInfo.isInitialized
+    var hasSchoolInfo = false
 
     val loadedEverything = mutableStateOf(false)
 
     var tokenExpirationHandler: (() -> Unit)? = null
 
+    var onSingleItemInUpdateAllLoadedHandler: ((progress: Float) -> Unit)? = null
+
+    var loadingStarted = false
+
+    var currentProfile = 0
+
     fun updateUserId(onUpdated: () -> Unit) {
         assert(this::token.isInitialized)
-        NetworkService.dnevnikApi().profilesId(token).baseEnqueue(::baseErrorFunction) { body ->
-            userId = body[0].id // FUTURE: USES_FIRST_CHILD
-            onUpdated()
-        }
+        dSchoolApi.profilesId(token)
+            .baseEnqueue(::baseErrorFunction, ::baseInternalExceptionFunction) { body ->
+                if (body.size == 0) {
+                    tokenExpirationHandler?.invoke()
+                } else {
+                    userId = body
+                    hasUserId = true
+                    onUpdated()
+                }
+            }
     }
 
     fun updateSessionUser(onUpdated: () -> Unit) {
         assert(this::token.isInitialized)
         assert(this::userId.isInitialized)
-        NetworkService.mesApi().sessionUser(SessionUser.Body(token)).baseEnqueue(
-            ::baseErrorFunction
+        schoolSessionApi.sessionUser(SessionUser.Body(token)).baseEnqueue(
+            ::baseErrorFunction, ::baseInternalExceptionFunction
         ) { body ->
             sessionUser = body
+            hasSessionUser = true
             onUpdated()
         }
     }
 
-    fun updateEventCalendar(onUpdated: () -> Unit) {
+    fun updateEventCalendar(weeksBefore: Int = 1, weeksAfter: Int = 1, onUpdated: () -> Unit) {
         assert(this::token.isInitialized)
-        assert(this::sessionUser.isInitialized)
-        NetworkService.mesApi().events(
+        assert(this::profile.isInitialized)
+        secondaryApi.events(
             "Bearer $token",
-            personIds = sessionUser.personId,
+            personIds = profile.children[currentProfile].contingentGuid,
             beginDate = Calendar.getInstance().also {
+                it.set(Calendar.WEEK_OF_YEAR, it.get(Calendar.WEEK_OF_YEAR) - weeksBefore)
                 it.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
             }.time.formatToDay(),
             endDate = Calendar.getInstance().also {
+                it.set(Calendar.WEEK_OF_YEAR, it.get(Calendar.WEEK_OF_YEAR) + weeksAfter)
                 it.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY)
             }.time.formatToDay(),
             expandFields = "homework,marks"
-        ).baseEnqueue(::baseErrorFunction) { body ->
+        ).baseEnqueue(::baseErrorFunction, ::baseInternalExceptionFunction) { body ->
             eventCalendar = body.response
+            hasEventCalendar = true
             onUpdated()
         }
     }
 
-    fun getMarkInfo(markId: Int, listener: (MarkInfo) -> Unit) {
+    fun getMarkInfo(markId: Long, listener: (MarkInfo) -> Unit) {
         assert(this::token.isInitialized)
-        assert(this::sessionUser.isInitialized)
-        NetworkService.mesApi().markInfo(
+        assert(this::profile.isInitialized)
+        mainSchoolApi.markInfo(
             token,
             markId = markId,
-            studentId = sessionUser.profiles[0].id // FUTURE: USES_FIRST_CHILD
+            studentId = profile.children[currentProfile].id
         ).baseEnqueue(::baseErrorFunction) { listener(it) }
     }
 
     fun updateRanking(onUpdated: () -> Unit) {
         assert(this::token.isInitialized)
-        assert(this::sessionUser.isInitialized)
+        assert(this::profile.isInitialized)
 
         var rankingFinished = false
         var classMembersFinished = false
 
         // Ranking request:
-        NetworkService.mesApi().classRanking(
+        secondaryApi.classRanking(
             token,
-            personId = sessionUser.personId,
+            personId = profile.children[currentProfile].contingentGuid,
             date = Date().formatToDay()
-        ).baseEnqueue(::baseErrorFunction) {
+        ).baseEnqueue(::baseErrorFunction, ::baseInternalExceptionFunction) {
             ranking = it
+            hasRanking = true
             rankingFinished = true
             if (classMembersFinished) onUpdated()
         }
 
         // Class members request for matching names:
-        NetworkService.dnevnikApi().classMembers(
+        dSchoolApi.classMembers(
             token,
-            classUnitId = profile.children[0].classUnitId // FUTURE: USES_FIRST_CHILD
-        ).baseEnqueue {
+            classUnitId = profile.children[currentProfile].classUnitId
+        ).baseEnqueue(::baseErrorFunction, ::baseInternalExceptionFunction) {
             classMembers = it
+            hasClassMembers = true
             classMembersFinished = true
             if (rankingFinished) onUpdated()
         }
@@ -135,17 +163,20 @@ object DataService {
     fun updateProfile(onUpdated: () -> Unit) {
         assert(this::token.isInitialized)
 
-        NetworkService.mesApi().profile(token).baseEnqueue(::baseErrorFunction) {
-            profile = it
-            onUpdated()
-        }
+        mainSchoolApi.profile(token)
+            .baseEnqueue(::baseErrorFunction, ::baseInternalExceptionFunction) {
+                profile = it
+                hasProfile = true
+                onUpdated()
+            }
     }
 
     fun updateVisits(onUpdated: () -> Unit) {
         assert(this::token.isInitialized)
-        assert(this::sessionUser.isInitialized)
+        assert(this::profile.isInitialized)
+        assert(subsystem == Diary.MES)
 
-        NetworkService.mesApi().visits(
+        mainSchoolApi.visits(
             token,
             profile.children[0].contractId,
             fromDate = Calendar.getInstance().apply {
@@ -153,60 +184,66 @@ object DataService {
                 set(Calendar.DAY_OF_YEAR, get(Calendar.DAY_OF_YEAR) - 7)
             }.time.formatToDay(),
             toDate = Date().formatToDay()
-        ).baseEnqueue(::baseErrorFunction) { visitsResponse ->
+        ).baseEnqueue(::baseErrorFunction, ::baseInternalExceptionFunction) { visitsResponse ->
             visits = VisitsResponse(
                 payload = visitsResponse.payload.sortedByDescending {
                     it.date.parseFromDay().toInstant().toEpochMilli()
                 }
             )
+            hasVisits = true
             onUpdated()
         }
     }
 
     fun updateMarks(onUpdated: () -> Unit) {
         assert(this::token.isInitialized)
-        assert(this::userId.isInitialized)
+        assert(this::profile.isInitialized)
 
-        NetworkService.mesApi().markList(
+        mainSchoolApi.markList(
             token,
-            studentId = userId.toInt(),
+            studentId = profile.children[currentProfile].id,
             fromDate = Calendar.getInstance().run {
                 set(Calendar.WEEK_OF_YEAR, get(Calendar.WEEK_OF_YEAR) - 1)
                 time
             }.formatToDay(),
             toDate = Date().formatToDay()
-        ).baseEnqueue(::baseErrorFunction) {
+        ).baseEnqueue(::baseErrorFunction, ::baseInternalExceptionFunction) {
             marks = it
+            hasMarks = true
             onUpdated()
         }
     }
 
     fun updateHomeworks(onUpdated: () -> Unit) {
         assert(this::token.isInitialized)
-        assert(this::userId.isInitialized)
+        assert(this::profile.isInitialized)
 
-        NetworkService.mesApi().homeworks(
+        mainSchoolApi.homeworks(
             token,
-            studentId = userId.toInt(),
+            studentId = profile.children[currentProfile].id,
             fromDate = Date().formatToDay(),
             toDate = Calendar.getInstance().run {
                 set(Calendar.WEEK_OF_YEAR, get(Calendar.WEEK_OF_YEAR) + 1)
                 time
             }.formatToDay()
-        ).baseEnqueue(::baseErrorFunction) {
+        ).baseEnqueue(::baseErrorFunction, ::baseInternalExceptionFunction) {
             homeworks = it.payload
+            hasHomeworks = true
+            onUpdated()
         }
     }
 
     fun updateMealBalance(onUpdated: () -> Unit) {
         assert(this::token.isInitialized)
         assert(this::profile.isInitialized)
+        assert(subsystem == Diary.MES)
 
-        NetworkService.dnevnikApi().mealBalance(
+        dSchoolApi.mealBalance(
             token,
-            contractId = profile.children[0].contractId // FUTURE: USES_FIRST_CHILD
-        ).baseEnqueue(::baseErrorFunction) {
+            contractId = profile.children[currentProfile].contractId
+        ).baseEnqueue(::baseErrorFunction, ::baseInternalExceptionFunction) {
             mealBalance = it
+            hasMealBalance = true
             onUpdated()
         }
     }
@@ -215,51 +252,60 @@ object DataService {
         assert(this::token.isInitialized)
         assert(this::profile.isInitialized)
 
-        NetworkService.mesApi().schoolInfo(
+        mainSchoolApi.schoolInfo(
             token,
-            schoolId = profile.children[0].school.id, // FUTURE: USES_FIRST_CHILD
-            classUnitId = profile.children[0].classUnitId // FUTURE: USES_FIRST_CHILD
-        ).baseEnqueue(::baseErrorFunction) {
+            schoolId = profile.children[currentProfile].school.id,
+            classUnitId = profile.children[currentProfile].classUnitId
+        ).baseEnqueue(::baseErrorFunction, ::baseInternalExceptionFunction) {
             schoolInfo = it
+            hasSchoolInfo = true
             onUpdated()
         }
     }
 
-    fun updateAll(sendEachValueLoaded: (percent: Float) -> Unit) {
-        val onSingleItemLoad = {
-            val allStates = listOf(
-                hasUserId,
-                hasSessionUser,
-                hasEventCalendar,
-                hasRanking,
-                hasClassMembers,
-                hasProfile,
-                hasVisits,
-                hasMarks,
-                hasHomeworks,
-                hasMealBalance,
-                hasSchoolInfo
-            )
-            sendEachValueLoaded((allStates.count { it }.toFloat()) / (allStates.size.toFloat()))
-            if (!(allStates.contains(false))) {
+    fun updateAll() {
+        if (loadingStarted) return else loadingStarted = true
+        val states = listOfNotNull(
+            ::hasUserId,
+            ::hasSessionUser,
+            ::hasEventCalendar,
+            ::hasRanking,
+            ::hasClassMembers,
+            ::hasProfile,
+            ::hasVisits.takeIf { subsystem == Diary.MES },
+            ::hasMarks,
+            ::hasHomeworks,
+            ::hasMealBalance.takeIf { subsystem == Diary.MES },
+            ::hasSchoolInfo
+        )
+        states.forEach { it.set(false) }
+        val onSingleItemLoad = { name: String ->
+            val statesInit = states.map { it.get() }
+            onSingleItemInUpdateAllLoadedHandler?.invoke((statesInit.count { it }
+                .toFloat()) / (statesInit.size.toFloat()))
+            if (!(statesInit.contains(false))) {
                 loadedEverything.value = true
             }
+            println("$name response is loaded, $statesInit")
         }
         updateUserId {
-            onSingleItemLoad()
+            onSingleItemLoad(::userId.name)
             updateSessionUser {
-                onSingleItemLoad()
-                updateEventCalendar { onSingleItemLoad() }
+                onSingleItemLoad(::sessionUser.name)
                 updateProfile {
-                    onSingleItemLoad()
-                    updateRanking { onSingleItemLoad() }
-                    updateVisits { onSingleItemLoad() }
-                    updateMealBalance { onSingleItemLoad() }
-                    updateSchoolInfo { onSingleItemLoad() }
+                    onSingleItemLoad(::profile.name)
+                    updateEventCalendar { onSingleItemLoad(::eventCalendar.name) }
+                    updateMarks { onSingleItemLoad(::marks.name) }
+                    updateHomeworks { onSingleItemLoad(::homeworks.name) }
+                    updateRanking {
+                        onSingleItemLoad(::classMembers.name)
+                        onSingleItemLoad(::ranking.name)
+                    }
+                    if (subsystem == Diary.MES) updateVisits { onSingleItemLoad(::visits.name) }
+                    if (subsystem == Diary.MES) updateMealBalance { onSingleItemLoad(::mealBalance.name) }
+                    updateSchoolInfo { onSingleItemLoad(::schoolInfo.name) }
                 }
             }
-            updateMarks { onSingleItemLoad() }
-            updateHomeworks { onSingleItemLoad() }
         }
     }
 }

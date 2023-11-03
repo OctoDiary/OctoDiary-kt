@@ -13,5 +13,5 @@ data class Branch(
     @SerializedName("name")
     val name: String,
     @SerializedName("type")
-    val type: String
+    val type: String?
 )

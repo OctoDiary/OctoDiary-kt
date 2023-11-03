@@ -21,7 +21,7 @@ data class MarkInfo(
     @SerializedName("history")
     val history: List<Any>,
     @SerializedName("id")
-    val id: Int,
+    val id: Long,
     @SerializedName("is_exam")
     val isExam: Boolean,
     @SerializedName("is_point")

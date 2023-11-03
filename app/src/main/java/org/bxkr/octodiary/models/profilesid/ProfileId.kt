@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 data class ProfileId(
     @SerializedName("id")
-    val id: Int,
+    val id: Long,
     @SerializedName("type")
     val type: String
 )

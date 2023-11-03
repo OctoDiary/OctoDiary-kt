@@ -13,7 +13,7 @@ data class Mark(
     @SerializedName("criteria")
     val criteria: List<Criteria>?,
     @SerializedName("id")
-    val id: Int,
+    val id: Long,
     @SerializedName("is_exam")
     val isExam: Boolean,
     @SerializedName("is_point")

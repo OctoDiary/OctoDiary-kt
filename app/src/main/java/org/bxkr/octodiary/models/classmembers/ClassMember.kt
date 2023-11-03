@@ -9,7 +9,7 @@ data class ClassMember(
     @SerializedName("class_unit")
     val classUnit: ClassUnit?,
     @SerializedName("id")
-    val id: Int,
+    val id: Long,
     @SerializedName("person_id")
     val personId: String?,
     @SerializedName("roles")
@@ -23,5 +23,5 @@ data class ClassMember(
     @SerializedName("user")
     val user: User,
     @SerializedName("user_id")
-    val userId: Int
+    val userId: Long
 )
