@@ -12,8 +12,8 @@ android {
         applicationId = "org.bxkr.octodiary"
         minSdk = 26
         targetSdk = 34
-        versionCode = 18
-        versionName = "2.0.0-alpha01"
+        versionCode = 19
+        versionName = "2.0.0-alpha02"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
