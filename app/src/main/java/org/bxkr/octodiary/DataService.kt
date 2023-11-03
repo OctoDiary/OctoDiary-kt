@@ -102,9 +102,11 @@ object DataService {
             "Bearer $token",
             personIds = profile.children[currentProfile].contingentGuid,
             beginDate = Calendar.getInstance().also {
+                it.set(Calendar.WEEK_OF_YEAR, it.get(Calendar.WEEK_OF_YEAR) - 1)
                 it.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
             }.time.formatToDay(),
             endDate = Calendar.getInstance().also {
+                it.set(Calendar.WEEK_OF_YEAR, it.get(Calendar.WEEK_OF_YEAR) + 1)
                 it.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY)
             }.time.formatToDay(),
             expandFields = "homework,marks"

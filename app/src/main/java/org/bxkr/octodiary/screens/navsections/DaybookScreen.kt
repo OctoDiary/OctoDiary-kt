@@ -1,6 +1,7 @@
 package org.bxkr.octodiary.screens.navsections
 
 import android.webkit.URLUtil
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.tween
@@ -19,6 +20,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
@@ -85,20 +87,49 @@ import kotlin.math.roundToInt
 @OptIn(ExperimentalFoundationApi::class)
 fun DaybookScreen() {
     val eventCalendar = DataService.eventCalendar
-    if (eventCalendar.isNotEmpty()) {
-        val firstDayOfWeek = remember {
-            eventCalendar[0].startAt.parseLongDate().let {
-                Calendar.getInstance().run {
-                    time = it
-                    set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
-                    time
-                }
+    val weekSplitCalendar = remember {
+        eventCalendar.fold(mutableListOf<MutableList<Event>>()) { sum, it ->
+            if (sum.isEmpty() || sum.last().first().startAt.parseLongDate()
+                    .formatToDay() != it.startAt.parseLongDate().formatToDay()
+            ) {
+                sum.add(mutableListOf(it))
+            } else {
+                sum.last().add(it)
             }
+            sum
+        }.fold(mutableListOf<MutableList<MutableList<Event>>>()) { sum, it ->
+            if (sum.isEmpty() ||
+                Calendar.getInstance().run {
+                    time = sum.last().first().first().startAt.parseLongDate()
+                    get(Calendar.WEEK_OF_YEAR)
+                } != Calendar.getInstance().run {
+                    time = it.first().startAt.parseLongDate()
+                    get(Calendar.WEEK_OF_YEAR)
+                }
+            ) {
+                sum.add(mutableListOf(it))
+            } else {
+                sum.last().add(it)
+            }
+            sum
         }
-        val weekDays = remember {
+    }
+    val weekPosition = remember { mutableFloatStateOf(1f) }
+    if (eventCalendar.isNotEmpty()) {
+        val firstDayOfWeekInitial = remember {
+            weekSplitCalendar[weekPosition.floatValue.roundToInt()][0][0].startAt.parseLongDate()
+                .let {
+                    Calendar.getInstance().run {
+                        time = it
+                        set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
+                        time
+                    }
+                }
+        }
+        val weekDaysInitial = remember {
             (0..6).toList().map {
                 Calendar.getInstance().run {
-                    time = firstDayOfWeek
+                    time = firstDayOfWeekInitial
                     set(
                         Calendar.DAY_OF_WEEK, listOf(
                             Calendar.MONDAY,
@@ -114,48 +145,70 @@ fun DaybookScreen() {
                 }
             }
         }
-        val today =
+        val todayInitial =
             remember {
                 Date().formatToDay()
-                    .let { weekDays.indexOfFirst { it1 -> it1.formatToDay() == it } }
+                    .let { weekDaysInitial.indexOfFirst { it1 -> it1.formatToDay() == it } }
+                    .takeIf {
+                        it != -1
+                    } ?: 0
             }
-
-        val daySplitCalendar = remember {
-            eventCalendar.fold(mutableListOf<MutableList<Event>>()) { sum, it ->
-                if (sum.isEmpty() || sum.last().first().startAt.parseLongDate()
-                        .formatToDay() != it.startAt.parseLongDate().formatToDay()
-                ) {
-                    sum.add(mutableListOf(it))
-                } else {
-                    sum.last().add(it)
-                }
-                sum
-            }
-        }
-        val dayPosition = rememberPagerState(today, pageCount = { 7 })
-        val weekPosition = remember { mutableFloatStateOf(1f) }
+        val dayPosition = rememberPagerState(todayInitial, pageCount = { 7 })
         Column(Modifier.fillMaxSize()) {
             DateSeeker(weekPosition, dayPosition)
-            HorizontalPager(state = dayPosition, beyondBoundsPageCount = 6) { page ->
-                Column(Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp)) {
-                    Text(
-                        weekDays[page].let {
-                            SimpleDateFormat(
-                                "dd MMMM, EEEE", LocalConfiguration.current.locales[0]
-                            ).format(it)
-                        },
-                        Modifier.padding(bottom = 8.dp),
-                        style = MaterialTheme.typography.titleLarge
-                    )
-                    if (daySplitCalendar.size > page) {
-                        DayItem(Modifier.fillMaxSize(), day = daySplitCalendar[page])
-                    } else {
-                        Column(
-                            Modifier.fillMaxSize(),
-                            verticalArrangement = Arrangement.Center,
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            Text(text = stringResource(id = R.string.free_day))
+            AnimatedContent(
+                targetState = weekPosition.floatValue,
+                label = "week_anim"
+            ) { mWeekPosition ->
+                val daySplitCalendar = weekSplitCalendar[mWeekPosition.roundToInt()]
+                val firstDayOfWeek =
+                    weekSplitCalendar[mWeekPosition.roundToInt()][0][0].startAt.parseLongDate()
+                        .let {
+                            Calendar.getInstance().run {
+                                time = it
+                                set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
+                                time
+                            }
+                        }
+                val weekDays =
+                    (0..6).toList().map {
+                        Calendar.getInstance().run {
+                            time = firstDayOfWeek
+                            set(
+                                Calendar.DAY_OF_WEEK, listOf(
+                                    Calendar.MONDAY,
+                                    Calendar.TUESDAY,
+                                    Calendar.WEDNESDAY,
+                                    Calendar.THURSDAY,
+                                    Calendar.FRIDAY,
+                                    Calendar.SATURDAY,
+                                    Calendar.SUNDAY
+                                )[it]
+                            )
+                            time
+                        }
+                    }
+                HorizontalPager(state = dayPosition, beyondBoundsPageCount = 6) { page ->
+                    Column(Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp)) {
+                        Text(
+                            weekDays[page].let {
+                                SimpleDateFormat(
+                                    "d MMMM, EEEE", LocalConfiguration.current.locales[0]
+                                ).format(it)
+                            },
+                            Modifier.padding(bottom = 8.dp),
+                            style = MaterialTheme.typography.titleLarge
+                        )
+                        if (daySplitCalendar.size > page) {
+                            DayItem(Modifier.fillMaxSize(), day = daySplitCalendar[page])
+                        } else {
+                            Column(
+                                Modifier.fillMaxSize(),
+                                verticalArrangement = Arrangement.Center,
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Text(text = stringResource(id = R.string.free_day))
+                            }
                         }
                     }
                 }
@@ -203,7 +256,7 @@ fun DateSeeker(weekPosition: MutableState<Float>, dayPosition: PagerState) {
                     modifier = Modifier.weight(1f, true),
                     value = weekPosition.value,
                     onValueChange = { weekPosition.value = it },
-                    valueRange = 0f..3f,
+                    valueRange = 0f..2f,
                     steps = 1
                 )
                 TooltipBox(
@@ -245,8 +298,10 @@ fun DayItem(
     day: List<Event>,
     addBelow: @Composable () -> Unit = {}
 ) {
+    /* Stop recreating state once https://issuetracker.google.com/issues/295745063 is fixed */
+    val lazyListState = LazyListState()
     Column(modifier) {
-        LazyColumn {
+        LazyColumn(state = lazyListState) {
             items(day) {
                 val cardShape =
                     if (day.size == 1) MaterialTheme.shapes.large else if (day.indexOf(it) == 0) MaterialTheme.shapes.extraSmall.copy(
