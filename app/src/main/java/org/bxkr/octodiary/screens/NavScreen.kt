@@ -175,7 +175,9 @@ fun NavScreen(modifier: Modifier) {
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center
                     ) {
-                        LinearProgressIndicator(progressAnimated)
+                        LinearProgressIndicator(
+                            progress = { progressAnimated },
+                        )
                     }
                 }
                 screenLive.value = Screen.MainNav
