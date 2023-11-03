@@ -185,13 +185,19 @@ fun HomeworkSubject(homeworks: List<Homework>) {
                     if (it.materialsCount.isNotEmpty()) {
                         if (it.materialsCount.any { it.selectedMode == "learn" }) {
                             Text(
-                                "${it.materialsCount.first { it.selectedMode == "learn" }.amount} выучить", // FUTURE: UNTRANSLATED
+                                stringResource(
+                                    R.string.learn_t,
+                                    it.materialsCount.first { it.selectedMode == "learn" }.amount
+                                ),
                                 color = MaterialTheme.colorScheme.secondary
                             )
                         }
                         if (it.materialsCount.any { it.selectedMode == "execute" }) {
                             Text(
-                                "${it.materialsCount.first { it.selectedMode == "execute" }.amount} выполнить", // FUTURE: UNTRANSLATED
+                                stringResource(
+                                    R.string.do_t,
+                                    it.materialsCount.first { it.selectedMode == "execute" }.amount
+                                ), // FUTURE: UNTRANSLATED
                                 color = MaterialTheme.colorScheme.tertiary
                             )
                         }

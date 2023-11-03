@@ -223,4 +223,6 @@
     <string name="rating_column">rank</string>
     <string name="teachers">Teachers</string>
     <string name="choose_context_profile">Choose student profile</string>
+    <string name="learn_t">%1$s to learn</string>
+    <string name="do_t">%1$s to exercise</string>
 </resources>

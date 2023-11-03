@@ -169,4 +169,6 @@
     <string name="rating_column">рейтинг</string>
     <string name="teachers">Учителя</string>
     <string name="choose_context_profile">Выбрать профиль ученика</string>
+    <string name="learn_t">%1$s выучить</string>
+    <string name="do_t">%1$s выполнить</string>
 </resources>
