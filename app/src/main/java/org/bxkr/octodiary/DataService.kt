@@ -95,18 +95,18 @@ object DataService {
         }
     }
 
-    fun updateEventCalendar(onUpdated: () -> Unit) {
+    fun updateEventCalendar(weeksBefore: Int = 1, weeksAfter: Int = 1, onUpdated: () -> Unit) {
         assert(this::token.isInitialized)
         assert(this::profile.isInitialized)
         secondaryApi.events(
             "Bearer $token",
             personIds = profile.children[currentProfile].contingentGuid,
             beginDate = Calendar.getInstance().also {
-                it.set(Calendar.WEEK_OF_YEAR, it.get(Calendar.WEEK_OF_YEAR) - 1)
+                it.set(Calendar.WEEK_OF_YEAR, it.get(Calendar.WEEK_OF_YEAR) - weeksBefore)
                 it.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
             }.time.formatToDay(),
             endDate = Calendar.getInstance().also {
-                it.set(Calendar.WEEK_OF_YEAR, it.get(Calendar.WEEK_OF_YEAR) + 1)
+                it.set(Calendar.WEEK_OF_YEAR, it.get(Calendar.WEEK_OF_YEAR) + weeksAfter)
                 it.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY)
             }.time.formatToDay(),
             expandFields = "homework,marks"

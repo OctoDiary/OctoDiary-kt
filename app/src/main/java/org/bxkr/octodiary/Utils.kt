@@ -12,6 +12,7 @@ import retrofit2.Response
 import java.security.MessageDigest
 import java.text.SimpleDateFormat
 import java.time.OffsetDateTime
+import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 import kotlin.io.encoding.Base64
@@ -188,3 +189,10 @@ fun parseSimpleLongAndFormatToLong(toFormat: String, joiner: String): String =
     SimpleDateFormat("d LLL yyyy '$joiner' H:mm", LocalConfiguration.current.locales[0]).format(
         toFormat.parseSimpleLongDate()
     )
+
+val Date.weekOfYear: Int
+    get() =
+        Calendar.getInstance().run {
+            time = this@weekOfYear
+            get(Calendar.WEEK_OF_YEAR)
+        }

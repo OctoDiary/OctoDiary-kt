@@ -33,6 +33,7 @@ import androidx.compose.material.icons.automirrored.rounded.OpenInNew
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -49,6 +50,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -57,6 +59,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalUriHandler
@@ -77,6 +80,7 @@ import org.bxkr.octodiary.formatToTime
 import org.bxkr.octodiary.models.events.Event
 import org.bxkr.octodiary.parseLongDate
 import org.bxkr.octodiary.snackbarHostStateLive
+import org.bxkr.octodiary.weekOfYear
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -86,128 +90,155 @@ import kotlin.math.roundToInt
 @Composable
 @OptIn(ExperimentalFoundationApi::class)
 fun DaybookScreen() {
-    val eventCalendar = DataService.eventCalendar
-    val weekSplitCalendar = remember {
-        eventCalendar.fold(mutableListOf<MutableList<Event>>()) { sum, it ->
-            if (sum.isEmpty() || sum.last().first().startAt.parseLongDate()
-                    .formatToDay() != it.startAt.parseLongDate().formatToDay()
-            ) {
-                sum.add(mutableListOf(it))
-            } else {
-                sum.last().add(it)
-            }
-            sum
-        }.fold(mutableListOf<MutableList<MutableList<Event>>>()) { sum, it ->
-            if (sum.isEmpty() ||
-                Calendar.getInstance().run {
-                    time = sum.last().first().first().startAt.parseLongDate()
-                    get(Calendar.WEEK_OF_YEAR)
-                } != Calendar.getInstance().run {
-                    time = it.first().startAt.parseLongDate()
-                    get(Calendar.WEEK_OF_YEAR)
+    val recompositionTrigger = remember { mutableStateOf(false) }
+    key(recompositionTrigger.value) {
+        val eventCalendar = DataService.eventCalendar
+        val weekSplitCalendar = key(eventCalendar) {
+            eventCalendar.fold(mutableListOf<MutableList<Event>>()) { sum, it ->
+                if (sum.isEmpty() || sum.last().first().startAt.parseLongDate()
+                        .formatToDay() != it.startAt.parseLongDate().formatToDay()
+                ) {
+                    sum.add(mutableListOf(it))
+                } else {
+                    sum.last().add(it)
                 }
-            ) {
-                sum.add(mutableListOf(it))
-            } else {
-                sum.last().add(it)
-            }
-            sum
-        }
-    }
-    val weekPosition = remember { mutableFloatStateOf(1f) }
-    if (eventCalendar.isNotEmpty()) {
-        val firstDayOfWeekInitial = remember {
-            weekSplitCalendar[weekPosition.floatValue.roundToInt()][0][0].startAt.parseLongDate()
-                .let {
+                sum
+            }.fold(mutableListOf<MutableList<MutableList<Event>>>()) { sum, it ->
+                if (sum.isEmpty() ||
                     Calendar.getInstance().run {
-                        time = it
-                        set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
-                        time
+                        time = sum.last().first().first().startAt.parseLongDate()
+                        get(Calendar.WEEK_OF_YEAR)
+                    } != Calendar.getInstance().run {
+                        time = it.first().startAt.parseLongDate()
+                        get(Calendar.WEEK_OF_YEAR)
                     }
+                ) {
+                    sum.add(mutableListOf(it))
+                } else {
+                    sum.last().add(it)
                 }
-        }
-        val weekDaysInitial = remember {
-            (0..6).toList().map {
-                Calendar.getInstance().run {
-                    time = firstDayOfWeekInitial
-                    set(
-                        Calendar.DAY_OF_WEEK, listOf(
-                            Calendar.MONDAY,
-                            Calendar.TUESDAY,
-                            Calendar.WEDNESDAY,
-                            Calendar.THURSDAY,
-                            Calendar.FRIDAY,
-                            Calendar.SATURDAY,
-                            Calendar.SUNDAY
-                        )[it]
-                    )
-                    time
-                }
+                sum
             }
         }
-        val todayInitial =
-            remember {
-                Date().formatToDay()
-                    .let { weekDaysInitial.indexOfFirst { it1 -> it1.formatToDay() == it } }
-                    .takeIf {
-                        it != -1
-                    } ?: 0
+        val currentWeekIndex = weekSplitCalendar.indexOfFirst {
+            Date().weekOfYear == it.first().first().startAt.parseLongDate().weekOfYear
+        }
+        val currentWeeksAfter = weekSplitCalendar.lastIndex - currentWeekIndex
+        val addWeekBefore = { onFinish: () -> Unit ->
+            DataService.updateEventCalendar(currentWeekIndex + 1, currentWeeksAfter) {
+                recompositionTrigger.value = !recompositionTrigger.value
+                onFinish()
             }
-        val dayPosition = rememberPagerState(todayInitial, pageCount = { 7 })
-        Column(Modifier.fillMaxSize()) {
-            DateSeeker(weekPosition, dayPosition)
-            AnimatedContent(
-                targetState = weekPosition.floatValue,
-                label = "week_anim"
-            ) { mWeekPosition ->
-                val daySplitCalendar = weekSplitCalendar[mWeekPosition.roundToInt()]
-                val firstDayOfWeek =
-                    weekSplitCalendar[mWeekPosition.roundToInt()][0][0].startAt.parseLongDate()
-                        .let {
-                            Calendar.getInstance().run {
-                                time = it
-                                set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
-                                time
-                            }
-                        }
-                val weekDays =
-                    (0..6).toList().map {
+        }
+        val addWeekAfter = { onFinish: () -> Unit ->
+            DataService.updateEventCalendar(currentWeekIndex, currentWeeksAfter + 1) {
+                recompositionTrigger.value = !recompositionTrigger.value
+                onFinish()
+            }
+        }
+        val weekPosition = remember {
+            mutableFloatStateOf(currentWeekIndex.toFloat())
+        }
+        if (eventCalendar.isNotEmpty()) {
+            val firstDayOfWeekInitial = remember {
+                weekSplitCalendar[weekPosition.floatValue.roundToInt()][0][0].startAt.parseLongDate()
+                    .let {
                         Calendar.getInstance().run {
-                            time = firstDayOfWeek
-                            set(
-                                Calendar.DAY_OF_WEEK, listOf(
-                                    Calendar.MONDAY,
-                                    Calendar.TUESDAY,
-                                    Calendar.WEDNESDAY,
-                                    Calendar.THURSDAY,
-                                    Calendar.FRIDAY,
-                                    Calendar.SATURDAY,
-                                    Calendar.SUNDAY
-                                )[it]
-                            )
+                            time = it
+                            set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
                             time
                         }
                     }
-                HorizontalPager(state = dayPosition, beyondBoundsPageCount = 6) { page ->
-                    Column(Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp)) {
-                        Text(
-                            weekDays[page].let {
-                                SimpleDateFormat(
-                                    "d MMMM, EEEE", LocalConfiguration.current.locales[0]
-                                ).format(it)
-                            },
-                            Modifier.padding(bottom = 8.dp),
-                            style = MaterialTheme.typography.titleLarge
+            }
+            val weekDaysInitial = remember {
+                (0..6).toList().map {
+                    Calendar.getInstance().run {
+                        time = firstDayOfWeekInitial
+                        set(
+                            Calendar.DAY_OF_WEEK, listOf(
+                                Calendar.MONDAY,
+                                Calendar.TUESDAY,
+                                Calendar.WEDNESDAY,
+                                Calendar.THURSDAY,
+                                Calendar.FRIDAY,
+                                Calendar.SATURDAY,
+                                Calendar.SUNDAY
+                            )[it]
                         )
-                        if (daySplitCalendar.size > page) {
-                            DayItem(Modifier.fillMaxSize(), day = daySplitCalendar[page])
-                        } else {
-                            Column(
-                                Modifier.fillMaxSize(),
-                                verticalArrangement = Arrangement.Center,
-                                horizontalAlignment = Alignment.CenterHorizontally
-                            ) {
-                                Text(text = stringResource(id = R.string.free_day))
+                        time
+                    }
+                }
+            }
+            val todayInitial =
+                remember {
+                    Date().formatToDay()
+                        .let { weekDaysInitial.indexOfFirst { it1 -> it1.formatToDay() == it } }
+                        .takeIf {
+                            it != -1
+                        } ?: 0
+                }
+            val dayPosition = rememberPagerState(todayInitial, pageCount = { 7 })
+            Column(Modifier.fillMaxSize()) {
+                DateSeeker(
+                    weekPosition,
+                    dayPosition,
+                    weekSplitCalendar.lastIndex,
+                    addWeekBefore,
+                    addWeekAfter
+                )
+                AnimatedContent(
+                    targetState = weekPosition.floatValue,
+                    label = "week_anim"
+                ) { mWeekPosition ->
+                    val daySplitCalendar = weekSplitCalendar[mWeekPosition.roundToInt()]
+                    val firstDayOfWeek =
+                        weekSplitCalendar[mWeekPosition.roundToInt()][0][0].startAt.parseLongDate()
+                            .let {
+                                Calendar.getInstance().run {
+                                    time = it
+                                    set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
+                                    time
+                                }
+                            }
+                    val weekDays =
+                        (0..6).toList().map {
+                            Calendar.getInstance().run {
+                                time = firstDayOfWeek
+                                set(
+                                    Calendar.DAY_OF_WEEK, listOf(
+                                        Calendar.MONDAY,
+                                        Calendar.TUESDAY,
+                                        Calendar.WEDNESDAY,
+                                        Calendar.THURSDAY,
+                                        Calendar.FRIDAY,
+                                        Calendar.SATURDAY,
+                                        Calendar.SUNDAY
+                                    )[it]
+                                )
+                                time
+                            }
+                        }
+                    HorizontalPager(state = dayPosition, beyondBoundsPageCount = 6) { page ->
+                        Column(Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp)) {
+                            Text(
+                                weekDays[page].let {
+                                    SimpleDateFormat(
+                                        "d MMMM, EEEE", LocalConfiguration.current.locales[0]
+                                    ).format(it)
+                                },
+                                Modifier.padding(bottom = 8.dp),
+                                style = MaterialTheme.typography.titleLarge
+                            )
+                            if (daySplitCalendar.size > page) {
+                                DayItem(Modifier.fillMaxSize(), day = daySplitCalendar[page])
+                            } else {
+                                Column(
+                                    Modifier.fillMaxSize(),
+                                    verticalArrangement = Arrangement.Center,
+                                    horizontalAlignment = Alignment.CenterHorizontally
+                                ) {
+                                    Text(text = stringResource(id = R.string.free_day))
+                                }
                             }
                         }
                     }
@@ -219,7 +250,13 @@ fun DaybookScreen() {
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
-fun DateSeeker(weekPosition: MutableState<Float>, dayPosition: PagerState) {
+fun DateSeeker(
+    weekPosition: MutableState<Float>,
+    dayPosition: PagerState,
+    size: Int,
+    addWeekBefore: (() -> Unit) -> Unit,
+    addWeekAfter: (() -> Unit) -> Unit
+) {
     val coroutineScope = rememberCoroutineScope()
     var sliderValue by remember { mutableFloatStateOf(dayPosition.currentPage.toFloat()) }
     sliderValue = dayPosition.currentPage.toFloat()
@@ -244,20 +281,33 @@ fun DateSeeker(weekPosition: MutableState<Float>, dayPosition: PagerState) {
                     },
                     state = rememberTooltipState()
                 ) {
-                    IconButton(onClick = { /*later*/ }) {
-                        Icon(
-                            Icons.AutoMirrored.Rounded.KeyboardArrowLeft,
-                            stringResource(id = R.string.add_week_before),
-                            tint = MaterialTheme.colorScheme.primary
-                        )
+                    val loadingFinished = remember { mutableStateOf(true) }
+                    IconButton(onClick = {
+                        loadingFinished.value = false
+                        addWeekBefore { loadingFinished.value = true }
+                    }, enabled = loadingFinished.value) {
+                        AnimatedVisibility(visible = loadingFinished.value) {
+                            Icon(
+                                Icons.AutoMirrored.Rounded.KeyboardArrowLeft,
+                                stringResource(id = R.string.add_week_before),
+                                tint = MaterialTheme.colorScheme.primary
+                            )
+                        }
+                        AnimatedVisibility(visible = !loadingFinished.value) {
+                            CircularProgressIndicator(
+                                Modifier
+                                    .size(20.dp, 20.dp),
+                                strokeCap = StrokeCap.Round
+                            )
+                        }
                     }
                 }
                 Slider(
                     modifier = Modifier.weight(1f, true),
                     value = weekPosition.value,
                     onValueChange = { weekPosition.value = it },
-                    valueRange = 0f..2f,
-                    steps = 1
+                    valueRange = 0f..size.toFloat(),
+                    steps = size - 1
                 )
                 TooltipBox(
                     positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(),
@@ -268,12 +318,25 @@ fun DateSeeker(weekPosition: MutableState<Float>, dayPosition: PagerState) {
                     },
                     state = rememberTooltipState()
                 ) {
-                    IconButton(onClick = { /*later*/ }) {
-                        Icon(
-                            Icons.AutoMirrored.Rounded.KeyboardArrowRight,
-                            stringResource(id = R.string.add_week_after),
-                            tint = MaterialTheme.colorScheme.primary
-                        )
+                    val loadingFinished = remember { mutableStateOf(true) }
+                    IconButton(onClick = {
+                        loadingFinished.value = false
+                        addWeekAfter { loadingFinished.value = true }
+                    }, enabled = loadingFinished.value) {
+                        AnimatedVisibility(visible = loadingFinished.value) {
+                            Icon(
+                                Icons.AutoMirrored.Rounded.KeyboardArrowRight,
+                                stringResource(id = R.string.add_week_after),
+                                tint = MaterialTheme.colorScheme.primary
+                            )
+                        }
+                        AnimatedVisibility(visible = !loadingFinished.value) {
+                            CircularProgressIndicator(
+                                Modifier
+                                    .size(20.dp, 20.dp),
+                                strokeCap = StrokeCap.Round
+                            )
+                        }
                     }
                 }
             }
