@@ -4,7 +4,9 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -42,17 +44,22 @@ fun DashboardScreen() {
     ) {
         Text(
             stringResource(id = R.string.schedule_today),
+            modifier = Modifier.padding(top = 8.dp),
             style = MaterialTheme.typography.labelLarge
         )
         DayItem(
             day = DataService.eventCalendar.filter {
                 it.startAt.parseLongDate().formatToDay() == currentDay
-            }) {
-            Text(stringResource(id = R.string.rating), style = MaterialTheme.typography.labelLarge)
+            }
+        ) {
+            Text(
+                stringResource(id = R.string.rating),
+                modifier = Modifier.padding(top = 8.dp),
+                style = MaterialTheme.typography.labelLarge
+            )
             Card(
                 Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 16.dp)
                     .clickable {
                         modalBottomSheetContentLive.value = { RankingList() }
                         modalBottomSheetStateLive.postValue(true)
@@ -81,6 +88,7 @@ fun DashboardScreen() {
                         R.string.visits_t,
                         lastVisit.date.parseFromDay().formatToHumanDay()
                     ),
+                    modifier = Modifier.padding(top = 8.dp),
                     style = MaterialTheme.typography.labelLarge
                 )
                 Card(
@@ -106,6 +114,7 @@ fun DashboardScreen() {
                     }
                 }
             }
+            Spacer(Modifier.height(16.dp))
         }
     }
 }
