@@ -3,6 +3,8 @@ package org.bxkr.octodiary
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.content.pm.PackageManager.NameNotFoundException
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.ui.platform.LocalConfiguration
@@ -211,4 +213,13 @@ fun Activity.logOut() {
     screenLive.value = Screen.Login
     startActivity(Intent(this, MainActivity::class.java))
     finish()
+}
+
+fun PackageManager.isPackageInstalled(packageName: String): Boolean {
+    return try {
+        getPackageInfo(packageName, 0)
+        true
+    } catch (e: NameNotFoundException) {
+        false
+    }
 }

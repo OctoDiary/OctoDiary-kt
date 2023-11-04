@@ -225,4 +225,7 @@
     <string name="choose_context_profile">Choose student profile</string>
     <string name="learn_t">%1$s to learn</string>
     <string name="do_t">%1$s to exercise</string>
+    <string name="ok">OK</string>
+    <string name="warning">Warning</string>
+    <string name="auth_receivers_warn">Looks like you have official MES or My School application installed. After auth choose %1$s among apps for everything to work.</string>
 </resources>

@@ -171,4 +171,7 @@
     <string name="choose_context_profile">Выбрать профиль ученика</string>
     <string name="learn_t">%1$s выучить</string>
     <string name="do_t">%1$s выполнить</string>
+    <string name="ok">Хорошо</string>
+    <string name="warning">Внимание</string>
+    <string name="auth_receivers_warn">Похоже, у вас установлено официальное приложение МЭШ или Моя Школа. После авторизации выберите %1$s среди приложений, чтобы все получилось.</string>
 </resources>

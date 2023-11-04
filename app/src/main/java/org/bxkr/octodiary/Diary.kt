@@ -41,7 +41,7 @@ enum class Diary(
     @ColorRes val primaryLogGradientColors: List<Int>,
     @StringRes val primaryLogInLabel: Int,
     val primaryLogInFunction: (Context) -> Unit,
-    val alternativeLogIn: @Composable (Modifier) -> Unit
+    val alternativeLogIn: @Composable (Modifier, (() -> Unit) -> Unit) -> Unit
 ) {
     MES(
         R.string.mes,
@@ -49,7 +49,7 @@ enum class Diary(
         listOf(R.color.mosru_primary, R.color.mosru_primary),
         R.string.log_in_on_mosru,
         { MESLoginService.logInWithMosRu(it) },
-        @Composable { modifier ->
+        @Composable { modifier, onClick ->
             Context.MODE_PRIVATE
             val context = androidx.compose.ui.platform.LocalContext.current
             Row(
@@ -66,10 +66,12 @@ enum class Diary(
                     )
                     .clip(MaterialTheme.shapes.medium)
                     .clickable {
-                        MySchoolLoginService.logInWithEsia(
-                            context,
-                            MES
-                        )
+                        onClick {
+                            MySchoolLoginService.logInWithEsia(
+                                context,
+                                MES
+                            )
+                        }
                     },
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -92,7 +94,7 @@ enum class Diary(
         listOf(R.color.blue, R.color.red),
         R.string.log_in_on_gosuslugi,
         { MySchoolLoginService.logInWithEsia(it, MySchool) },
-        @Composable { modifier ->
+        @Composable { modifier, _ ->
 
             var loginText by rememberSaveable { mutableStateOf("") }
             var passwordText by rememberSaveable { mutableStateOf("") }

@@ -1,6 +1,6 @@
 package org.bxkr.octodiary.screens
 
-import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -16,20 +16,21 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.OpenInNew
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
-import androidx.compose.material3.TabRow
-import androidx.compose.material3.TabRowDefaults
-import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -48,6 +49,7 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import org.bxkr.octodiary.Diary
 import org.bxkr.octodiary.R
+import org.bxkr.octodiary.isPackageInstalled
 import org.bxkr.octodiary.ui.theme.OctoDiaryTheme
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -59,6 +61,15 @@ fun LoginScreen(
     val pagerState = rememberPagerState(pageCount = { 2 })
     var currentPage by rememberSaveable { mutableStateOf(Diary.MES) }
     val coroutineScope = rememberCoroutineScope()
+    var alertTrigger by remember { mutableStateOf(false) }
+    var alertAction by remember { mutableStateOf({}) }
+
+    if (alertTrigger) {
+        ShowAlertIfFoundReceivers {
+            alertAction()
+            alertTrigger = false
+        }
+    }
 
     LaunchedEffect(pagerState) {
         snapshotFlow { pagerState.currentPage }.collect { page ->
@@ -67,20 +78,8 @@ fun LoginScreen(
     }
 
     Column(modifier.fillMaxSize()) {
-        TabRow(
-            selectedTabIndex = currentPage.ordinal,
-            indicator = @Composable { tabPositions ->
-                if (currentPage.ordinal < tabPositions.size) {
-                    val width by animateDpAsState(
-                        targetValue = tabPositions[currentPage.ordinal].contentWidth,
-                        label = "tabIndicatorAnimation"
-                    )
-                    TabRowDefaults.PrimaryIndicator(
-                        modifier = Modifier.tabIndicatorOffset(tabPositions[currentPage.ordinal]),
-                        width = width
-                    )
-                }
-            }
+        PrimaryTabRow(
+            selectedTabIndex = currentPage.ordinal
         ) {
             Diary.values().forEach {
                 Tab(
@@ -112,7 +111,12 @@ fun LoginScreen(
                                     .map { colorResource(it) }), MaterialTheme.shapes.medium
                         )
                         .clip(MaterialTheme.shapes.medium)
-                        .clickable { Diary.values()[page].primaryLogInFunction(context) },
+                        .clickable {
+                            alertAction = {
+                                Diary.values()[currentPage.ordinal].primaryLogInFunction(context)
+                            }
+                            alertTrigger = true
+                        },
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     if (page == Diary.MES.ordinal) {
@@ -164,9 +168,40 @@ fun LoginScreen(
 
                 Diary.values()[page].alternativeLogIn(
                     Modifier.align(Alignment.CenterHorizontally)
-                )
+                ) {
+                    alertAction = it
+                    alertTrigger = true
+                }
             }
         }
+    }
+}
+
+@Composable
+fun ShowAlertIfFoundReceivers(onDismiss: () -> Unit) {
+    val context = LocalContext.current
+    var isShown by remember {
+        mutableStateOf(
+            true in listOf(
+                "ru.mes.dnevnik",
+                "ru.mes.dnevnik.fgis"
+            ).map { context.packageManager.isPackageInstalled(it) })
+    }
+    LaunchedEffect(Unit) {
+        if (!isShown) onDismiss()
+    }
+    AnimatedVisibility(isShown) {
+        AlertDialog(onDismissRequest = { isShown = false; onDismiss() }, confirmButton = {
+            TextButton(onClick = { isShown = false; onDismiss() }) {
+                Text(stringResource(R.string.ok))
+            }
+        }, title = { Text(stringResource(R.string.warning)) }, text = {
+            Text(
+                stringResource(
+                    R.string.auth_receivers_warn, stringResource(R.string.app_name)
+                )
+            )
+        })
     }
 }
 
