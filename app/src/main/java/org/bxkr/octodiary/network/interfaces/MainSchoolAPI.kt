@@ -4,6 +4,7 @@ import org.bxkr.octodiary.Diary
 import org.bxkr.octodiary.models.homeworks.HomeworksResponse
 import org.bxkr.octodiary.models.mark.MarkInfo
 import org.bxkr.octodiary.models.marklistdate.MarkListDate
+import org.bxkr.octodiary.models.marklistsubject.MarkListSubject
 import org.bxkr.octodiary.models.marklistsubject.MarkListSubjectItem
 import org.bxkr.octodiary.models.profile.ProfileResponse
 import org.bxkr.octodiary.models.schoolinfo.SchoolInfo
@@ -152,5 +153,5 @@ interface MainSchoolAPI {
         @Header("auth-token") accessToken: String,
         @Query("student_id") studentId: Long,
         @Header("X-Mes-Subsystem") mesSubsystem: String = MESAPIConfig.FAMILYMP
-    ): Call<List<MarkListSubjectItem>>
+    ): Call<MarkListSubject>
 }

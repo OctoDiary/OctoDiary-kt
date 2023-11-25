@@ -86,7 +86,7 @@ fun MarksScreen() {
 @Composable
 fun MarksByDate() {
     val daySplitMarks = remember {
-        DataService.marks.payload.sortedByDescending {
+        DataService.marksDate.payload.sortedByDescending {
             it.date.parseFromDay().toInstant().toEpochMilli()
         }.fold(mutableListOf<MutableList<Mark>>()) { sum, it ->
             if (sum.isEmpty() || sum.last().first().date != it.date) {

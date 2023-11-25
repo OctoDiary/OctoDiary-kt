@@ -7,6 +7,7 @@ import org.bxkr.octodiary.models.events.Event
 import org.bxkr.octodiary.models.homeworks.Homework
 import org.bxkr.octodiary.models.mark.MarkInfo
 import org.bxkr.octodiary.models.marklistdate.MarkListDate
+import org.bxkr.octodiary.models.marklistsubject.MarkListSubjectItem
 import org.bxkr.octodiary.models.mealbalance.MealBalance
 import org.bxkr.octodiary.models.profile.ProfileResponse
 import org.bxkr.octodiary.models.profilesid.ProfilesId
@@ -49,8 +50,11 @@ object DataService {
     lateinit var visits: VisitsResponse
     var hasVisits = false
 
-    lateinit var marks: MarkListDate
-    var hasMarks = false
+    lateinit var marksDate: MarkListDate
+    var hasMarksDate = false
+
+    lateinit var marksSubject: List<MarkListSubjectItem>
+    var hasMarksSubject = false
 
     lateinit var homeworks: List<Homework>
     var hasHomeworks = false
@@ -195,7 +199,7 @@ object DataService {
         }
     }
 
-    fun updateMarks(onUpdated: () -> Unit) {
+    fun updateMarksDate(onUpdated: () -> Unit) {
         assert(this::token.isInitialized)
         assert(this::profile.isInitialized)
 
@@ -208,8 +212,22 @@ object DataService {
             }.formatToDay(),
             toDate = Date().formatToDay()
         ).baseEnqueue(::baseErrorFunction, ::baseInternalExceptionFunction) {
-            marks = it
-            hasMarks = true
+            marksDate = it
+            hasMarksDate = true
+            onUpdated()
+        }
+    }
+
+    fun updateMarksSubject(onUpdated: () -> Unit) {
+        assert(this::token.isInitialized)
+        assert(this::profile.isInitialized)
+
+        mainSchoolApi.subjectMarks(
+            token,
+            studentId = profile.children[currentProfile].id
+        ).baseEnqueue(::baseErrorFunction, ::baseInternalExceptionFunction) {
+            marksSubject = it.payload
+            hasMarksSubject = true
             onUpdated()
         }
     }
@@ -273,7 +291,8 @@ object DataService {
             ::hasClassMembers,
             ::hasProfile,
             ::hasVisits.takeIf { subsystem == Diary.MES },
-            ::hasMarks,
+            ::hasMarksDate,
+            ::hasMarksSubject,
             ::hasHomeworks,
             ::hasMealBalance.takeIf { subsystem == Diary.MES },
             ::hasSchoolInfo
@@ -295,7 +314,8 @@ object DataService {
                 updateProfile {
                     onSingleItemLoad(::profile.name)
                     updateEventCalendar { onSingleItemLoad(::eventCalendar.name) }
-                    updateMarks { onSingleItemLoad(::marks.name) }
+                    updateMarksDate { onSingleItemLoad(::marksDate.name) }
+                    updateMarksSubject { onSingleItemLoad(::marksSubject.name) }
                     updateHomeworks { onSingleItemLoad(::homeworks.name) }
                     updateRanking {
                         onSingleItemLoad(::classMembers.name)
