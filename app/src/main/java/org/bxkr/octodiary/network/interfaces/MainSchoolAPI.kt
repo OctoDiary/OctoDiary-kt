@@ -3,7 +3,8 @@ package org.bxkr.octodiary.network.interfaces
 import org.bxkr.octodiary.Diary
 import org.bxkr.octodiary.models.homeworks.HomeworksResponse
 import org.bxkr.octodiary.models.mark.MarkInfo
-import org.bxkr.octodiary.models.marklist.MarkList
+import org.bxkr.octodiary.models.marklistdate.MarkListDate
+import org.bxkr.octodiary.models.marklistsubject.MarkListSubjectItem
 import org.bxkr.octodiary.models.profile.ProfileResponse
 import org.bxkr.octodiary.models.schoolinfo.SchoolInfo
 import org.bxkr.octodiary.models.visits.VisitsResponse
@@ -87,7 +88,7 @@ interface MainSchoolAPI {
      * @param fromDate Start of mark list in yyyy-MM-dd format.
      * @param toDate End of mark list in yyyy-MM-dd format.
      * @param mesSubsystem MES subsystem (["familymp"][MESAPIConfig.FAMILYMP] by default).
-     * @return [MarkList]
+     * @return [MarkListDate]
      */
     @GET("family/mobile/v1/marks")
     fun markList(
@@ -96,7 +97,7 @@ interface MainSchoolAPI {
         @Query("from") fromDate: String,
         @Query("to") toDate: String,
         @Header("X-Mes-Subsystem") mesSubsystem: String = MESAPIConfig.FAMILYMP
-    ): Call<MarkList>
+    ): Call<MarkListDate>
 
     /**
      * Gets homeworks for date range.
@@ -137,4 +138,19 @@ interface MainSchoolAPI {
         @Query("class_unit_id") classUnitId: Long,
         @Header("X-Mes-Subsystem") mesSubsystem: String = MESAPIConfig.FAMILYMP
     ): Call<SchoolInfo>
+
+    /**
+     * Gets marks by subject.
+     *
+     * @param accessToken Access token.
+     * @param studentId Student ID.
+     * @param mesSubsystem MES subsystem (["familymp"][MESAPIConfig.FAMILYMP] by default).
+     * @return List of [MarkListSubjectItem]s.
+     */
+    @GET("family/mobile/v1/subject_marks/short")
+    fun subjectMarks(
+        @Header("auth-token") accessToken: String,
+        @Query("student_id") studentId: Long,
+        @Header("X-Mes-Subsystem") mesSubsystem: String = MESAPIConfig.FAMILYMP
+    ): Call<List<MarkListSubjectItem>>
 }

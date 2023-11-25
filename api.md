@@ -41,7 +41,8 @@ _\* \- unavailable in this region_
 [rsp.classMembers]: app/src/main/java/org/bxkr/octodiary/models/classmembers/ClassMember.kt
 [rsp.profile]: app/src/main/java/org/bxkr/octodiary/models/profile/ProfileResponse.kt
 [rsp.visits]: app/src/main/java/org/bxkr/octodiary/models/visits/VisitsResponse.kt
-[rsp.marks]: app/src/main/java/org/bxkr/octodiary/models/marklist/MarkList.kt
+
+[rsp.marks]: app/src/main/java/org/bxkr/octodiary/models/marklistdate/MarkListDate.kt
 [rsp.markInfo]: app/src/main/java/org/bxkr/octodiary/models/mark/MarkInfo.kt
 [rsp.homeworks]: app/src/main/java/org/bxkr/octodiary/models/homeworks/HomeworksResponse.kt
 [rsp.mealBalance]: app/src/main/java/org/bxkr/octodiary/models/mealbalance/MealBalance.kt

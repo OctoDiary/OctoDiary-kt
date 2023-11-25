@@ -39,7 +39,7 @@ import org.bxkr.octodiary.components.Mark
 import org.bxkr.octodiary.components.defaultMarkClick
 import org.bxkr.octodiary.formatToLongHumanDay
 import org.bxkr.octodiary.formatToWeekday
-import org.bxkr.octodiary.models.marklist.Mark
+import org.bxkr.octodiary.models.marklistdate.Mark
 import org.bxkr.octodiary.parseFromDay
 
 enum class MarksScreenTab(

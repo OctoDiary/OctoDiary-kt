@@ -1,4 +1,4 @@
-package org.bxkr.octodiary.models.marklist
+package org.bxkr.octodiary.models.marklistdate
 
 
 import com.google.gson.annotations.SerializedName

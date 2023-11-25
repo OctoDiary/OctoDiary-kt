@@ -6,7 +6,7 @@ import org.bxkr.octodiary.models.classranking.RankingMember
 import org.bxkr.octodiary.models.events.Event
 import org.bxkr.octodiary.models.homeworks.Homework
 import org.bxkr.octodiary.models.mark.MarkInfo
-import org.bxkr.octodiary.models.marklist.MarkList
+import org.bxkr.octodiary.models.marklistdate.MarkListDate
 import org.bxkr.octodiary.models.mealbalance.MealBalance
 import org.bxkr.octodiary.models.profile.ProfileResponse
 import org.bxkr.octodiary.models.profilesid.ProfilesId
@@ -49,7 +49,7 @@ object DataService {
     lateinit var visits: VisitsResponse
     var hasVisits = false
 
-    lateinit var marks: MarkList
+    lateinit var marks: MarkListDate
     var hasMarks = false
 
     lateinit var homeworks: List<Homework>

@@ -1,9 +1,9 @@
-package org.bxkr.octodiary.models.marklist
+package org.bxkr.octodiary.models.marklistdate
 
 
 import com.google.gson.annotations.SerializedName
 
-data class MarkList(
+data class MarkListDate(
     @SerializedName("payload")
     val payload: List<Mark>
 )

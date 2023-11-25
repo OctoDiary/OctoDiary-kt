@@ -30,7 +30,7 @@ data class Mark(
     val weight: Int
 ) {
     companion object MarkCompanion {
-        fun fromMarkList(mark: org.bxkr.octodiary.models.marklist.Mark): Mark {
+        fun fromMarkList(mark: org.bxkr.octodiary.models.marklistdate.Mark): Mark {
             return mark.run {
                 Mark(
                     comment,
