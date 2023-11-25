@@ -6,23 +6,35 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.ArrowDropDown
+import androidx.compose.material.icons.rounded.ArrowDropUp
 import androidx.compose.material.icons.rounded.Book
 import androidx.compose.material.icons.rounded.DateRange
+import androidx.compose.material.icons.rounded.Done
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilterChip
+import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.PrimaryTabRow
+import androidx.compose.material3.SecondaryTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -32,6 +44,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import org.bxkr.octodiary.DataService
 import org.bxkr.octodiary.R
@@ -40,6 +53,7 @@ import org.bxkr.octodiary.components.defaultMarkClick
 import org.bxkr.octodiary.formatToLongHumanDay
 import org.bxkr.octodiary.formatToWeekday
 import org.bxkr.octodiary.models.marklistdate.Mark
+import org.bxkr.octodiary.models.marklistsubject.MarkListSubjectItem
 import org.bxkr.octodiary.parseFromDay
 
 enum class MarksScreenTab(
@@ -158,7 +172,7 @@ fun MarkDay(marks: List<Mark>) {
 
 @Composable
 fun ExtendedMark(mark: Mark) {
-    val eventMark = org.bxkr.octodiary.models.events.Mark.fromMarkList(mark)
+    val eventMark = org.bxkr.octodiary.models.events.Mark.fromMarkListDate(mark)
     Column(
         Modifier
             .clickable { defaultMarkClick(eventMark) }
@@ -178,7 +192,108 @@ fun ExtendedMark(mark: Mark) {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MarksBySubject() {
+    val periods = remember {
+        DataService.marksSubject.mapNotNull { it.period }.distinct()
+    }
+    var currentPeriod by remember { mutableIntStateOf(0) }
+    Column(Modifier.fillMaxHeight(), verticalArrangement = Arrangement.Bottom) {
+        Crossfade(
+            targetState = currentPeriod,
+            modifier = Modifier.weight(1f),
+            label = "subject_anim"
+        ) { periodState ->
+            val marks =
+                remember { DataService.marksSubject.filter { it.period == periods[periodState] } }
+            LazyColumn(
+                Modifier
+                    .fillMaxHeight()
+                    .padding(16.dp)
+            ) {
+                items(marks) {
+                    SubjectCard(subject = it)
+                }
+            }
+        }
+        SecondaryTabRow(selectedTabIndex = currentPeriod, divider = {}) {
+            periods.forEachIndexed { index: Int, period: String ->
+                Tab(
+                    selected = currentPeriod == index,
+                    text = { Text(period) },
+                    onClick = {
+                        currentPeriod = index
+                    }
+                )
+            }
+        }
+    }
+}
 
+@Composable
+fun SubjectCard(subject: MarkListSubjectItem) {
+    Card(
+        Modifier
+            .padding(4.dp)
+            .fillMaxWidth(),
+        shape = MaterialTheme.shapes.large,
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer)
+    ) {
+        Column(Modifier.padding(16.dp)) {
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .height(32.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    subject.subjectName,
+                    Modifier.weight(1f),
+                    style = MaterialTheme.typography.titleMedium,
+                    overflow = TextOverflow.Ellipsis
+                )
+                Row {
+                    if (subject.average != null) {
+                        FilterChip(
+                            onClick = {},
+                            label = { Text(subject.average) },
+                            selected = true,
+                            colors = FilterChipDefaults.filterChipColors(selectedContainerColor = if (subject.dynamic == "UP") MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.tertiaryContainer),
+                            leadingIcon = {
+                                if (subject.dynamic == "UP") {
+                                    Icon(
+                                        imageVector = Icons.Rounded.ArrowDropUp,
+                                        contentDescription = subject.dynamic,
+                                        tint = MaterialTheme.colorScheme.secondary
+                                    )
+                                } else {
+                                    Icon(
+                                        imageVector = Icons.Rounded.ArrowDropDown,
+                                        contentDescription = subject.dynamic,
+                                        tint = MaterialTheme.colorScheme.tertiary
+                                    )
+                                }
+                            })
+                    }
+                    if (subject.run { null !in listOf(average, fixedValue) }) {
+                        Spacer(modifier = Modifier.width(8.dp))
+                    }
+                    if (subject.fixedValue != null) {
+                        FilterChip(
+                            selected = true, onClick = {}, label = { Text(subject.fixedValue) },
+                            leadingIcon = {
+                                Icon(
+                                    imageVector = Icons.Rounded.Done,
+                                    contentDescription = stringResource(id = R.string.final_mark),
+                                    modifier = Modifier.size(FilterChipDefaults.IconSize)
+                                )
+                            },
+                        )
+                    }
+                }
+            }
+        }
+    }
 }

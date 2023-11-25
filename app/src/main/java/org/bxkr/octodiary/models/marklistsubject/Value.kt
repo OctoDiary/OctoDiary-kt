@@ -2,6 +2,7 @@ package org.bxkr.octodiary.models.marklistsubject
 
 
 import com.google.gson.annotations.SerializedName
+import org.bxkr.octodiary.models.events.Grade
 
 data class Value(
     @SerializedName("grade")

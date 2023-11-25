@@ -178,4 +178,5 @@
     <string name="cancel">Отмена</string>
     <string name="by_date">По дате</string>
     <string name="by_subject">По предмету</string>
+    <string name="final_mark">Итоговая оценка</string>
 </resources>

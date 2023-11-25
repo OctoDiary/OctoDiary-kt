@@ -232,4 +232,5 @@
     <string name="cancel">Cancel</string>
     <string name="by_date">By date</string>
     <string name="by_subject">By subject</string>
+    <string name="final_mark">Final mark</string>
 </resources>
