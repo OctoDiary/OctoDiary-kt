@@ -230,4 +230,6 @@
     <string name="auth_receivers_warn">Looks like you have official MES or My School application installed. After auth choose %1$s among apps for everything to work.</string>
     <string name="use_pin">Passcode lock</string>
     <string name="cancel">Cancel</string>
+    <string name="by_date">By date</string>
+    <string name="by_subject">By subject</string>
 </resources>

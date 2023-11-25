@@ -176,4 +176,6 @@
     <string name="auth_receivers_warn">Похоже, у вас установлено официальное приложение МЭШ или Моя Школа. После авторизации выберите %1$s среди приложений, чтобы все получилось.</string>
     <string name="use_pin">Защита код-паролем</string>
     <string name="cancel">Отмена</string>
+    <string name="by_date">По дате</string>
+    <string name="by_subject">По предмету</string>
 </resources>
