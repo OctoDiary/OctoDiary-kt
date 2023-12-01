@@ -235,4 +235,7 @@
     <string name="final_mark">Final mark</string>
     <string name="mark_filter_by_updated">By date created</string>
     <string name="mark_filter_by_lesson_date">By lesson date</string>
+    <string name="mark_filter_alphabetical">Alphabetical (A-Z)</string>
+    <string name="mark_filter_by_last_update">By last marks update</string>
+    <string name="mark_filter_by_average">By average mark</string>
 </resources>

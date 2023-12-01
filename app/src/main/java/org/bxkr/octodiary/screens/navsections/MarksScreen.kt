@@ -7,13 +7,11 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -75,13 +73,25 @@ enum class MarksScreenTab(
     )
 }
 
-enum class DateMarkFilterType {
-    ByUpdated, ByLessonDate
+enum class DateMarkFilterType(
+    @StringRes val title: Int
+) {
+    ByUpdated(R.string.mark_filter_by_updated),
+    ByLessonDate(R.string.mark_filter_by_lesson_date)
+}
+
+enum class SubjectMarkFilterType(
+    @StringRes val title: Int
+) {
+    ByAverage(R.string.mark_filter_by_average),
+    ByUpdated(R.string.mark_filter_by_last_update),
+    Alphabetical(R.string.mark_filter_alphabetical)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MarksScreen() {
+    showFilterLive.postValue(true)
     var currentTab by remember { mutableStateOf(MarksScreenTab.ByDate) }
     Column {
         PrimaryTabRow(selectedTabIndex = currentTab.ordinal, divider = {}) {
@@ -108,7 +118,6 @@ fun MarksScreen() {
 
 @Composable
 fun MarksByDate() {
-    showFilterLive.postValue(true)
     val filterState = remember { mutableStateOf(DateMarkFilterType.ByUpdated) }
     contentDependentActionLive.postValue { DateMarkFilter(state = filterState) }
     val daySplitMarks = DataService.marksDate.payload.sortedByDescending {
@@ -221,7 +230,8 @@ fun ExtendedMark(mark: Mark) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MarksBySubject() {
-    showFilterLive.postValue(false)
+    val filterState = remember { mutableStateOf(SubjectMarkFilterType.ByAverage) }
+    contentDependentActionLive.postValue { SubjectMarkFilter(state = filterState) }
     val periods = remember {
         DataService.marksSubject.mapNotNull { it.period }.distinct()
     }
@@ -230,23 +240,42 @@ fun MarksBySubject() {
         Crossfade(
             targetState = currentPeriod, modifier = Modifier.weight(1f), label = "subject_anim"
         ) { periodState ->
-            val marks =
-                remember { DataService.marksSubject.filter { it.period == periods[periodState] } }
-            LazyColumn(
-                Modifier
-                    .fillMaxHeight()
-                    .padding(16.dp)
-            ) {
-                items(marks) {
-                    SubjectCard(subject = it)
+            AnimatedContent(targetState = filterState.value, label = "filter_anim") { filter ->
+                Column {
+                    val subjects =
+                        DataService.marksSubject.filter { it.period == periods[periodState] }
+                            .run {
+                                when (filter) {
+                                    SubjectMarkFilterType.Alphabetical -> sortedBy { it.subjectName }
+                                    SubjectMarkFilterType.ByAverage -> sortedByDescending { it.average?.toDoubleOrNull() }
+                                    SubjectMarkFilterType.ByUpdated -> sortedByDescending {
+                                        it.marks?.maxBy { it1 ->
+                                            it1.date.parseFromDay().toInstant().toEpochMilli()
+                                        }?.date?.parseFromDay()?.toInstant()?.toEpochMilli() ?: 0
+                                    }
+                                }
+                            }
+                    LazyColumn(
+                        Modifier
+                            .fillMaxHeight()
+                            .padding(horizontal = 16.dp)
+                            .weight(1f)
+                    ) {
+                        items(subjects) {
+                            SubjectCard(subject = it)
+                        }
+                    }
+                    SecondaryTabRow(selectedTabIndex = currentPeriod, divider = {}) {
+                        periods.forEachIndexed { index: Int, period: String ->
+                            Tab(
+                                selected = currentPeriod == index,
+                                text = { Text(period) },
+                                onClick = {
+                                    currentPeriod = index
+                                })
+                        }
+                    }
                 }
-            }
-        }
-        SecondaryTabRow(selectedTabIndex = currentPeriod, divider = {}) {
-            periods.forEachIndexed { index: Int, period: String ->
-                Tab(selected = currentPeriod == index, text = { Text(period) }, onClick = {
-                    currentPeriod = index
-                })
             }
         }
     }
@@ -279,7 +308,14 @@ fun SubjectCard(subject: MarkListSubjectItem) {
                     if (subject.average != null) {
                         FilterChip(
                             onClick = {},
-                            label = { Text(subject.average) },
+                            label = {
+                                Text(
+                                    subject.average, color = when (subject.dynamic) {
+                                        "UP" -> MaterialTheme.colorScheme.onSecondaryContainer
+                                        else -> MaterialTheme.colorScheme.onTertiaryContainer
+                                    }
+                                )
+                            },
                             selected = true,
                             colors = FilterChipDefaults.filterChipColors(selectedContainerColor = if (subject.dynamic == "UP") MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.tertiaryContainer),
                             leadingIcon = {
@@ -296,10 +332,9 @@ fun SubjectCard(subject: MarkListSubjectItem) {
                                         tint = MaterialTheme.colorScheme.tertiary
                                     )
                                 }
-                            })
-                    }
-                    if (subject.run { null !in listOf(average, fixedValue) }) {
-                        Spacer(modifier = Modifier.width(8.dp))
+                            },
+                            modifier = Modifier.padding(start = 16.dp)
+                        )
                     }
                     if (subject.fixedValue != null) {
                         FilterChip(
@@ -311,6 +346,7 @@ fun SubjectCard(subject: MarkListSubjectItem) {
                                     modifier = Modifier.size(FilterChipDefaults.IconSize)
                                 )
                             },
+                            modifier = Modifier.padding(start = 16.dp)
                         )
                     }
                 }
@@ -321,28 +357,36 @@ fun SubjectCard(subject: MarkListSubjectItem) {
 
 @Composable
 fun DateMarkFilter(state: MutableState<DateMarkFilterType>) {
-    DropdownMenuItem(text = {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            RadioButton(state.value == DateMarkFilterType.ByUpdated,
-                { state.value = DateMarkFilterType.ByUpdated })
-            Text(
-                stringResource(R.string.mark_filter_by_updated),
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis,
-                style = MaterialTheme.typography.titleMedium
-            )
-        }
-    }, onClick = { state.value = DateMarkFilterType.ByUpdated })
-    DropdownMenuItem(text = {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            RadioButton(state.value == DateMarkFilterType.ByLessonDate,
-                { state.value = DateMarkFilterType.ByLessonDate })
-            Text(
-                stringResource(R.string.mark_filter_by_lesson_date),
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis,
-                style = MaterialTheme.typography.titleMedium
-            )
-        }
-    }, onClick = { state.value = DateMarkFilterType.ByLessonDate })
+    DateMarkFilterType.values().forEach {
+        DropdownMenuItem(text = {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                RadioButton(state.value == it,
+                    { state.value = it })
+                Text(
+                    stringResource(it.title),
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                    style = MaterialTheme.typography.titleMedium
+                )
+            }
+        }, onClick = { state.value = it })
+    }
+}
+
+@Composable
+fun SubjectMarkFilter(state: MutableState<SubjectMarkFilterType>) {
+    SubjectMarkFilterType.values().forEach {
+        DropdownMenuItem(text = {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                RadioButton(state.value == it,
+                    { state.value = it })
+                Text(
+                    stringResource(it.title),
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                    style = MaterialTheme.typography.titleMedium
+                )
+            }
+        }, onClick = { state.value = it })
+    }
 }
