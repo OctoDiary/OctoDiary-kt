@@ -42,16 +42,17 @@ fun DashboardScreen() {
         verticalArrangement = Arrangement.Bottom,
         modifier = Modifier.padding(horizontal = 16.dp)
     ) {
-        Text(
-            stringResource(id = R.string.schedule_today),
-            modifier = Modifier.padding(top = 8.dp),
-            style = MaterialTheme.typography.labelLarge
-        )
-        DayItem(
-            day = DataService.eventCalendar.filter {
-                it.startAt.parseLongDate().formatToDay() == currentDay
-            }
-        ) {
+        val todayCalendar = DataService.eventCalendar.filter {
+            it.startAt.parseLongDate().formatToDay() == currentDay
+        }
+        if (todayCalendar.isNotEmpty()) {
+            Text(
+                stringResource(id = R.string.schedule_today),
+                modifier = Modifier.padding(top = 8.dp),
+                style = MaterialTheme.typography.labelLarge
+            )
+        }
+        DayItem(day = todayCalendar) {
             Text(
                 stringResource(id = R.string.rating),
                 modifier = Modifier.padding(top = 8.dp),
