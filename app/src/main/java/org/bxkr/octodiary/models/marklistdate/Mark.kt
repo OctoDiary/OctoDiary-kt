@@ -11,11 +11,11 @@ data class Mark(
     @SerializedName("control_form_name")
     val controlFormName: String,
     @SerializedName("created_at")
-    val createdAt: String,
+    val createdAt: String, // yyyy-MM-dd'T'HH:mm:ss
     @SerializedName("criteria")
     val criteria: Any?,
     @SerializedName("date")
-    val date: String,
+    val lessonDate: String, // yyyy-MM-dd
     @SerializedName("id")
     val id: Long,
     @SerializedName("is_exam")
@@ -31,7 +31,7 @@ data class Mark(
     @SerializedName("subject_name")
     val subjectName: String,
     @SerializedName("updated_at")
-    val updatedAt: String,
+    val updatedAt: String, // yyyy-MM-dd'T'HH:mm:ss
     @SerializedName("value")
     val value: String,
     @SerializedName("values")

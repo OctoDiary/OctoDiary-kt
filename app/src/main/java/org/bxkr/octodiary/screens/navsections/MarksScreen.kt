@@ -1,6 +1,7 @@
 package org.bxkr.octodiary.screens.navsections
 
 import androidx.annotation.StringRes
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -23,16 +24,19 @@ import androidx.compose.material.icons.rounded.DateRange
 import androidx.compose.material.icons.rounded.Done
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.PrimaryTabRow
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.SecondaryTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -50,24 +54,29 @@ import org.bxkr.octodiary.DataService
 import org.bxkr.octodiary.R
 import org.bxkr.octodiary.components.Mark
 import org.bxkr.octodiary.components.defaultMarkClick
+import org.bxkr.octodiary.contentDependentActionLive
+import org.bxkr.octodiary.formatToDay
 import org.bxkr.octodiary.formatToLongHumanDay
 import org.bxkr.octodiary.formatToWeekday
 import org.bxkr.octodiary.models.marklistdate.Mark
 import org.bxkr.octodiary.models.marklistsubject.MarkListSubjectItem
 import org.bxkr.octodiary.parseFromDay
+import org.bxkr.octodiary.parseSimpleLongDate
+import org.bxkr.octodiary.showFilterLive
 
 enum class MarksScreenTab(
-    @StringRes val title: Int,
-    val icon: ImageVector
+    @StringRes val title: Int, val icon: ImageVector
 ) {
     ByDate(
-        R.string.by_date,
-        Icons.Rounded.DateRange
+        R.string.by_date, Icons.Rounded.DateRange
     ),
     BySubject(
-        R.string.by_subject,
-        Icons.Rounded.Book
+        R.string.by_subject, Icons.Rounded.Book
     )
+}
+
+enum class DateMarkFilterType {
+    ByUpdated, ByLessonDate
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -99,21 +108,37 @@ fun MarksScreen() {
 
 @Composable
 fun MarksByDate() {
-    val daySplitMarks = remember {
-        DataService.marksDate.payload.sortedByDescending {
-            it.date.parseFromDay().toInstant().toEpochMilli()
-        }.fold(mutableListOf<MutableList<Mark>>()) { sum, it ->
-            if (sum.isEmpty() || sum.last().first().date != it.date) {
-                sum.add(mutableListOf(it))
-            } else {
-                sum.last().add(it)
-            }
-            sum
+    showFilterLive.postValue(true)
+    val filterState = remember { mutableStateOf(DateMarkFilterType.ByUpdated) }
+    contentDependentActionLive.postValue { DateMarkFilter(state = filterState) }
+    val daySplitMarks = DataService.marksDate.payload.sortedByDescending {
+        when (filterState.value) {
+            DateMarkFilterType.ByUpdated -> it.updatedAt.parseSimpleLongDate()
+            DateMarkFilterType.ByLessonDate -> it.lessonDate.parseFromDay()
         }
+    }.fold(mutableListOf<MutableList<Mark>>()) { sum, it ->
+        val condition: () -> Boolean = when (filterState.value) {
+            DateMarkFilterType.ByUpdated -> {
+                {
+                    sum.last().first().updatedAt.parseSimpleLongDate()
+                        .formatToDay() != it.updatedAt.parseSimpleLongDate().formatToDay()
+                }
+            }
+
+            DateMarkFilterType.ByLessonDate -> {
+                { sum.last().first().lessonDate != it.lessonDate }
+            }
+        }
+        if (sum.isEmpty() || condition()) {
+            sum.add(mutableListOf(it))
+        } else {
+            sum.last().add(it)
+        }
+        sum
     }
     LazyColumn(Modifier.padding(top = 8.dp, start = 16.dp, end = 16.dp)) {
         items(daySplitMarks) {
-            MarkDay(marks = it)
+            MarkDay(marks = it, filterState)
         }
         item {
             Column(
@@ -133,38 +158,43 @@ fun MarksByDate() {
 }
 
 @Composable
-fun MarkDay(marks: List<Mark>) {
-    Column(Modifier.padding(bottom = 16.dp)) {
-        val date = marks[0].date.parseFromDay()
-        Row {
-            Text(
-                date.formatToLongHumanDay(),
-                Modifier.padding(end = 3.dp),
-                style = MaterialTheme.typography.titleSmall
-            )
-            Text(
-                date.formatToWeekday(),
-                Modifier.alpha(.8f),
-                style = MaterialTheme.typography.titleSmall
-            )
-        }
-        marks.forEach {
-            val cardShape =
-                if (marks.size == 1) MaterialTheme.shapes.large else if (marks.indexOf(it) == 0) MaterialTheme.shapes.extraSmall.copy(
-                    topStart = MaterialTheme.shapes.large.topStart,
-                    topEnd = MaterialTheme.shapes.large.topEnd
-                ) else if (marks.indexOf(it) == marks.lastIndex) MaterialTheme.shapes.extraSmall.copy(
-                    bottomStart = MaterialTheme.shapes.large.bottomStart,
-                    bottomEnd = MaterialTheme.shapes.large.bottomEnd
-                ) else MaterialTheme.shapes.extraSmall
-            Card(
-                Modifier
-                    .padding(bottom = 2.dp)
-                    .fillMaxWidth(),
-                shape = cardShape,
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer)
-            ) {
-                ExtendedMark(mark = it)
+fun MarkDay(marks: List<Mark>, filterType: MutableState<DateMarkFilterType>) {
+    AnimatedContent(targetState = filterType.value, label = "filter_anim") {
+        Column(Modifier.padding(bottom = 16.dp)) {
+            val date = when (it) {
+                DateMarkFilterType.ByUpdated -> marks[0].updatedAt.parseSimpleLongDate()
+                DateMarkFilterType.ByLessonDate -> marks[0].lessonDate.parseFromDay()
+            }
+            Row {
+                Text(
+                    date.formatToLongHumanDay(),
+                    Modifier.padding(end = 3.dp),
+                    style = MaterialTheme.typography.titleSmall
+                )
+                Text(
+                    date.formatToWeekday(),
+                    Modifier.alpha(.8f),
+                    style = MaterialTheme.typography.titleSmall
+                )
+            }
+            marks.forEach {
+                val cardShape =
+                    if (marks.size == 1) MaterialTheme.shapes.large else if (marks.indexOf(it) == 0) MaterialTheme.shapes.extraSmall.copy(
+                        topStart = MaterialTheme.shapes.large.topStart,
+                        topEnd = MaterialTheme.shapes.large.topEnd
+                    ) else if (marks.indexOf(it) == marks.lastIndex) MaterialTheme.shapes.extraSmall.copy(
+                        bottomStart = MaterialTheme.shapes.large.bottomStart,
+                        bottomEnd = MaterialTheme.shapes.large.bottomEnd
+                    ) else MaterialTheme.shapes.extraSmall
+                Card(
+                    Modifier
+                        .padding(bottom = 2.dp)
+                        .fillMaxWidth(),
+                    shape = cardShape,
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer)
+                ) {
+                    ExtendedMark(mark = it)
+                }
             }
         }
     }
@@ -173,15 +203,11 @@ fun MarkDay(marks: List<Mark>) {
 @Composable
 fun ExtendedMark(mark: Mark) {
     val eventMark = org.bxkr.octodiary.models.events.Mark.fromMarkListDate(mark)
-    Column(
-        Modifier
-            .clickable { defaultMarkClick(eventMark) }
-    ) {
+    Column(Modifier.clickable { defaultMarkClick(eventMark) }) {
         Row(
             Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
+                .padding(16.dp), horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Column {
                 Text(mark.subjectName, style = MaterialTheme.typography.titleMedium)
@@ -195,15 +221,14 @@ fun ExtendedMark(mark: Mark) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MarksBySubject() {
+    showFilterLive.postValue(false)
     val periods = remember {
         DataService.marksSubject.mapNotNull { it.period }.distinct()
     }
     var currentPeriod by remember { mutableIntStateOf(0) }
     Column(Modifier.fillMaxHeight(), verticalArrangement = Arrangement.Bottom) {
         Crossfade(
-            targetState = currentPeriod,
-            modifier = Modifier.weight(1f),
-            label = "subject_anim"
+            targetState = currentPeriod, modifier = Modifier.weight(1f), label = "subject_anim"
         ) { periodState ->
             val marks =
                 remember { DataService.marksSubject.filter { it.period == periods[periodState] } }
@@ -219,13 +244,9 @@ fun MarksBySubject() {
         }
         SecondaryTabRow(selectedTabIndex = currentPeriod, divider = {}) {
             periods.forEachIndexed { index: Int, period: String ->
-                Tab(
-                    selected = currentPeriod == index,
-                    text = { Text(period) },
-                    onClick = {
-                        currentPeriod = index
-                    }
-                )
+                Tab(selected = currentPeriod == index, text = { Text(period) }, onClick = {
+                    currentPeriod = index
+                })
             }
         }
     }
@@ -296,4 +317,32 @@ fun SubjectCard(subject: MarkListSubjectItem) {
             }
         }
     }
+}
+
+@Composable
+fun DateMarkFilter(state: MutableState<DateMarkFilterType>) {
+    DropdownMenuItem(text = {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            RadioButton(state.value == DateMarkFilterType.ByUpdated,
+                { state.value = DateMarkFilterType.ByUpdated })
+            Text(
+                stringResource(R.string.mark_filter_by_updated),
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+                style = MaterialTheme.typography.titleMedium
+            )
+        }
+    }, onClick = { state.value = DateMarkFilterType.ByUpdated })
+    DropdownMenuItem(text = {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            RadioButton(state.value == DateMarkFilterType.ByLessonDate,
+                { state.value = DateMarkFilterType.ByLessonDate })
+            Text(
+                stringResource(R.string.mark_filter_by_lesson_date),
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+                style = MaterialTheme.typography.titleMedium
+            )
+        }
+    }, onClick = { state.value = DateMarkFilterType.ByLessonDate })
 }

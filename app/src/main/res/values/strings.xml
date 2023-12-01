@@ -233,4 +233,6 @@
     <string name="by_date">By date</string>
     <string name="by_subject">By subject</string>
     <string name="final_mark">Final mark</string>
+    <string name="mark_filter_by_updated">By date created</string>
+    <string name="mark_filter_by_lesson_date">By lesson date</string>
 </resources>

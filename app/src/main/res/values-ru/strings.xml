@@ -179,4 +179,6 @@
     <string name="by_date">По дате</string>
     <string name="by_subject">По предмету</string>
     <string name="final_mark">Итоговая оценка</string>
+    <string name="mark_filter_by_updated">По дате выставления</string>
+    <string name="mark_filter_by_lesson_date">По дате урока</string>
 </resources>

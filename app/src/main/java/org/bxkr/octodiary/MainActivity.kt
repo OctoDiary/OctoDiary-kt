@@ -77,6 +77,7 @@ val modalBottomSheetStateLive = MutableLiveData(false)
 val modalBottomSheetContentLive = MutableLiveData<@Composable () -> Unit> {}
 val snackbarHostStateLive = MutableLiveData(SnackbarHostState())
 val navControllerLive = MutableLiveData<NavHostController?>(null)
+val showFilterLive = MutableLiveData<Boolean>(false)
 val contentDependentActionLive = MutableLiveData<@Composable () -> Unit> {}
 val screenLive = MutableLiveData<Screen>()
 val modalDialogStateLive = MutableLiveData(false)
@@ -121,6 +122,7 @@ class MainActivity : ComponentActivity() {
         val contentDependentAction = contentDependentActionLive.observeAsState()
         val showDialog = modalDialogStateLive.observeAsState()
         val dialogContent = modalDialogContentLive.observeAsState()
+        val showFilter = showFilterLive.observeAsState(false)
 
         SideEffect {
             navController.value?.addOnDestinationChangedListener { _, destination, _ ->
@@ -174,7 +176,7 @@ class MainActivity : ComponentActivity() {
                                     }
                                 }
                             }
-                            AnimatedVisibility(currentRoute == NavSection.Homeworks.route) {
+                            AnimatedVisibility(showFilter.value) {
                                 var expanded by remember {
                                     mutableStateOf(false)
                                 }
@@ -200,8 +202,14 @@ class MainActivity : ComponentActivity() {
                     val navBackStackEntry by navController.value!!.currentBackStackEntryAsState()
                     val currentDestination = navBackStackEntry?.destination
                     NavSection.values().forEach {
-                        NavigationBarItem(selected = currentDestination?.hierarchy?.any { destination -> destination.route == it.route } == true,
+                        val selected =
+                            currentDestination?.hierarchy?.any { destination -> destination.route == it.route } == true
+                        NavigationBarItem(
+                            selected = selected,
                             onClick = {
+                                if (!selected) {
+                                    showFilterLive.postValue(false)
+                                }
                                 navController.value!!.navigate(it.route) {
                                     popUpTo(navController.value!!.graph.findStartDestination().id) {
                                         saveState = true
