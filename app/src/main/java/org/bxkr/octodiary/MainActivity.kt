@@ -81,6 +81,7 @@ val snackbarHostStateLive = MutableLiveData(SnackbarHostState())
 val navControllerLive = MutableLiveData<NavHostController?>(null)
 val showFilterLive = MutableLiveData(false)
 val contentDependentActionLive = MutableLiveData<@Composable () -> Unit> {}
+val contentDependentActionIconLive = MutableLiveData(Icons.Rounded.FilterAlt)
 val screenLive = MutableLiveData<Screen>()
 val modalDialogStateLive = MutableLiveData(false)
 val modalDialogContentLive = MutableLiveData<@Composable () -> Unit> {}
@@ -205,8 +206,15 @@ class MainActivity : ComponentActivity() {
                                     mutableStateOf(false)
                                 }
                                 Box(contentAlignment = Alignment.Center) {
+                                    val icon =
+                                        contentDependentActionIconLive.observeAsState(Icons.Rounded.FilterAlt)
                                     IconButton(onClick = { expanded = !expanded }) {
-                                        Icon(Icons.Rounded.FilterAlt, "Фильтр")
+                                        AnimatedContent(
+                                            targetState = icon.value,
+                                            label = "action_icon_anim"
+                                        ) {
+                                            Icon(it, "action")
+                                        }
                                     }
                                     DropdownMenu(expanded, { expanded = false }) {
                                         contentDependentAction.value?.invoke()

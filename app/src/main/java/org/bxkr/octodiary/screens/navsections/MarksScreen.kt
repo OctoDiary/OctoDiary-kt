@@ -18,6 +18,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.rounded.Sort
 import androidx.compose.material.icons.rounded.ArrowDropDown
 import androidx.compose.material.icons.rounded.ArrowDropUp
 import androidx.compose.material.icons.rounded.Book
@@ -62,6 +63,7 @@ import org.bxkr.octodiary.R
 import org.bxkr.octodiary.components.Mark
 import org.bxkr.octodiary.components.RankingMemberCard
 import org.bxkr.octodiary.components.defaultMarkClick
+import org.bxkr.octodiary.contentDependentActionIconLive
 import org.bxkr.octodiary.contentDependentActionLive
 import org.bxkr.octodiary.formatToDay
 import org.bxkr.octodiary.formatToLongHumanDay
@@ -106,6 +108,7 @@ enum class SubjectMarkFilterType(
 @Composable
 fun MarksScreen() {
     showFilterLive.postValue(true)
+    contentDependentActionIconLive.postValue(Icons.AutoMirrored.Rounded.Sort)
     var currentTab by remember { mutableStateOf(MarksScreenTab.ByDate) }
     Column {
         if (DataService.marksSubject.isNotEmpty()) {
