@@ -5,11 +5,13 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -23,6 +25,7 @@ import androidx.compose.material.icons.rounded.DateRange
 import androidx.compose.material.icons.rounded.Done
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledIconButton
@@ -36,6 +39,7 @@ import androidx.compose.material3.SecondaryTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -51,10 +55,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.util.fastJoinToString
 import org.bxkr.octodiary.CloverShape
 import org.bxkr.octodiary.DataService
 import org.bxkr.octodiary.R
 import org.bxkr.octodiary.components.Mark
+import org.bxkr.octodiary.components.RankingMemberCard
 import org.bxkr.octodiary.components.defaultMarkClick
 import org.bxkr.octodiary.contentDependentActionLive
 import org.bxkr.octodiary.formatToDay
@@ -64,6 +70,7 @@ import org.bxkr.octodiary.modalBottomSheetContentLive
 import org.bxkr.octodiary.modalBottomSheetStateLive
 import org.bxkr.octodiary.models.marklistdate.Mark
 import org.bxkr.octodiary.models.marklistsubject.MarkListSubjectItem
+import org.bxkr.octodiary.models.rankingforsubject.RankingForSubject
 import org.bxkr.octodiary.parseFromDay
 import org.bxkr.octodiary.parseSimpleLongDate
 import org.bxkr.octodiary.showFilterLive
@@ -372,7 +379,12 @@ fun SubjectCard(subject: MarkListSubjectItem) {
                     }
                     FilledIconButton(onClick = {
                         modalBottomSheetStateLive.postValue(true)
-                        modalBottomSheetContentLive.postValue { SubjectRatingBottomSheet(subject.id) }
+                        modalBottomSheetContentLive.postValue {
+                            SubjectRatingBottomSheet(
+                                subject.id,
+                                subject.subjectName
+                            )
+                        }
                     }, shape = CloverShape) {
                         Text(
                             DataService.subjectRanking.first { it.subjectId == subject.id }.rank.rankPlace.toString(),
@@ -423,6 +435,50 @@ fun SubjectMarkFilter(state: MutableState<SubjectMarkFilterType>) {
 }
 
 @Composable
-fun SubjectRatingBottomSheet(subjectId: Long) {
+fun SubjectRatingBottomSheet(subjectId: Long, subjectName: String) {
+    var ranking by remember { mutableStateOf<List<RankingForSubject>?>(null) }
+    LaunchedEffect(Unit) {
+        DataService.getRankingForSubject(subjectId) { ranking = it }
+    }
 
+    Box(
+        Modifier
+            .heightIn(192.dp, Int.MAX_VALUE.dp)
+            .fillMaxWidth()
+    ) {
+        if (ranking != null) {
+            LazyColumn(Modifier.padding(8.dp)) {
+                item {
+                    Text(
+                        subjectName,
+                        style = MaterialTheme.typography.titleLarge,
+                        modifier = Modifier.padding(bottom = 16.dp)
+                    )
+                }
+                items(ranking!!) {
+                    val memberName = remember {
+                        DataService.classMembers.firstOrNull { classMember ->
+                            it.personId == classMember.personId
+                        }?.user?.run {
+                            listOf(
+                                lastName,
+                                firstName,
+                                middleName ?: ""
+                            ).fastJoinToString(" ")
+                        }
+                            ?: it.personId
+                    }
+
+                    RankingMemberCard(
+                        rankPlace = it.rank.rankPlace,
+                        average = it.rank.averageMarkFive,
+                        memberName = memberName,
+                        highlighted = DataService.run { it.personId == profile.children[currentProfile].contingentGuid }
+                    )
+                }
+            }
+        } else {
+            CircularProgressIndicator(Modifier.align(Alignment.Center))
+        }
+    }
 }

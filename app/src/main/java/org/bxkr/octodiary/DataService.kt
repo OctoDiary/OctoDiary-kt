@@ -11,6 +11,7 @@ import org.bxkr.octodiary.models.marklistsubject.MarkListSubjectItem
 import org.bxkr.octodiary.models.mealbalance.MealBalance
 import org.bxkr.octodiary.models.profile.ProfileResponse
 import org.bxkr.octodiary.models.profilesid.ProfilesId
+import org.bxkr.octodiary.models.rankingforsubject.RankingForSubject
 import org.bxkr.octodiary.models.schoolinfo.SchoolInfo
 import org.bxkr.octodiary.models.sessionuser.SessionUser
 import org.bxkr.octodiary.models.subjectranking.SubjectRanking
@@ -176,7 +177,7 @@ object DataService {
             token,
             profile.children[currentProfile].contingentGuid,
             Date().formatToDay()
-        ).baseEnqueue {
+        ).baseEnqueue(::baseErrorFunction) {
             subjectRanking = it
             hasSubjectRanking = true
             onUpdated()
@@ -298,6 +299,19 @@ object DataService {
             hasSchoolInfo = true
             onUpdated()
         }
+    }
+
+    fun getRankingForSubject(subjectId: Long, listener: (List<RankingForSubject>) -> Unit) {
+        assert(this::token.isInitialized)
+        assert(this::profile.isInitialized)
+
+        secondaryApi.rankingForSubject(
+            token,
+            profile.children[currentProfile].contingentGuid,
+            profile.children[currentProfile].classUnitId,
+            Date().formatToDay(),
+            subjectId
+        ).baseEnqueue(::baseErrorFunction) { listener(it) }
     }
 
     fun updateAll() {
