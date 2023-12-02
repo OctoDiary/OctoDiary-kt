@@ -97,6 +97,7 @@ enum class SubjectMarkFilterType(
     @StringRes val title: Int
 ) {
     ByAverage(R.string.mark_filter_by_average),
+    ByRanking(R.string.mark_filter_by_ranking),
     ByUpdated(R.string.mark_filter_by_last_update),
     Alphabetical(R.string.mark_filter_alphabetical)
 }
@@ -261,6 +262,9 @@ fun MarksBySubject() {
                                 when (filter) {
                                     SubjectMarkFilterType.Alphabetical -> sortedBy { it.subjectName }
                                     SubjectMarkFilterType.ByAverage -> sortedByDescending { it.average?.toDoubleOrNull() }
+                                    SubjectMarkFilterType.ByRanking -> sortedBy { subject ->
+                                        DataService.subjectRanking.first { it.subjectId == subject.id }.rank.rankPlace
+                                    }
                                     SubjectMarkFilterType.ByUpdated -> sortedByDescending {
                                         it.marks?.maxBy { it1 ->
                                             it1.date.parseFromDay().toInstant().toEpochMilli()
