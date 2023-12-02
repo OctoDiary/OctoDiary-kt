@@ -21,7 +21,7 @@ data class MarkListSubjectItem(
     @SerializedName("start")
     val start: String?,
     @SerializedName("subject_id")
-    val subjectId: Int,
+    val id: Long,
     @SerializedName("subject_name")
     val subjectName: String,
     @SerializedName("target")

@@ -13,6 +13,7 @@ import org.bxkr.octodiary.models.profile.ProfileResponse
 import org.bxkr.octodiary.models.profilesid.ProfilesId
 import org.bxkr.octodiary.models.schoolinfo.SchoolInfo
 import org.bxkr.octodiary.models.sessionuser.SessionUser
+import org.bxkr.octodiary.models.subjectranking.SubjectRanking
 import org.bxkr.octodiary.models.visits.VisitsResponse
 import org.bxkr.octodiary.network.interfaces.DSchoolAPI
 import org.bxkr.octodiary.network.interfaces.MainSchoolAPI
@@ -43,6 +44,9 @@ object DataService {
 
     lateinit var classMembers: List<ClassMember>
     var hasClassMembers = false
+
+    lateinit var subjectRanking: List<SubjectRanking>
+    var hasSubjectRanking = false
 
     lateinit var profile: ProfileResponse
     var hasProfile = false
@@ -161,6 +165,21 @@ object DataService {
             hasClassMembers = true
             classMembersFinished = true
             if (rankingFinished) onUpdated()
+        }
+    }
+
+    fun updateSubjectRanking(onUpdated: () -> Unit) {
+        assert(this::token.isInitialized)
+        assert(this::profile.isInitialized)
+
+        secondaryApi.subjectRanking(
+            token,
+            profile.children[currentProfile].contingentGuid,
+            Date().formatToDay()
+        ).baseEnqueue {
+            subjectRanking = it
+            hasSubjectRanking = true
+            onUpdated()
         }
     }
 
@@ -321,6 +340,7 @@ object DataService {
                         onSingleItemLoad(::classMembers.name)
                         onSingleItemLoad(::ranking.name)
                     }
+                    updateSubjectRanking { onSingleItemLoad(::subjectRanking.name) }
                     if (subsystem == Diary.MES) updateVisits { onSingleItemLoad(::visits.name) }
                     if (subsystem == Diary.MES) updateMealBalance { onSingleItemLoad(::mealBalance.name) }
                     updateSchoolInfo { onSingleItemLoad(::schoolInfo.name) }

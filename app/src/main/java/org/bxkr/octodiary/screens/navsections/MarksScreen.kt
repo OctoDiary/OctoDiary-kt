@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowDropDown
@@ -24,6 +25,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
@@ -46,8 +48,10 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import org.bxkr.octodiary.CloverShape
 import org.bxkr.octodiary.DataService
 import org.bxkr.octodiary.R
 import org.bxkr.octodiary.components.Mark
@@ -56,6 +60,8 @@ import org.bxkr.octodiary.contentDependentActionLive
 import org.bxkr.octodiary.formatToDay
 import org.bxkr.octodiary.formatToLongHumanDay
 import org.bxkr.octodiary.formatToWeekday
+import org.bxkr.octodiary.modalBottomSheetContentLive
+import org.bxkr.octodiary.modalBottomSheetStateLive
 import org.bxkr.octodiary.models.marklistdate.Mark
 import org.bxkr.octodiary.models.marklistsubject.MarkListSubjectItem
 import org.bxkr.octodiary.parseFromDay
@@ -311,19 +317,19 @@ fun SubjectCard(subject: MarkListSubjectItem) {
                             label = {
                                 Text(
                                     subject.average, color = when (subject.dynamic) {
-                                        "UP" -> MaterialTheme.colorScheme.onSecondaryContainer
+                                        "UP" -> MaterialTheme.colorScheme.onPrimaryContainer
                                         else -> MaterialTheme.colorScheme.onTertiaryContainer
                                     }
                                 )
                             },
                             selected = true,
-                            colors = FilterChipDefaults.filterChipColors(selectedContainerColor = if (subject.dynamic == "UP") MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.tertiaryContainer),
+                            colors = FilterChipDefaults.filterChipColors(selectedContainerColor = if (subject.dynamic == "UP") MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.tertiaryContainer),
                             leadingIcon = {
                                 if (subject.dynamic == "UP") {
                                     Icon(
                                         imageVector = Icons.Rounded.ArrowDropUp,
                                         contentDescription = subject.dynamic,
-                                        tint = MaterialTheme.colorScheme.secondary
+                                        tint = MaterialTheme.colorScheme.primary
                                     )
                                 } else {
                                     Icon(
@@ -347,6 +353,31 @@ fun SubjectCard(subject: MarkListSubjectItem) {
                                 )
                             },
                             modifier = Modifier.padding(start = 16.dp)
+                        )
+                    }
+                }
+            }
+            if (subject.marks != null) {
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.Bottom,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 8.dp)
+                ) {
+                    LazyRow {
+                        items(subject.marks) {
+                            Mark(org.bxkr.octodiary.models.events.Mark.fromMarkListSubject(it))
+                        }
+                    }
+                    FilledIconButton(onClick = {
+                        modalBottomSheetStateLive.postValue(true)
+                        modalBottomSheetContentLive.postValue { SubjectRatingBottomSheet(subject.id) }
+                    }, shape = CloverShape) {
+                        Text(
+                            DataService.subjectRanking.first { it.subjectId == subject.id }.rank.rankPlace.toString(),
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.Bold
                         )
                     }
                 }
@@ -389,4 +420,9 @@ fun SubjectMarkFilter(state: MutableState<SubjectMarkFilterType>) {
             }
         }, onClick = { state.value = it })
     }
+}
+
+@Composable
+fun SubjectRatingBottomSheet(subjectId: Long) {
+
 }
