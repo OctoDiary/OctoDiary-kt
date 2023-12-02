@@ -108,17 +108,19 @@ fun MarksScreen() {
     showFilterLive.postValue(true)
     var currentTab by remember { mutableStateOf(MarksScreenTab.ByDate) }
     Column {
-        PrimaryTabRow(selectedTabIndex = currentTab.ordinal, divider = {}) {
-            MarksScreenTab.values().forEach {
-                Tab(
-                    selected = currentTab == it,
-                    onClick = {
-                        currentTab = it
-                    },
-                    text = { Text(stringResource(id = it.title)) },
-                    icon = { Icon(it.icon, stringResource(it.title)) },
-                    modifier = Modifier.clip(MaterialTheme.shapes.large)
-                )
+        if (DataService.marksSubject.isNotEmpty()) {
+            PrimaryTabRow(selectedTabIndex = currentTab.ordinal, divider = {}) {
+                MarksScreenTab.values().forEach {
+                    Tab(
+                        selected = currentTab == it,
+                        onClick = {
+                            currentTab = it
+                        },
+                        text = { Text(stringResource(id = it.title)) },
+                        icon = { Icon(it.icon, stringResource(it.title)) },
+                        modifier = Modifier.clip(MaterialTheme.shapes.large)
+                    )
+                }
             }
         }
         Crossfade(targetState = currentTab, label = "marks_tab_anim") {
