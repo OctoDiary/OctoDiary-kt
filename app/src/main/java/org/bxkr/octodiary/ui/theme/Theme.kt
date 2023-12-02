@@ -3,6 +3,7 @@ package org.bxkr.octodiary.ui.theme
 import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
@@ -20,6 +21,8 @@ fun OctoDiaryTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = true,
+    lightScheme: ColorScheme = LightColorScheme,
+    darkScheme: ColorScheme = DarkColorScheme,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
@@ -28,8 +31,8 @@ fun OctoDiaryTheme(
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
 
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
+        darkTheme -> darkScheme
+        else -> lightScheme
     }
     val view = LocalView.current
     if (!view.isInEditMode) {

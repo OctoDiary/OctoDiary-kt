@@ -72,6 +72,7 @@ import org.bxkr.octodiary.screens.CallbackScreen
 import org.bxkr.octodiary.screens.CallbackType
 import org.bxkr.octodiary.screens.LoginScreen
 import org.bxkr.octodiary.screens.NavScreen
+import org.bxkr.octodiary.ui.theme.CustomColorScheme
 import org.bxkr.octodiary.ui.theme.OctoDiaryTheme
 
 val modalBottomSheetStateLive = MutableLiveData(false)
@@ -85,6 +86,7 @@ val modalDialogStateLive = MutableLiveData(false)
 val modalDialogContentLive = MutableLiveData<@Composable () -> Unit> {}
 val reloadEverythingLive = MutableLiveData {}
 val darkThemeLive = MutableLiveData<Boolean>(null)
+val colorSchemeLive = MutableLiveData(-1)
 val LocalActivity = staticCompositionLocalOf<ComponentActivity> {
     error("No LocalActivity provided!")
 }
@@ -94,10 +96,25 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            colorSchemeLive.value = mainPrefs.get("theme") ?: -1
             darkThemeLive.value = mainPrefs.get("is_dark_theme") ?: isSystemInDarkTheme()
+            val colorScheme by colorSchemeLive.observeAsState(-1)
             val darkTheme by darkThemeLive.observeAsState(isSystemInDarkTheme())
-            AnimatedContent(targetState = darkTheme, label = "theme_anim") {
-                OctoDiaryTheme(it) {
+            /**
+             * When `colorScheme == -1`, it uses dynamic colors **if available**.
+             * If not, it uses default (yellow).
+             **/
+            AnimatedContent(targetState = darkTheme to colorScheme, label = "theme_anim") {
+                val currentScheme = when {
+                    it.second == -1 -> CustomColorScheme.Yellow
+                    else -> CustomColorScheme.values()[it.second]
+                }
+                OctoDiaryTheme(
+                    it.first,
+                    colorScheme == -1,
+                    currentScheme.lightColorScheme,
+                    currentScheme.darkColorScheme
+                ) {
                     MyApp(modifier = Modifier.fillMaxSize())
                 }
             }
