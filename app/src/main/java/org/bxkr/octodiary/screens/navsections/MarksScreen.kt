@@ -231,7 +231,7 @@ fun ExtendedMark(mark: Mark) {
                 .fillMaxWidth()
                 .padding(16.dp), horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Column {
+            Column(Modifier.weight(1f)) {
                 Text(mark.subjectName, style = MaterialTheme.typography.titleMedium)
                 Text(mark.controlFormName)
             }
