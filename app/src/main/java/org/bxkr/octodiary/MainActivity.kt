@@ -77,7 +77,7 @@ val modalBottomSheetStateLive = MutableLiveData(false)
 val modalBottomSheetContentLive = MutableLiveData<@Composable () -> Unit> {}
 val snackbarHostStateLive = MutableLiveData(SnackbarHostState())
 val navControllerLive = MutableLiveData<NavHostController?>(null)
-val showFilterLive = MutableLiveData<Boolean>(false)
+val showFilterLive = MutableLiveData(false)
 val contentDependentActionLive = MutableLiveData<@Composable () -> Unit> {}
 val screenLive = MutableLiveData<Screen>()
 val modalDialogStateLive = MutableLiveData(false)
@@ -107,6 +107,7 @@ class MainActivity : ComponentActivity() {
         screenLive.value = if (authPrefs.get<Boolean>("auth") == true) {
             Screen.MainNav
         } else Screen.Login
+        val pinFinished = remember { mutableStateOf(false) }
         val currentScreen = screenLive.observeAsState()
         val showBottomSheet by modalBottomSheetStateLive.observeAsState()
         val bottomSheetContent by modalBottomSheetContentLive.observeAsState()
@@ -243,7 +244,7 @@ class MainActivity : ComponentActivity() {
                         }
 
                         Screen.MainNav -> {
-                            NavScreen(Modifier.padding(padding))
+                            NavScreen(Modifier.padding(padding), pinFinished)
                             val navBackStackEntry by navController.value!!.currentBackStackEntryAsState()
                             val currentRoute = navBackStackEntry?.destination?.route
                             NavSection.values().firstOrNull { it.route == currentRoute }?.title

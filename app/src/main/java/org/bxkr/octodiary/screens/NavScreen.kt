@@ -83,9 +83,8 @@ import org.bxkr.octodiary.ui.theme.OctoDiaryTheme
 import java.util.Collections
 
 @Composable
-fun NavScreen(modifier: Modifier) {
+fun NavScreen(modifier: Modifier, pinFinished: MutableState<Boolean>) {
     with(LocalContext.current) {
-        val pinFinished = remember { mutableStateOf(false) }
         val initialPin = remember { mutableStateOf(emptyList<Int>()) }
         val secondPin = remember { mutableStateOf(emptyList<Int>()) }
         val navController = navControllerLive.observeAsState()

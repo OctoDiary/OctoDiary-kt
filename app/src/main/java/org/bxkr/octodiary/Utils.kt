@@ -30,6 +30,7 @@ import java.util.Date
 import java.util.Locale
 import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
+import kotlin.system.exitProcess
 
 abstract class Prefs(
     val prefPath: String,
@@ -222,7 +223,7 @@ fun Activity.logOut() {
     )
     screenLive.value = Screen.Login
     startActivity(Intent(this, MainActivity::class.java))
-    finish()
+    exitProcess(0)
 }
 
 fun PackageManager.isPackageInstalled(packageName: String): Boolean {
