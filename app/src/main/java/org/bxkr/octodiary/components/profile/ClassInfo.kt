@@ -117,7 +117,7 @@ fun ClassInfo() {
                         items(classMembers) {
                             Card(
                                 colors = CardDefaults.cardColors(
-                                    containerColor = MaterialTheme.colorScheme.surfaceContainerLowest
+                                    containerColor = MaterialTheme.colorScheme.surfaceContainer
                                 ),
                                 shape = MaterialTheme.shapes.extraSmall
                             ) {
