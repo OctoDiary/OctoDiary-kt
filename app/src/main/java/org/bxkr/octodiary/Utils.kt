@@ -144,7 +144,7 @@ inline fun <reified T> Call<T>.extendedEnqueue(
 })
 
 fun DataService.baseErrorFunction(errorBody: ResponseBody, httpCode: Int, className: String?) {
-    if (httpCode == 401) {
+    if (httpCode in listOf(401, 403)) {
         tokenExpirationHandler?.invoke()
     } else println("Error in $className: ${errorBody.string()}")
 }
