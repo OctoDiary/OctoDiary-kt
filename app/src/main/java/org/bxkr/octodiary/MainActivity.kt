@@ -5,8 +5,10 @@ import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -70,17 +72,22 @@ import org.bxkr.octodiary.screens.CallbackScreen
 import org.bxkr.octodiary.screens.CallbackType
 import org.bxkr.octodiary.screens.LoginScreen
 import org.bxkr.octodiary.screens.NavScreen
+import org.bxkr.octodiary.ui.theme.CustomColorScheme
 import org.bxkr.octodiary.ui.theme.OctoDiaryTheme
 
 val modalBottomSheetStateLive = MutableLiveData(false)
 val modalBottomSheetContentLive = MutableLiveData<@Composable () -> Unit> {}
 val snackbarHostStateLive = MutableLiveData(SnackbarHostState())
 val navControllerLive = MutableLiveData<NavHostController?>(null)
+val showFilterLive = MutableLiveData(false)
 val contentDependentActionLive = MutableLiveData<@Composable () -> Unit> {}
+val contentDependentActionIconLive = MutableLiveData(Icons.Rounded.FilterAlt)
 val screenLive = MutableLiveData<Screen>()
 val modalDialogStateLive = MutableLiveData(false)
 val modalDialogContentLive = MutableLiveData<@Composable () -> Unit> {}
 val reloadEverythingLive = MutableLiveData {}
+val darkThemeLive = MutableLiveData<Boolean>(null)
+val colorSchemeLive = MutableLiveData(-1)
 val LocalActivity = staticCompositionLocalOf<ComponentActivity> {
     error("No LocalActivity provided!")
 }
@@ -88,9 +95,29 @@ val LocalActivity = staticCompositionLocalOf<ComponentActivity> {
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         setContent {
-            OctoDiaryTheme {
-                MyApp(modifier = Modifier.fillMaxSize())
+            colorSchemeLive.value = mainPrefs.get("theme") ?: -1
+            darkThemeLive.value = mainPrefs.get("is_dark_theme") ?: isSystemInDarkTheme()
+            val colorScheme by colorSchemeLive.observeAsState(-1)
+            val darkTheme by darkThemeLive.observeAsState(isSystemInDarkTheme())
+            /**
+             * When `colorScheme == -1`, it uses dynamic colors **if available**.
+             * If not, it uses default (yellow).
+             **/
+            AnimatedContent(targetState = darkTheme to colorScheme, label = "theme_anim") {
+                val currentScheme = when {
+                    it.second == -1 -> CustomColorScheme.Yellow
+                    else -> CustomColorScheme.values()[it.second]
+                }
+                OctoDiaryTheme(
+                    it.first,
+                    colorScheme == -1,
+                    currentScheme.lightColorScheme,
+                    currentScheme.darkColorScheme
+                ) {
+                    MyApp(modifier = Modifier.fillMaxSize())
+                }
             }
         }
     }
@@ -104,6 +131,7 @@ class MainActivity : ComponentActivity() {
         screenLive.value = if (authPrefs.get<Boolean>("auth") == true) {
             Screen.MainNav
         } else Screen.Login
+        val pinFinished = remember { mutableStateOf(false) }
         val currentScreen = screenLive.observeAsState()
         val showBottomSheet by modalBottomSheetStateLive.observeAsState()
         val bottomSheetContent by modalBottomSheetContentLive.observeAsState()
@@ -119,6 +147,7 @@ class MainActivity : ComponentActivity() {
         val contentDependentAction = contentDependentActionLive.observeAsState()
         val showDialog = modalDialogStateLive.observeAsState()
         val dialogContent = modalDialogContentLive.observeAsState()
+        val showFilter = showFilterLive.observeAsState(false)
 
         SideEffect {
             navController.value?.addOnDestinationChangedListener { _, destination, _ ->
@@ -172,13 +201,20 @@ class MainActivity : ComponentActivity() {
                                     }
                                 }
                             }
-                            AnimatedVisibility(currentRoute == NavSection.Homeworks.route) {
+                            AnimatedVisibility(showFilter.value) {
                                 var expanded by remember {
                                     mutableStateOf(false)
                                 }
                                 Box(contentAlignment = Alignment.Center) {
+                                    val icon =
+                                        contentDependentActionIconLive.observeAsState(Icons.Rounded.FilterAlt)
                                     IconButton(onClick = { expanded = !expanded }) {
-                                        Icon(Icons.Rounded.FilterAlt, "Фильтр")
+                                        AnimatedContent(
+                                            targetState = icon.value,
+                                            label = "action_icon_anim"
+                                        ) {
+                                            Icon(it, "action")
+                                        }
                                     }
                                     DropdownMenu(expanded, { expanded = false }) {
                                         contentDependentAction.value?.invoke()
@@ -198,8 +234,14 @@ class MainActivity : ComponentActivity() {
                     val navBackStackEntry by navController.value!!.currentBackStackEntryAsState()
                     val currentDestination = navBackStackEntry?.destination
                     NavSection.values().forEach {
-                        NavigationBarItem(selected = currentDestination?.hierarchy?.any { destination -> destination.route == it.route } == true,
+                        val selected =
+                            currentDestination?.hierarchy?.any { destination -> destination.route == it.route } == true
+                        NavigationBarItem(
+                            selected = selected,
                             onClick = {
+                                if (!selected) {
+                                    showFilterLive.postValue(false)
+                                }
                                 navController.value!!.navigate(it.route) {
                                     popUpTo(navController.value!!.graph.findStartDestination().id) {
                                         saveState = true
@@ -233,7 +275,7 @@ class MainActivity : ComponentActivity() {
                         }
 
                         Screen.MainNav -> {
-                            NavScreen(Modifier.padding(padding))
+                            NavScreen(Modifier.padding(padding), pinFinished)
                             val navBackStackEntry by navController.value!!.currentBackStackEntryAsState()
                             val currentRoute = navBackStackEntry?.destination?.route
                             NavSection.values().firstOrNull { it.route == currentRoute }?.title

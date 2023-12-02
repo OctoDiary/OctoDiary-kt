@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.FilterAlt
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
@@ -34,11 +36,13 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.MutableLiveData
 import org.bxkr.octodiary.DataService
 import org.bxkr.octodiary.R
+import org.bxkr.octodiary.contentDependentActionIconLive
 import org.bxkr.octodiary.contentDependentActionLive
 import org.bxkr.octodiary.formatToLongHumanDay
 import org.bxkr.octodiary.formatToWeekday
 import org.bxkr.octodiary.models.homeworks.Homework
 import org.bxkr.octodiary.parseFromDay
+import org.bxkr.octodiary.showFilterLive
 
 val enabledSubjectsLive = MutableLiveData<List<Long>>(emptyList())
 
@@ -57,6 +61,8 @@ fun HomeworksScreen() {
             }
         }
         enabledSubjectsLive.postValue(DataService.homeworks.map { it.subjectId })
+        showFilterLive.postValue(true)
+        contentDependentActionIconLive.postValue(Icons.Rounded.FilterAlt)
         contentDependentActionLive.postValue {
             DataService.homeworks.map { it.subjectId to it.subjectName }.toSet().forEach {
                 var checked by rememberSaveable(key = it.first.toString()) {

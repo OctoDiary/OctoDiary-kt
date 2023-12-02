@@ -6,12 +6,15 @@ import org.bxkr.octodiary.models.classranking.RankingMember
 import org.bxkr.octodiary.models.events.Event
 import org.bxkr.octodiary.models.homeworks.Homework
 import org.bxkr.octodiary.models.mark.MarkInfo
-import org.bxkr.octodiary.models.marklist.MarkList
+import org.bxkr.octodiary.models.marklistdate.MarkListDate
+import org.bxkr.octodiary.models.marklistsubject.MarkListSubjectItem
 import org.bxkr.octodiary.models.mealbalance.MealBalance
 import org.bxkr.octodiary.models.profile.ProfileResponse
 import org.bxkr.octodiary.models.profilesid.ProfilesId
+import org.bxkr.octodiary.models.rankingforsubject.RankingForSubject
 import org.bxkr.octodiary.models.schoolinfo.SchoolInfo
 import org.bxkr.octodiary.models.sessionuser.SessionUser
+import org.bxkr.octodiary.models.subjectranking.SubjectRanking
 import org.bxkr.octodiary.models.visits.VisitsResponse
 import org.bxkr.octodiary.network.interfaces.DSchoolAPI
 import org.bxkr.octodiary.network.interfaces.MainSchoolAPI
@@ -43,14 +46,20 @@ object DataService {
     lateinit var classMembers: List<ClassMember>
     var hasClassMembers = false
 
+    lateinit var subjectRanking: List<SubjectRanking>
+    var hasSubjectRanking = false
+
     lateinit var profile: ProfileResponse
     var hasProfile = false
 
     lateinit var visits: VisitsResponse
     var hasVisits = false
 
-    lateinit var marks: MarkList
-    var hasMarks = false
+    lateinit var marksDate: MarkListDate
+    var hasMarksDate = false
+
+    lateinit var marksSubject: List<MarkListSubjectItem>
+    var hasMarksSubject = false
 
     lateinit var homeworks: List<Homework>
     var hasHomeworks = false
@@ -160,6 +169,21 @@ object DataService {
         }
     }
 
+    fun updateSubjectRanking(onUpdated: () -> Unit) {
+        assert(this::token.isInitialized)
+        assert(this::profile.isInitialized)
+
+        secondaryApi.subjectRanking(
+            token,
+            profile.children[currentProfile].contingentGuid,
+            Date().formatToDay()
+        ).baseEnqueue(::baseErrorFunction) {
+            subjectRanking = it
+            hasSubjectRanking = true
+            onUpdated()
+        }
+    }
+
     fun updateProfile(onUpdated: () -> Unit) {
         assert(this::token.isInitialized)
 
@@ -195,7 +219,7 @@ object DataService {
         }
     }
 
-    fun updateMarks(onUpdated: () -> Unit) {
+    fun updateMarksDate(onUpdated: () -> Unit) {
         assert(this::token.isInitialized)
         assert(this::profile.isInitialized)
 
@@ -208,8 +232,22 @@ object DataService {
             }.formatToDay(),
             toDate = Date().formatToDay()
         ).baseEnqueue(::baseErrorFunction, ::baseInternalExceptionFunction) {
-            marks = it
-            hasMarks = true
+            marksDate = it
+            hasMarksDate = true
+            onUpdated()
+        }
+    }
+
+    fun updateMarksSubject(onUpdated: () -> Unit) {
+        assert(this::token.isInitialized)
+        assert(this::profile.isInitialized)
+
+        mainSchoolApi.subjectMarks(
+            token,
+            studentId = profile.children[currentProfile].id
+        ).baseEnqueue(::baseErrorFunction, ::baseInternalExceptionFunction) {
+            marksSubject = it.payload
+            hasMarksSubject = true
             onUpdated()
         }
     }
@@ -263,6 +301,29 @@ object DataService {
         }
     }
 
+    fun getRankingForSubject(subjectId: Long, listener: (List<RankingForSubject>) -> Unit) {
+        assert(this::token.isInitialized)
+        assert(this::profile.isInitialized)
+
+        secondaryApi.rankingForSubject(
+            token,
+            profile.children[currentProfile].contingentGuid,
+            profile.children[currentProfile].classUnitId,
+            Date().formatToDay(),
+            subjectId
+        ).baseEnqueue(::baseErrorFunction) { listener(it) }
+    }
+
+    fun refreshToken(onUpdated: () -> Unit) {
+        assert(this::token.isInitialized)
+
+        secondaryApi.refreshToken("Bearer $token")
+            .baseEnqueue(::baseErrorFunction) {
+                token = it
+                onUpdated()
+            }
+    }
+
     fun updateAll() {
         if (loadingStarted) return else loadingStarted = true
         val states = listOfNotNull(
@@ -273,10 +334,12 @@ object DataService {
             ::hasClassMembers,
             ::hasProfile,
             ::hasVisits.takeIf { subsystem == Diary.MES },
-            ::hasMarks,
+            ::hasMarksDate,
+            ::hasMarksSubject,
             ::hasHomeworks,
             ::hasMealBalance.takeIf { subsystem == Diary.MES },
-            ::hasSchoolInfo
+            ::hasSchoolInfo,
+            ::hasSubjectRanking
         )
         states.forEach { it.set(false) }
         val onSingleItemLoad = { name: String ->
@@ -295,17 +358,20 @@ object DataService {
                 updateProfile {
                     onSingleItemLoad(::profile.name)
                     updateEventCalendar { onSingleItemLoad(::eventCalendar.name) }
-                    updateMarks { onSingleItemLoad(::marks.name) }
+                    updateMarksDate { onSingleItemLoad(::marksDate.name) }
+                    updateMarksSubject { onSingleItemLoad(::marksSubject.name) }
                     updateHomeworks { onSingleItemLoad(::homeworks.name) }
                     updateRanking {
                         onSingleItemLoad(::classMembers.name)
                         onSingleItemLoad(::ranking.name)
                     }
+                    updateSubjectRanking { onSingleItemLoad(::subjectRanking.name) }
                     if (subsystem == Diary.MES) updateVisits { onSingleItemLoad(::visits.name) }
                     if (subsystem == Diary.MES) updateMealBalance { onSingleItemLoad(::mealBalance.name) }
                     updateSchoolInfo { onSingleItemLoad(::schoolInfo.name) }
                 }
             }
+            refreshToken {}
         }
     }
 }

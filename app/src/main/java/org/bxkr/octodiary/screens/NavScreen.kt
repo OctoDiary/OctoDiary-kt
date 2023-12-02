@@ -83,9 +83,8 @@ import org.bxkr.octodiary.ui.theme.OctoDiaryTheme
 import java.util.Collections
 
 @Composable
-fun NavScreen(modifier: Modifier) {
+fun NavScreen(modifier: Modifier, pinFinished: MutableState<Boolean>) {
     with(LocalContext.current) {
-        val pinFinished = remember { mutableStateOf(false) }
         val initialPin = remember { mutableStateOf(emptyList<Int>()) }
         val secondPin = remember { mutableStateOf(emptyList<Int>()) }
         val navController = navControllerLive.observeAsState()
@@ -273,7 +272,8 @@ fun EnterPinDialog(
 fun SetPinDialog(
     pinFinished: MutableState<Boolean>,
     initialPin: MutableState<List<Int>>,
-    secondPin: MutableState<List<Int>>
+    secondPin: MutableState<List<Int>>,
+    closeButtonTitle: String = stringResource(id = R.string.skip)
 ) {
     val context = LocalContext.current
     Dialog(
@@ -307,13 +307,11 @@ fun SetPinDialog(
                     ) {
                         Icon(
                             Icons.Rounded.Close,
-                            stringResource(id = R.string.skip),
+                            closeButtonTitle,
                             Modifier.size(ButtonDefaults.IconSize)
                         )
                         Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-                        Text(
-                            stringResource(id = R.string.skip),
-                        )
+                        Text(closeButtonTitle)
                     }
                 }
                 AnimatedContent(

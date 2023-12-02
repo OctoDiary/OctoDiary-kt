@@ -7,11 +7,25 @@ data class Value(
     @SerializedName("grade")
     val grade: Grade,
     @SerializedName("grade_system_id")
-    val gradeSystemId: Long,
+    val gradeSystemId: Long?,
     @SerializedName("grade_system_type")
     val gradeSystemType: String,
     @SerializedName("name")
-    val name: String,
+    val name: String?,
     @SerializedName("nmax")
-    val nmax: Double
-)
+    val nmax: Double?
+) {
+    companion object {
+        fun fromMarkListSubject(value: org.bxkr.octodiary.models.marklistsubject.Value): Value {
+            return value.run {
+                Value(
+                    grade,
+                    gradeSystemId = null,
+                    gradeSystemType,
+                    name = null,
+                    nmax = null
+                )
+            }
+        }
+    }
+}

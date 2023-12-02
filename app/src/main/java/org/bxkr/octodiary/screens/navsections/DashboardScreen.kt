@@ -22,11 +22,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastJoinToString
 import org.bxkr.octodiary.DataService
 import org.bxkr.octodiary.R
+import org.bxkr.octodiary.components.RankingMemberCard
 import org.bxkr.octodiary.formatToDay
 import org.bxkr.octodiary.formatToHumanDay
 import org.bxkr.octodiary.modalBottomSheetContentLive
@@ -42,16 +42,17 @@ fun DashboardScreen() {
         verticalArrangement = Arrangement.Bottom,
         modifier = Modifier.padding(horizontal = 16.dp)
     ) {
-        Text(
-            stringResource(id = R.string.schedule_today),
-            modifier = Modifier.padding(top = 8.dp),
-            style = MaterialTheme.typography.labelLarge
-        )
-        DayItem(
-            day = DataService.eventCalendar.filter {
-                it.startAt.parseLongDate().formatToDay() == currentDay
-            }
-        ) {
+        val todayCalendar = DataService.eventCalendar.filter {
+            it.startAt.parseLongDate().formatToDay() == currentDay
+        }
+        if (todayCalendar.isNotEmpty()) {
+            Text(
+                stringResource(id = R.string.schedule_today),
+                modifier = Modifier.padding(top = 8.dp),
+                style = MaterialTheme.typography.labelLarge
+            )
+        }
+        DayItem(day = todayCalendar) {
             Text(
                 stringResource(id = R.string.rating),
                 modifier = Modifier.padding(top = 8.dp),
@@ -133,29 +134,12 @@ fun RankingList() {
                 }?.user?.run { listOf(lastName, firstName, middleName ?: "").fastJoinToString(" ") }
                     ?: rankingMember.personId
             }
-            OutlinedCard(Modifier.padding(bottom = 8.dp)) {
-                Row {
-                    Row(Modifier.padding(8.dp)) {
-                        Text(
-                            rankingMember.rank.rankPlace.toString(),
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.padding(end = 4.dp)
-                        )
-                        Text(
-                            rankingMember.rank.averageMarkFive.toString(),
-                            modifier = Modifier.padding(end = 4.dp)
-                        )
-                        Text(
-                            memberName,
-                            maxLines = 1, overflow = TextOverflow.Ellipsis,
-                            modifier = Modifier
-                                .padding(end = 4.dp)
-                                .fillMaxWidth()
-                        )
-                    }
-                }
-            }
+            RankingMemberCard(
+                rankPlace = rankingMember.rank.rankPlace,
+                average = rankingMember.rank.averageMarkFive,
+                memberName = memberName,
+                highlighted = DataService.run { rankingMember.personId == profile.children[currentProfile].contingentGuid }
+            )
         }
     }
 }

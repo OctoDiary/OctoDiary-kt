@@ -8,6 +8,7 @@ import org.bxkr.octodiary.network.interfaces.SchoolSessionAPI
 import org.bxkr.octodiary.network.interfaces.SecondaryAPI
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.scalars.ScalarsConverterFactory
 
 object NetworkService {
     object MESAPIConfig {
@@ -53,6 +54,7 @@ object NetworkService {
     private inline fun <reified T> baseApiConstructor(baseUrl: String): T {
         val retrofit = Retrofit.Builder()
             .baseUrl(baseUrl)
+            .addConverterFactory(ScalarsConverterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         return retrofit.create(T::class.java)

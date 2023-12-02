@@ -5,6 +5,8 @@ import org.bxkr.octodiary.Diary
 import org.bxkr.octodiary.models.auth.EsiaExchange
 import org.bxkr.octodiary.models.classranking.RankingMember
 import org.bxkr.octodiary.models.events.EventsResponse
+import org.bxkr.octodiary.models.rankingforsubject.RankingForSubject
+import org.bxkr.octodiary.models.subjectranking.SubjectRanking
 import org.bxkr.octodiary.network.NetworkService
 import org.bxkr.octodiary.network.NetworkService.BaseUrl
 import org.bxkr.octodiary.network.NetworkService.MESAPIConfig
@@ -53,6 +55,17 @@ interface SecondaryAPI {
     ): Call<EsiaExchange>
 
     /**
+     * Refreshes a token.
+     *
+     * @param bearerToken Bearer auth header, e.g. 'Bearer AccessToken123'.
+     * @return Access token.
+     */
+    @GET("v2/token/refresh")
+    fun refreshToken(
+        @Header("Authorization") bearerToken: String
+    ): Call<String>
+
+    /**
      * Gets events for student.
      *
      * @param authHeader Bearer-like string ("Bearer $accessToken").
@@ -82,7 +95,7 @@ interface SecondaryAPI {
      *
      * @param accessToken Access token.
      * @param personId Person ID.
-     * @param date Rankin date in yyyy-MM-dd format.
+     * @param date Ranking date in yyyy-MM-dd format.
      * @param mesSubsystem MES subsystem (["familymp"][MESAPIConfig.FAMILYMP] by default).
      * @return List of [RankingMember].
      */
@@ -93,4 +106,42 @@ interface SecondaryAPI {
         @Query("date") date: String,
         @Header("X-Mes-Subsystem") mesSubsystem: String = MESAPIConfig.FAMILYMP
     ): Call<List<RankingMember>>
+
+    /**
+     * Gets ranking by subjects.
+     *
+     * @param accessToken Access token.
+     * @param personId Person ID.
+     * @param date Ranking date in yyyy-MM-dd format.
+     * @param mesSubsystem MES subsystem (["familymp"][MESAPIConfig.FAMILYMP] by default).
+     * @return List of [SubjectRanking].
+     */
+    @GET("api/ej/rating/v1/rank/subjects")
+    fun subjectRanking(
+        @Header("auth-token") accessToken: String,
+        @Query("personId") personId: String,
+        @Query("date") date: String,
+        @Header("X-Mes-Subsystem") mesSubsystem: String = MESAPIConfig.FAMILYMP
+    ): Call<List<SubjectRanking>>
+
+    /**
+     * Gets ranking for specific subject.
+     *
+     * @param accessToken Access token.
+     * @param personId Person ID.
+     * @param classUnitId Class unit ID.
+     * @param date Ranking date in yyyy-MM-dd format.
+     * @param subjectId Subject ID.
+     * @param mesSubsystem MES subsystem (["familymp"][MESAPIConfig.FAMILYMP] by default).
+     * @return List of [RankingForSubject].
+     */
+    @GET("api/ej/rating/v1/rank/class")
+    fun rankingForSubject(
+        @Header("auth-token") accessToken: String,
+        @Query("personId") personId: String,
+        @Query("classUnitId") classUnitId: Long,
+        @Query("date") date: String,
+        @Query("subjectId") subjectId: Long,
+        @Header("X-Mes-Subsystem") mesSubsystem: String = MESAPIConfig.FAMILYMP
+    ): Call<List<RankingForSubject>>
 }

@@ -136,9 +136,9 @@
     <string name="myschool">Моя Школа</string>
     <string name="log_in_on_gosuslugi">Войти через Госуслуги</string>
     <string name="skip">Пропустить</string>
-    <string name="enter_new_pin">Введите новый ПИН-код</string>
-    <string name="repeat_pin">Повторите свой ПИН-код</string>
-    <string name="pins_are_diff">ПИН-коды не совпадают</string>
+    <string name="enter_new_pin">Введите новый код-пароль</string>
+    <string name="repeat_pin">Повторите свой код-пароль</string>
+    <string name="pins_are_diff">Код-пароли не совпадают</string>
     <string name="no_description">Нет описания</string>
     <string name="lesson_location">Место проведения</string>
     <string name="at_time">в</string>
@@ -171,4 +171,20 @@
     <string name="choose_context_profile">Выбрать профиль ученика</string>
     <string name="learn_t">%1$s выучить</string>
     <string name="do_t">%1$s выполнить</string>
+    <string name="ok">Хорошо</string>
+    <string name="warning">Внимание</string>
+    <string name="auth_receivers_warn">Похоже, у вас установлено официальное приложение МЭШ или Моя Школа. После авторизации выберите %1$s среди приложений, чтобы все получилось.</string>
+    <string name="use_pin">Защита код-паролем</string>
+    <string name="cancel">Отмена</string>
+    <string name="by_date">По дате</string>
+    <string name="by_subject">По предмету</string>
+    <string name="final_mark">Итоговая оценка</string>
+    <string name="mark_filter_by_updated">По дате выставления</string>
+    <string name="mark_filter_by_lesson_date">По дате урока</string>
+    <string name="mark_filter_alphabetical">По алфавиту (А-Я)</string>
+    <string name="mark_filter_by_last_update">По дате последней оценки</string>
+    <string name="mark_filter_by_average">По среднему баллу</string>
+    <string name="mark_filter_by_ranking">По месту в рейтинге</string>
+    <string name="dark_theme">Тёмная тема</string>
+    <string name="wallpaper_dynamic_color">Динамический цвет обоев</string>
 </resources>
