@@ -35,7 +35,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.RadioButton
-import androidx.compose.material3.SecondaryTabRow
+import androidx.compose.material3.SecondaryScrollableTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -282,7 +282,11 @@ fun MarksBySubject() {
                             SubjectCard(subject = it)
                         }
                     }
-                    SecondaryTabRow(selectedTabIndex = currentPeriod, divider = {}) {
+                    SecondaryScrollableTabRow(
+                        selectedTabIndex = currentPeriod,
+                        divider = {},
+                        edgePadding = 0.dp
+                    ) {
                         periods.forEachIndexed { index: Int, period: String ->
                             Tab(
                                 selected = currentPeriod == index,
