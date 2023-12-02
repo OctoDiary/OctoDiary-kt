@@ -57,7 +57,7 @@ fun OctoDiaryTheme(
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            window.statusBarColor = colorScheme.surfaceContainerHigh.toArgb()
+            window.statusBarColor = colorScheme.surfaceDim.toArgb()
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme
         }
     }
