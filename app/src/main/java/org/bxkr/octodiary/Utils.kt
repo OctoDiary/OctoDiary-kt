@@ -86,6 +86,7 @@ fun Prefs.save(vararg addPrefs: Pair<String, Any?>) {
 
 inline fun <reified T> Prefs.get(prefId: String): T? {
     ctx.getSharedPreferences(prefPath, Context.MODE_PRIVATE).run {
+        if (!contains(prefId)) return null
         return when (T::class) {
             String::class -> getString(prefId, "") as T
             Boolean::class -> getBoolean(prefId, false) as T

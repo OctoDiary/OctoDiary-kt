@@ -1,6 +1,7 @@
 package org.bxkr.octodiary.components
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,6 +19,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -30,6 +32,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import org.bxkr.octodiary.LocalActivity
 import org.bxkr.octodiary.R
+import org.bxkr.octodiary.darkThemeLive
 import org.bxkr.octodiary.get
 import org.bxkr.octodiary.logOut
 import org.bxkr.octodiary.mainPrefs
@@ -72,8 +75,18 @@ fun SettingsDialog(onDismissRequest: () -> Unit) {
                 ) {
                     val activity = LocalActivity.current
                     var setPin by remember { mutableStateOf(false) }
+                    val darkTheme = darkThemeLive.observeAsState(isSystemInDarkTheme())
                     val pinEnabled =
                         remember { mutableStateOf(activity.mainPrefs.get<Boolean>("has_pin")!!) }
+
+                    SwitchPreference(
+                        title = stringResource(R.string.dark_theme),
+                        listenState = darkTheme
+                    ) {
+                        darkThemeLive.value = it
+                        activity.mainPrefs.save("is_dark_theme" to it)
+                    }
+
                     SwitchPreference(
                         title = stringResource(id = R.string.use_pin),
                         listenState = pinEnabled

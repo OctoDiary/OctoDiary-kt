@@ -8,6 +8,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -83,6 +84,7 @@ val screenLive = MutableLiveData<Screen>()
 val modalDialogStateLive = MutableLiveData(false)
 val modalDialogContentLive = MutableLiveData<@Composable () -> Unit> {}
 val reloadEverythingLive = MutableLiveData {}
+val darkThemeLive = MutableLiveData<Boolean>(null)
 val LocalActivity = staticCompositionLocalOf<ComponentActivity> {
     error("No LocalActivity provided!")
 }
@@ -92,8 +94,12 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            OctoDiaryTheme {
-                MyApp(modifier = Modifier.fillMaxSize())
+            darkThemeLive.value = mainPrefs.get("is_dark_theme") ?: isSystemInDarkTheme()
+            val darkTheme by darkThemeLive.observeAsState(isSystemInDarkTheme())
+            AnimatedContent(targetState = darkTheme, label = "theme_anim") {
+                OctoDiaryTheme(it) {
+                    MyApp(modifier = Modifier.fillMaxSize())
+                }
             }
         }
     }

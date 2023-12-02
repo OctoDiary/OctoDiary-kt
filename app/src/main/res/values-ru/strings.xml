@@ -185,4 +185,5 @@
     <string name="mark_filter_by_last_update">По дате последней оценки</string>
     <string name="mark_filter_by_average">По среднему баллу</string>
     <string name="mark_filter_by_ranking">По месту в рейтинге</string>
+    <string name="dark_theme">Тёмная тема</string>
 </resources>
