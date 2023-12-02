@@ -314,6 +314,16 @@ object DataService {
         ).baseEnqueue(::baseErrorFunction) { listener(it) }
     }
 
+    fun refreshToken(onUpdated: () -> Unit) {
+        assert(this::token.isInitialized)
+
+        secondaryApi.refreshToken("Bearer $token")
+            .baseEnqueue(::baseErrorFunction) {
+                token = it
+                onUpdated()
+            }
+    }
+
     fun updateAll() {
         if (loadingStarted) return else loadingStarted = true
         val states = listOfNotNull(
@@ -328,7 +338,8 @@ object DataService {
             ::hasMarksSubject,
             ::hasHomeworks,
             ::hasMealBalance.takeIf { subsystem == Diary.MES },
-            ::hasSchoolInfo
+            ::hasSchoolInfo,
+            ::hasSubjectRanking
         )
         states.forEach { it.set(false) }
         val onSingleItemLoad = { name: String ->
@@ -360,6 +371,7 @@ object DataService {
                     updateSchoolInfo { onSingleItemLoad(::schoolInfo.name) }
                 }
             }
+            refreshToken {}
         }
     }
 }

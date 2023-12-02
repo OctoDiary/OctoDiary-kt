@@ -55,6 +55,17 @@ interface SecondaryAPI {
     ): Call<EsiaExchange>
 
     /**
+     * Refreshes a token.
+     *
+     * @param bearerToken Bearer auth header, e.g. 'Bearer AccessToken123'.
+     * @return Access token.
+     */
+    @GET("v2/token/refresh")
+    fun refreshToken(
+        @Header("Authorization") bearerToken: String
+    ): Call<String>
+
+    /**
      * Gets events for student.
      *
      * @param authHeader Bearer-like string ("Bearer $accessToken").

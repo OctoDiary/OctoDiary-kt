@@ -39,6 +39,7 @@ converter-gson = { group = "com.squareup.retrofit2", name = "converter-gson", ve
 androidx-runtime-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata", version.ref = "runtime-livedata" }
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation-compose" }
 glide = { group = "com.github.bumptech.glide", name = "compose", version.ref = "glide" }
+converter-scalars = { group = "com.squareup.retrofit2", name = "converter-scalars", version.ref = "retrofit" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
