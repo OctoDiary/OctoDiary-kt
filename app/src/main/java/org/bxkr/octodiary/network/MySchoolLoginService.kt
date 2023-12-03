@@ -35,7 +35,7 @@ object MySchoolLoginService {
     }
 
     @Composable
-    fun EsiaExchangeToken(code: String, token: MutableState<String?>) {
+    fun EsiaExchangeToken(code: String, hasToken: MutableState<Boolean>) {
         val context = LocalContext.current
         NetworkService.secondaryApi(SecondaryAPI.getBaseUrl(diary)).esiaExchangeToken(
             code, context.authPrefs.get<String>("state")!!
@@ -49,7 +49,7 @@ object MySchoolLoginService {
                 "first_launch" to true
             )
 
-            token.value = it.token
+            hasToken.value = true
         }
     }
 

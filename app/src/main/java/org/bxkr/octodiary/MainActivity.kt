@@ -157,8 +157,14 @@ class MainActivity : ComponentActivity() {
         }
 
         val intentData = intent.dataString
-        if (intentData != null && authPrefs.get<Boolean>("auth") != true) {
-            screenLive.value = Screen.Callback
+        if (intentData != null) {
+            if (authPrefs.get<Boolean>("auth") == true) {
+                LaunchedEffect(Unit) {
+                    snackbarHostState.showSnackbar("Вы уже авторизованы")
+                }
+            } else {
+                screenLive.value = Screen.Callback
+            }
         }
 
         var localLoadedState by remember { mutableStateOf(false) }
@@ -267,10 +273,16 @@ class MainActivity : ComponentActivity() {
                         }
 
                         Screen.Callback -> {
-                            CallbackScreen(Uri.parse(intentData).getQueryParameter("code")!!,
-                                Uri.parse(intentData).host!!.let { host ->
-                                    CallbackType.values().first { it.host == host }
-                                })
+                            val uri = Uri.parse(intentData)
+                            val callbackType =
+                                CallbackType.values().firstOrNull { it.host == uri.host }
+                            val code = uri.getQueryParameter("code")
+                            val subsystem = uri.getQueryParameter("system")?.toIntOrNull()
+                            if (code != null && callbackType != null) {
+                                CallbackScreen(code, callbackType, subsystem)
+                            } else {
+                                screenLive.postValue(Screen.Login)
+                            }
                             R.string.log_in
                         }
 
