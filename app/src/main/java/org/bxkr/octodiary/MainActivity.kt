@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -54,6 +55,7 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -88,6 +90,7 @@ val modalDialogContentLive = MutableLiveData<@Composable () -> Unit> {}
 val reloadEverythingLive = MutableLiveData {}
 val darkThemeLive = MutableLiveData<Boolean>(null)
 val colorSchemeLive = MutableLiveData(-1)
+val launchUrlLive = MutableLiveData<Uri?>(null)
 val LocalActivity = staticCompositionLocalOf<ComponentActivity> {
     error("No LocalActivity provided!")
 }
@@ -148,6 +151,13 @@ class MainActivity : ComponentActivity() {
         val showDialog = modalDialogStateLive.observeAsState()
         val dialogContent = modalDialogContentLive.observeAsState()
         val showFilter = showFilterLive.observeAsState(false)
+        val launchUrl = launchUrlLive.observeAsState()
+
+        if (launchUrl.value != null) {
+            val tabIntent = CustomTabsIntent.Builder().build()
+            tabIntent.launchUrl(LocalContext.current, launchUrl.value!!)
+            launchUrlLive.postValue(null)
+        }
 
         SideEffect {
             navController.value?.addOnDestinationChangedListener { _, destination, _ ->

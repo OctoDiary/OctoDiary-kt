@@ -40,6 +40,10 @@ object NetworkService {
         const val REDIRECT_URI = "dnevnik-mes://authRegionRedirect"
     }
 
+    object ExternalIntegrationConfig {
+        const val BOT_AUTH_URL = "https://octodiary.dsop.online/redir2bot?token=%s&system=%s"
+    }
+
     object BaseUrl {
         const val MOS_AUTH = "https://login.mos.ru/"
         const val MOS_DNEVNIK = "https://dnevnik.mos.ru/"

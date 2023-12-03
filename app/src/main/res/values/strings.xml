@@ -241,4 +241,5 @@
     <string name="mark_filter_by_ranking">By ranking place</string>
     <string name="dark_theme">Dark theme</string>
     <string name="wallpaper_dynamic_color">Wallpaper dynamic color</string>
+    <string name="log_into_bot">Log into OctoDiaryBot</string>
 </resources>

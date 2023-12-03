@@ -1,5 +1,6 @@
 package org.bxkr.octodiary.components
 
+import android.net.Uri
 import android.os.Build
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
@@ -10,6 +11,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -19,8 +21,11 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
+import androidx.compose.material.icons.automirrored.rounded.OpenInNew
 import androidx.compose.material.icons.rounded.Done
 import androidx.compose.material.icons.rounded.Image
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -46,13 +51,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import org.bxkr.octodiary.DataService
 import org.bxkr.octodiary.LocalActivity
 import org.bxkr.octodiary.R
 import org.bxkr.octodiary.colorSchemeLive
 import org.bxkr.octodiary.darkThemeLive
 import org.bxkr.octodiary.get
+import org.bxkr.octodiary.launchUrlLive
 import org.bxkr.octodiary.logOut
 import org.bxkr.octodiary.mainPrefs
+import org.bxkr.octodiary.network.NetworkService
 import org.bxkr.octodiary.save
 import org.bxkr.octodiary.screens.SetPinDialog
 import org.bxkr.octodiary.ui.theme.CustomColorScheme
@@ -162,10 +170,31 @@ fun SettingsDialog(onDismissRequest: () -> Unit) {
                             pinEnabled.value = false
                         }
                     }
+                    Button(
+                        onClick = {
+                            val link = Uri.parse(
+                                NetworkService.ExternalIntegrationConfig.BOT_AUTH_URL.format(
+                                    DataService.token,
+                                    DataService.subsystem.ordinal
+                                )
+                            )
+                            launchUrlLive.postValue(link)
+                        },
+                        contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
+                        modifier = Modifier.padding(bottom = 8.dp)
+                    ) {
+                        Icon(
+                            Icons.AutoMirrored.Rounded.OpenInNew,
+                            stringResource(R.string.image),
+                            Modifier.size(ButtonDefaults.IconSize)
+                        )
+                        Spacer(Modifier.size(ButtonDefaults.IconSpacing))
+                        Text(stringResource(R.string.log_into_bot))
+                    }
                     OutlinedButton(onClick = {
                         onDismissRequest()
                         activity.logOut()
-                    }, Modifier.padding(32.dp)) {
+                    }, Modifier.padding(bottom = 32.dp)) {
                         Text(stringResource(R.string.log_out))
                     }
 
