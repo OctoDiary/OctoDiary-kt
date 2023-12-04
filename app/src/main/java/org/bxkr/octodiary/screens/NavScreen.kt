@@ -179,6 +179,14 @@ fun NavScreen(modifier: Modifier, pinFinished: MutableState<Boolean>) {
                 }
                 AnimatedVisibility(localLoadedState) {
                     val refreshState = rememberPullToRefreshState()
+                    if (refreshState.isRefreshing) {
+                        DataService.loadedEverything.value = false
+                        DataService.loadingStarted = false
+                        DataService.updateAll()
+                    }
+                    if (DataService.loadedEverything.value) {
+                        refreshState.endRefresh()
+                    }
                     NavHost(
                         navController = navController.value!!,
                         startDestination = NavSection.Dashboard.route
