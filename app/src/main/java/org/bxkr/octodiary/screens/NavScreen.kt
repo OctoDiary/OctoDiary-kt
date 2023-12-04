@@ -143,7 +143,7 @@ fun NavScreen(modifier: Modifier, pinFinished: MutableState<Boolean>) {
                     LaunchedEffect(Unit) {
                         if (notificationPrefs.get<Long>("student_id") == null) {
                             notificationPrefs.save(
-                                "student_id" to DataService.profile.children[DataService.currentProfile].id,
+                                "student_id" to DataService.profile.children[DataService.currentProfile].studentId,
                                 "mark_ids" to Gson().toJson(DataService.marksDate.payload.map { it.id }),
                                 "total_count" to 0
                             )

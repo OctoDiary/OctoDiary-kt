@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.screens.navsections
 
+import android.content.Intent
+import android.net.Uri
 import android.webkit.URLUtil
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
@@ -12,23 +14,28 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CornerSize
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowLeft
 import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
+import androidx.compose.material.icons.automirrored.rounded.MenuOpen
 import androidx.compose.material.icons.automirrored.rounded.OpenInNew
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -36,6 +43,8 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilledTonalIconButton
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -62,6 +71,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.platform.LocalViewConfiguration
 import androidx.compose.ui.res.stringResource
@@ -69,6 +79,7 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat.startActivity
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -76,8 +87,13 @@ import org.bxkr.octodiary.DataService
 import org.bxkr.octodiary.R
 import org.bxkr.octodiary.components.Mark
 import org.bxkr.octodiary.formatToDay
+import org.bxkr.octodiary.formatToHumanDay
 import org.bxkr.octodiary.formatToTime
+import org.bxkr.octodiary.modalBottomSheetContentLive
+import org.bxkr.octodiary.modalBottomSheetStateLive
 import org.bxkr.octodiary.models.events.Event
+import org.bxkr.octodiary.models.lessonschedule.LessonSchedule
+import org.bxkr.octodiary.parseFromDay
 import org.bxkr.octodiary.parseLongDate
 import org.bxkr.octodiary.snackbarHostStateLive
 import org.bxkr.octodiary.weekOfYear
@@ -446,43 +462,58 @@ fun EventItem(event: Event) {
                 visible = isExpanded, enter = enterTransition, exit = exitTransition
             ) {
                 when (event.source) {
-                    in listOf("AE", "CE", "PLAN") -> Column(
-                        Modifier
-                            .padding(
-                                bottom = 16.dp
+                    in listOf("AE", "CE", "PLAN") -> Box {
+                        Column(
+                            Modifier
+                                .padding(
+                                    bottom = 16.dp
+                                )
+                                .fillMaxWidth()
+                        ) {
+                            if (event.roomNumber != null) {
+                                Row {
+                                    Text(
+                                        stringResource(R.string.lesson_location),
+                                        Modifier
+                                            .padding(end = 3.dp)
+                                            .alpha(0.8f)
+                                    )
+                                    Text(event.roomNumber)
+                                }
+                            }
+                            if (event.homework != null && event.homework.descriptions.isNotEmpty()) {
+                                Row {
+                                    Text(
+                                        stringResource(R.string.homework),
+                                        Modifier
+                                            .padding(end = 3.dp)
+                                            .alpha(0.8f)
+                                    )
+                                    Column {
+                                        event.homework.descriptions.forEach { Text(it) }
+                                    }
+                                }
+                            }
+                            if (event.marks != null) {
+                                Row {
+                                    event.marks.forEach {
+                                        Mark(it)
+                                    }
+                                }
+                            }
+                        }
+                        FilledTonalIconButton(
+                            onClick = {
+                                modalBottomSheetContentLive.postValue { LessonSheetContent(event.id) }
+                                modalBottomSheetStateLive.postValue(true)
+                            }, modifier = Modifier
+                                .align(Alignment.BottomEnd)
+                                .padding(bottom = 16.dp)
+                        ) {
+                            Icon(
+                                Icons.AutoMirrored.Rounded.MenuOpen,
+                                stringResource(id = R.string.expand)
                             )
-                            .fillMaxWidth()
-                    ) {
-                        if (event.roomNumber != null) {
-                            Row {
-                                Text(
-                                    stringResource(R.string.lesson_location),
-                                    Modifier
-                                        .padding(end = 3.dp)
-                                        .alpha(0.8f)
-                                )
-                                Text(event.roomNumber)
-                            }
-                        }
-                        if (event.homework != null && event.homework.descriptions.isNotEmpty()) {
-                            Row {
-                                Text(
-                                    stringResource(R.string.homework),
-                                    Modifier
-                                        .padding(end = 3.dp)
-                                        .alpha(0.8f)
-                                )
-                                Column {
-                                    event.homework.descriptions.forEach { Text(it) }
-                                }
-                            }
-                        }
-                        if (event.marks != null) {
-                            Row {
-                                event.marks.forEach {
-                                    Mark(it)
-                                }
-                            }
                         }
                     }
 
@@ -574,6 +605,82 @@ fun EventItem(event: Event) {
                     }
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun LessonSheetContent(lessonId: Long) {
+    var lessonInfo by remember { mutableStateOf<LessonSchedule?>(null) }
+    LaunchedEffect(Unit) {
+        DataService.getLessonInfo(lessonId) {
+            lessonInfo = it
+        }
+    }
+
+    Box(
+        Modifier
+            .heightIn(192.dp, Int.MAX_VALUE.dp)
+            .fillMaxWidth()
+    ) {
+        if (lessonInfo != null) {
+            Column(Modifier.padding(16.dp)) {
+                with(lessonInfo!!) {
+                    Text(
+                        subjectName,
+                        style = MaterialTheme.typography.titleMedium,
+                        modifier = Modifier.padding(bottom = 8.dp)
+                    )
+                    Text(teacher.run { "$lastName $firstName $middleName" })
+                    Row {
+                        Text(
+                            stringResource(R.string.lesson_location),
+                            Modifier
+                                .padding(end = 3.dp)
+                                .alpha(0.8f)
+                        )
+                        Text(roomNumber)
+                    }
+                    Text(
+                        stringResource(
+                            id = R.string.date_weekday,
+                            date.parseFromDay().formatToHumanDay(),
+                            stringResource(id = R.string.time_from_to, beginTime, endTime)
+                        )
+                    )
+                    if (comment != null && comment is String) Text(comment)
+                    HorizontalDivider(Modifier.padding(16.dp))
+                    lessonHomeworks.forEach { homework ->
+                        SelectionContainer {
+                            Text(homework.homework)
+                        }
+                        homework.materials.forEach { material ->
+                            material.items.forEach {
+                                val ctx = LocalContext.current
+                                OutlinedButton(onClick = {
+                                    val browserIntent = Intent(
+                                        Intent.ACTION_VIEW,
+                                        Uri.parse(
+                                            it.link
+                                                ?: it.urls.firstOrNull { it.urlType == "view" }?.url
+                                        )
+                                    )
+                                    startActivity(ctx, browserIntent, null)
+                                }) {
+                                    Text(it.title)
+                                }
+                            }
+                        }
+                    }
+                    LazyRow {
+                        items(marks) {
+                            Mark(it)
+                        }
+                    }
+                }
+            }
+        } else {
+            CircularProgressIndicator(Modifier.align(Alignment.Center))
         }
     }
 }

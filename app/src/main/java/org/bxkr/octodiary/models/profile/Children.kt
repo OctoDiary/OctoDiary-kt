@@ -25,7 +25,7 @@ data class Children(
     @SerializedName("groups")
     val groups: List<Group>,
     @SerializedName("id")
-    val id: Long,
+    val studentId: Long,
     @SerializedName("is_legal_representative")
     val isLegalRepresentative: Boolean,
     @SerializedName("last_name")

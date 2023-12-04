@@ -2,6 +2,7 @@ package org.bxkr.octodiary.network.interfaces
 
 import org.bxkr.octodiary.Diary
 import org.bxkr.octodiary.models.homeworks.HomeworksResponse
+import org.bxkr.octodiary.models.lessonschedule.LessonSchedule
 import org.bxkr.octodiary.models.mark.MarkInfo
 import org.bxkr.octodiary.models.marklistdate.MarkListDate
 import org.bxkr.octodiary.models.marklistsubject.MarkListSubject
@@ -186,4 +187,21 @@ interface MainSchoolAPI {
         @Path("homework_id") homeworkId: Long,
         @Header("X-Mes-Subsystem") mesSubsystem: String = MESAPIConfig.FAMILYMP
     ): Call<Unit>
+
+    /**
+     * Gets lesson description and homework.
+     *
+     * @param accessToken Access token.
+     * @param lessonId Lesson ID.
+     * @param studentId Student ID.
+     * @param mesSubsystem MES subsystem (["familymp"][MESAPIConfig.FAMILYMP] by default).
+     * @return [LessonSchedule]
+     */
+    @GET("family/mobile/v1/lesson_schedule_items/{lesson_id}")
+    fun lessonSchedule(
+        @Header("auth-token") accessToken: String,
+        @Path("lesson_id") lessonId: Long,
+        @Query("student_id") studentId: Long,
+        @Header("X-Mes-Subsystem") mesSubsystem: String = MESAPIConfig.FAMILYMP
+    ): Call<LessonSchedule>
 }

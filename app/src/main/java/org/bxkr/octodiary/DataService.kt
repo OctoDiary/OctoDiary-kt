@@ -6,6 +6,7 @@ import org.bxkr.octodiary.models.classmembers.ClassMember
 import org.bxkr.octodiary.models.classranking.RankingMember
 import org.bxkr.octodiary.models.events.Event
 import org.bxkr.octodiary.models.homeworks.Homework
+import org.bxkr.octodiary.models.lessonschedule.LessonSchedule
 import org.bxkr.octodiary.models.mark.MarkInfo
 import org.bxkr.octodiary.models.marklistdate.MarkListDate
 import org.bxkr.octodiary.models.marklistsubject.MarkListSubjectItem
@@ -137,7 +138,7 @@ object DataService {
         mainSchoolApi.markInfo(
             token,
             markId = markId,
-            studentId = profile.children[currentProfile].id
+            studentId = profile.children[currentProfile].studentId
         ).baseEnqueue(::baseErrorFunction) { listener(it) }
     }
 
@@ -228,7 +229,7 @@ object DataService {
 
         mainSchoolApi.markList(
             token,
-            studentId = profile.children[currentProfile].id,
+            studentId = profile.children[currentProfile].studentId,
             fromDate = Calendar.getInstance().run {
                 set(Calendar.WEEK_OF_YEAR, get(Calendar.WEEK_OF_YEAR) - 1)
                 time
@@ -247,7 +248,7 @@ object DataService {
 
         mainSchoolApi.subjectMarks(
             token,
-            studentId = profile.children[currentProfile].id
+            studentId = profile.children[currentProfile].studentId
         ).baseEnqueue(::baseErrorFunction, ::baseInternalExceptionFunction) {
             marksSubject = it.payload
             hasMarksSubject = true
@@ -261,7 +262,7 @@ object DataService {
 
         mainSchoolApi.homeworks(
             token,
-            studentId = profile.children[currentProfile].id,
+            studentId = profile.children[currentProfile].studentId,
             fromDate = Date().formatToDay(),
             toDate = Calendar.getInstance().run {
                 set(Calendar.WEEK_OF_YEAR, get(Calendar.WEEK_OF_YEAR) + 1)
@@ -336,6 +337,19 @@ object DataService {
         } else {
             mainSchoolApi.undoHomework(token, homeworkId)
                 .baseEnqueue(::baseErrorFunction) { listener() }
+        }
+    }
+
+    fun getLessonInfo(lessonId: Long, listener: (LessonSchedule) -> Unit) {
+        assert(this::token.isInitialized)
+        assert(this::profile.isInitialized)
+
+        mainSchoolApi.lessonSchedule(
+            token,
+            lessonId,
+            profile.children[currentProfile].studentId
+        ).baseEnqueue(::baseErrorFunction) {
+            listener(it)
         }
     }
 
