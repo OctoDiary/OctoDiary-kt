@@ -29,12 +29,15 @@ import androidx.compose.material.icons.automirrored.rounded.Logout
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
@@ -51,6 +54,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
@@ -90,6 +94,7 @@ import org.bxkr.octodiary.ui.theme.OctoDiaryTheme
 import java.util.Calendar
 import java.util.Collections
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NavScreen(modifier: Modifier, pinFinished: MutableState<Boolean>) {
     with(LocalContext.current) {
@@ -173,12 +178,25 @@ fun NavScreen(modifier: Modifier, pinFinished: MutableState<Boolean>) {
                     }
                 }
                 AnimatedVisibility(localLoadedState) {
+                    val refreshState = rememberPullToRefreshState()
                     NavHost(
                         navController = navController.value!!,
                         startDestination = NavSection.Dashboard.route
                     ) {
                         NavSection.values().forEach {
-                            composable(it.route) { _ -> it.composable() }
+                            composable(it.route) { _ ->
+                                Box(
+                                    Modifier
+                                        .fillMaxSize()
+                                        .nestedScroll(refreshState.nestedScrollConnection)
+                                ) {
+                                    it.composable()
+                                    PullToRefreshContainer(
+                                        refreshState,
+                                        Modifier.align(Alignment.TopCenter)
+                                    )
+                                }
+                            }
                         }
                     }
                 }

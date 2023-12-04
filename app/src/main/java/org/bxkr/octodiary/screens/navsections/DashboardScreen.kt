@@ -37,22 +37,32 @@ import java.util.Date
 
 @Composable
 fun DashboardScreen() {
-    val currentDay = remember { Date().formatToDay() }
-    Column(
+    LazyColumn(
         verticalArrangement = Arrangement.Bottom,
         modifier = Modifier.padding(horizontal = 16.dp)
     ) {
-        val todayCalendar = DataService.eventCalendar.filter {
-            it.startAt.parseLongDate().formatToDay() == currentDay
+        item {
+            val currentDay = remember { Date().formatToDay() }
+            Column(
+                verticalArrangement = Arrangement.Bottom,
+                modifier = Modifier.padding(horizontal = 16.dp)
+            ) {
+                val todayCalendar = DataService.eventCalendar.filter {
+                    it.startAt.parseLongDate().formatToDay() == currentDay
+                }
+                if (todayCalendar.isNotEmpty()) {
+                    Text(
+                        stringResource(id = R.string.schedule_today),
+                        modifier = Modifier.padding(top = 8.dp),
+                        style = MaterialTheme.typography.labelLarge
+                    )
+                }
+            }
         }
-        if (todayCalendar.isNotEmpty()) {
-            Text(
-                stringResource(id = R.string.schedule_today),
-                modifier = Modifier.padding(top = 8.dp),
-                style = MaterialTheme.typography.labelLarge
-            )
-        }
-        DayItem(day = todayCalendar) {
+        dayItem(day = DataService.eventCalendar.filter {
+            it.startAt.parseLongDate().formatToDay() == Date().formatToDay()
+        })
+        item {
             Text(
                 stringResource(id = R.string.rating),
                 modifier = Modifier.padding(top = 8.dp),
