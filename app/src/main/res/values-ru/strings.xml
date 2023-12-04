@@ -188,4 +188,5 @@
     <string name="dark_theme">Тёмная тема</string>
     <string name="wallpaper_dynamic_color">Динамический цвет обоев</string>
     <string name="log_into_bot">Войти в OctoDiaryBot</string>
+    <string name="soon">Скоро…</string>
 </resources>
