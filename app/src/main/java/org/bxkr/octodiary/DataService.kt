@@ -1,6 +1,7 @@
 package org.bxkr.octodiary
 
 import androidx.compose.runtime.mutableStateOf
+import com.google.gson.Gson
 import org.bxkr.octodiary.models.classmembers.ClassMember
 import org.bxkr.octodiary.models.classranking.RankingMember
 import org.bxkr.octodiary.models.events.Event
@@ -70,11 +71,13 @@ object DataService {
     lateinit var schoolInfo: SchoolInfo
     var hasSchoolInfo = false
 
+    // ADD_NEW_FIELD_HERE
+
     val loadedEverything = mutableStateOf(false)
 
     var tokenExpirationHandler: (() -> Unit)? = null
 
-    var onSingleItemInUpdateAllLoadedHandler: ((progress: Float) -> Unit)? = null
+    var onSingleItemInUpdateAllLoadedHandler: ((name: String, progress: Float) -> Unit)? = null
 
     var loadingStarted = false
 
@@ -338,6 +341,7 @@ object DataService {
 
     fun updateAll() {
         if (loadingStarted) return else loadingStarted = true
+        // ADD_NEW_FIELD_HERE
         val states = listOfNotNull(
             ::hasUserId,
             ::hasSessionUser,
@@ -356,7 +360,7 @@ object DataService {
         states.forEach { it.set(false) }
         val onSingleItemLoad = { name: String ->
             val statesInit = states.map { it.get() }
-            onSingleItemInUpdateAllLoadedHandler?.invoke((statesInit.count { it }
+            onSingleItemInUpdateAllLoadedHandler?.invoke(name, (statesInit.count { it }
                 .toFloat()) / (statesInit.size.toFloat()))
             if (!(statesInit.contains(false))) {
                 loadedEverything.value = true
@@ -384,6 +388,28 @@ object DataService {
                 }
             }
             refreshToken {}
+        }
+    }
+
+    fun loadFromCache(get: (String) -> String) {
+        // ADD_NEW_FIELD_HERE
+        listOfNotNull(
+            ::userId,
+            ::sessionUser,
+            ::eventCalendar,
+            ::ranking,
+            ::classMembers,
+            ::profile,
+            ::visits.takeIf { subsystem == Diary.MES },
+            ::marksDate,
+            ::marksSubject,
+            ::homeworks,
+            ::mealBalance.takeIf { subsystem == Diary.MES },
+            ::schoolInfo,
+            ::subjectRanking
+        ).map { it.name }.forEach {
+            javaClass.getDeclaredField(it)
+                .set(this, Gson().fromJson(get(it), javaClass.getDeclaredField(it).genericType))
         }
     }
 }

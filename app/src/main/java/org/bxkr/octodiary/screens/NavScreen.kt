@@ -77,6 +77,7 @@ import org.bxkr.octodiary.R
 import org.bxkr.octodiary.Screen
 import org.bxkr.octodiary.UpdateReceiver
 import org.bxkr.octodiary.authPrefs
+import org.bxkr.octodiary.cachePrefs
 import org.bxkr.octodiary.get
 import org.bxkr.octodiary.logOut
 import org.bxkr.octodiary.mainPrefs
@@ -217,10 +218,16 @@ fun NavScreen(modifier: Modifier, pinFinished: MutableState<Boolean>) {
                         label = "progress_anim"
                     )
                     val coroutineScope = rememberCoroutineScope()
-                    DataService.onSingleItemInUpdateAllLoadedHandler = {
+                    DataService.onSingleItemInUpdateAllLoadedHandler = { name, progressParam ->
                         coroutineScope.launch {
-                            progress = it
+                            progress = progressParam
                         }
+                        cachePrefs.save(
+                            name to Gson().toJson(
+                                DataService::class.java.getDeclaredField(name).get(DataService)
+                            ),
+                            "age" to System.currentTimeMillis()
+                        )
                     }
 
                     val activity = LocalActivity.current
@@ -228,7 +235,18 @@ fun NavScreen(modifier: Modifier, pinFinished: MutableState<Boolean>) {
                         activity.logOut()
                     }
 
-                    DataService.updateAll()
+                    if (!DataService.loadingStarted) {
+                        if (cachePrefs.get<Long>("age")
+                                ?.let { (System.currentTimeMillis() - it) < 86400 } == true
+                        ) {
+                            DataService.subsystem =
+                                Diary.values()[authPrefs.get<Int>("subsystem") ?: 0]
+                            DataService.loadFromCache { cachePrefs.get<String>(it) ?: "" }
+                            DataService.loadedEverything.value = true
+                        } else {
+                            DataService.updateAll()
+                        }
+                    }
                     Column(
                         Modifier.fillMaxSize(),
                         horizontalAlignment = Alignment.CenterHorizontally,

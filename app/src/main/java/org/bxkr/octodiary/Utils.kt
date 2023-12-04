@@ -40,6 +40,7 @@ abstract class Prefs(
 class AuthPrefs(ctx: Context) : Prefs("auth", ctx)
 class MainPrefs(ctx: Context) : Prefs("main", ctx)
 class NotificationPrefs(ctx: Context) : Prefs("notification", ctx)
+class CachePrefs(ctx: Context) : Prefs("cache", ctx)
 
 val Context.authPrefs: AuthPrefs
     get() {
@@ -54,6 +55,11 @@ val Context.mainPrefs: MainPrefs
 val Context.notificationPrefs: NotificationPrefs
     get() {
         return NotificationPrefs(this)
+    }
+
+val Context.cachePrefs: CachePrefs
+    get() {
+        return CachePrefs(this)
     }
 
 fun getRandomString(length: Int): String {
