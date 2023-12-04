@@ -182,6 +182,7 @@ class MainActivity : ComponentActivity() {
         val showFilter = showFilterLive.observeAsState(false)
         val launchUrl = launchUrlLive.observeAsState()
 
+
         if (launchUrl.value != null) {
             val tabIntent = CustomTabsIntent.Builder().build()
             tabIntent.launchUrl(LocalContext.current, launchUrl.value!!)
@@ -196,10 +197,11 @@ class MainActivity : ComponentActivity() {
         }
 
         val intentData = intent.dataString
+        intent.setData(null)
         if (intentData != null) {
             if (authPrefs.get<Boolean>("auth") == true) {
                 LaunchedEffect(Unit) {
-                    snackbarHostState.showSnackbar("Вы уже авторизованы")
+                    snackbarHostState.showSnackbar(getString(R.string.already_auth))
                 }
             } else {
                 screenLive.value = Screen.Callback

@@ -268,8 +268,9 @@ fun MarksBySubject() {
                                     SubjectMarkFilterType.Alphabetical -> sortedBy { it.subjectName }
                                     SubjectMarkFilterType.ByAverage -> sortedByDescending { it.average?.toDoubleOrNull() }
                                     SubjectMarkFilterType.ByRanking -> sortedBy { subject ->
-                                        DataService.subjectRanking.first { it.subjectId == subject.id }.rank.rankPlace
+                                        DataService.subjectRanking.firstOrNull { it.subjectId == subject.id }?.rank?.rankPlace
                                     }
+
                                     SubjectMarkFilterType.ByUpdated -> sortedByDescending {
                                         it.marks?.maxBy { it1 ->
                                             it1.date.parseFromDay().toInstant().toEpochMilli()
@@ -390,20 +391,23 @@ fun SubjectCard(subject: MarkListSubjectItem) {
                             Mark(org.bxkr.octodiary.models.events.Mark.fromMarkListSubject(it))
                         }
                     }
-                    FilledIconButton(onClick = {
-                        modalBottomSheetStateLive.postValue(true)
-                        modalBottomSheetContentLive.postValue {
-                            SubjectRatingBottomSheet(
-                                subject.id,
-                                subject.subjectName
+                    DataService.subjectRanking.firstOrNull { it.subjectId == subject.id }?.let {
+                        FilledIconButton(onClick = {
+                            modalBottomSheetStateLive.postValue(true)
+                            modalBottomSheetContentLive.postValue {
+                                SubjectRatingBottomSheet(
+                                    subject.id,
+                                    subject.subjectName
+                                )
+                            }
+                        }, shape = CloverShape) {
+
+                            Text(
+                                it.rank.rankPlace.toString(),
+                                style = MaterialTheme.typography.titleMedium,
+                                fontWeight = FontWeight.Bold
                             )
                         }
-                    }, shape = CloverShape) {
-                        Text(
-                            DataService.subjectRanking.first { it.subjectId == subject.id }.rank.rankPlace.toString(),
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.Bold
-                        )
                     }
                 }
             }

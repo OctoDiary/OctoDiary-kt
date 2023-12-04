@@ -243,4 +243,5 @@
     <string name="wallpaper_dynamic_color">Wallpaper dynamic color</string>
     <string name="log_into_bot">Log into OctoDiaryBot</string>
     <string name="soon">Coming soon…</string>
+    <string name="already_auth">You\'re already logged in</string>
 </resources>

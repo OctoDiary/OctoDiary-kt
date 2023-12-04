@@ -189,4 +189,5 @@
     <string name="wallpaper_dynamic_color">Динамический цвет обоев</string>
     <string name="log_into_bot">Войти в OctoDiaryBot</string>
     <string name="soon">Скоро…</string>
+    <string name="already_auth">Вы уже авторизованы</string>
 </resources>

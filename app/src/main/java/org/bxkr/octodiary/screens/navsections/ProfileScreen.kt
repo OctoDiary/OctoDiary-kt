@@ -99,10 +99,8 @@ fun ProfileScreen() {
                     openBottomSheet { School() }
                 }
                 SectionGridItem(stringResource(R.string.documents), Icons.Rounded.Description) {
-                    openBottomSheet {
-                        coroutineScope.launch {
-                            snackbarHostStateLive.value?.showSnackbar(context.getString(R.string.soon))
-                        }
+                    coroutineScope.launch {
+                        snackbarHostStateLive.value?.showSnackbar(context.getString(R.string.soon))
                     }
                 }
             }

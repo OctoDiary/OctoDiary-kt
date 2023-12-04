@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -39,7 +40,9 @@ import java.util.Date
 fun DashboardScreen() {
     LazyColumn(
         verticalArrangement = Arrangement.Bottom,
-        modifier = Modifier.padding(horizontal = 16.dp)
+        modifier = Modifier
+            .padding(horizontal = 16.dp)
+            .fillMaxHeight()
     ) {
         item {
             val currentDay = remember { Date().formatToDay() }
