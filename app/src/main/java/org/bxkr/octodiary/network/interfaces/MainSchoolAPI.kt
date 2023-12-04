@@ -12,8 +12,10 @@ import org.bxkr.octodiary.models.visits.VisitsResponse
 import org.bxkr.octodiary.network.NetworkService.BaseUrl
 import org.bxkr.octodiary.network.NetworkService.MESAPIConfig
 import retrofit2.Call
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -154,4 +156,34 @@ interface MainSchoolAPI {
         @Query("student_id") studentId: Long,
         @Header("X-Mes-Subsystem") mesSubsystem: String = MESAPIConfig.FAMILYMP
     ): Call<MarkListSubject>
+
+    /**
+     * Sets homework as done.
+     *
+     * @param accessToken Access token.
+     * @param homeworkId Homework ID.
+     * @param mesSubsystem MES subsystem (["familymp"][MESAPIConfig.FAMILYMP] by default).
+     * @return Nothing.
+     */
+    @POST("family/mobile/v1/homeworks/{homework_id}/done")
+    fun doHomework(
+        @Header("auth-token") accessToken: String,
+        @Path("homework_id") homeworkId: Long,
+        @Header("X-Mes-Subsystem") mesSubsystem: String = MESAPIConfig.FAMILYMP
+    ): Call<Unit>
+
+    /**
+     * Sets homework as undone.
+     *
+     * @param accessToken Access token.
+     * @param homeworkId Homework ID.
+     * @param mesSubsystem MES subsystem (["familymp"][MESAPIConfig.FAMILYMP] by default).
+     * @return Nothing.
+     */
+    @DELETE("family/mobile/v1/homeworks/{homework_id}/done")
+    fun undoHomework(
+        @Header("auth-token") accessToken: String,
+        @Path("homework_id") homeworkId: Long,
+        @Header("X-Mes-Subsystem") mesSubsystem: String = MESAPIConfig.FAMILYMP
+    ): Call<Unit>
 }

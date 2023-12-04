@@ -324,6 +324,18 @@ object DataService {
             }
     }
 
+    fun setHomeworkDoneState(homeworkId: Long, state: Boolean, listener: () -> Unit) {
+        assert(this::token.isInitialized)
+
+        if (state) {
+            mainSchoolApi.doHomework(token, homeworkId)
+                .baseEnqueue(::baseErrorFunction) { listener() }
+        } else {
+            mainSchoolApi.undoHomework(token, homeworkId)
+                .baseEnqueue(::baseErrorFunction) { listener() }
+        }
+    }
+
     fun updateAll() {
         if (loadingStarted) return else loadingStarted = true
         val states = listOfNotNull(
