@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -37,22 +38,34 @@ import java.util.Date
 
 @Composable
 fun DashboardScreen() {
-    val currentDay = remember { Date().formatToDay() }
-    Column(
+    LazyColumn(
         verticalArrangement = Arrangement.Bottom,
-        modifier = Modifier.padding(horizontal = 16.dp)
+        modifier = Modifier
+            .padding(horizontal = 16.dp)
+            .fillMaxHeight()
     ) {
-        val todayCalendar = DataService.eventCalendar.filter {
-            it.startAt.parseLongDate().formatToDay() == currentDay
+        item {
+            val currentDay = remember { Date().formatToDay() }
+            Column(
+                verticalArrangement = Arrangement.Bottom,
+                modifier = Modifier.padding(horizontal = 16.dp)
+            ) {
+                val todayCalendar = DataService.eventCalendar.filter {
+                    it.startAt.parseLongDate().formatToDay() == currentDay
+                }
+                if (todayCalendar.isNotEmpty()) {
+                    Text(
+                        stringResource(id = R.string.schedule_today),
+                        modifier = Modifier.padding(top = 8.dp),
+                        style = MaterialTheme.typography.labelLarge
+                    )
+                }
+            }
         }
-        if (todayCalendar.isNotEmpty()) {
-            Text(
-                stringResource(id = R.string.schedule_today),
-                modifier = Modifier.padding(top = 8.dp),
-                style = MaterialTheme.typography.labelLarge
-            )
-        }
-        DayItem(day = todayCalendar) {
+        dayItem(day = DataService.eventCalendar.filter {
+            it.startAt.parseLongDate().formatToDay() == Date().formatToDay()
+        })
+        item {
             Text(
                 stringResource(id = R.string.rating),
                 modifier = Modifier.padding(top = 8.dp),

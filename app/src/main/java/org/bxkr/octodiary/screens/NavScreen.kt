@@ -1,5 +1,9 @@
 package org.bxkr.octodiary.screens
 
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
 import android.content.res.Configuration
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
@@ -25,12 +29,15 @@ import androidx.compose.material.icons.automirrored.rounded.Logout
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
@@ -47,6 +54,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
@@ -57,6 +65,7 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.zIndex
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.google.gson.Gson
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -66,7 +75,9 @@ import org.bxkr.octodiary.LocalActivity
 import org.bxkr.octodiary.NavSection
 import org.bxkr.octodiary.R
 import org.bxkr.octodiary.Screen
+import org.bxkr.octodiary.UpdateReceiver
 import org.bxkr.octodiary.authPrefs
+import org.bxkr.octodiary.cachePrefs
 import org.bxkr.octodiary.get
 import org.bxkr.octodiary.logOut
 import org.bxkr.octodiary.mainPrefs
@@ -76,12 +87,15 @@ import org.bxkr.octodiary.network.interfaces.DSchoolAPI
 import org.bxkr.octodiary.network.interfaces.MainSchoolAPI
 import org.bxkr.octodiary.network.interfaces.SchoolSessionAPI
 import org.bxkr.octodiary.network.interfaces.SecondaryAPI
+import org.bxkr.octodiary.notificationPrefs
 import org.bxkr.octodiary.reloadEverythingLive
 import org.bxkr.octodiary.save
 import org.bxkr.octodiary.screenLive
 import org.bxkr.octodiary.ui.theme.OctoDiaryTheme
+import java.util.Calendar
 import java.util.Collections
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NavScreen(modifier: Modifier, pinFinished: MutableState<Boolean>) {
     with(LocalContext.current) {
@@ -124,6 +138,32 @@ fun NavScreen(modifier: Modifier, pinFinished: MutableState<Boolean>) {
                     NetworkService.secondaryApi(SecondaryAPI.getBaseUrl(diary))
 
                 var localLoadedState by remember { mutableStateOf(false) }
+                val context = LocalContext.current
+                if (localLoadedState) {
+                    LaunchedEffect(Unit) {
+                        if (notificationPrefs.get<Long>("student_id") == null) {
+                            notificationPrefs.save(
+                                "student_id" to DataService.profile.children[DataService.currentProfile].studentId,
+                                "mark_ids" to Gson().toJson(DataService.marksDate.payload.map { it.id }),
+                                "total_count" to 0
+                            )
+                        }
+                        val pendingIntent =
+                            PendingIntent.getBroadcast(
+                                context,
+                                0,
+                                Intent(context, UpdateReceiver::class.java),
+                                PendingIntent.FLAG_IMMUTABLE
+                            )
+                        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+                        alarmManager.setRepeating(
+                            AlarmManager.RTC_WAKEUP,
+                            Calendar.getInstance().timeInMillis,
+                            60 * 1000,
+                            pendingIntent
+                        )
+                    }
+                }
                 LaunchedEffect(rememberCoroutineScope()) {
                     snapshotFlow { DataService.loadedEverything.value }
                         .onEach { localLoadedState = it }
@@ -139,12 +179,33 @@ fun NavScreen(modifier: Modifier, pinFinished: MutableState<Boolean>) {
                     }
                 }
                 AnimatedVisibility(localLoadedState) {
+                    val refreshState = rememberPullToRefreshState()
+                    if (refreshState.isRefreshing) {
+                        DataService.loadedEverything.value = false
+                        DataService.loadingStarted = false
+                        DataService.updateAll()
+                    }
+                    if (DataService.loadedEverything.value) {
+                        refreshState.endRefresh()
+                    }
                     NavHost(
                         navController = navController.value!!,
                         startDestination = NavSection.Dashboard.route
                     ) {
                         NavSection.values().forEach {
-                            composable(it.route) { _ -> it.composable() }
+                            composable(it.route) { _ ->
+                                Box(
+                                    Modifier
+                                        .fillMaxSize()
+                                        .nestedScroll(refreshState.nestedScrollConnection)
+                                ) {
+                                    it.composable()
+                                    PullToRefreshContainer(
+                                        refreshState,
+                                        Modifier.align(Alignment.TopCenter)
+                                    )
+                                }
+                            }
                         }
                     }
                 }
@@ -157,10 +218,16 @@ fun NavScreen(modifier: Modifier, pinFinished: MutableState<Boolean>) {
                         label = "progress_anim"
                     )
                     val coroutineScope = rememberCoroutineScope()
-                    DataService.onSingleItemInUpdateAllLoadedHandler = {
+                    DataService.onSingleItemInUpdateAllLoadedHandler = { name, progressParam ->
                         coroutineScope.launch {
-                            progress = it
+                            progress = progressParam
                         }
+                        cachePrefs.save(
+                            name to Gson().toJson(
+                                DataService::class.java.getDeclaredField(name).get(DataService)
+                            ),
+                            "age" to System.currentTimeMillis()
+                        )
                     }
 
                     val activity = LocalActivity.current
@@ -168,7 +235,18 @@ fun NavScreen(modifier: Modifier, pinFinished: MutableState<Boolean>) {
                         activity.logOut()
                     }
 
-                    DataService.updateAll()
+                    if (!DataService.loadingStarted) {
+                        if (cachePrefs.get<Long>("age")
+                                ?.let { (System.currentTimeMillis() - it) < 86400 } == true
+                        ) {
+                            DataService.subsystem =
+                                Diary.values()[authPrefs.get<Int>("subsystem") ?: 0]
+                            DataService.loadFromCache { cachePrefs.get<String>(it) ?: "" }
+                            DataService.loadedEverything.value = true
+                        } else {
+                            DataService.updateAll()
+                        }
+                    }
                     Column(
                         Modifier.fillMaxSize(),
                         horizontalAlignment = Alignment.CenterHorizontally,

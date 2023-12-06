@@ -65,7 +65,7 @@ object MESLoginService {
     }
 
     @Composable
-    fun MosExchangeToken(code: String, token: MutableState<String?>) {
+    fun MosExchangeToken(code: String, hasToken: MutableState<Boolean>) {
         val context = LocalContext.current
         context.getSharedPreferences("auth", Context.MODE_PRIVATE).apply {
             val codeVerifier = getString("code_verifier", "")!!
@@ -83,12 +83,12 @@ object MESLoginService {
                 authHeader
             )
             exchangeCall.baseEnqueue { body ->
-                mosToMesToken(context, mosToken = body.accessToken, mesToken = token)
+                mosToMesToken(context, mosToken = body.accessToken, hasToken)
             }
         }
     }
 
-    private fun mosToMesToken(context: Context, mosToken: String, mesToken: MutableState<String?>) {
+    private fun mosToMesToken(context: Context, mosToken: String, hasToken: MutableState<Boolean>) {
         val schoolAuthCall =
             NetworkService.schoolSessionApi(SchoolSessionAPI.getBaseUrl(Diary.MES)).mosTokenToMes(
                 SchoolAuthBody(
@@ -107,7 +107,7 @@ object MESLoginService {
                 context.mainPrefs.save(
                     "first_launch" to true
                 )
-                mesToken.value = token
+                hasToken.value = true
             }
         }
     }

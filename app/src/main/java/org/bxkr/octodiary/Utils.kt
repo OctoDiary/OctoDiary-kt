@@ -39,6 +39,8 @@ abstract class Prefs(
 
 class AuthPrefs(ctx: Context) : Prefs("auth", ctx)
 class MainPrefs(ctx: Context) : Prefs("main", ctx)
+class NotificationPrefs(ctx: Context) : Prefs("notification", ctx)
+class CachePrefs(ctx: Context) : Prefs("cache", ctx)
 
 val Context.authPrefs: AuthPrefs
     get() {
@@ -48,6 +50,16 @@ val Context.authPrefs: AuthPrefs
 val Context.mainPrefs: MainPrefs
     get() {
         return MainPrefs(this)
+    }
+
+val Context.notificationPrefs: NotificationPrefs
+    get() {
+        return NotificationPrefs(this)
+    }
+
+val Context.cachePrefs: CachePrefs
+    get() {
+        return CachePrefs(this)
     }
 
 fun getRandomString(length: Int): String {
@@ -162,11 +174,11 @@ fun Date.formatToDay(): String = SimpleDateFormat("yyyy-MM-dd", Locale.ROOT).for
 /** Parses yyyy-MM-dd format [String] to [Date] **/
 fun String.parseFromDay(): Date = SimpleDateFormat("yyyy-MM-dd", Locale.ROOT).parse(this)!!
 
-/** Formats [Date] to dd LLL format [String] **/
+/** Formats [Date] to d LLL format [String] **/
 @ReadOnlyComposable
 @Composable
 fun Date.formatToHumanDay(): String =
-    SimpleDateFormat("dd LLL", LocalConfiguration.current.locales[0]).format(this)
+    SimpleDateFormat("d LLL", LocalConfiguration.current.locales[0]).format(this)
 
 /** Formats [Date] to dd MMMM format [String] **/
 @ReadOnlyComposable

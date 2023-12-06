@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.components
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
@@ -10,6 +12,8 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -19,8 +23,13 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
+import androidx.compose.material.icons.automirrored.rounded.OpenInNew
 import androidx.compose.material.icons.rounded.Done
 import androidx.compose.material.icons.rounded.Image
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -28,6 +37,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MediumTopAppBar
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedCard
+import androidx.compose.material3.OutlinedIconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -42,20 +52,28 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import androidx.core.content.ContextCompat.startActivity
+import org.bxkr.octodiary.BuildConfig
+import org.bxkr.octodiary.DataService
 import org.bxkr.octodiary.LocalActivity
 import org.bxkr.octodiary.R
 import org.bxkr.octodiary.colorSchemeLive
 import org.bxkr.octodiary.darkThemeLive
 import org.bxkr.octodiary.get
+import org.bxkr.octodiary.launchUrlLive
 import org.bxkr.octodiary.logOut
 import org.bxkr.octodiary.mainPrefs
+import org.bxkr.octodiary.network.NetworkService
 import org.bxkr.octodiary.save
 import org.bxkr.octodiary.screens.SetPinDialog
 import org.bxkr.octodiary.ui.theme.CustomColorScheme
+import org.bxkr.octodiary.ui.theme.OctoDiaryTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -162,12 +180,36 @@ fun SettingsDialog(onDismissRequest: () -> Unit) {
                             pinEnabled.value = false
                         }
                     }
+                    Button(
+                        onClick = {
+                            val link = Uri.parse(
+                                NetworkService.ExternalIntegrationConfig.BOT_AUTH_URL.format(
+                                    DataService.token,
+                                    DataService.subsystem.ordinal
+                                )
+                            )
+                            launchUrlLive.postValue(link)
+                        },
+                        contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
+                        modifier = Modifier.padding(bottom = 8.dp)
+                    ) {
+                        Icon(
+                            Icons.AutoMirrored.Rounded.OpenInNew,
+                            stringResource(R.string.image),
+                            Modifier.size(ButtonDefaults.IconSize)
+                        )
+                        Spacer(Modifier.size(ButtonDefaults.IconSpacing))
+                        Text(stringResource(R.string.log_into_bot))
+                    }
                     OutlinedButton(onClick = {
                         onDismissRequest()
                         activity.logOut()
-                    }, Modifier.padding(32.dp)) {
+                    }) {
                         Text(stringResource(R.string.log_out))
                     }
+
+                    AboutCard()
+                    Spacer(Modifier.padding(bottom = 16.dp))
 
                     AnimatedVisibility(setPin) {
                         val pinFinished = remember { mutableStateOf(false) }
@@ -267,6 +309,76 @@ fun ThemeCard(
                     .padding(2.dp),
                 MaterialTheme.colorScheme.onTertiary
             )
+        }
+    }
+}
+
+@Composable
+fun AboutCard() {
+    Card(
+        colors = CardDefaults.cardColors(MaterialTheme.colorScheme.surfaceContainer),
+        shape = MaterialTheme.shapes.extraLarge,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+    ) {
+        Row(
+            Modifier
+                .padding(16.dp)
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Row {
+                Box {
+                    Box(
+                        Modifier
+                            .size(56.dp)
+                            .align(Alignment.Center)
+                            .clip(CircleShape)
+                            .background(MaterialTheme.colorScheme.secondary)
+                    )
+                    Icon(
+                        painterResource(R.drawable.ic_launcher_foreground),
+                        stringResource(R.string.app_name),
+                        Modifier.size(64.dp),
+                        MaterialTheme.colorScheme.onSecondary
+                    )
+                }
+                Column(Modifier.padding(8.dp), verticalArrangement = Arrangement.Center) {
+                    Text(
+                        stringResource(id = R.string.app_name),
+                        style = MaterialTheme.typography.titleMedium
+                    )
+                    Text(
+                        BuildConfig.VERSION_NAME,
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                }
+            }
+            val context = LocalContext.current
+            OutlinedIconButton(onClick = {
+                val browserIntent = Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse(NetworkService.ExternalIntegrationConfig.TELEGRAM_CHANNEL_URL)
+                )
+                startActivity(context, browserIntent, null)
+            }) {
+                Icon(
+                    painterResource(R.drawable.telegram_24),
+                    "Telegram"
+                )
+            }
+        }
+    }
+}
+
+@Preview(widthDp = 400)
+@Composable
+private fun AboutCardPreview() {
+    OctoDiaryTheme {
+        Surface {
+            AboutCard()
         }
     }
 }

@@ -12,6 +12,10 @@
 #   public *;
 #}
 
+-keepclassmembers class org.bxkr.octodiary.DataService {
+    public *;
+}
+
 # Uncomment this to preserve the line number information for
 # debugging stack traces.
 -keepattributes SourceFile,LineNumberTable

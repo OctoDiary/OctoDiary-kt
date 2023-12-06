@@ -1,11 +1,19 @@
 package org.bxkr.octodiary
 
+import android.Manifest
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
+import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.RequiresApi
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -54,10 +62,12 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import androidx.core.app.ActivityCompat
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -88,13 +98,35 @@ val modalDialogContentLive = MutableLiveData<@Composable () -> Unit> {}
 val reloadEverythingLive = MutableLiveData {}
 val darkThemeLive = MutableLiveData<Boolean>(null)
 val colorSchemeLive = MutableLiveData(-1)
+val launchUrlLive = MutableLiveData<Uri?>(null)
 val LocalActivity = staticCompositionLocalOf<ComponentActivity> {
     error("No LocalActivity provided!")
 }
 
 class MainActivity : ComponentActivity() {
+    private fun createNotificationChannel() {
+        val name = getString(R.string.data_update_channel_name)
+        val importance = NotificationManager.IMPORTANCE_DEFAULT
+        val channel = NotificationChannel("data_update", name, importance)
+        val notificationManager: NotificationManager =
+            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.createNotificationChannel(channel)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        createNotificationChannel()
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.POST_NOTIFICATIONS
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            requestPermissions(
+                arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                1
+            )
+        }
         enableEdgeToEdge()
         setContent {
             colorSchemeLive.value = mainPrefs.get("theme") ?: -1
@@ -148,6 +180,14 @@ class MainActivity : ComponentActivity() {
         val showDialog = modalDialogStateLive.observeAsState()
         val dialogContent = modalDialogContentLive.observeAsState()
         val showFilter = showFilterLive.observeAsState(false)
+        val launchUrl = launchUrlLive.observeAsState()
+
+
+        if (launchUrl.value != null) {
+            val tabIntent = CustomTabsIntent.Builder().build()
+            tabIntent.launchUrl(LocalContext.current, launchUrl.value!!)
+            launchUrlLive.postValue(null)
+        }
 
         SideEffect {
             navController.value?.addOnDestinationChangedListener { _, destination, _ ->
@@ -157,8 +197,15 @@ class MainActivity : ComponentActivity() {
         }
 
         val intentData = intent.dataString
-        if (intentData != null && authPrefs.get<Boolean>("auth") != true) {
-            screenLive.value = Screen.Callback
+        intent.setData(null)
+        if (intentData != null) {
+            if (authPrefs.get<Boolean>("auth") == true) {
+                LaunchedEffect(Unit) {
+                    snackbarHostState.showSnackbar(getString(R.string.already_auth))
+                }
+            } else {
+                screenLive.value = Screen.Callback
+            }
         }
 
         var localLoadedState by remember { mutableStateOf(false) }
@@ -267,10 +314,16 @@ class MainActivity : ComponentActivity() {
                         }
 
                         Screen.Callback -> {
-                            CallbackScreen(Uri.parse(intentData).getQueryParameter("code")!!,
-                                Uri.parse(intentData).host!!.let { host ->
-                                    CallbackType.values().first { it.host == host }
-                                })
+                            val uri = Uri.parse(intentData)
+                            val callbackType =
+                                CallbackType.values().firstOrNull { it.host == uri.host }
+                            val code = uri.getQueryParameter("code")
+                            val subsystem = uri.getQueryParameter("system")?.toIntOrNull()
+                            if (code != null && callbackType != null) {
+                                CallbackScreen(code, callbackType, subsystem)
+                            } else {
+                                screenLive.postValue(Screen.Login)
+                            }
                             R.string.log_in
                         }
 

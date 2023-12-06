@@ -183,7 +183,7 @@ fun HomeworkSubject(homeworks: List<Homework>) {
             var expanded by remember { mutableStateOf(false) }
             Column(
                 Modifier
-                    .clickable { expanded = !expanded } // FUTURE: SEND_HOMEWORK_DONE_STATE
+                    .clickable { expanded = !expanded }
                     .padding(
                         start = 8.dp, end = 16.dp, bottom = 16.dp
                     )) {
@@ -203,7 +203,7 @@ fun HomeworkSubject(homeworks: List<Homework>) {
                                 stringResource(
                                     R.string.do_t,
                                     it.materialsCount.first { it.selectedMode == "execute" }.amount
-                                ), // FUTURE: UNTRANSLATED
+                                ),
                                 color = MaterialTheme.colorScheme.tertiary
                             )
                         }
@@ -212,7 +212,14 @@ fun HomeworkSubject(homeworks: List<Homework>) {
                 Row(
                     Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Checkbox(isDone, { isDone = it }) // FUTURE: SEND_HOMEWORK_DONE_STATE
+                    var visible by remember { mutableStateOf(true) }
+                    Checkbox(isDone, { state ->
+                        isDone = state
+                        visible = false
+                        DataService.setHomeworkDoneState(it.homeworkEntryStudentId, state) {
+                            visible = true
+                        }
+                    }, enabled = visible)
                     Text(
                         it.description,
                         Modifier.animateContentSize(),

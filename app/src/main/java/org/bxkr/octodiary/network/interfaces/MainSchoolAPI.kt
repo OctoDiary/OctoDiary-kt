@@ -2,6 +2,7 @@ package org.bxkr.octodiary.network.interfaces
 
 import org.bxkr.octodiary.Diary
 import org.bxkr.octodiary.models.homeworks.HomeworksResponse
+import org.bxkr.octodiary.models.lessonschedule.LessonSchedule
 import org.bxkr.octodiary.models.mark.MarkInfo
 import org.bxkr.octodiary.models.marklistdate.MarkListDate
 import org.bxkr.octodiary.models.marklistsubject.MarkListSubject
@@ -12,8 +13,10 @@ import org.bxkr.octodiary.models.visits.VisitsResponse
 import org.bxkr.octodiary.network.NetworkService.BaseUrl
 import org.bxkr.octodiary.network.NetworkService.MESAPIConfig
 import retrofit2.Call
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -154,4 +157,51 @@ interface MainSchoolAPI {
         @Query("student_id") studentId: Long,
         @Header("X-Mes-Subsystem") mesSubsystem: String = MESAPIConfig.FAMILYMP
     ): Call<MarkListSubject>
+
+    /**
+     * Sets homework as done.
+     *
+     * @param accessToken Access token.
+     * @param homeworkId Homework ID.
+     * @param mesSubsystem MES subsystem (["familymp"][MESAPIConfig.FAMILYMP] by default).
+     * @return Nothing.
+     */
+    @POST("family/mobile/v1/homeworks/{homework_id}/done")
+    fun doHomework(
+        @Header("auth-token") accessToken: String,
+        @Path("homework_id") homeworkId: Long,
+        @Header("X-Mes-Subsystem") mesSubsystem: String = MESAPIConfig.FAMILYMP
+    ): Call<Unit>
+
+    /**
+     * Sets homework as undone.
+     *
+     * @param accessToken Access token.
+     * @param homeworkId Homework ID.
+     * @param mesSubsystem MES subsystem (["familymp"][MESAPIConfig.FAMILYMP] by default).
+     * @return Nothing.
+     */
+    @DELETE("family/mobile/v1/homeworks/{homework_id}/done")
+    fun undoHomework(
+        @Header("auth-token") accessToken: String,
+        @Path("homework_id") homeworkId: Long,
+        @Header("X-Mes-Subsystem") mesSubsystem: String = MESAPIConfig.FAMILYMP
+    ): Call<Unit>
+
+    /**
+     * Gets lesson description and homework.
+     *
+     * @param accessToken Access token.
+     * @param lessonId Lesson ID.
+     * @param studentId Student ID.
+     * @param mesSubsystem MES subsystem (["familymp"][MESAPIConfig.FAMILYMP] by default).
+     * @return [LessonSchedule]
+     */
+    @GET("family/mobile/v1/lesson_schedule_items/{lesson_id}")
+    fun lessonSchedule(
+        @Header("auth-token") accessToken: String,
+        @Path("lesson_id") lessonId: Long,
+        @Query("student_id") studentId: Long,
+        @Header("X-Mes-Subsystem") mesSubsystem: String = MESAPIConfig.FAMILYMP
+    ): Call<LessonSchedule>
 }

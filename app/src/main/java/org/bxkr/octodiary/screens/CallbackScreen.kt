@@ -13,22 +13,37 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import org.bxkr.octodiary.R
 import org.bxkr.octodiary.Screen
+import org.bxkr.octodiary.authPrefs
 import org.bxkr.octodiary.network.MESLoginService.MosExchangeToken
 import org.bxkr.octodiary.network.MySchoolLoginService.EsiaExchangeToken
+import org.bxkr.octodiary.save
 import org.bxkr.octodiary.screenLive
 
 @Composable
-fun CallbackScreen(code: String, type: CallbackType) {
-    val token: MutableState<String?> = remember { mutableStateOf(null) }
+fun CallbackScreen(code: String, type: CallbackType, subsystem: Int?) {
+    val hasToken: MutableState<Boolean> = remember { mutableStateOf(false) }
 
-    if (token.value == null) {
+    if (!hasToken.value) {
         when (type) {
-            CallbackType.MosRu -> MosExchangeToken(code, token)
-            CallbackType.Esia -> EsiaExchangeToken(code, token)
+            CallbackType.MosRu -> MosExchangeToken(code, hasToken)
+            CallbackType.Esia -> EsiaExchangeToken(code, hasToken)
+            CallbackType.TgBot -> {
+                if (subsystem != null) {
+                    LocalContext.current.authPrefs.save(
+                        "auth" to true,
+                        "subsystem" to subsystem,
+                        "access_token" to code
+                    )
+                    hasToken.value = true
+                } else {
+                    screenLive.postValue(Screen.Login)
+                }
+            }
         }
     }
 
@@ -37,7 +52,7 @@ fun CallbackScreen(code: String, type: CallbackType) {
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            if (token.value == null) {
+            if (!hasToken.value) {
                 Text(text = stringResource(R.string.exchanging_code_to_token), modifier = Modifier.padding(16.dp))
                 CircularProgressIndicator()
 
@@ -50,5 +65,6 @@ fun CallbackScreen(code: String, type: CallbackType) {
 
 enum class CallbackType(val host: String) {
     MosRu("oauth2redirect"),
-    Esia("authRegionRedirect")
+    Esia("authRegionRedirect"),
+    TgBot("tgbot")
 }
