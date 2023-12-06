@@ -17,7 +17,7 @@ data class LessonHomework(
     @SerializedName("homework_created_at")
     val homeworkCreatedAt: String,
     @SerializedName("homework_entry_id")
-    val homeworkEntryId: Int,
+    val homeworkEntryId: Long,
     @SerializedName("homework_entry_student_id")
     val homeworkEntryStudentId: Long,
     @SerializedName("homework_id")

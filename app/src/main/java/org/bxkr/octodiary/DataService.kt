@@ -353,6 +353,14 @@ object DataService {
         }
     }
 
+    fun getLaunchUrl(homeworkId: Long, materialId: String, listener: (String) -> Unit) {
+        assert(this::token.isInitialized)
+
+        dSchoolApi.launchMaterial(token, homeworkId, materialId).baseEnqueue(::baseErrorFunction) {
+            listener(it)
+        }
+    }
+
     fun updateAll() {
         if (loadingStarted) return else loadingStarted = true
         // ADD_NEW_FIELD_HERE

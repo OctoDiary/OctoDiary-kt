@@ -658,14 +658,27 @@ fun LessonSheetContent(lessonId: Long) {
                             material.items.forEach {
                                 val ctx = LocalContext.current
                                 OutlinedButton(onClick = {
-                                    val browserIntent = Intent(
-                                        Intent.ACTION_VIEW,
-                                        Uri.parse(
-                                            it.link
-                                                ?: it.urls.firstOrNull { it.urlType == "view" }?.url
+                                    if (material.type == "test_spec_binding") {
+                                        DataService.getLaunchUrl(
+                                            homework.homeworkEntryId,
+                                            it.uuid ?: "",
+                                        ) {
+                                            val browserIntent = Intent(
+                                                Intent.ACTION_VIEW,
+                                                Uri.parse(it)
+                                            )
+                                            startActivity(ctx, browserIntent, null)
+                                        }
+                                    } else {
+                                        val browserIntent = Intent(
+                                            Intent.ACTION_VIEW,
+                                            Uri.parse(
+                                                it.link
+                                                    ?: it.urls.firstOrNull { it.urlType == "view" }?.url
+                                            )
                                         )
-                                    )
-                                    startActivity(ctx, browserIntent, null)
+                                        startActivity(ctx, browserIntent, null)
+                                    }
                                 }) {
                                     Text(it.title)
                                 }
