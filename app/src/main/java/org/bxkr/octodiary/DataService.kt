@@ -356,9 +356,14 @@ object DataService {
     fun getLaunchUrl(homeworkId: Long, materialId: String, listener: (String) -> Unit) {
         assert(this::token.isInitialized)
 
-        dSchoolApi.launchMaterial(token, homeworkId, materialId).baseEnqueue(::baseErrorFunction) {
-            listener(it)
-        }
+        dSchoolApi.launchMaterial(token, homeworkId, materialId)
+            .baseEnqueue({ errorBody, httpCode, className ->
+                if (httpCode < 400) {
+                    listener(errorBody.string())
+                } else {
+                    baseErrorFunction(errorBody, httpCode, className)
+                }
+            }) {}
     }
 
     fun updateAll() {

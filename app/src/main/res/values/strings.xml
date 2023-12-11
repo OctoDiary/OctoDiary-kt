@@ -244,4 +244,6 @@
     <string name="log_into_bot">Log into OctoDiaryBot</string>
     <string name="soon">Coming soon…</string>
     <string name="already_auth">You\'re already logged in</string>
+    <string name="mes_material">MES Library</string>
+    <string name="copy_link">Copy link</string>
 </resources>

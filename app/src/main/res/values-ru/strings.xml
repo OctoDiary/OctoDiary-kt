@@ -190,4 +190,6 @@
     <string name="log_into_bot">Войти в OctoDiaryBot</string>
     <string name="soon">Скоро…</string>
     <string name="already_auth">Вы уже авторизованы</string>
+    <string name="mes_material">Библиотека МЭШ</string>
+    <string name="copy_link">Скопировать ссылку</string>
 </resources>

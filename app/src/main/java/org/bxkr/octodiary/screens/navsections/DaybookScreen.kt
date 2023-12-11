@@ -86,6 +86,7 @@ import kotlinx.coroutines.launch
 import org.bxkr.octodiary.DataService
 import org.bxkr.octodiary.R
 import org.bxkr.octodiary.components.Mark
+import org.bxkr.octodiary.components.WebViewDialog
 import org.bxkr.octodiary.formatToDay
 import org.bxkr.octodiary.formatToHumanDay
 import org.bxkr.octodiary.formatToTime
@@ -612,9 +613,17 @@ fun EventItem(event: Event) {
 @Composable
 fun LessonSheetContent(lessonId: Long) {
     var lessonInfo by remember { mutableStateOf<LessonSchedule?>(null) }
+    var openWebView by remember { mutableStateOf(false) }
+    var webViewUrl by remember { mutableStateOf("") }
     LaunchedEffect(Unit) {
         DataService.getLessonInfo(lessonId) {
             lessonInfo = it
+        }
+    }
+
+    if (openWebView) {
+        WebViewDialog(url = webViewUrl) {
+            openWebView = false
         }
     }
 
@@ -658,18 +667,7 @@ fun LessonSheetContent(lessonId: Long) {
                             material.items.forEach {
                                 val ctx = LocalContext.current
                                 OutlinedButton(onClick = {
-                                    if (material.type == "test_spec_binding") {
-                                        DataService.getLaunchUrl(
-                                            homework.homeworkEntryId,
-                                            it.uuid ?: "",
-                                        ) {
-                                            val browserIntent = Intent(
-                                                Intent.ACTION_VIEW,
-                                                Uri.parse(it)
-                                            )
-                                            startActivity(ctx, browserIntent, null)
-                                        }
-                                    } else {
+                                    if (material.type == "attachments") {
                                         val browserIntent = Intent(
                                             Intent.ACTION_VIEW,
                                             Uri.parse(
@@ -678,6 +676,14 @@ fun LessonSheetContent(lessonId: Long) {
                                             )
                                         )
                                         startActivity(ctx, browserIntent, null)
+                                    } else {
+                                        DataService.getLaunchUrl(
+                                            homework.homeworkEntryId,
+                                            it.uuid ?: "",
+                                        ) {
+                                            webViewUrl = it
+                                            openWebView = true
+                                        }
                                     }
                                 }) {
                                     Text(it.title)
