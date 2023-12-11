@@ -237,7 +237,7 @@ fun NavScreen(modifier: Modifier, pinFinished: MutableState<Boolean>) {
 
                     if (!DataService.loadingStarted) {
                         if (cachePrefs.get<Long>("age")
-                                ?.let { (System.currentTimeMillis() - it) < 86400 } == true
+                                ?.let { (System.currentTimeMillis() - it) < 86400000 } == true
                         ) {
                             DataService.subsystem =
                                 Diary.values()[authPrefs.get<Int>("subsystem") ?: 0]
