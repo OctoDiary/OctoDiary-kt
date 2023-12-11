@@ -1,6 +1,7 @@
 package org.bxkr.octodiary.network
 
 import org.bxkr.octodiary.network.interfaces.DSchoolAPI
+import org.bxkr.octodiary.network.interfaces.ExternalAPI
 import org.bxkr.octodiary.network.interfaces.MainSchoolAPI
 import org.bxkr.octodiary.network.interfaces.MosAuthAPI
 import org.bxkr.octodiary.network.interfaces.RegionalAuthAPI
@@ -43,6 +44,7 @@ object NetworkService {
     object ExternalIntegrationConfig {
         const val BOT_AUTH_URL = "https://octodiary.dsop.online/redir2bot?token=%s&system=%s"
         const val TELEGRAM_CHANNEL_URL = "https://t.me/OctoDiary"
+        const val VERIFY_TOKEN = "930dd75f10cd6288f1bbd248cd2a79690e58fac6702a5fdcb77ea560269d2500"
     }
 
     object BaseUrl {
@@ -54,6 +56,8 @@ object NetworkService {
         const val MOSREG_SECONDARY = "https://authedu.mosreg.ru/"
         const val MOSREG_SCHOOL_API = "https://api.myschool.mosreg.ru/"
         const val MOSREG_DNEVNIK = "https://myschool.mosreg.ru/"
+
+        const val EXTERNAL_API = "https://octodiary.dsop.online/"
     }
 
     private inline fun <reified T> baseApiConstructor(baseUrl: String): T {
@@ -67,6 +71,7 @@ object NetworkService {
 
     fun mosAuthApi() = baseApiConstructor<MosAuthAPI>(BaseUrl.MOS_AUTH)
     fun regionalAuthApi() = baseApiConstructor<RegionalAuthAPI>(BaseUrl.MOSREG_SECONDARY)
+    fun externalApi() = baseApiConstructor<ExternalAPI>(BaseUrl.EXTERNAL_API)
 
     fun dSchoolApi(baseUrl: String) = baseApiConstructor<DSchoolAPI>(baseUrl)
     fun mainSchoolApi(baseUrl: String) = baseApiConstructor<MainSchoolAPI>(baseUrl)

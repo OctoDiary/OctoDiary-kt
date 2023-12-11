@@ -188,6 +188,9 @@ fun NavScreen(modifier: Modifier, pinFinished: MutableState<Boolean>) {
                     if (DataService.loadedEverything.value) {
                         refreshState.endRefresh()
                     }
+                    LaunchedEffect(Unit) {
+                        DataService.sendStatistic {}
+                    }
                     NavHost(
                         navController = navController.value!!,
                         startDestination = NavSection.Dashboard.route

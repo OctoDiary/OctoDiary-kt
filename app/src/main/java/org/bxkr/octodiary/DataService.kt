@@ -18,6 +18,7 @@ import org.bxkr.octodiary.models.schoolinfo.SchoolInfo
 import org.bxkr.octodiary.models.sessionuser.SessionUser
 import org.bxkr.octodiary.models.subjectranking.SubjectRanking
 import org.bxkr.octodiary.models.visits.VisitsResponse
+import org.bxkr.octodiary.network.NetworkService.externalApi
 import org.bxkr.octodiary.network.interfaces.DSchoolAPI
 import org.bxkr.octodiary.network.interfaces.MainSchoolAPI
 import org.bxkr.octodiary.network.interfaces.SchoolSessionAPI
@@ -364,6 +365,12 @@ object DataService {
                     baseErrorFunction(errorBody, httpCode, className)
                 }
             }) {}
+    }
+
+    fun sendStatistic(onUpdated: () -> Unit) {
+        assert(this::userId.isInitialized)
+
+        externalApi().sendStat(userId[0].id).baseEnqueue { onUpdated() }
     }
 
     fun updateAll() {
