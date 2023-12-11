@@ -685,7 +685,13 @@ fun LessonSheetContent(lessonId: Long) {
                                             openWebView = true
                                         }
                                     }
-                                }) {
+                                }, contentPadding = ButtonDefaults.ButtonWithIconContentPadding) {
+                                    Icon(
+                                        material.icon,
+                                        stringResource(id = R.string.image),
+                                        Modifier.size(ButtonDefaults.IconSize)
+                                    )
+                                    Spacer(Modifier.size(ButtonDefaults.IconSpacing))
                                     Text(it.title)
                                 }
                             }
