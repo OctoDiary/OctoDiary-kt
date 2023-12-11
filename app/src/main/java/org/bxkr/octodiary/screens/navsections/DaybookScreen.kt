@@ -490,8 +490,10 @@ fun EventItem(event: Event) {
                                             .padding(end = 3.dp)
                                             .alpha(0.8f)
                                     )
-                                    Column {
-                                        event.homework.descriptions.forEach { Text(it) }
+                                    SelectionContainer {
+                                        Column {
+                                            event.homework.descriptions.forEach { Text(it) }
+                                        }
                                     }
                                 }
                             }
@@ -660,9 +662,10 @@ fun LessonSheetContent(lessonId: Long) {
                     if (comment != null && comment is String) Text(comment)
                     HorizontalDivider(Modifier.padding(16.dp))
                     lessonHomeworks.forEach { homework ->
-                        SelectionContainer {
-                            Text(homework.homework)
-                        }
+                        val clipboardManager = LocalClipboardManager.current
+                        Text(homework.homework, modifier = Modifier.clickable {
+                            clipboardManager.setText(AnnotatedString(homework.homework))
+                        })
                         homework.materials.forEach { material ->
                             material.items.forEach {
                                 val ctx = LocalContext.current
