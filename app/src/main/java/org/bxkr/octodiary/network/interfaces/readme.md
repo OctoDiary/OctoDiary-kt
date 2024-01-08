@@ -1,10 +1,10 @@
 # Assignment
 
-| Interface        |    `mos.ru`     |   `mosreg.ru`   |
-|:-----------------|:---------------:|:---------------:|
-| MosAuthAPI       |      login      | **Unsupported** |
-| RegionalAuthAPI  | **Unsupported** |     authedu     |
-| DSchoolAPI       |     dnevnik     |    myschool     |
-| MainSchoolAPI    |   school/api    |  api.myschool   |
-| SchoolSessionAPI |     school      |    myschool     |
-| SecondaryAPI     |     school      |     authedu     |
+| Interface        |    `mos.ru`     |   `mosreg.ru`   | `admoblkaluga.ru` |
+|:-----------------|:---------------:|:---------------:|:-----------------:|
+| MosAuthAPI       |      login      | **Unsupported** |  **Unsupported**  |
+| RegionalAuthAPI  | **Unsupported** |     authedu     |     education     |
+| DSchoolAPI       |     dnevnik     |    myschool     |      dnevnik      |
+| MainSchoolAPI    |   school/api    |  api.myschool   |        api        |
+| SchoolSessionAPI |     school      |    myschool     |      dnevnik      |
+| SecondaryAPI     |     school      |     authedu     |     education     |
