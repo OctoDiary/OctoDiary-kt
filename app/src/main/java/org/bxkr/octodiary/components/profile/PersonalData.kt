@@ -51,7 +51,7 @@ fun PersonalData() {
             .fillMaxWidth()
     ) {
         val clipboardManager = LocalClipboardManager.current
-        with(DataService.profile.children[0]) {
+        with(DataService.profile.children[DataService.currentProfile]) {
             Text("$lastName $firstName $middleName", style = MaterialTheme.typography.titleMedium)
             Text(
                 stringResource(R.string.birth_date_t, birthDate.parseFromDay().formatToHumanDate())
