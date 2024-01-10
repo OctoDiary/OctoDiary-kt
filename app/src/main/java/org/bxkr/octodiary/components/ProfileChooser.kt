@@ -25,7 +25,6 @@ import org.bxkr.octodiary.formatToHumanDate
 import org.bxkr.octodiary.modalDialogStateLive
 import org.bxkr.octodiary.network.interfaces.SecondaryAPI
 import org.bxkr.octodiary.parseFromDay
-import org.bxkr.octodiary.reloadEverythingLive
 
 
 @OptIn(ExperimentalGlideComposeApi::class)
@@ -46,7 +45,9 @@ fun ProfileChooser() {
                     .clickable {
                         modalDialogStateLive.postValue(false)
                         DataService.currentProfile = index
-                        reloadEverythingLive.value?.invoke()
+                        DataService.loadedEverything.value = false
+                        DataService.loadingStarted = false
+                        DataService.updateAll()
                     },
                 border = if (DataService.currentProfile == index) {
                     BorderStroke(2.dp, MaterialTheme.colorScheme.primary)
