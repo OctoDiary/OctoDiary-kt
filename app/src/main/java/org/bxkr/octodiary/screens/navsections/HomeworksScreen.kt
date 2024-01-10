@@ -212,14 +212,10 @@ fun HomeworkSubject(homeworks: List<Homework>) {
                 Row(
                     Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically
                 ) {
-                    var visible by remember { mutableStateOf(true) }
                     Checkbox(isDone, { state ->
                         isDone = state
-                        visible = false
-                        DataService.setHomeworkDoneState(it.homeworkEntryStudentId, state) {
-                            visible = true
-                        }
-                    }, enabled = visible)
+                        DataService.setHomeworkDoneState(it.homeworkEntryStudentId, state) {}
+                    })
                     Text(
                         it.description,
                         Modifier.animateContentSize(),
