@@ -110,6 +110,12 @@ inline fun <reified T> Prefs.get(prefId: String): T? {
     }
 }
 
+fun Prefs.clear() {
+    ctx.getSharedPreferences(prefPath, Context.MODE_PRIVATE).edit(commit = true) {
+        clear()
+    }
+}
+
 inline fun <reified T> Call<T>.baseEnqueue(
     noinline errorFunction: ((errorBody: ResponseBody, httpCode: Int, className: String?) -> Unit) = { _, _, _ -> },
     noinline noConnectionFunction: ((t: Throwable, className: String?) -> Unit) = { _, _ -> },
@@ -234,6 +240,7 @@ fun Activity.logOut() {
         "has_pin" to false,
         "pin" to null
     )
+    cachePrefs.clear()
     screenLive.value = Screen.Login
     startActivity(Intent(this, MainActivity::class.java))
     exitProcess(0)
