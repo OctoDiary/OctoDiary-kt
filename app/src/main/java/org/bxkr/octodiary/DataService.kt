@@ -75,6 +75,42 @@ object DataService {
 
     // ADD_NEW_FIELD_HERE
 
+    val states
+        get() =
+            listOfNotNull(
+                ::hasUserId,
+                ::hasSessionUser,
+                ::hasEventCalendar,
+                ::hasRanking,
+                ::hasClassMembers,
+                ::hasProfile,
+                ::hasVisits.takeIf { subsystem == Diary.MES },
+                ::hasMarksDate,
+                ::hasMarksSubject,
+                ::hasHomeworks,
+                ::hasMealBalance.takeIf { subsystem == Diary.MES },
+                ::hasSchoolInfo,
+                ::hasSubjectRanking
+            )
+
+    val fields
+        get() =
+            listOfNotNull(
+                ::userId,
+                ::sessionUser,
+                ::eventCalendar,
+                ::ranking,
+                ::classMembers,
+                ::profile,
+                ::visits.takeIf { subsystem == Diary.MES },
+                ::marksDate,
+                ::marksSubject,
+                ::homeworks,
+                ::mealBalance.takeIf { subsystem == Diary.MES },
+                ::schoolInfo,
+                ::subjectRanking
+            )
+
     val loadedEverything = mutableStateOf(false)
 
     var tokenExpirationHandler: (() -> Unit)? = null
@@ -376,21 +412,6 @@ object DataService {
     fun updateAll() {
         if (loadingStarted) return else loadingStarted = true
         // ADD_NEW_FIELD_HERE
-        val states = listOfNotNull(
-            ::hasUserId,
-            ::hasSessionUser,
-            ::hasEventCalendar,
-            ::hasRanking,
-            ::hasClassMembers,
-            ::hasProfile,
-            ::hasVisits.takeIf { subsystem == Diary.MES },
-            ::hasMarksDate,
-            ::hasMarksSubject,
-            ::hasHomeworks,
-            ::hasMealBalance.takeIf { subsystem == Diary.MES },
-            ::hasSchoolInfo,
-            ::hasSubjectRanking
-        )
         states.forEach { it.set(false) }
         val onSingleItemLoad = { name: String ->
             val statesInit = states.map { it.get() }
@@ -426,24 +447,10 @@ object DataService {
     }
 
     fun loadFromCache(get: (String) -> String) {
-        // ADD_NEW_FIELD_HERE
-        listOfNotNull(
-            ::userId,
-            ::sessionUser,
-            ::eventCalendar,
-            ::ranking,
-            ::classMembers,
-            ::profile,
-            ::visits.takeIf { subsystem == Diary.MES },
-            ::marksDate,
-            ::marksSubject,
-            ::homeworks,
-            ::mealBalance.takeIf { subsystem == Diary.MES },
-            ::schoolInfo,
-            ::subjectRanking
-        ).map { it.name }.forEach {
+        fields.map { it.name }.forEachIndexed { index, it ->
             javaClass.getDeclaredField(it)
                 .set(this, Gson().fromJson(get(it), javaClass.getDeclaredField(it).genericType))
+            states[index].set(true)
         }
     }
 }
