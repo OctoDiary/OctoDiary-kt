@@ -2,6 +2,7 @@ package org.bxkr.octodiary.screens.navsections
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -21,6 +22,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -167,28 +169,32 @@ fun VisitsList() {
         items(DataService.visits.payload) {
             OutlinedCard(Modifier.padding(bottom = 8.dp)) {
                 Row {
-                    Row(Modifier.padding(8.dp)) {
-                        Text(
-                            it.date.parseFromDay().formatToHumanDay(),
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.padding(end = 4.dp)
-                        )
-                        Text(
-                            it.visits[0].inX, // FUTURE: MULTIPLE_DAY_VISITS
-                            modifier = Modifier.padding(end = 4.dp)
-                        )
-                        Icon(
-                            Icons.AutoMirrored.Rounded.ArrowForward,
-                            stringResource(id = R.string.to),
-                            modifier = Modifier.padding(end = 4.dp)
-                        )
-                        Text(
-                            it.visits[0].out,
-                            modifier = Modifier
-                                .padding(end = 4.dp)
-                                .fillMaxWidth()
-                        )
+                    it.visits.forEachIndexed { index, visit ->
+                        Row(Modifier.padding(8.dp)) {
+                            Text(
+                                it.date.parseFromDay().formatToHumanDay(),
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.primary,
+                                modifier = Modifier.padding(end = 4.dp).alpha(
+                                    if (index == 0) 1f else 0f
+                                )
+                            )
+                            Text(
+                                visit.inX,
+                                modifier = Modifier.padding(end = 4.dp)
+                            )
+                            Icon(
+                                Icons.AutoMirrored.Rounded.ArrowForward,
+                                stringResource(id = R.string.to),
+                                modifier = Modifier.padding(end = 4.dp)
+                            )
+                            Text(
+                                visit.out,
+                                modifier = Modifier
+                                    .padding(end = 4.dp)
+                                    .fillMaxWidth()
+                            )
+                        }
                     }
                 }
             }

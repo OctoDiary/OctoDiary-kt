@@ -213,7 +213,6 @@ fun NavScreen(modifier: Modifier, pinFinished: MutableState<Boolean>) {
                     }
                 }
                 AnimatedVisibility(!localLoadedState) {
-                    // FUTURE: ARCHIVE_RESTORE_DATA
                     var progress by remember { mutableFloatStateOf(0f) }
                     val progressAnimated by animateFloatAsState(
                         progress,
