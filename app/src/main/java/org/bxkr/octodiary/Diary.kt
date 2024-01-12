@@ -134,8 +134,9 @@ enum class Diary(
                     unfocusedIndicatorColor = Color.Unspecified
                 )
             )
+            val coroutineScope = androidx.compose.runtime.rememberCoroutineScope()
             androidx.compose.material3.Button(
-                onClick = { context.logInWithPassword(loginText, passwordText) },
+                onClick = { context.logInWithPassword(loginText, passwordText, coroutineScope) },
                 modifier = modifier
                     .padding(top = 32.dp)
             ) {
