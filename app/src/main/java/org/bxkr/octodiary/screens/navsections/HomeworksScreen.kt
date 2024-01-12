@@ -42,7 +42,6 @@ import org.bxkr.octodiary.formatToLongHumanDay
 import org.bxkr.octodiary.formatToWeekday
 import org.bxkr.octodiary.models.homeworks.Homework
 import org.bxkr.octodiary.parseFromDay
-import org.bxkr.octodiary.showFilterLive
 
 val enabledSubjectsLive = MutableLiveData<List<Long>>(emptyList())
 
@@ -61,7 +60,6 @@ fun HomeworksScreen() {
             }
         }
         enabledSubjectsLive.postValue(DataService.homeworks.map { it.subjectId })
-        showFilterLive.postValue(true)
         contentDependentActionIconLive.postValue(Icons.Rounded.FilterAlt)
         contentDependentActionLive.postValue {
             DataService.homeworks.map { it.subjectId to it.subjectName }.toSet().forEach {

@@ -286,7 +286,9 @@ class MainActivity : ComponentActivity() {
                         NavigationBarItem(
                             selected = selected,
                             onClick = {
-                                if (!selected) {
+                                if (it == NavSection.Homeworks) {
+                                    showFilterLive.postValue(true)
+                                } else {
                                     showFilterLive.postValue(false)
                                 }
                                 navController.value!!.navigate(it.route) {
