@@ -6,16 +6,18 @@ junit = "4.13.2"
 androidx-test-ext-junit = "1.1.5"
 espresso-core = "3.5.1"
 lifecycle-runtime-ktx = "2.6.2"
-activity-compose = "1.8.1"
+activity-compose = "1.8.2"
 compose-bom = "2023.10.01"
-material-icons-extended = "1.6.0-beta02"
-compose = "1.6.0-beta02"
+material-icons-extended = "1.6.0-beta03"
+compose = "1.6.0-beta03"
 browser = "1.7.0"
 retrofit = "2.9.0"
-material = "1.2.0-alpha12"
-runtime-livedata = "1.6.0-beta02"
-navigation-compose = "2.7.5"
+material = "1.2.0-beta01"
+runtime-livedata = "1.6.0-beta03"
+navigation-compose = "2.7.6"
 glide = "1.0.0-beta01"
+glance-appwidget = "1.0.0"
+glance-material3 = "1.0.0"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
@@ -40,6 +42,8 @@ androidx-runtime-livedata = { group = "androidx.compose.runtime", name = "runtim
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation-compose" }
 glide = { group = "com.github.bumptech.glide", name = "compose", version.ref = "glide" }
 converter-scalars = { group = "com.squareup.retrofit2", name = "converter-scalars", version.ref = "retrofit" }
+androidx-glance-appwidget = { group = "androidx.glance", name = "glance-appwidget", version.ref = "glance-appwidget" }
+androidx-glance-material3 = { group = "androidx.glance", name = "glance-material3", version.ref = "glance-material3" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
