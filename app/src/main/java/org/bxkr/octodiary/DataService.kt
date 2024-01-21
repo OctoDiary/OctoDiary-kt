@@ -403,10 +403,10 @@ object DataService {
             }) {}
     }
 
-    fun sendStatistic(onUpdated: () -> Unit) {
+    fun sendStatistic(deviceId: String, onUpdated: () -> Unit) {
         assert(this::userId.isInitialized)
 
-        externalApi().sendStat(userId[0].id).baseEnqueue { onUpdated() }
+        externalApi().sendStat(subsystem.ordinal, deviceId).baseEnqueue { onUpdated() }
     }
 
     fun updateAll() {

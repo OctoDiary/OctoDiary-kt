@@ -189,7 +189,7 @@ fun NavScreen(modifier: Modifier, pinFinished: MutableState<Boolean>) {
                         refreshState.endRefresh()
                     }
                     LaunchedEffect(Unit) {
-                        DataService.sendStatistic {}
+                        DataService.sendStatistic(context.mainPrefs.get<String>("deviceId")!!) {}
                     }
                     NavHost(
                         navController = navController.value!!,
