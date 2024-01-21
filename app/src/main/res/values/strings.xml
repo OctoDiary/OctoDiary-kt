@@ -246,4 +246,12 @@
     <string name="already_auth">You\'re already logged in</string>
     <string name="mes_material">MES Library</string>
     <string name="copy_link">Copy link</string>
+    <string name="event">Event</string>
+    <string name="no_event">No events found</string>
+    <string name="s_till_the_end">%s till the end</string>
+    <string name="next_event">Next lesson is at %s</string>
+    <string name="at_lesson_now">At the lesson</string>
+    <string name="break_label">Break</string>
+    <string name="rest">Rest</string>
+    <string name="holidays">Holidays</string>
 </resources>

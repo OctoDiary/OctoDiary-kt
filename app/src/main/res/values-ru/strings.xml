@@ -192,4 +192,12 @@
     <string name="already_auth">Вы уже авторизованы</string>
     <string name="mes_material">Библиотека МЭШ</string>
     <string name="copy_link">Скопировать ссылку</string>
+    <string name="event">Событие</string>
+    <string name="no_event">Событий не найдено</string>
+    <string name="s_till_the_end">До конца %s</string>
+    <string name="next_event">Следующий урок в %s</string>
+    <string name="at_lesson_now">На уроке</string>
+    <string name="break_label">Перемена</string>
+    <string name="rest">Отдых</string>
+    <string name="holidays">Каникулы</string>
 </resources>
