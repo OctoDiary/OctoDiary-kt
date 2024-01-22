@@ -324,7 +324,7 @@ object DataService {
         secondaryApi.refreshToken("Bearer $token")
             .baseEnqueue(::baseErrorFunction) {
                 token = it
-                onUpdated()
+                updateUserId { onUpdated() }
             }
     }
 

@@ -37,7 +37,8 @@ interface DSchoolAPI {
      **/
     @GET("acl/api/users/profile_info")
     fun profilesId(
-        @Header("auth-token") authHeader: String
+        @Header("auth-token") authHeader: String,
+        @Header("partner-source-id") partnerSourceId: String = "MOBILE"
     ): Call<ProfilesId>
 
     /**
