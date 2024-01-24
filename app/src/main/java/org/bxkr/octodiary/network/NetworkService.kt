@@ -44,6 +44,7 @@ object NetworkService {
     object ExternalIntegrationConfig {
         const val BOT_AUTH_URL = "https://octodiary.dsop.online/redir2bot?token=%s&system=%s"
         const val TELEGRAM_CHANNEL_URL = "https://t.me/OctoDiary"
+        const val TELEGRAM_REPORT_URL = "https://t.me/OctoDiaryBot?start=feedback"
         const val VERIFY_TOKEN = "930dd75f10cd6288f1bbd248cd2a79690e58fac6702a5fdcb77ea560269d2500"
     }
 

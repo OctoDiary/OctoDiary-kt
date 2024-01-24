@@ -24,6 +24,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.automirrored.rounded.OpenInNew
+import androidx.compose.material.icons.rounded.BugReport
 import androidx.compose.material.icons.rounded.Done
 import androidx.compose.material.icons.rounded.Image
 import androidx.compose.material3.Button
@@ -52,6 +53,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -70,6 +72,7 @@ import org.bxkr.octodiary.launchUrlLive
 import org.bxkr.octodiary.logOut
 import org.bxkr.octodiary.mainPrefs
 import org.bxkr.octodiary.network.NetworkService
+import org.bxkr.octodiary.network.NetworkService.ExternalIntegrationConfig.TELEGRAM_REPORT_URL
 import org.bxkr.octodiary.save
 import org.bxkr.octodiary.screens.SetPinDialog
 import org.bxkr.octodiary.ui.theme.CustomColorScheme
@@ -78,6 +81,7 @@ import org.bxkr.octodiary.ui.theme.OctoDiaryTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsDialog(onDismissRequest: () -> Unit) {
+    val uriHandler = LocalUriHandler.current
     Dialog(
         properties = DialogProperties(
             usePlatformDefaultWidth = false
@@ -93,6 +97,14 @@ fun SettingsDialog(onDismissRequest: () -> Unit) {
                             Icon(
                                 Icons.AutoMirrored.Rounded.ArrowBack,
                                 stringResource(R.string.back)
+                            )
+                        }
+                    },
+                    actions = {
+                        IconButton(onClick = { uriHandler.openUri(TELEGRAM_REPORT_URL) }) {
+                            Icon(
+                                Icons.Rounded.BugReport,
+                                stringResource(R.string.report_issue)
                             )
                         }
                     }

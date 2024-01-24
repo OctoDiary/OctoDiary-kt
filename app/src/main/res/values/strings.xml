@@ -254,4 +254,5 @@
     <string name="break_label">Break</string>
     <string name="rest">Rest</string>
     <string name="holidays">Holidays</string>
+    <string name="report_issue">Report an issue</string>
 </resources>
