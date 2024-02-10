@@ -202,7 +202,7 @@
     <string name="homeworks">Homework</string>
     <string name="to">to</string>
     <string name="schedule_today">Schedule today</string>
-    <string name="last_week_marks_are_shown">last week marks are shown</string>
+    <string name="last_week_marks_are_shown">last month marks are shown</string>
     <string name="birth_date_t">Birth date: %1$s</string>
     <string name="snils_t">"SNILS: "</string>
     <string name="show">show</string>

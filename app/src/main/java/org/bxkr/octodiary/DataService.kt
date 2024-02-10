@@ -246,7 +246,7 @@ object DataService {
             profile.children[0].contractId,
             fromDate = Calendar.getInstance().apply {
                 time = Date()
-                set(Calendar.DAY_OF_YEAR, get(Calendar.DAY_OF_YEAR) - 7)
+                set(Calendar.DAY_OF_YEAR, get(Calendar.DAY_OF_YEAR) - 61)
             }.time.formatToDay(),
             toDate = Date().formatToDay()
         ).baseEnqueue(::baseErrorFunction, ::baseInternalExceptionFunction) { visitsResponse ->
@@ -268,7 +268,7 @@ object DataService {
             token,
             studentId = profile.children[currentProfile].studentId,
             fromDate = Calendar.getInstance().run {
-                set(Calendar.WEEK_OF_YEAR, get(Calendar.WEEK_OF_YEAR) - 1)
+                set(Calendar.WEEK_OF_YEAR, get(Calendar.WEEK_OF_YEAR) - 4)
                 time
             }.formatToDay(),
             toDate = Date().formatToDay()
