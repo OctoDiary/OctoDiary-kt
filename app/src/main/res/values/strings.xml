@@ -255,4 +255,7 @@
     <string name="rest">Rest</string>
     <string name="holidays">Holidays</string>
     <string name="report_issue">Report an issue</string>
+    <string name="s_till_the_start">%s till the start</string>
+    <string name="when_to_go">School on %s at %s</string>
+    <string name="widget_lesson_desc_template">%s: %s in %s</string>
 </resources>

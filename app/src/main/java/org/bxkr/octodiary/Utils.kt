@@ -198,11 +198,15 @@ fun Date.formatToLongHumanDay(): String =
 fun Date.formatToHumanDate(): String =
     SimpleDateFormat("dd.MM.yyyy", LocalConfiguration.current.locales[0]).format(this)
 
-/** Formats [Date] to EEEE format [String] **/
+/** Formats [Date] to EEEE format [String] (takes context from composition) **/
 @ReadOnlyComposable
 @Composable
 fun Date.formatToWeekday(): String =
     SimpleDateFormat("EEEE", LocalConfiguration.current.locales[0]).format(this)
+
+/** Formats [Date] to EEEE format [String] (takes context as an argument) **/
+fun Date.formatToWeekday(ctx: Context): String =
+    SimpleDateFormat("EEEE", ctx.resources.configuration.locales[0]).format(this)
 
 /** Parses [String] of [OffsetDateTime] (very long with TZ) to [Date] **/
 fun String.parseLongDate(): Date =
@@ -293,3 +297,12 @@ val CloverShape: Shape = object : Shape {
         )
     }
 }
+
+fun Calendar.getRussianWeekdayOnFormat(): String =
+    when (get(Calendar.DAY_OF_WEEK)) {
+        Calendar.TUESDAY -> "во вторник"
+        Calendar.WEDNESDAY -> "в среду"
+        Calendar.FRIDAY -> "в пятницу"
+        Calendar.SATURDAY -> "в субботу"
+        else -> "в ${getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale("ru"))}"
+    }

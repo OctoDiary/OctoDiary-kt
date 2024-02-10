@@ -18,6 +18,9 @@ import androidx.glance.ImageProvider
 import androidx.glance.LocalContext
 import androidx.glance.appwidget.AndroidRemoteViews
 import androidx.glance.appwidget.GlanceAppWidget
+import androidx.glance.appwidget.cornerRadius
+import androidx.glance.appwidget.lazy.LazyColumn
+import androidx.glance.appwidget.lazy.items
 import androidx.glance.appwidget.provideContent
 import androidx.glance.background
 import androidx.glance.layout.Alignment
@@ -29,6 +32,8 @@ import androidx.glance.layout.fillMaxSize
 import androidx.glance.layout.fillMaxWidth
 import androidx.glance.layout.padding
 import androidx.glance.layout.size
+import androidx.glance.layout.wrapContentHeight
+import androidx.glance.text.FontStyle
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import org.bxkr.octodiary.CachePrefs
@@ -36,11 +41,15 @@ import org.bxkr.octodiary.R
 import org.bxkr.octodiary.cachePrefs
 import org.bxkr.octodiary.formatToDay
 import org.bxkr.octodiary.formatToTime
+import org.bxkr.octodiary.formatToWeekday
 import org.bxkr.octodiary.get
+import org.bxkr.octodiary.getRussianWeekdayOnFormat
 import org.bxkr.octodiary.models.events.Event
 import org.bxkr.octodiary.parseLongDate
 import org.bxkr.octodiary.ui.theme.Typography
+import java.util.Calendar
 import java.util.Date
+import java.util.Locale
 
 class StatusWidget : GlanceAppWidget() {
     override suspend fun provideGlance(context: Context, id: GlanceId) {
@@ -59,17 +68,36 @@ class StatusWidget : GlanceAppWidget() {
 
             var updateWidgetAt: Date? = null
             val header = @Composable { title: String ->
-                Row(verticalAlignment = Alignment.Vertical.CenterVertically) {
-                    Image(
-                        provider = ImageProvider(R.mipmap.ic_launcher_round),
-                        contentDescription = stringRes(resId = R.string.app_name),
-                        modifier = GlanceModifier.size(32.dp).padding(4.dp),
-                        contentScale = ContentScale.Fit
-                    )
-                    ThemedText(text = title, style = Typography.titleMedium.toGlanceStyle())
+                Row(
+                    GlanceModifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.Vertical.CenterVertically
+                ) {
+                    Row(GlanceModifier.defaultWeight()) {
+                        Image(
+                            provider = ImageProvider(R.mipmap.ic_launcher_round),
+                            contentDescription = stringRes(resId = R.string.app_name),
+                            modifier = GlanceModifier.size(24.dp).padding(4.dp),
+                            contentScale = ContentScale.Fit
+                        )
+                        ThemedText(text = title, style = Typography.titleMedium.toGlanceStyle())
+                    }
+                    Row(
+                        GlanceModifier.defaultWeight(),
+                        horizontalAlignment = Alignment.Horizontal.End
+                    ) {
+                        AndroidRemoteViews(
+                            RemoteViews(
+                                context.packageName,
+                                R.layout.widget_textclock
+                            ), GlanceModifier.fillMaxWidth()
+                        )
+                    }
                 }
             }
-            Column(GlanceModifier.fillMaxSize().background(GlanceTheme.colors.surface)) {
+            Column(
+                GlanceModifier.fillMaxSize().background(GlanceTheme.colors.surface)
+                    .cornerRadius(16.dp)
+            ) {
                 Column(GlanceModifier.padding(16.dp).fillMaxSize()) {
                     if (currentEvent != null) {
                         // Event is currently running (lesson)
@@ -130,12 +158,90 @@ class StatusWidget : GlanceAppWidget() {
                         }
                     } else if (timeTillNextEvent != null) {
                         updateWidgetAt = nearestStartingEvent!!.startAt.parseLongDate()
-                        if (timeTillNextEvent <= 30 * 60 * 1000) {
+                        if (timeTillNextEvent <= 40 * 60 * 1000) {
                             // No event is currently running, next event is soon (break)
                             header(stringRes(R.string.break_label))
+                            ThemedText(
+                                text = stringRes(
+                                    resId = R.string.next_event,
+                                    nearestStartingEvent.startAt.parseLongDate().formatToTime()
+                                )
+                            )
+                            val remoteViews =
+                                RemoteViews(context.packageName, R.layout.widget_chronometer)
+                            remoteViews.setChronometer(
+                                R.id.chronometer,
+                                SystemClock.elapsedRealtime() - (Date().time - nearestStartingEvent.startAt.parseLongDate().time),
+                                stringRes(R.string.s_till_the_start),
+                                true
+                            )
+                            remoteViews.setChronometerCountDown(R.id.chronometer, true)
+                            AndroidRemoteViews(remoteViews, GlanceModifier.wrapContentHeight())
+                            ThemedText(
+                                text = (nearestStartingEvent.roomName
+                                    ?: "") + " " + (nearestStartingEvent.roomNumber ?: "")
+                            )
+                            ThemedText(
+                                text = nearestStartingEvent.subjectName
+                                    ?: nearestStartingEvent.title ?: stringRes(
+                                        R.string.event
+                                    ),
+                                style = Typography.titleSmall.toGlanceStyle(),
+                                modifier = GlanceModifier.padding(bottom = 16.dp)
+                            )
+                            if (nearestStartingEvent.homework?.entries != null) {
+                                ThemedText(
+                                    stringRes(R.string.homework),
+                                    style = Typography.titleSmall.toGlanceStyle()
+                                )
+                                LazyColumn {
+                                    items(nearestStartingEvent.homework.entries) {
+                                        ThemedText(it.description, fontStyle = FontStyle.Italic)
+                                    }
+                                }
+                            }
                         } else {
-                            // Next event starts more than 30 minutes later (rest)
+                            // Next event starts more than 40 minutes later (rest)
                             header(stringRes(R.string.rest))
+                            val locale = context.resources.configuration.locales[0]
+                            val onTime =
+                                if (locale.language == Locale("ru").language) Calendar.getInstance()
+                                    .apply {
+                                        time = nearestStartingEvent.startAt.parseLongDate()
+                                    }
+                                    .getRussianWeekdayOnFormat() else nearestStartingEvent.startAt.parseLongDate()
+                                    .formatToWeekday(context)
+                            ThemedText(
+                                stringRes(
+                                    R.string.when_to_go,
+                                    onTime,
+                                    nearestStartingEvent.startAt.parseLongDate().formatToTime()
+                                )
+                            )
+                            LazyColumn(GlanceModifier.padding(top = 16.dp)) {
+                                items(
+                                    nearestStartingEvent.startAt.parseLongDate().formatToDay().let {
+                                        events.filter { ev ->
+                                            ev.startAt.parseLongDate().formatToDay() == it
+                                        }
+                                    }) { event ->
+                                    val time = event.startAt.parseLongDate().formatToTime()
+                                    val name = event.subjectName
+                                        ?: event.title ?: stringRes(
+                                            R.string.event
+                                        )
+                                    val place =
+                                        event.roomNumber ?: event.place ?: event.buildingName ?: ""
+                                    ThemedText(
+                                        stringRes(
+                                            R.string.widget_lesson_desc_template,
+                                            time,
+                                            name,
+                                            place
+                                        )
+                                    )
+                                }
+                            }
                         }
                     } else {
                         header(stringRes(R.string.holidays))
