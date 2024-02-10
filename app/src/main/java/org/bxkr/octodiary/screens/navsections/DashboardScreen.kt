@@ -2,7 +2,6 @@ package org.bxkr.octodiary.screens.navsections
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -167,33 +166,38 @@ fun VisitsList() {
             .fillMaxWidth()
     ) {
         items(DataService.visits.payload) {
-            OutlinedCard(Modifier.padding(bottom = 8.dp)) {
-                Row {
-                    it.visits.forEachIndexed { index, visit ->
-                        Row(Modifier.padding(8.dp)) {
-                            Text(
-                                it.date.parseFromDay().formatToHumanDay(),
-                                fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.primary,
-                                modifier = Modifier.padding(end = 4.dp).alpha(
-                                    if (index == 0) 1f else 0f
+            // MES sets "-" for visit time if there was no visit on that day
+            if (it.visits[0].run { inX != "-" && out != "-" }) {
+                OutlinedCard(Modifier.padding(bottom = 8.dp)) {
+                    Row {
+                        it.visits.forEachIndexed { index, visit ->
+                            Row(Modifier.padding(8.dp)) {
+                                Text(
+                                    it.date.parseFromDay().formatToHumanDay(),
+                                    fontWeight = FontWeight.Bold,
+                                    color = MaterialTheme.colorScheme.primary,
+                                    modifier = Modifier
+                                        .padding(end = 4.dp)
+                                        .alpha(
+                                            if (index == 0) 1f else 0f
+                                        )
                                 )
-                            )
-                            Text(
-                                visit.inX,
-                                modifier = Modifier.padding(end = 4.dp)
-                            )
-                            Icon(
-                                Icons.AutoMirrored.Rounded.ArrowForward,
-                                stringResource(id = R.string.to),
-                                modifier = Modifier.padding(end = 4.dp)
-                            )
-                            Text(
-                                visit.out,
-                                modifier = Modifier
-                                    .padding(end = 4.dp)
-                                    .fillMaxWidth()
-                            )
+                                Text(
+                                    visit.inX,
+                                    modifier = Modifier.padding(end = 4.dp)
+                                )
+                                Icon(
+                                    Icons.AutoMirrored.Rounded.ArrowForward,
+                                    stringResource(id = R.string.to),
+                                    modifier = Modifier.padding(end = 4.dp)
+                                )
+                                Text(
+                                    visit.out,
+                                    modifier = Modifier
+                                        .padding(end = 4.dp)
+                                        .fillMaxWidth()
+                                )
+                            }
                         }
                     }
                 }
