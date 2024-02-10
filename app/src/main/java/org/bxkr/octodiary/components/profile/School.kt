@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.components.profile
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -38,6 +40,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
@@ -51,13 +54,22 @@ fun School() {
             .padding(16.dp)
             .fillMaxWidth()
     ) {
+        val context = LocalContext.current
         with(DataService.schoolInfo) {
             Text(name, style = MaterialTheme.typography.titleMedium)
             if (null !in listOf(address.county, address.district, address.address)) {
+                val address = address.run { "${county ?: ""} ${district ?: ""} ${address ?: ""}" }
                 TextWithIcon(icon = Icons.Rounded.LocationCity) {
                     Text(
-                        address.run { "${county ?: ""} ${district ?: ""} ${address ?: ""}" },
-                        Modifier.clickable { /*FUTURE: COPY*/ }
+                        address,
+                        Modifier.clickable {
+                            Intent(
+                                Intent.ACTION_VIEW,
+                                Uri.parse("geo:55.76,37.62?q=$address")
+                            ).let {
+                                context.startActivity(it)
+                            }
+                        }
                     )
                 }
             }
@@ -65,7 +77,11 @@ fun School() {
                 TextWithIcon(icon = Icons.Rounded.Phone) {
                     Text(
                         "+7 $phone",
-                        Modifier.clickable { /*FUTURE: CALL*/ }
+                        Modifier.clickable {
+                            Intent(Intent.ACTION_DIAL, Uri.parse("tel:+7$phone")).let {
+                                context.startActivity(it)
+                            }
+                        }
                     )
                 }
             }
@@ -73,7 +89,11 @@ fun School() {
                 TextWithIcon(icon = Icons.Rounded.AlternateEmail) {
                     Text(
                         email,
-                        Modifier.clickable { /*FUTURE: SEND_EMAIL*/ }
+                        Modifier.clickable {
+                            Intent(Intent.ACTION_VIEW, Uri.parse("mailto:$email")).let {
+                                context.startActivity(it)
+                            }
+                        }
                     )
                 }
             }
@@ -81,7 +101,11 @@ fun School() {
                 TextWithIcon(icon = Icons.Rounded.Language) {
                     Text(
                         websiteLink,
-                        Modifier.clickable { /*FUTURE: GO_TO_BROWSER*/ },
+                        Modifier.clickable {
+                            Intent(Intent.ACTION_VIEW, Uri.parse("https://$websiteLink")).let {
+                                context.startActivity(it)
+                            }
+                        },
                         textDecoration = TextDecoration.Underline,
                         color = MaterialTheme.colorScheme.secondary
                     )
