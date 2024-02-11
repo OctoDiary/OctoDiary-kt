@@ -9,7 +9,6 @@ import android.content.res.Configuration
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
@@ -68,6 +67,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.core.app.ActivityCompat
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -100,11 +100,11 @@ val reloadEverythingLive = MutableLiveData {}
 val darkThemeLive = MutableLiveData<Boolean>(null)
 val colorSchemeLive = MutableLiveData(-1)
 val launchUrlLive = MutableLiveData<Uri?>(null)
-val LocalActivity = staticCompositionLocalOf<ComponentActivity> {
+val LocalActivity = staticCompositionLocalOf<FragmentActivity> {
     error("No LocalActivity provided!")
 }
 
-class MainActivity : ComponentActivity() {
+class MainActivity : FragmentActivity() {
     private fun createNotificationChannel() {
         val name = getString(R.string.data_update_channel_name)
         val importance = NotificationManager.IMPORTANCE_DEFAULT

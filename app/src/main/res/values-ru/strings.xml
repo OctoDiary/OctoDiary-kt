@@ -207,4 +207,5 @@
     <string name="widget_name">Состояние учёбы</string>
     <string name="widget_description">Самая важная информация об уроках на главном экране</string>
     <string name="error_occurred">Произошла ошибка!</string>
+    <string name="fingerprint">Биометрическая авторизация</string>
 </resources>
