@@ -429,7 +429,7 @@ fun PinScreen(
         into.value = enteredNumbers.value.take(4)
     }
 
-    if (!fpShown.value) {
+    if (!fpShown.value && context.mainPrefs.get<String>("pin") != null) {
         fpShown.value = true
         if (isBiometricAvailable) {
             biometricAuth(context, enteredNumbers)
