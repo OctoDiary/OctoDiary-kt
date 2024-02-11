@@ -150,6 +150,7 @@
     <string name="homeworks">Задания</string>
     <string name="to">по</string>
     <string name="schedule_today">Расписание на сегодня</string>
+    <string name="schedule_for">Расписание на %s</string>
     <string name="last_week_marks_are_shown">показаны оценки за последний месяц</string>
     <string name="birth_date_t">Дата рождения: %1$s</string>
     <string name="snils_t">"СНИЛС: "</string>

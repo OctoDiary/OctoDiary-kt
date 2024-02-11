@@ -48,24 +48,43 @@ fun DashboardScreen() {
         item {
             val currentDay = remember { Date().formatToDay() }
             Column(
-                verticalArrangement = Arrangement.Bottom,
-                modifier = Modifier.padding(horizontal = 16.dp)
+                verticalArrangement = Arrangement.Bottom
             ) {
                 val todayCalendar = DataService.eventCalendar.filter {
                     it.startAt.parseLongDate().formatToDay() == currentDay
                 }
+                val nearestEvent =
+                    DataService.eventCalendar.filter { it.startAt.parseLongDate().time > Date().time }
+                        .minByOrNull {
+                            it.startAt.parseLongDate().time - Date().time
+                        }
                 if (todayCalendar.isNotEmpty()) {
                     Text(
                         stringResource(id = R.string.schedule_today),
                         modifier = Modifier.padding(top = 8.dp),
                         style = MaterialTheme.typography.labelLarge
                     )
+                } else if (nearestEvent != null) {
+                    Text(
+                        stringResource(
+                            id = R.string.schedule_for,
+                            nearestEvent.startAt.parseLongDate().formatToHumanDay()
+                        ),
+                        modifier = Modifier.padding(top = 8.dp),
+                        style = MaterialTheme.typography.labelLarge
+                    )
                 }
             }
         }
-        dayItem(day = DataService.eventCalendar.filter {
-            it.startAt.parseLongDate().formatToDay() == Date().formatToDay()
-        })
+        dayItem(
+            day = DataService.eventCalendar.filter { it.startAt.parseLongDate().time > Date().time }
+                .minByOrNull {
+                    it.startAt.parseLongDate().time - Date().time
+                }?.startAt?.parseLongDate()?.formatToDay()?.let { day ->
+                DataService.eventCalendar.filter {
+                    it.startAt.parseLongDate().formatToDay() == day
+                }
+            } ?: listOf())
         item {
             Text(
                 stringResource(id = R.string.rating),
