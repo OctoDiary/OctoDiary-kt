@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -22,8 +23,11 @@ import androidx.compose.material.icons.automirrored.rounded.Sort
 import androidx.compose.material.icons.rounded.ArrowDropDown
 import androidx.compose.material.icons.rounded.ArrowDropUp
 import androidx.compose.material.icons.rounded.Book
+import androidx.compose.material.icons.rounded.BugReport
 import androidx.compose.material.icons.rounded.DateRange
 import androidx.compose.material.icons.rounded.Done
+import androidx.compose.material.icons.rounded.Warning
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -34,6 +38,7 @@ import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.SecondaryScrollableTabRow
@@ -52,8 +57,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastJoinToString
@@ -73,6 +80,7 @@ import org.bxkr.octodiary.modalBottomSheetStateLive
 import org.bxkr.octodiary.models.marklistdate.Mark
 import org.bxkr.octodiary.models.marklistsubject.MarkListSubjectItem
 import org.bxkr.octodiary.models.rankingforsubject.RankingForSubject
+import org.bxkr.octodiary.network.NetworkService.ExternalIntegrationConfig.TELEGRAM_REPORT_URL
 import org.bxkr.octodiary.parseFromDay
 import org.bxkr.octodiary.parseSimpleLongDate
 import org.bxkr.octodiary.showFilterLive
@@ -454,8 +462,9 @@ fun SubjectMarkFilter(state: MutableState<SubjectMarkFilterType>) {
 @Composable
 fun SubjectRatingBottomSheet(subjectId: Long, subjectName: String) {
     var ranking by remember { mutableStateOf<List<RankingForSubject>?>(null) }
+    var errorText by remember { mutableStateOf<String?>(null) }
     LaunchedEffect(Unit) {
-        DataService.getRankingForSubject(subjectId) { ranking = it }
+        DataService.getRankingForSubject(subjectId, { errorText = it }) { ranking = it }
     }
 
     Box(
@@ -492,6 +501,37 @@ fun SubjectRatingBottomSheet(subjectId: Long, subjectName: String) {
                         memberName = memberName,
                         highlighted = DataService.run { it.personId == profile.children[currentProfile].contingentGuid }
                     )
+                }
+            }
+        } else if (errorText != null) {
+            Column(
+                Modifier.align(Alignment.Center),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Icon(
+                    Icons.Rounded.Warning,
+                    stringResource(R.string.error_occurred),
+                    Modifier.size(64.dp),
+                    MaterialTheme.colorScheme.secondary
+                )
+                Text(
+                    stringResource(R.string.error_occurred),
+                    style = MaterialTheme.typography.titleLarge
+                )
+                Text(errorText!!, textAlign = TextAlign.Center)
+                val uriHandler = LocalUriHandler.current
+                OutlinedButton(
+                    onClick = { uriHandler.openUri(TELEGRAM_REPORT_URL) },
+                    modifier = Modifier.padding(16.dp),
+                    contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
+                ) {
+                    Icon(
+                        Icons.Rounded.BugReport,
+                        stringResource(id = R.string.report_issue),
+                        Modifier.size(ButtonDefaults.IconSize)
+                    )
+                    Spacer(Modifier.size(ButtonDefaults.IconSpacing))
+                    Text(stringResource(R.string.report_issue))
                 }
             }
         } else {

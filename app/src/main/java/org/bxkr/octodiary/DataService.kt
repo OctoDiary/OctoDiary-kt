@@ -13,6 +13,7 @@ import org.bxkr.octodiary.models.marklistsubject.MarkListSubjectItem
 import org.bxkr.octodiary.models.mealbalance.MealBalance
 import org.bxkr.octodiary.models.profile.ProfileResponse
 import org.bxkr.octodiary.models.profilesid.ProfilesId
+import org.bxkr.octodiary.models.rankingforsubject.ErrorBody
 import org.bxkr.octodiary.models.rankingforsubject.RankingForSubject
 import org.bxkr.octodiary.models.schoolinfo.SchoolInfo
 import org.bxkr.octodiary.models.sessionuser.SessionUser
@@ -342,7 +343,11 @@ object DataService {
         }
     }
 
-    fun getRankingForSubject(subjectId: Long, listener: (List<RankingForSubject>) -> Unit) {
+    fun getRankingForSubject(
+        subjectId: Long,
+        errorListener: (String) -> Unit,
+        listener: (List<RankingForSubject>) -> Unit
+    ) {
         assert(this::token.isInitialized)
         assert(this::profile.isInitialized)
 
@@ -352,7 +357,10 @@ object DataService {
             profile.children[currentProfile].classUnitId,
             Date().formatToDay(),
             subjectId
-        ).baseEnqueue(::baseErrorFunction) { listener(it) }
+        ).baseEnqueue(errorFunction = { errorBody, _, _ ->
+            val body = Gson().fromJson(errorBody.string(), ErrorBody::class.java)
+            errorListener(body.errorText)
+        }) { listener(it) }
     }
 
     fun refreshToken(onUpdated: () -> Unit) {
