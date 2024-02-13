@@ -188,7 +188,7 @@ fun VisitsList() {
             // MES sets "-" for visit time if there was no visit on that day
             if (it.visits[0].run { inX != "-" && out != "-" }) {
                 OutlinedCard(Modifier.padding(bottom = 8.dp)) {
-                    Row {
+                    
                         it.visits.forEachIndexed { index, visit ->
                             Row(Modifier.padding(8.dp)) {
                                 Text(
@@ -217,7 +217,7 @@ fun VisitsList() {
                                         .fillMaxWidth()
                                 )
                             }
-                        }
+                        
                     }
                 }
             }
