@@ -122,7 +122,9 @@ class StatusWidget : GlanceAppWidget() {
             }
             Column(
                 GlanceModifier.fillMaxSize().background(GlanceTheme.colors.surface)
-                    .cornerRadius(16.dp)
+                    .cornerRadius(16.dp).clickable {
+                        context.setUpdateFor(Date())
+                    }
             ) {
                 Column(GlanceModifier.padding(16.dp).fillMaxSize()) {
                     if (currentEvent != null) {
