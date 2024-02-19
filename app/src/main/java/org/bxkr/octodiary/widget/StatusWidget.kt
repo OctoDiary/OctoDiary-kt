@@ -230,12 +230,18 @@ class StatusWidget : GlanceAppWidget() {
                             header(stringRes(R.string.rest))
                             val locale = context.resources.configuration.locales[0]
                             val onTime =
-                                if (locale.language == Locale("ru").language) Calendar.getInstance()
-                                    .apply {
-                                        time = nearestStartingEvent.startAt.parseLongDate()
-                                    }
-                                    .getRussianWeekdayOnFormat() else nearestStartingEvent.startAt.parseLongDate()
-                                    .formatToWeekday(context)
+                                if (nearestStartingEvent.startAt.parseLongDate()
+                                        .formatToDay() != Date().formatToDay()
+                                ) {
+                                    if (locale.language == Locale("ru").language) Calendar.getInstance()
+                                        .apply {
+                                            time = nearestStartingEvent.startAt.parseLongDate()
+                                        }
+                                        .getRussianWeekdayOnFormat() else nearestStartingEvent.startAt.parseLongDate()
+                                        .formatToWeekday(context)
+                                } else {
+                                    stringRes(R.string.today_lowercase)
+                                }
                             ThemedText(
                                 stringRes(
                                     R.string.when_to_go,

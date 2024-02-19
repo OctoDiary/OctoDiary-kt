@@ -204,10 +204,10 @@
     <string name="report_issue">Сообщить о проблеме</string>
     <string name="s_till_the_start">%s до начала</string>
     <string name="when_to_go">На учёбу %s в %s</string>
-    <string name="widget_lesson_desc_template">%s: %s в %s</string>
     <string name="widget_name">Состояние учёбы</string>
     <string name="widget_description">Самая важная информация об уроках на главном экране</string>
     <string name="error_occurred">Произошла ошибка!</string>
     <string name="fingerprint">Биометрическая авторизация</string>
     <string name="no_account_found_please_log_in">Аккаунт не найден\nПожалуйста, авторизуйтесь</string>
+    <string name="today_lowercase">сегодня</string>
 </resources>
