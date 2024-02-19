@@ -102,7 +102,15 @@ class UpdateReceiver : BroadcastReceiver() {
         val notification: Notification = Notification.Builder(this, "data_update")
             .setContentTitle(getText(R.string.notification_new_mark_title))
             .setContentText(
-                getString(
+                if (notificationPrefs.get<Boolean>("_hide_mark_value") == true) getString(
+                    R.string.notification_new_mark_text_no_value,
+                    subjectName,
+                    controlFormName,
+                    SimpleDateFormat(
+                        "dd LLL",
+                        resources.configuration.locales[0]
+                    ).format(lessonDate.parseFromDay())
+                ) else getString(
                     R.string.notification_new_mark_text,
                     value + suffix,
                     subjectName,

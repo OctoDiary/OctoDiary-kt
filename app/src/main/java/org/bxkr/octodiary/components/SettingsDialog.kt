@@ -1,6 +1,8 @@
 package org.bxkr.octodiary.components
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import androidx.compose.animation.AnimatedContent
@@ -73,6 +75,7 @@ import org.bxkr.octodiary.logOut
 import org.bxkr.octodiary.mainPrefs
 import org.bxkr.octodiary.network.NetworkService
 import org.bxkr.octodiary.network.NetworkService.ExternalIntegrationConfig.TELEGRAM_REPORT_URL
+import org.bxkr.octodiary.notificationPrefs
 import org.bxkr.octodiary.save
 import org.bxkr.octodiary.screens.SetPinDialog
 import org.bxkr.octodiary.ui.theme.CustomColorScheme
@@ -127,6 +130,7 @@ fun SettingsDialog(onDismissRequest: () -> Unit) {
                     val pinEnabled =
                         remember { mutableStateOf(activity.mainPrefs.get<Boolean>("has_pin")!!) }
                     var selectedTheme by remember { mutableStateOf(colorSchemeLive.value) }
+                    val notifyWithValue = remember { mutableStateOf(true) }
 
                     LazyRow {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
@@ -167,6 +171,18 @@ fun SettingsDialog(onDismissRequest: () -> Unit) {
                                     activity.mainPrefs.save("theme" to it.ordinal)
                                 }
                             }
+                        }
+                    }
+
+                    if (Manifest.permission.POST_NOTIFICATIONS.let {
+                            activity.checkCallingOrSelfPermission(it)
+                        } == PackageManager.PERMISSION_GRANTED) {
+                        SwitchPreference(
+                            title = "Show mark value in notification",
+                            listenState = notifyWithValue
+                        ) {
+                            notifyWithValue.value = it
+                            activity.notificationPrefs.save("_hide_mark_value" to !it)
                         }
                     }
 
