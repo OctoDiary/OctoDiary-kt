@@ -40,6 +40,7 @@ import androidx.glance.text.TextAlign
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import org.bxkr.octodiary.CachePrefs
+import org.bxkr.octodiary.MainActivity
 import org.bxkr.octodiary.R
 import org.bxkr.octodiary.cachePrefs
 import org.bxkr.octodiary.formatToDay
@@ -62,7 +63,7 @@ class StatusWidget : GlanceAppWidget() {
                 Box(
                     GlanceModifier.fillMaxSize().background(GlanceTheme.colors.surface)
                         .cornerRadius(16.dp).clickable {
-
+                            context.startActivity(Intent(context, MainActivity::class.java))
                         }, Alignment.Center
                 ) {
                     Column(horizontalAlignment = Alignment.Horizontal.CenterHorizontally) {
