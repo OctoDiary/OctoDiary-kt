@@ -23,6 +23,8 @@ import org.bxkr.octodiary.network.MESLoginService.MosExchangeToken
 import org.bxkr.octodiary.network.MySchoolLoginService.EsiaExchangeToken
 import org.bxkr.octodiary.save
 import org.bxkr.octodiary.screenLive
+import org.bxkr.octodiary.widget.StatusWidget.Companion.setUpdateFor
+import java.util.Date
 
 @Composable
 fun CallbackScreen(code: String, type: CallbackType, subsystem: Int?) {
@@ -40,6 +42,7 @@ fun CallbackScreen(code: String, type: CallbackType, subsystem: Int?) {
                         "access_token" to code
                     )
                     hasToken.value = true
+                    LocalContext.current.setUpdateFor(Date())
                 } else {
                     screenLive.postValue(Screen.Login)
                 }

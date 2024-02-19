@@ -8,6 +8,7 @@ import android.os.SystemClock
 import android.widget.RemoteViews
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.glance.ColorFilter
 import androidx.glance.GlanceId
@@ -16,6 +17,7 @@ import androidx.glance.GlanceTheme
 import androidx.glance.Image
 import androidx.glance.ImageProvider
 import androidx.glance.LocalContext
+import androidx.glance.action.clickable
 import androidx.glance.appwidget.AndroidRemoteViews
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.cornerRadius
@@ -34,6 +36,7 @@ import androidx.glance.layout.padding
 import androidx.glance.layout.size
 import androidx.glance.layout.wrapContentHeight
 import androidx.glance.text.FontStyle
+import androidx.glance.text.TextAlign
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import org.bxkr.octodiary.CachePrefs
@@ -55,6 +58,28 @@ class StatusWidget : GlanceAppWidget() {
     override suspend fun provideGlance(context: Context, id: GlanceId) {
         val cache = context.cachePrefs
         provideContent {
+            if (cache.get<String>("eventCalendar") == null) {
+                Box(
+                    GlanceModifier.fillMaxSize().background(GlanceTheme.colors.surface)
+                        .cornerRadius(16.dp).clickable {
+
+                        }, Alignment.Center
+                ) {
+                    Column(horizontalAlignment = Alignment.Horizontal.CenterHorizontally) {
+                        Image(
+                            ImageProvider(R.drawable.rounded_person_add_24),
+                            contentDescription = stringRes(R.string.log_in),
+                            colorFilter = ColorFilter.tint(GlanceTheme.colors.secondary)
+                        )
+                        ThemedText(
+                            stringResource(R.string.no_account_found_please_log_in),
+                            style = Typography.titleSmall.toGlanceStyle()
+                                .copy(textAlign = TextAlign.Center),
+                        )
+                    }
+                }
+                return@provideContent
+            }
             val events = cache.getFromJson<List<Event>>("eventCalendar")
             val currentEvent = events.firstOrNull {
                 it.startAt.parseLongDate().time <= Date().time && it.finishAt.parseLongDate().time > Date().time
@@ -272,15 +297,17 @@ class StatusWidget : GlanceAppWidget() {
     private fun stringRes(@StringRes resId: Int, vararg formatArgs: Any) =
         LocalContext.current.getString(resId, *formatArgs)
 
-    private fun Context.setUpdateFor(date: Date) {
-        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        alarmManager.setAndAllowWhileIdle(
-            AlarmManager.RTC, date.time, PendingIntent.getBroadcast(
-                this,
-                0,
-                Intent(this, StatusWidgetReceiver::class.java),
-                PendingIntent.FLAG_IMMUTABLE
+    companion object {
+        fun Context.setUpdateFor(date: Date) {
+            val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+            alarmManager.setAndAllowWhileIdle(
+                AlarmManager.RTC, date.time, PendingIntent.getBroadcast(
+                    this,
+                    0,
+                    Intent(this, StatusWidgetReceiver::class.java),
+                    PendingIntent.FLAG_IMMUTABLE
+                )
             )
-        )
+        }
     }
 }

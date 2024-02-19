@@ -20,6 +20,8 @@ import org.bxkr.octodiary.models.auth.UserAuthenticationForMobileRequest
 import org.bxkr.octodiary.network.NetworkService.MESAPIConfig
 import org.bxkr.octodiary.network.interfaces.SchoolSessionAPI
 import org.bxkr.octodiary.save
+import org.bxkr.octodiary.widget.StatusWidget.Companion.setUpdateFor
+import java.util.Date
 
 object MESLoginService {
     fun logInWithMosRu(context: Context) {
@@ -108,6 +110,7 @@ object MESLoginService {
                     "first_launch" to true
                 )
                 hasToken.value = true
+                context.setUpdateFor(Date())
             }
         }
     }

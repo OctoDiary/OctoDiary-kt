@@ -263,4 +263,5 @@
     <string name="widget_description">The most important info about lessons on your homescreen</string>
     <string name="error_occurred">An error has occurred!</string>
     <string name="fingerprint">Biometric authentication</string>
+    <string name="no_account_found_please_log_in">No account found\nPlease log in</string>
 </resources>

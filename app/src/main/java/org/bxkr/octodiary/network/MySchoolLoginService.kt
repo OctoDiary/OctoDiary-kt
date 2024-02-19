@@ -21,6 +21,8 @@ import org.bxkr.octodiary.network.interfaces.SecondaryAPI
 import org.bxkr.octodiary.save
 import org.bxkr.octodiary.screenLive
 import org.bxkr.octodiary.snackbarHostStateLive
+import org.bxkr.octodiary.widget.StatusWidget.Companion.setUpdateFor
+import java.util.Date
 import java.util.UUID
 
 object MySchoolLoginService {
@@ -52,7 +54,7 @@ object MySchoolLoginService {
             context.mainPrefs.save(
                 "first_launch" to true
             )
-
+            context.setUpdateFor(Date())
             hasToken.value = true
         }
     }
@@ -80,6 +82,7 @@ object MySchoolLoginService {
                     "first_launch" to true
                 )
                 screenLive.postValue(Screen.MainNav)
+                setUpdateFor(Date())
             }
         }
     }
