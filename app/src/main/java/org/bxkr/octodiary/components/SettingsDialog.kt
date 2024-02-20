@@ -178,7 +178,7 @@ fun SettingsDialog(onDismissRequest: () -> Unit) {
                             activity.checkCallingOrSelfPermission(it)
                         } == PackageManager.PERMISSION_GRANTED) {
                         SwitchPreference(
-                            title = "Show mark value in notification",
+                            title = stringResource(R.string.show_mark_value_in_notification),
                             listenState = notifyWithValue
                         ) {
                             notifyWithValue.value = it
