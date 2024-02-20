@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import org.bxkr.octodiary.DataService
 import org.bxkr.octodiary.R
+import org.bxkr.octodiary.components.ErrorMessage
 import org.bxkr.octodiary.components.Mark
 import org.bxkr.octodiary.components.WebViewDialog
 import org.bxkr.octodiary.formatToHumanDay
@@ -46,10 +47,11 @@ import org.bxkr.octodiary.parseFromDay
 @Composable
 fun LessonSheetContent(lessonId: Long) {
     var lessonInfo by remember { mutableStateOf<LessonSchedule?>(null) }
+    var errorText by remember { mutableStateOf<String?>(null) }
     var openWebView by remember { mutableStateOf(false) }
     var webViewUrl by remember { mutableStateOf("") }
     LaunchedEffect(Unit) {
-        DataService.getLessonInfo(lessonId) {
+        DataService.getLessonInfo(lessonId, { errorText = it }) {
             lessonInfo = it
         }
     }
@@ -138,8 +140,10 @@ fun LessonSheetContent(lessonId: Long) {
                     }
                 }
             }
-        } else {
+        } else if (errorText == null) {
             CircularProgressIndicator(Modifier.align(Alignment.Center))
+        } else {
+            ErrorMessage(Modifier.align(Alignment.Center), errorText!!)
         }
     }
 }

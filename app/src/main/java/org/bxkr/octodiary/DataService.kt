@@ -13,7 +13,6 @@ import org.bxkr.octodiary.models.marklistsubject.MarkListSubjectItem
 import org.bxkr.octodiary.models.mealbalance.MealBalance
 import org.bxkr.octodiary.models.profile.ProfileResponse
 import org.bxkr.octodiary.models.profilesid.ProfilesId
-import org.bxkr.octodiary.models.rankingforsubject.ErrorBody
 import org.bxkr.octodiary.models.rankingforsubject.RankingForSubject
 import org.bxkr.octodiary.models.schoolinfo.SchoolInfo
 import org.bxkr.octodiary.models.sessionuser.SessionUser
@@ -170,14 +169,14 @@ object DataService {
         }
     }
 
-    fun getMarkInfo(markId: Long, listener: (MarkInfo) -> Unit) {
+    fun getMarkInfo(markId: Long, errorListener: (String) -> Unit, listener: (MarkInfo) -> Unit) {
         assert(this::token.isInitialized)
         assert(this::profile.isInitialized)
         mainSchoolApi.markInfo(
             token,
             markId = markId,
             studentId = profile.children[currentProfile].studentId
-        ).baseEnqueue(::baseErrorFunction) { listener(it) }
+        ).baseEnqueue(errorListenerForMessage(errorListener)) { listener(it) }
     }
 
     fun updateRanking(onUpdated: () -> Unit) {
@@ -357,14 +356,7 @@ object DataService {
             profile.children[currentProfile].classUnitId,
             Date().formatToDay(),
             subjectId
-        ).baseEnqueue(errorFunction = { errorBody, _, _ ->
-            try {
-                val body = Gson().fromJson(errorBody.string(), ErrorBody::class.java)
-                errorListener(body.errorText)
-            } catch (exception: Exception) {
-                errorListener(errorBody.string())
-            }
-        }) { listener(it) }
+        ).baseEnqueue(errorFunction = errorListenerForMessage(errorListener)) { listener(it) }
     }
 
     fun refreshToken(onUpdated: () -> Unit) {
@@ -389,7 +381,11 @@ object DataService {
         }
     }
 
-    fun getLessonInfo(lessonId: Long, listener: (LessonSchedule) -> Unit) {
+    fun getLessonInfo(
+        lessonId: Long,
+        errorListener: (String) -> Unit,
+        listener: (LessonSchedule) -> Unit
+    ) {
         assert(this::token.isInitialized)
         assert(this::profile.isInitialized)
 
@@ -397,7 +393,7 @@ object DataService {
             token,
             lessonId,
             profile.children[currentProfile].studentId
-        ).baseEnqueue(::baseErrorFunction) {
+        ).baseEnqueue(errorListenerForMessage(errorListener)) {
             listener(it)
         }
     }

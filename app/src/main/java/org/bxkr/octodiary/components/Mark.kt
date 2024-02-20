@@ -63,7 +63,12 @@ fun Mark(
 @Composable
 fun MarkSheetContent(mark: Mark) {
     var markInfo by remember { mutableStateOf<MarkInfo?>(null) }
-    LaunchedEffect(Unit) { DataService.getMarkInfo(mark.id) { markInfo = it } }
+    var errorMessage by remember { mutableStateOf<String?>(null) }
+    LaunchedEffect(Unit) {
+        DataService.getMarkInfo(mark.id, { errorMessage = it }) {
+            markInfo = it
+        }
+    }
 
     Box(
         Modifier
@@ -92,8 +97,10 @@ fun MarkSheetContent(mark: Mark) {
                 Modifier
                     .align(Alignment.TopEnd)
                     .padding(16.dp), false) {}
-        } else {
+        } else if (errorMessage == null) {
             CircularProgressIndicator(Modifier.align(Alignment.Center))
+        } else {
+            ErrorMessage(Modifier.align(Alignment.Center), errorMessage!!)
         }
     }
 }

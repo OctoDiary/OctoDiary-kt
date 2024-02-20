@@ -18,7 +18,9 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.core.content.edit
+import com.google.gson.Gson
 import okhttp3.ResponseBody
+import org.bxkr.octodiary.models.rankingforsubject.ErrorBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -306,3 +308,15 @@ fun Calendar.getRussianWeekdayOnFormat(): String =
         Calendar.SATURDAY -> "в субботу"
         else -> "в ${getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale("ru"))}"
     }
+
+fun DataService.errorListenerForMessage(errorListener: (String) -> Unit): (errorBody: ResponseBody, httpCode: Int, className: String?) -> Unit {
+    return { errorBody: ResponseBody, httpCode: Int, className: String? ->
+        val contents = errorBody.string()
+        try {
+            val body = Gson().fromJson(contents, ErrorBody::class.java)
+            errorListener(body.message)
+        } catch (exception: Throwable) {
+            errorListener(contents)
+        }
+    }
+}
