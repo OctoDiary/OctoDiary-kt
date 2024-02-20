@@ -35,7 +35,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import org.bxkr.octodiary.DataService
 import org.bxkr.octodiary.R
-import org.bxkr.octodiary.screens.navsections.RankingList
+import org.bxkr.octodiary.screens.navsections.dashboard.RankingList
 
 @Composable
 fun ClassInfo() {

@@ -9,11 +9,11 @@ import androidx.compose.material.icons.rounded.HomeWork
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
-import org.bxkr.octodiary.screens.navsections.DashboardScreen
-import org.bxkr.octodiary.screens.navsections.DaybookScreen
-import org.bxkr.octodiary.screens.navsections.HomeworksScreen
-import org.bxkr.octodiary.screens.navsections.MarksScreen
 import org.bxkr.octodiary.screens.navsections.ProfileScreen
+import org.bxkr.octodiary.screens.navsections.dashboard.DashboardScreen
+import org.bxkr.octodiary.screens.navsections.daybook.DaybookScreen
+import org.bxkr.octodiary.screens.navsections.homeworks.HomeworksScreen
+import org.bxkr.octodiary.screens.navsections.marks.MarksScreen
 
 enum class Screen {
     Login,

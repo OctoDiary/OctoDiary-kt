@@ -1,4 +1,4 @@
-package org.bxkr.octodiary.screens.navsections
+package org.bxkr.octodiary.screens.navsections.dashboard
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -10,31 +10,26 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowForward
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.util.fastJoinToString
 import org.bxkr.octodiary.DataService
 import org.bxkr.octodiary.R
-import org.bxkr.octodiary.components.RankingMemberCard
 import org.bxkr.octodiary.formatToDay
 import org.bxkr.octodiary.formatToHumanDay
 import org.bxkr.octodiary.modalBottomSheetContentLive
 import org.bxkr.octodiary.modalBottomSheetStateLive
 import org.bxkr.octodiary.parseFromDay
 import org.bxkr.octodiary.parseLongDate
+import org.bxkr.octodiary.screens.navsections.daybook.DayItem
 import java.util.Date
 
 @Composable
@@ -76,7 +71,7 @@ fun DashboardScreen() {
                 }
             }
         }
-        dayItem(
+        DayItem(
             day = DataService.eventCalendar.filter { it.startAt.parseLongDate().time > Date().time }
                 .minByOrNull {
                     it.startAt.parseLongDate().time - Date().time
@@ -149,78 +144,6 @@ fun DashboardScreen() {
                 }
             }
             Spacer(Modifier.height(16.dp))
-        }
-    }
-}
-
-@Composable
-fun RankingList() {
-    LazyColumn(
-        Modifier
-            .padding(8.dp)
-            .fillMaxWidth()
-    ) {
-        items(DataService.ranking) { rankingMember ->
-            val memberName = remember {
-                DataService.classMembers.firstOrNull { classMember ->
-                    rankingMember.personId == classMember.personId
-                }?.user?.run { listOf(lastName, firstName, middleName ?: "").fastJoinToString(" ") }
-                    ?: rankingMember.personId
-            }
-            RankingMemberCard(
-                rankPlace = rankingMember.rank.rankPlace,
-                average = rankingMember.rank.averageMarkFive,
-                memberName = memberName,
-                highlighted = DataService.run { rankingMember.personId == profile.children[currentProfile].contingentGuid }
-            )
-        }
-    }
-}
-
-@Composable
-fun VisitsList() {
-    LazyColumn(
-        Modifier
-            .padding(8.dp)
-            .fillMaxWidth()
-    ) {
-        items(DataService.visits.payload) {
-            // MES sets "-" for visit time if there was no visit on that day
-            if (it.visits[0].run { inX != "-" && out != "-" }) {
-                OutlinedCard(Modifier.padding(bottom = 8.dp)) {
-                    
-                        it.visits.forEachIndexed { index, visit ->
-                            Row(Modifier.padding(8.dp)) {
-                                Text(
-                                    it.date.parseFromDay().formatToHumanDay(),
-                                    fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.primary,
-                                    modifier = Modifier
-                                        .padding(end = 4.dp)
-                                        .alpha(
-                                            if (index == 0) 1f else 0f
-                                        )
-                                )
-                                Text(
-                                    visit.inX,
-                                    modifier = Modifier.padding(end = 4.dp)
-                                )
-                                Icon(
-                                    Icons.AutoMirrored.Rounded.ArrowForward,
-                                    stringResource(id = R.string.to),
-                                    modifier = Modifier.padding(end = 4.dp)
-                                )
-                                Text(
-                                    visit.out,
-                                    modifier = Modifier
-                                        .padding(end = 4.dp)
-                                        .fillMaxWidth()
-                                )
-                            }
-                        
-                    }
-                }
-            }
         }
     }
 }
