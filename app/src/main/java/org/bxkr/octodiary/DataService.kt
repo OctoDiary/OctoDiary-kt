@@ -1,5 +1,6 @@
 package org.bxkr.octodiary
 
+import android.content.Context
 import androidx.compose.runtime.mutableStateOf
 import com.google.gson.Gson
 import org.bxkr.octodiary.models.classmembers.ClassMember
@@ -18,6 +19,7 @@ import org.bxkr.octodiary.models.schoolinfo.SchoolInfo
 import org.bxkr.octodiary.models.sessionuser.SessionUser
 import org.bxkr.octodiary.models.subjectranking.SubjectRanking
 import org.bxkr.octodiary.models.visits.VisitsResponse
+import org.bxkr.octodiary.network.MESLoginService.refreshToken
 import org.bxkr.octodiary.network.NetworkService.externalApi
 import org.bxkr.octodiary.network.interfaces.DSchoolAPI
 import org.bxkr.octodiary.network.interfaces.MainSchoolAPI
@@ -359,14 +361,18 @@ object DataService {
         ).baseEnqueue(errorFunction = errorListenerForMessage(errorListener)) { listener(it) }
     }
 
-    fun refreshToken(onUpdated: () -> Unit) {
+    fun refreshToken(context: Context, onUpdated: () -> Unit) {
         assert(this::token.isInitialized)
 
-        secondaryApi.refreshToken("Bearer $token")
-            .baseEnqueue(::baseErrorFunction) {
-                token = it
-                updateUserId { onUpdated() }
-            }
+        if (subsystem == Diary.MES) {
+            context.refreshToken(onUpdated)
+        } else {
+            secondaryApi.refreshToken("Bearer $token")
+                .baseEnqueue(::baseErrorFunction) {
+                    token = it
+                    updateUserId { onUpdated() }
+                }
+        }
     }
 
     fun setHomeworkDoneState(homeworkId: Long, state: Boolean, listener: () -> Unit) {
@@ -417,7 +423,7 @@ object DataService {
         externalApi().sendStat(subsystem.ordinal, deviceId).baseEnqueue { onUpdated() }
     }
 
-    fun updateAll() {
+    fun updateAll(context: Context? = null) {
         if (loadingStarted) return else loadingStarted = true
         // ADD_NEW_FIELD_HERE
         states.forEach { it.set(false) }
@@ -429,6 +435,9 @@ object DataService {
                 loadedEverything.value = true
             }
             println("$name response is loaded, $statesInit")
+        }
+        if (context != null) {
+            refreshToken(context) {}
         }
         updateUserId {
             onSingleItemLoad(::userId.name)
@@ -450,7 +459,6 @@ object DataService {
                     updateSchoolInfo { onSingleItemLoad(::schoolInfo.name) }
                 }
             }
-            refreshToken {}
         }
     }
 

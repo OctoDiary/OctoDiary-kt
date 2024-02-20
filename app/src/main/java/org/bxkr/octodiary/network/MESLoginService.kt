@@ -6,11 +6,14 @@ import android.util.Log
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.platform.LocalContext
+import org.bxkr.octodiary.DataService
 import org.bxkr.octodiary.Diary
 import org.bxkr.octodiary.authPrefs
 import org.bxkr.octodiary.baseEnqueue
 import org.bxkr.octodiary.encodeToBase64
+import org.bxkr.octodiary.get
 import org.bxkr.octodiary.getRandomString
 import org.bxkr.octodiary.hash
 import org.bxkr.octodiary.mainPrefs
@@ -78,19 +81,25 @@ object MESLoginService {
             val authHeader = "Basic $authorization"
 
             val exchangeCall = NetworkService.mosAuthApi().tokenExchange(
-                grantType = MESAPIConfig.GRANT_TYPE,
+                grantType = MESAPIConfig.GRANT_TYPE_CODE,
                 redirectUri = MESAPIConfig.REDIRECT_URI,
                 code,
                 codeVerifier,
                 authHeader
             )
             exchangeCall.baseEnqueue { body ->
+                context.authPrefs.save("mos_refresh_token" to body.refreshToken)
                 mosToMesToken(context, mosToken = body.accessToken, hasToken)
             }
         }
     }
 
-    private fun mosToMesToken(context: Context, mosToken: String, hasToken: MutableState<Boolean>) {
+    private fun mosToMesToken(
+        context: Context,
+        mosToken: String,
+        hasToken: MutableState<Boolean> = mutableStateOf(false),
+        onSet: () -> Unit = {},
+    ) {
         val schoolAuthCall =
             NetworkService.schoolSessionApi(SchoolSessionAPI.getBaseUrl(Diary.MES)).mosTokenToMes(
                 SchoolAuthBody(
@@ -110,7 +119,30 @@ object MESLoginService {
                     "first_launch" to true
                 )
                 hasToken.value = true
+                onSet()
                 context.setUpdateFor(Date())
+            }
+        }
+    }
+
+    fun Context.refreshToken(onUpdated: () -> Unit) {
+        getSharedPreferences("auth", Context.MODE_PRIVATE).apply {
+            val clientId = getString("client_id", "")
+            val clientSecret = getString("client_secret", "")
+
+            val authorization = encodeToBase64("$clientId:$clientSecret".toByteArray())
+            val authHeader = "Basic $authorization"
+            val exchangeCall = NetworkService.mosAuthApi().tokenExchange(
+                grantType = MESAPIConfig.GRANT_TYPE_REFRESH,
+                refreshToken = authPrefs.get<String>("mos_refresh_token")!!,
+                authHeader = authHeader
+            )
+            exchangeCall.baseEnqueue { body ->
+                authPrefs.save("mos_refresh_token" to body.refreshToken)
+                mosToMesToken(this@refreshToken, body.accessToken, onSet = {
+                    DataService.token = authPrefs.get<String>("access_token")!!
+                    DataService.updateUserId { onUpdated() }
+                })
             }
         }
     }

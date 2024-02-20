@@ -191,7 +191,7 @@ fun NavScreen(modifier: Modifier, pinFinished: MutableState<Boolean>) {
                     if (refreshState.isRefreshing) {
                         DataService.loadedEverything.value = false
                         DataService.loadingStarted = false
-                        DataService.updateAll()
+                        DataService.updateAll(context)
                     }
                     if (DataService.loadedEverything.value) {
                         refreshState.endRefresh()
@@ -251,7 +251,7 @@ fun NavScreen(modifier: Modifier, pinFinished: MutableState<Boolean>) {
                             DataService.loadFromCache { cachePrefs.get<String>(it) ?: "" }
                             DataService.loadedEverything.value = true
                         } else {
-                            DataService.updateAll()
+                            DataService.updateAll(context)
                         }
                     }
                     Column(

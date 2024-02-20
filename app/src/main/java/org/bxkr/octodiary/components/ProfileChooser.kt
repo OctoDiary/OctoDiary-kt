@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
@@ -36,6 +37,7 @@ fun ProfileChooser() {
             Modifier.padding(bottom = 16.dp),
             style = MaterialTheme.typography.titleLarge
         )
+        val context = LocalContext.current
         DataService.profile.children.forEachIndexed { index, it ->
             OutlinedCard(
                 Modifier
@@ -47,7 +49,7 @@ fun ProfileChooser() {
                         DataService.currentProfile = index
                         DataService.loadedEverything.value = false
                         DataService.loadingStarted = false
-                        DataService.updateAll()
+                        DataService.updateAll(context)
                     },
                 border = if (DataService.currentProfile == index) {
                     BorderStroke(2.dp, MaterialTheme.colorScheme.primary)

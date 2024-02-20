@@ -9,9 +9,10 @@ import org.bxkr.octodiary.network.NetworkService.BaseUrl
 import org.bxkr.octodiary.network.NetworkService.MESAPIConfig
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.Field
+import retrofit2.http.FormUrlEncoded
 import retrofit2.http.Header
 import retrofit2.http.POST
-import retrofit2.http.Query
 
 /**
  * Authorization gate of mos.ru.
@@ -55,11 +56,20 @@ interface MosAuthAPI {
      * @see MESLoginService.MosExchangeToken
      */
     @POST("sps/oauth/te")
+    @FormUrlEncoded
     fun tokenExchange(
-        @Query("grant_type") grantType: String,
-        @Query("redirect_uri") redirectUri: String,
-        @Query("code") code: String,
-        @Query("code_verifier") codeVerifier: String,
-        @Header("Authorization") authHeader: String
+        @Field("grant_type") grantType: String,
+        @Field("redirect_uri") redirectUri: String,
+        @Field("code") code: String,
+        @Field("code_verifier") codeVerifier: String,
+        @Header("Authorization") authHeader: String,
     ): Call<TokenExchange>
+
+    @POST("sps/oauth/te")
+    @FormUrlEncoded
+    fun tokenExchange(
+        @Field("grant_type") grantType: String,
+        @Field("refresh_token") refreshToken: String,
+        @Header("Authorization") authHeader: String,
+    ): Call<TokenExchange.Refresh>
 }
