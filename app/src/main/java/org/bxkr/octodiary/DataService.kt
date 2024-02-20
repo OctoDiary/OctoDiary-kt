@@ -358,8 +358,12 @@ object DataService {
             Date().formatToDay(),
             subjectId
         ).baseEnqueue(errorFunction = { errorBody, _, _ ->
-            val body = Gson().fromJson(errorBody.string(), ErrorBody::class.java)
-            errorListener(body.errorText)
+            try {
+                val body = Gson().fromJson(errorBody.string(), ErrorBody::class.java)
+                errorListener(body.errorText)
+            } catch (exception: Exception) {
+                errorListener(errorBody.string())
+            }
         }) { listener(it) }
     }
 
