@@ -130,7 +130,11 @@ fun SettingsDialog(onDismissRequest: () -> Unit) {
                     val pinEnabled =
                         remember { mutableStateOf(activity.mainPrefs.get<Boolean>("has_pin")!!) }
                     var selectedTheme by remember { mutableStateOf(colorSchemeLive.value) }
-                    val notifyWithValue = remember { mutableStateOf(true) }
+                    val notifyWithValue = remember {
+                        mutableStateOf(
+                            !(activity.notificationPrefs.get<Boolean>("_hide_mark_value") ?: false)
+                        )
+                    }
 
                     LazyRow {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
