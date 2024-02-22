@@ -268,4 +268,14 @@
     <string name="today_lowercase">today</string>
     <string name="show_mark_value_in_notification">Show mark value in notification</string>
     <string name="replacement">Replacement</string>
+    <string name="common">General</string>
+    <string name="notifications">Notifications</string>
+    <string name="appearance">Appearance</string>
+    <string name="security">Security</string>
+    <string name="about">About the app</string>
+    <string name="common_desc">Main sections behaviour</string>
+    <string name="notifications_desc">Choose displaying info</string>
+    <string name="appearance_desc">Color themes of the app</string>
+    <string name="security_desc">Passcode and other</string>
+    <string name="about_desc">Developers, links</string>
 </resources>

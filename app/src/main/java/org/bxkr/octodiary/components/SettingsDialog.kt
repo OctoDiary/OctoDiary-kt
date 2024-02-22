@@ -1,16 +1,15 @@
 package org.bxkr.octodiary.components
 
-import android.Manifest
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.Build
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,15 +19,20 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.automirrored.rounded.OpenInNew
+import androidx.compose.material.icons.rounded.Brush
 import androidx.compose.material.icons.rounded.BugReport
 import androidx.compose.material.icons.rounded.Done
 import androidx.compose.material.icons.rounded.Image
+import androidx.compose.material.icons.rounded.Info
+import androidx.compose.material.icons.rounded.Lock
+import androidx.compose.material.icons.rounded.Notifications
+import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -46,7 +50,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -54,12 +57,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.core.content.ContextCompat.startActivity
@@ -67,18 +73,15 @@ import org.bxkr.octodiary.BuildConfig
 import org.bxkr.octodiary.DataService
 import org.bxkr.octodiary.LocalActivity
 import org.bxkr.octodiary.R
-import org.bxkr.octodiary.colorSchemeLive
-import org.bxkr.octodiary.darkThemeLive
-import org.bxkr.octodiary.get
+import org.bxkr.octodiary.components.settings.About
+import org.bxkr.octodiary.components.settings.Appearance
+import org.bxkr.octodiary.components.settings.Common
+import org.bxkr.octodiary.components.settings.Notifications
+import org.bxkr.octodiary.components.settings.Security
 import org.bxkr.octodiary.launchUrlLive
 import org.bxkr.octodiary.logOut
-import org.bxkr.octodiary.mainPrefs
 import org.bxkr.octodiary.network.NetworkService
 import org.bxkr.octodiary.network.NetworkService.ExternalIntegrationConfig.TELEGRAM_REPORT_URL
-import org.bxkr.octodiary.notificationPrefs
-import org.bxkr.octodiary.save
-import org.bxkr.octodiary.screens.SetPinDialog
-import org.bxkr.octodiary.ui.theme.CustomColorScheme
 import org.bxkr.octodiary.ui.theme.OctoDiaryTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -91,12 +94,27 @@ fun SettingsDialog(onDismissRequest: () -> Unit) {
         ),
         onDismissRequest = { onDismissRequest() }
     ) {
+        val defaultTitle = stringResource(R.string.settings)
+        var selectScreen by remember { mutableStateOf(true) }
+        var currentTitle by remember { mutableStateOf(defaultTitle) }
         Scaffold(
             topBar = {
                 MediumTopAppBar(
-                    title = { Text(stringResource(R.string.settings)) },
+                    title = {
+                        if (selectScreen) {
+                            Text(stringResource(R.string.settings))
+                        } else {
+                            Text(currentTitle)
+                        }
+                    },
                     navigationIcon = {
-                        IconButton(onClick = { onDismissRequest() }) {
+                        IconButton(onClick = {
+                            if (selectScreen) {
+                                onDismissRequest()
+                            } else {
+                                selectScreen = true
+                            }
+                        }) {
                             Icon(
                                 Icons.AutoMirrored.Rounded.ArrowBack,
                                 stringResource(R.string.back)
@@ -119,162 +137,154 @@ fun SettingsDialog(onDismissRequest: () -> Unit) {
                     .padding(padding)
                     .fillMaxSize()
             ) {
-                Column(
-                    Modifier.fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Bottom
+                Box(
+                    Modifier
+                        .fillMaxWidth(),
                 ) {
                     val activity = LocalActivity.current
-                    var setPin by remember { mutableStateOf(false) }
-                    val darkTheme = darkThemeLive.observeAsState(isSystemInDarkTheme())
-                    val pinEnabled =
-                        remember { mutableStateOf(activity.mainPrefs.get<Boolean>("has_pin")!!) }
-                    var selectedTheme by remember { mutableStateOf(colorSchemeLive.value) }
-                    val notifyWithValue = remember {
-                        mutableStateOf(
-                            !(activity.notificationPrefs.get<Boolean>("_hide_mark_value") ?: false)
-                        )
+                    var currentScreen by remember { mutableStateOf<@Composable () -> Unit>({}) }
+
+                    val enterTransition1 = remember {
+                        slideInHorizontally(
+                            tween(200)
+                        ) { it }
+                    }
+                    val exitTransition1 = remember {
+                        slideOutHorizontally(
+                            tween(200)
+                        ) { it }
+                    }
+                    val enterTransition2 = remember {
+                        slideInHorizontally(
+                            tween(200)
+                        ) { -it }
+                    }
+                    val exitTransition2 = remember {
+                        slideOutHorizontally(
+                            tween(200)
+                        ) { -it }
                     }
 
-                    LazyRow {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                            item {
-                                MaterialTheme.colorScheme.run {
-                                    val isDynamic = selectedTheme == -1
-                                    ThemeCard(
-                                        isDynamic,
-                                        if (isDynamic) primary else MaterialTheme.colorScheme.surface,
-                                        if (isDynamic) secondary else MaterialTheme.colorScheme.surface,
-                                        if (isDynamic) surfaceVariant else MaterialTheme.colorScheme.surface,
-                                        Modifier.padding(start = 8.dp),
-                                        true
-                                    ) {
-                                        colorSchemeLive.postValue(-1)
-                                        selectedTheme = -2
-                                        activity.mainPrefs.save("theme" to -1)
+                    val SettingsSection: @Composable (icon: ImageVector, title: String, description: String, content: @Composable () -> Unit) -> Unit =
+                        { icon, title, description, content ->
+                            Card(
+                                Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = 16.dp, vertical = 8.dp)
+                                    .clickable {
+                                        selectScreen = false
+                                        currentScreen = content
+                                        currentTitle = title
+                                    },
+                                shape = MaterialTheme.shapes.extraLarge,
+                                colors = CardDefaults.cardColors(MaterialTheme.colorScheme.primaryContainer)
+                            ) {
+                                Row(
+                                    Modifier.padding(16.dp),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Icon(
+                                        icon, title,
+                                        Modifier
+                                            .padding(horizontal = 8.dp)
+                                            .size(25.dp)
+                                    )
+                                    Column {
+                                        Text(
+                                            title,
+                                            style = MaterialTheme.typography.titleMedium,
+                                            fontWeight = FontWeight.Bold,
+                                            lineHeight = 1.em
+                                        )
+                                        Text(
+                                            description,
+                                            lineHeight = 1.em,
+                                            style = MaterialTheme.typography.bodyMedium
+                                        )
                                     }
                                 }
                             }
                         }
-                        items(CustomColorScheme.values()) {
-                            val scheme = remember {
-                                when (darkTheme.value) {
-                                    true -> it.darkColorScheme
-                                    false -> it.lightColorScheme
-                                }
-                            }
-                            scheme.run {
-                                ThemeCard(
-                                    selectedTheme == it.ordinal,
-                                    primary,
-                                    secondary,
-                                    surfaceVariant
+
+                    AnimatedVisibility(
+                        visible = !selectScreen,
+                        enter = enterTransition1,
+                        exit = exitTransition1
+                    ) {
+                        Column(
+                            Modifier
+                                .verticalScroll(rememberScrollState())
+                        ) {
+                            currentScreen()
+                        }
+                    }
+                    AnimatedVisibility(
+                        visible = selectScreen,
+                        enter = enterTransition2,
+                        exit = exitTransition2
+                    ) {
+                        Column(
+                            Modifier
+                                .verticalScroll(rememberScrollState())
+                        ) {
+                            SettingsSection(
+                                Icons.Rounded.Settings,
+                                stringResource(R.string.common),
+                                stringResource(R.string.common_desc),
+                            ) { Common() }
+                            SettingsSection(
+                                Icons.Rounded.Notifications,
+                                stringResource(R.string.notifications),
+                                stringResource(R.string.notifications_desc)
+                            ) { Notifications() }
+                            SettingsSection(
+                                Icons.Rounded.Brush,
+                                stringResource(R.string.appearance),
+                                stringResource(R.string.appearance_desc)
+                            ) { Appearance() }
+                            SettingsSection(
+                                Icons.Rounded.Lock,
+                                stringResource(R.string.security),
+                                stringResource(R.string.security_desc)
+                            ) { Security() }
+                            SettingsSection(
+                                Icons.Rounded.Info,
+                                stringResource(R.string.about),
+                                stringResource(R.string.about_desc)
+                            ) { About() }
+
+                            Column(
+                                Modifier
+                                    .fillMaxWidth()
+                                    .padding(16.dp), horizontalAlignment = Alignment.End
+                            ) {
+                                Button(
+                                    onClick = {
+                                        val link = Uri.parse(
+                                            NetworkService.ExternalIntegrationConfig.BOT_AUTH_URL.format(
+                                                DataService.token,
+                                                DataService.subsystem.ordinal
+                                            )
+                                        )
+                                        launchUrlLive.postValue(link)
+                                    },
+                                    contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
+                                    modifier = Modifier.padding(bottom = 8.dp)
                                 ) {
-                                    colorSchemeLive.postValue(it.ordinal)
-                                    selectedTheme = -2
-                                    activity.mainPrefs.save("theme" to it.ordinal)
+                                    Icon(
+                                        Icons.AutoMirrored.Rounded.OpenInNew,
+                                        stringResource(R.string.image),
+                                        Modifier.size(ButtonDefaults.IconSize)
+                                    )
+                                    Spacer(Modifier.size(ButtonDefaults.IconSpacing))
+                                    Text(stringResource(R.string.log_into_bot))
                                 }
-                            }
-                        }
-                    }
-
-                    if (Manifest.permission.POST_NOTIFICATIONS.let {
-                            activity.checkCallingOrSelfPermission(it)
-                        } == PackageManager.PERMISSION_GRANTED) {
-                        SwitchPreference(
-                            title = stringResource(R.string.show_mark_value_in_notification),
-                            listenState = notifyWithValue
-                        ) {
-                            notifyWithValue.value = it
-                            activity.notificationPrefs.save("_hide_mark_value" to !it)
-                        }
-                    }
-
-                    SwitchPreference(
-                        title = stringResource(R.string.dark_theme),
-                        listenState = darkTheme
-                    ) {
-                        darkThemeLive.value = it
-                        activity.mainPrefs.save("is_dark_theme" to it)
-                    }
-
-                    SwitchPreference(
-                        title = stringResource(id = R.string.use_pin),
-                        listenState = pinEnabled
-                    ) {
-                        if (it) {
-                            setPin = true
-                        } else {
-                            activity.mainPrefs.save(
-                                "has_pin" to false,
-                                "pin" to null
-                            )
-                            pinEnabled.value = false
-                        }
-                    }
-                    Button(
-                        onClick = {
-                            val link = Uri.parse(
-                                NetworkService.ExternalIntegrationConfig.BOT_AUTH_URL.format(
-                                    DataService.token,
-                                    DataService.subsystem.ordinal
-                                )
-                            )
-                            launchUrlLive.postValue(link)
-                        },
-                        contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
-                        modifier = Modifier.padding(bottom = 8.dp)
-                    ) {
-                        Icon(
-                            Icons.AutoMirrored.Rounded.OpenInNew,
-                            stringResource(R.string.image),
-                            Modifier.size(ButtonDefaults.IconSize)
-                        )
-                        Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-                        Text(stringResource(R.string.log_into_bot))
-                    }
-                    OutlinedButton(onClick = {
-                        onDismissRequest()
-                        activity.logOut()
-                    }) {
-                        Text(stringResource(R.string.log_out))
-                    }
-
-                    AboutCard()
-                    Spacer(Modifier.padding(bottom = 16.dp))
-
-                    AnimatedVisibility(setPin) {
-                        val pinFinished = remember { mutableStateOf(false) }
-                        val initialPin = remember { mutableStateOf(emptyList<Int>()) }
-                        val secondPin = remember { mutableStateOf(emptyList<Int>()) }
-
-                        SetPinDialog(
-                            pinFinished = pinFinished,
-                            initialPin = initialPin,
-                            secondPin = secondPin,
-                            closeButtonTitle = stringResource(id = R.string.cancel)
-                        )
-
-                        if (pinFinished.value) {
-                            setPin = false
-                        }
-
-                        if (
-                            initialPin.value.size == 4 &&
-                            secondPin.value.size == 4
-                        ) {
-                            if (initialPin.value == secondPin.value) {
-                                LocalContext.current.mainPrefs.save(
-                                    "has_pin" to true,
-                                    "pin" to secondPin.value.joinToString("")
-                                )
-                                pinFinished.value = true
-                                setPin = false
-                                pinEnabled.value = true
-                            } else {
-                                initialPin.value = emptyList()
-                                secondPin.value = emptyList()
-                                pinFinished.value = false
+                                OutlinedButton(onClick = {
+                                    onDismissRequest()
+                                    activity.logOut()
+                                }) {
+                                    Text(stringResource(R.string.log_out))
+                                }
                             }
                         }
                     }
@@ -292,7 +302,7 @@ fun ThemeCard(
     bottom: Color,
     modifier: Modifier = Modifier,
     showIcon: Boolean = false,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     Box(Modifier.clip(MaterialTheme.shapes.large)) {
         OutlinedCard(modifier.padding(8.dp), shape = MaterialTheme.shapes.extraLarge) {

@@ -213,4 +213,14 @@
     <string name="today_lowercase">сегодня</string>
     <string name="show_mark_value_in_notification">Показывать оценку в уведомлении</string>
     <string name="replacement">Замена</string>
+    <string name="common">Общие</string>
+    <string name="notifications">Уведомления</string>
+    <string name="appearance">Внешний вид</string>
+    <string name="security">Безопасность</string>
+    <string name="about">О приложении</string>
+    <string name="common_desc">Поведение основных разделов</string>
+    <string name="notifications_desc">Выбор показываемых данных</string>
+    <string name="appearance_desc">Цветовые темы интерфейса</string>
+    <string name="security_desc">Код-пароль и другое</string>
+    <string name="about_desc">Разработчики, ссылки</string>
 </resources>

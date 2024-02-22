@@ -15,9 +15,10 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun SwitchPreference(
+    modifier: Modifier = Modifier,
     title: String,
     listenState: State<Boolean>,
-    onToggled: (Boolean) -> Unit
+    onToggled: (Boolean) -> Unit,
 ) {
     Row(
         Modifier
