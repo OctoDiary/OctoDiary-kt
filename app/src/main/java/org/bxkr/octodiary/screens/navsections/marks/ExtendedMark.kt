@@ -18,7 +18,7 @@ import org.bxkr.octodiary.models.marklistdate.Mark
 @Composable
 fun ExtendedMark(mark: Mark) {
     val eventMark = org.bxkr.octodiary.models.events.Mark.fromMarkListDate(mark)
-    Column(Modifier.clickable { defaultMarkClick(eventMark) }) {
+    Column(Modifier.clickable { defaultMarkClick(eventMark, mark.subjectId) }) {
         Row(
             Modifier
                 .fillMaxWidth()

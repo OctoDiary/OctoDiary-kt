@@ -161,7 +161,7 @@ fun EventItem(event: Event, index: Int = -1) {
                             if (event.marks != null) {
                                 Row {
                                     event.marks.forEach {
-                                        Mark(it)
+                                        Mark(it, subjectId = event.subjectId)
                                     }
                                 }
                             }

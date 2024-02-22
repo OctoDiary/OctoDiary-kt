@@ -117,7 +117,7 @@ fun SubjectCard(subject: MarkListSubjectItem) {
                 ) {
                     LazyRow {
                         items(subject.marks) {
-                            Mark(Mark.fromMarkListSubject(it))
+                            Mark(Mark.fromMarkListSubject(it), subjectId = subject.id)
                         }
                     }
                     DataService.subjectRanking.firstOrNull { it.subjectId == subject.id }?.let {

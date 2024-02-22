@@ -20,6 +20,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import org.bxkr.octodiary.DataService
 import org.bxkr.octodiary.R
@@ -28,17 +29,19 @@ import org.bxkr.octodiary.modalBottomSheetStateLive
 import org.bxkr.octodiary.models.events.Mark
 import org.bxkr.octodiary.models.mark.MarkInfo
 import org.bxkr.octodiary.parseSimpleLongAndFormatToLong
+import org.bxkr.octodiary.screens.navsections.marks.SubjectRatingBottomSheet
 
 @Composable
 fun Mark(
     mark: Mark,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    onClick: (Mark) -> Unit = ::defaultMarkClick
+    subjectId: Long? = null,
+    onClick: (Mark, Long?) -> Unit = ::defaultMarkClick,
 ) {
     FilledTonalIconButton(
-        onClick = { onClick(mark) },
-        modifier = modifier.clickable(enabled) { onClick(mark) },
+        onClick = { onClick(mark, subjectId) },
+        modifier = modifier.clickable(enabled) { onClick(mark, subjectId) },
         shape = MaterialTheme.shapes.small
     ) {
         Box(
@@ -61,7 +64,7 @@ fun Mark(
 }
 
 @Composable
-fun MarkSheetContent(mark: Mark) {
+fun MarkSheetContent(mark: Mark, subjectId: Long? = null) {
     var markInfo by remember { mutableStateOf<MarkInfo?>(null) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
     LaunchedEffect(Unit) {
@@ -69,14 +72,28 @@ fun MarkSheetContent(mark: Mark) {
             markInfo = it
         }
     }
+    val subject = if (DataService.hasMarksSubject) {
+        DataService.marksSubject.first { it.id == subjectId }
+    } else null
 
     Box(
         Modifier
             .heightIn(192.dp, Int.MAX_VALUE.dp)
-            .fillMaxWidth()) {
+            .fillMaxWidth()
+    ) {
         if (markInfo != null) {
             Column(Modifier.padding(16.dp)) {
-                Text(stringResource(R.string.mark), style = MaterialTheme.typography.titleMedium)
+                if (subject != null) {
+                    Text(
+                        subject.subjectName,
+                        style = MaterialTheme.typography.titleMedium
+                    )
+                } else {
+                    Text(
+                        stringResource(R.string.mark),
+                        style = MaterialTheme.typography.titleMedium
+                    )
+                }
                 with(markInfo!!) {
                     Text(teacher.run { "$lastName $firstName $middleName" })
                     Text(controlFormName)
@@ -93,10 +110,30 @@ fun MarkSheetContent(mark: Mark) {
                     )
                 }
             }
-            Mark(mark,
+            Column(
                 Modifier
                     .align(Alignment.TopEnd)
-                    .padding(16.dp), false) {}
+                    .padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Mark(mark, enabled = false)
+                if (subject != null) {
+                    Text(
+                        subject.average ?: subject.fixedValue ?: "",
+                        Modifier.clickable {
+                            modalBottomSheetStateLive.postValue(true)
+                            modalBottomSheetContentLive.postValue {
+                                SubjectRatingBottomSheet(
+                                    subject.id,
+                                    subject.subjectName
+                                )
+                            }
+                        },
+                        color = MaterialTheme.colorScheme.secondary,
+                        style = MaterialTheme.typography.labelMedium,
+                        textDecoration = TextDecoration.Underline
+                    )
+                }
+            }
         } else if (errorMessage == null) {
             CircularProgressIndicator(Modifier.align(Alignment.Center))
         } else {
@@ -105,7 +142,7 @@ fun MarkSheetContent(mark: Mark) {
     }
 }
 
-fun defaultMarkClick(mark: Mark) {
+fun defaultMarkClick(mark: Mark, subjectId: Long? = null) {
     modalBottomSheetStateLive.postValue(true)
-    modalBottomSheetContentLive.postValue { MarkSheetContent(mark) }
+    modalBottomSheetContentLive.postValue { MarkSheetContent(mark, subjectId) }
 }
