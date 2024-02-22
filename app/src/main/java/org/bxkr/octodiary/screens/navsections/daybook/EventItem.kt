@@ -88,25 +88,31 @@ fun EventItem(event: Event, index: Int = -1) {
                     .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                if (index >= 0) {
-                    Box(
-                        Modifier
-                            .padding(end = 8.dp)
-                            .size(18.dp)
-                            .clip(CircleShape)
-                            .background(MaterialTheme.colorScheme.surfaceVariant), Alignment.Center
-                    ) {
-                        Text((index + 1).toString(), style = MaterialTheme.typography.labelSmall)
+                Row(Modifier.weight(1f), verticalAlignment = Alignment.CenterVertically) {
+                    if (index >= 0) {
+                        Box(
+                            Modifier
+                                .padding(end = 8.dp)
+                                .size(18.dp)
+                                .clip(CircleShape)
+                                .background(MaterialTheme.colorScheme.surfaceVariant),
+                            Alignment.Center
+                        ) {
+                            Text(
+                                (index + 1).toString(),
+                                style = MaterialTheme.typography.labelSmall
+                            )
+                        }
                     }
+                    Text(
+                        event.subjectName ?: (event.title ?: ""),
+                        Modifier
+                            .animateContentSize(),
+                        maxLines = if (!isExpanded) 2 else Int.MAX_VALUE,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                    EventIndicators(event, Modifier.padding(horizontal = 8.dp))
                 }
-                Text(
-                    event.subjectName ?: (event.title ?: ""),
-                    Modifier
-                        .weight(1f)
-                        .animateContentSize(),
-                    maxLines = if (!isExpanded) 2 else Int.MAX_VALUE,
-                    overflow = TextOverflow.Ellipsis
-                )
                 Text(
                     if (event.isAllDay != true) stringResource(
                         id = R.string.time_from_to,

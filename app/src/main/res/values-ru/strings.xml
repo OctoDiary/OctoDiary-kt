@@ -212,4 +212,5 @@
     <string name="no_account_found_please_log_in">Аккаунт не найден\nПожалуйста, авторизуйтесь</string>
     <string name="today_lowercase">сегодня</string>
     <string name="show_mark_value_in_notification">Показывать оценку в уведомлении</string>
+    <string name="replacement">Замена</string>
 </resources>
