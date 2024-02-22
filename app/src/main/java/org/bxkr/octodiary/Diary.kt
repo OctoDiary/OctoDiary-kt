@@ -113,8 +113,8 @@ enum class Diary(
                     bottomEnd = MaterialTheme.shapes.extraSmall.bottomEnd
                 ),
                 colors = TextFieldDefaults.colors(
-                    focusedIndicatorColor = Color.Unspecified,
-                    unfocusedIndicatorColor = Color.Unspecified
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent
                 )
             )
             androidx.compose.material3.TextField(
@@ -130,8 +130,8 @@ enum class Diary(
                     topEnd = MaterialTheme.shapes.extraSmall.topEnd
                 ),
                 colors = TextFieldDefaults.colors(
-                    focusedIndicatorColor = Color.Unspecified,
-                    unfocusedIndicatorColor = Color.Unspecified
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent
                 )
             )
             val coroutineScope = androidx.compose.runtime.rememberCoroutineScope()
