@@ -40,7 +40,7 @@ fun LazyListScope.DayItem(
             shape = cardShape,
             colors = CardDefaults.cardColors(containerColor = cardColor)
         ) {
-            EventItem(event = it)
+            EventItem(event = it, day.filter { it1 -> it1.source == "PLAN" }.indexOf(it))
         }
     }
     item {
