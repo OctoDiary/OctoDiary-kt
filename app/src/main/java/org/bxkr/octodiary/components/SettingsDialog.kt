@@ -10,6 +10,8 @@ import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -49,6 +51,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -69,6 +72,8 @@ import androidx.compose.ui.unit.em
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.core.content.ContextCompat.startActivity
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
 import org.bxkr.octodiary.BuildConfig
 import org.bxkr.octodiary.DataService
 import org.bxkr.octodiary.LocalActivity
@@ -258,18 +263,41 @@ fun SettingsDialog(onDismissRequest: () -> Unit) {
                                     .fillMaxWidth()
                                     .padding(16.dp), horizontalAlignment = Alignment.End
                             ) {
-                                Button(
-                                    onClick = {
-                                        val link = Uri.parse(
-                                            NetworkService.ExternalIntegrationConfig.BOT_AUTH_URL.format(
-                                                DataService.token,
-                                                DataService.subsystem.ordinal
-                                            )
+                                val interactionSource = remember { MutableInteractionSource() }
+                                val openBot: (test: Boolean) -> Unit = { isTest ->
+                                    val link = Uri.parse(
+                                        NetworkService.ExternalIntegrationConfig.BOT_AUTH_URL.format(
+                                            DataService.token,
+                                            DataService.subsystem.ordinal,
+                                            if (isTest) 1 else 0
                                         )
-                                        launchUrlLive.postValue(link)
-                                    },
+                                    )
+                                    launchUrlLive.postValue(link)
+                                }
+                                LaunchedEffect(interactionSource) {
+                                    var isLongClick = false
+                                    interactionSource.interactions.collectLatest {
+                                        when (it) {
+                                            is PressInteraction.Press -> {
+                                                isLongClick = false
+                                                delay(2000)
+                                                isLongClick = true
+                                                openBot(true)
+                                            }
+
+                                            is PressInteraction.Release -> {
+                                                if (!isLongClick) {
+                                                    openBot(false)
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                Button(
+                                    onClick = {},
                                     contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
-                                    modifier = Modifier.padding(bottom = 8.dp)
+                                    modifier = Modifier.padding(bottom = 8.dp),
+                                    interactionSource = interactionSource
                                 ) {
                                     Icon(
                                         Icons.AutoMirrored.Rounded.OpenInNew,
@@ -281,7 +309,7 @@ fun SettingsDialog(onDismissRequest: () -> Unit) {
                                 }
                                 OutlinedButton(onClick = {
                                     onDismissRequest()
-                                    activity.logOut()
+                                    activity.logOut("User initiated the log out from settings screen")
                                 }) {
                                     Text(stringResource(R.string.log_out))
                                 }

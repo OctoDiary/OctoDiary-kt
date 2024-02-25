@@ -1,5 +1,6 @@
 package org.bxkr.octodiary.network.interfaces
 
+import com.google.gson.JsonObject
 import org.bxkr.octodiary.Diary
 import org.bxkr.octodiary.models.homeworks.HomeworksResponse
 import org.bxkr.octodiary.models.lessonschedule.LessonSchedule
@@ -14,10 +15,12 @@ import org.bxkr.octodiary.network.MESOnly
 import org.bxkr.octodiary.network.NetworkService.BaseUrl
 import org.bxkr.octodiary.network.NetworkService.MESAPIConfig
 import retrofit2.Call
+import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -206,4 +209,21 @@ interface MainSchoolAPI {
         @Query("student_id") studentId: Long,
         @Header("X-Mes-Subsystem") mesSubsystem: String = MESAPIConfig.FAMILYMP
     ): Call<LessonSchedule>
+
+    @GET("usersettings/v1")
+    fun <Model> pullUserSettings(
+        @Header("auth-token") accessToken: String,
+        @Query("name") path: String,
+        @Header("X-Mes-Subsystem") mesSubsystem: String = MESAPIConfig.FAMILYMP,
+        @Query("subsystem_id") subsystemId: Int = 1,
+    ): Call<Model>
+
+    @PUT("usersettings/v1")
+    fun pushUserSettings(
+        @Header("auth-token") accessToken: String,
+        @Query("name") path: String,
+        @Body body: JsonObject,
+        @Header("X-Mes-Subsystem") mesSubsystem: String = MESAPIConfig.FAMILYMP,
+        @Query("subsystem_id") subsystemId: Int = 1,
+    ): Call<Unit>
 }

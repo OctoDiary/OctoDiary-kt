@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.platform.LocalContext
+import androidx.core.content.edit
 import org.bxkr.octodiary.DataService
 import org.bxkr.octodiary.Diary
 import org.bxkr.octodiary.authPrefs
@@ -16,11 +17,14 @@ import org.bxkr.octodiary.encodeToBase64
 import org.bxkr.octodiary.get
 import org.bxkr.octodiary.getRandomString
 import org.bxkr.octodiary.hash
+import org.bxkr.octodiary.isJwtExpired
 import org.bxkr.octodiary.mainPrefs
 import org.bxkr.octodiary.models.auth.RegisterBody
 import org.bxkr.octodiary.models.auth.SchoolAuthBody
 import org.bxkr.octodiary.models.auth.UserAuthenticationForMobileRequest
+import org.bxkr.octodiary.models.usersettings.AuthSettings
 import org.bxkr.octodiary.network.NetworkService.MESAPIConfig
+import org.bxkr.octodiary.network.interfaces.MainSchoolAPI
 import org.bxkr.octodiary.network.interfaces.SchoolSessionAPI
 import org.bxkr.octodiary.save
 import org.bxkr.octodiary.widget.StatusWidget.Companion.setUpdateFor
@@ -127,21 +131,63 @@ object MESLoginService {
 
     fun Context.refreshToken(onUpdated: () -> Unit) {
         getSharedPreferences("auth", Context.MODE_PRIVATE).apply {
-            val clientId = getString("client_id", "")
-            val clientSecret = getString("client_secret", "")
+            var clientId = getString("client_id", "")
+            var clientSecret = getString("client_secret", "")
+            var refreshToken = getString("mos_refresh_token", "")!!
+            var accessToken = getString("access_token", "")
+            val isTokenValid = accessToken?.isJwtExpired()?.not()
+
+            if (isTokenValid == true) {
+                val checkRemoteCall =
+                    NetworkService.mainSchoolApi(MainSchoolAPI.getBaseUrl(Diary.MES))
+                        .pullUserSettings<AuthSettings>(
+                            accessToken!!,
+                            "od_auth"
+                        )
+                checkRemoteCall.baseEnqueue {
+                    if (clientId != it.clientId || clientSecret != it.clientSecret) {
+                        println("Remote clientId or/and clientSecret differs from the local ones")
+                        clientId = it.clientId
+                        clientSecret = it.clientSecret
+                        edit(commit = true) {
+                            putString("client_id", clientId)
+                            putString("client_secret", clientSecret)
+                        }
+                    }
+                    if (refreshToken != it.refreshToken || accessToken != it.accessToken) {
+                        println("Remote refresh or/and access tokens differ from the local ones")
+                        refreshToken = it.refreshToken
+                        if (it.accessToken.isJwtExpired() == false) {
+                            accessToken = it.accessToken
+                        }
+                    }
+                }
+            }
 
             val authorization = encodeToBase64("$clientId:$clientSecret".toByteArray())
             val authHeader = "Basic $authorization"
             val exchangeCall = NetworkService.mosAuthApi().tokenExchange(
                 grantType = MESAPIConfig.GRANT_TYPE_REFRESH,
-                refreshToken = authPrefs.get<String>("mos_refresh_token")!!,
+                refreshToken = refreshToken,
                 authHeader = authHeader
             )
             exchangeCall.baseEnqueue { body ->
                 authPrefs.save("mos_refresh_token" to body.refreshToken)
                 mosToMesToken(this@refreshToken, body.accessToken, onSet = {
                     DataService.token = authPrefs.get<String>("access_token")!!
-                    DataService.updateUserId { onUpdated() }
+                    DataService.updateUserId { // For token to start working
+                        DataService.pushUserSettings(
+                            "od_auth",
+                            AuthSettings(
+                                clientId = getString("client_id", "")!!,
+                                clientSecret = getString("client_secret", "")!!,
+                                refreshToken = body.refreshToken,
+                                accessToken = DataService.token
+                            )
+                        ) {
+                            onUpdated()
+                        }
+                    }
                 })
             }
         }

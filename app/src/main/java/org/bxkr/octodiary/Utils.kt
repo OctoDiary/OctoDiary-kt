@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.pm.PackageManager.NameNotFoundException
 import android.graphics.Matrix
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.ui.geometry.Size
@@ -19,11 +20,13 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.core.content.edit
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import okhttp3.ResponseBody
 import org.bxkr.octodiary.models.rankingforsubject.ErrorBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.nio.charset.Charset
 import java.security.MessageDigest
 import java.text.SimpleDateFormat
 import java.time.OffsetDateTime
@@ -36,7 +39,7 @@ import kotlin.system.exitProcess
 
 abstract class Prefs(
     val prefPath: String,
-    val ctx: Context
+    val ctx: Context,
 )
 
 class AuthPrefs(ctx: Context) : Prefs("auth", ctx)
@@ -82,6 +85,14 @@ fun encodeToBase64(byteArray: ByteArray): String {
     return Base64.UrlSafe.encode(byteArray).replace("=", "")
 }
 
+@OptIn(ExperimentalEncodingApi::class)
+inline fun <reified T> decodeFromBase64Json(string: String, charset: Charset = Charsets.UTF_8): T {
+    return Gson().fromJson(
+        Base64.UrlSafe.decode(string).toString(charset),
+        object : TypeToken<T>() {}.type
+    )
+}
+
 fun Prefs.save(vararg addPrefs: Pair<String, Any?>) {
     ctx.getSharedPreferences(prefPath, Context.MODE_PRIVATE).edit(commit = true) {
         addPrefs.map {
@@ -125,7 +136,7 @@ inline fun <reified T> Call<T>.baseEnqueue(
 ) = enqueue(object : Callback<T> {
     override fun onResponse(
         call: Call<T>,
-        response: Response<T>
+        response: Response<T>,
     ) {
         val body = response.body()
         if (response.isSuccessful && body != null) {
@@ -148,7 +159,7 @@ inline fun <reified T> Call<T>.extendedEnqueue(
 ) = enqueue(object : Callback<T> {
     override fun onResponse(
         call: Call<T>,
-        response: Response<T>
+        response: Response<T>,
     ) {
         val body = response.body()
         if (response.isSuccessful && body != null) {
@@ -236,10 +247,18 @@ val Date.weekOfYear: Int
             get(Calendar.WEEK_OF_YEAR)
         }
 
-fun Activity.logOut() {
+fun Activity.logOut(reason: String? = null) {
+    if (reason != null) {
+        Log.i("LogOuter", "Logged out for reason:\n$reason")
+    } else {
+        Log.i("LogOuter", "Logged out for an unknown reason")
+    }
     authPrefs.save(
         "auth" to false,
-        "access_token" to null
+        "access_token" to null,
+        "client_id" to null,
+        "client_secret" to null,
+        "refresh_token" to null
     )
     mainPrefs.save(
         "first_launch" to true,
@@ -265,7 +284,7 @@ val CloverShape: Shape = object : Shape {
     override fun createOutline(
         size: Size,
         layoutDirection: LayoutDirection,
-        density: Density
+        density: Density,
     ): Outline {
         val baseWidth = 200f
         val baseHeight = 200f
@@ -320,3 +339,7 @@ fun DataService.errorListenerForMessage(errorListener: (String) -> Unit): (error
         }
     }
 }
+
+fun String.isJwtExpired() =
+    split(".")[1].let { decodeFromBase64Json<Map<String, String>>(it) }.get("exp")
+        ?.toIntOrNull()?.let { Date().time > it }

@@ -238,7 +238,7 @@ fun NavScreen(modifier: Modifier, pinFinished: MutableState<Boolean>) {
 
                     val activity = LocalActivity.current
                     DataService.tokenExpirationHandler = {
-                        activity.logOut()
+                        activity.logOut("Performed from token expiration handler")
                     }
 
                     if (!DataService.loadingStarted) {
@@ -307,7 +307,7 @@ fun EnterPinDialog(
                 val activity = LocalActivity.current
                 FilledTonalButton(
                     modifier = Modifier.padding(16.dp), onClick = {
-                        activity.logOut()
+                        activity.logOut("Passcode is forgotten")
                     }, contentPadding = ButtonDefaults.ButtonWithIconContentPadding
                 ) {
                     Icon(

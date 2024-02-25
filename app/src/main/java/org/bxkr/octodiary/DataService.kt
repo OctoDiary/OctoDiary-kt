@@ -425,8 +425,13 @@ object DataService {
         externalApi().sendStat(subsystem.ordinal, deviceId).baseEnqueue { onUpdated() }
     }
 
-    fun <Model> pushUserSettings(path: String, content: Model) {
-        
+    fun <Model> pushUserSettings(path: String, content: Model, onUpdated: () -> Unit) {
+        assert(this::token.isInitialized)
+
+        mainSchoolApi.pushUserSettings(token, path, Gson().toJsonTree(content).asJsonObject)
+            .baseEnqueue {
+                onUpdated()
+            }
     }
 
     fun updateAll(context: Context? = null) {
