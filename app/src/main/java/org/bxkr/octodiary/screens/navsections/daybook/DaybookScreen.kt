@@ -19,11 +19,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import org.bxkr.octodiary.DataService
 import org.bxkr.octodiary.R
 import org.bxkr.octodiary.formatToDay
+import org.bxkr.octodiary.get
+import org.bxkr.octodiary.mainPrefs
 import org.bxkr.octodiary.models.events.Event
 import org.bxkr.octodiary.parseLongDate
 import org.bxkr.octodiary.weekOfYear
@@ -36,9 +39,14 @@ import kotlin.math.roundToInt
 @Composable
 @OptIn(ExperimentalFoundationApi::class)
 fun DaybookScreen() {
+    val eventCalendar = DataService.eventCalendar.let {
+        if (LocalContext.current.mainPrefs.get("show_only_plan") ?: false) {
+            it.filter { it.source == "PLAN" }
+        } else it
+    }
     val recompositionTrigger = remember { mutableStateOf(false) }
     key(recompositionTrigger.value) {
-        val eventCalendar = DataService.eventCalendar
+        val showNumbers = LocalContext.current.mainPrefs.get("show_lesson_numbers") ?: true
         val weekSplitCalendar = key(eventCalendar) {
             eventCalendar.fold(mutableListOf<MutableList<Event>>()) { sum, it ->
                 if (sum.isEmpty() || sum.last().first().startAt.parseLongDate()
@@ -177,7 +185,7 @@ fun DaybookScreen() {
                             )
                             if (daySplitCalendar.size > page) {
                                 LazyColumn(Modifier.fillMaxSize()) {
-                                    DayItem(day = daySplitCalendar[page])
+                                    DayItem(day = daySplitCalendar[page], showNumbers)
                                 }
                             } else {
                                 Column(

@@ -10,6 +10,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.PressInteraction
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -44,14 +45,13 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.platform.LocalViewConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.bxkr.octodiary.R
-import org.bxkr.octodiary.components.Mark
+import org.bxkr.octodiary.components.MarkComp
 import org.bxkr.octodiary.formatToTime
 import org.bxkr.octodiary.modalBottomSheetContentLive
 import org.bxkr.octodiary.modalBottomSheetStateLive
@@ -60,7 +60,7 @@ import org.bxkr.octodiary.parseLongDate
 import org.bxkr.octodiary.snackbarHostStateLive
 
 @Composable
-fun EventItem(event: Event, index: Int = -1) {
+fun EventItem(event: Event, index: Int = -1, showLessonNumbers: Boolean = true) {
     var isExpanded by remember { mutableStateOf(false) }
     val enterTransition = remember {
         expandVertically(
@@ -86,10 +86,16 @@ fun EventItem(event: Event, index: Int = -1) {
                         bottom = 16.dp
                     )
                     .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Row(Modifier.weight(1f), verticalAlignment = Alignment.CenterVertically) {
-                    if (index >= 0) {
+                Row(
+                    Modifier
+                        .weight(1f)
+                        .padding(end = 16.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    if (index >= 0 && showLessonNumbers) {
                         Box(
                             Modifier
                                 .padding(end = 8.dp)
@@ -107,8 +113,9 @@ fun EventItem(event: Event, index: Int = -1) {
                     Text(
                         event.subjectName ?: (event.title ?: ""),
                         Modifier
+                            .weight(1f, false)
                             .animateContentSize(),
-                        maxLines = if (!isExpanded) 2 else Int.MAX_VALUE,
+                        maxLines = if (!isExpanded) 1 else Int.MAX_VALUE,
                         overflow = TextOverflow.Ellipsis
                     )
                     EventIndicators(event, Modifier.padding(horizontal = 8.dp))
@@ -120,9 +127,9 @@ fun EventItem(event: Event, index: Int = -1) {
                         event.finishAt.parseLongDate().formatToTime()
                     ) else stringResource(id = R.string.all_day),
                     Modifier
-                        .alpha(0.8f)
-                        .weight(1f),
-                    textAlign = TextAlign.End
+                        .alpha(0.8f),
+                    maxLines = 1,
+                    softWrap = false
                 )
 
             }
@@ -167,7 +174,9 @@ fun EventItem(event: Event, index: Int = -1) {
                             if (event.marks != null) {
                                 Row {
                                     event.marks.forEach {
-                                        Mark(it, subjectId = event.subjectId)
+                                        if (event.subjectId != null) {
+                                            MarkComp(it, subjectId = event.subjectId)
+                                        }
                                     }
                                 }
                             }

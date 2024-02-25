@@ -14,7 +14,8 @@ import org.bxkr.octodiary.models.events.Event
 
 fun LazyListScope.DayItem(
     day: List<Event>,
-    addBelow: @Composable () -> Unit = {}
+    showLessonNumbers: Boolean = true,
+    addBelow: @Composable () -> Unit = {},
 ) {
     items(day) {
         val cardShape =
@@ -40,7 +41,11 @@ fun LazyListScope.DayItem(
             shape = cardShape,
             colors = CardDefaults.cardColors(containerColor = cardColor)
         ) {
-            EventItem(event = it, day.filter { it1 -> it1.source == "PLAN" }.indexOf(it))
+            EventItem(
+                event = it,
+                day.filter { it1 -> it1.source == "PLAN" }.indexOf(it),
+                showLessonNumbers
+            )
         }
     }
     item {

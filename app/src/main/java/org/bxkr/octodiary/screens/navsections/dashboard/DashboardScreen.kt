@@ -19,12 +19,15 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import org.bxkr.octodiary.DataService
 import org.bxkr.octodiary.R
 import org.bxkr.octodiary.formatToDay
 import org.bxkr.octodiary.formatToHumanDay
+import org.bxkr.octodiary.get
+import org.bxkr.octodiary.mainPrefs
 import org.bxkr.octodiary.modalBottomSheetContentLive
 import org.bxkr.octodiary.modalBottomSheetStateLive
 import org.bxkr.octodiary.parseFromDay
@@ -34,6 +37,7 @@ import java.util.Date
 
 @Composable
 fun DashboardScreen() {
+    val showNumbers = LocalContext.current.mainPrefs.get("show_lesson_numbers") ?: true
     LazyColumn(
         verticalArrangement = Arrangement.Bottom,
         modifier = Modifier
@@ -79,33 +83,35 @@ fun DashboardScreen() {
                 DataService.eventCalendar.filter {
                     it.startAt.parseLongDate().formatToDay() == day
                 }
-            } ?: listOf())
+                } ?: listOf(), showNumbers)
         item {
-            Text(
-                stringResource(id = R.string.rating),
-                modifier = Modifier.padding(top = 8.dp),
-                style = MaterialTheme.typography.labelLarge
-            )
-            Card(
-                Modifier
-                    .fillMaxWidth()
-                    .clickable {
-                        modalBottomSheetContentLive.value = { RankingList() }
-                        modalBottomSheetStateLive.postValue(true)
-                    }
-            ) {
-                Column(
+            if (LocalContext.current.mainPrefs.get("main_rating") ?: true) {
+                Text(
+                    stringResource(id = R.string.rating),
+                    modifier = Modifier.padding(top = 8.dp),
+                    style = MaterialTheme.typography.labelLarge
+                )
+                Card(
                     Modifier
-                        .padding(16.dp)
+                        .fillMaxWidth()
+                        .clickable {
+                            modalBottomSheetContentLive.value = { RankingList() }
+                            modalBottomSheetStateLive.postValue(true)
+                        }
                 ) {
-                    Text(
-                        stringResource(
-                            id = R.string.rating_place,
-                            DataService
-                                .run { ranking.firstOrNull { it.personId == profile.children[currentProfile].contingentGuid } }
-                                ?.rank?.rankPlace ?: "?"
+                    Column(
+                        Modifier
+                            .padding(16.dp)
+                    ) {
+                        Text(
+                            stringResource(
+                                id = R.string.rating_place,
+                                DataService
+                                    .run { ranking.firstOrNull { it.personId == profile.children[currentProfile].contingentGuid } }
+                                    ?.rank?.rankPlace ?: "?"
+                            )
                         )
-                    )
+                    }
                 }
             }
             if (DataService.hasVisits && DataService.visits.payload.isNotEmpty()) {

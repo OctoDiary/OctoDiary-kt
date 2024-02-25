@@ -38,7 +38,7 @@ import androidx.core.content.ContextCompat
 import org.bxkr.octodiary.DataService
 import org.bxkr.octodiary.R
 import org.bxkr.octodiary.components.ErrorMessage
-import org.bxkr.octodiary.components.Mark
+import org.bxkr.octodiary.components.MarkComp
 import org.bxkr.octodiary.components.WebViewDialog
 import org.bxkr.octodiary.formatToHumanDay
 import org.bxkr.octodiary.models.lessonschedule.LessonSchedule
@@ -135,7 +135,7 @@ fun LessonSheetContent(lessonId: Long) {
                     }
                     LazyRow {
                         items(marks) {
-                            Mark(it)
+                            MarkComp(it, subjectId = subjectId)
                         }
                     }
                 }

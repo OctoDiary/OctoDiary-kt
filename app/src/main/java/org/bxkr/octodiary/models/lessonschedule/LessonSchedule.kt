@@ -54,7 +54,7 @@ data class LessonSchedule(
     @SerializedName("marks")
     val marks: List<Mark>,
     @SerializedName("plan_id")
-    val planId: Int,
+    val planId: Long,
     @SerializedName("remote_lesson")
     val remoteLesson: Any?,
     @SerializedName("room_name")
@@ -62,9 +62,9 @@ data class LessonSchedule(
     @SerializedName("room_number")
     val roomNumber: String,
     @SerializedName("subject_id")
-    val subjectId: Int,
+    val subjectId: Long,
     @SerializedName("subject_name")
     val subjectName: String,
     @SerializedName("teacher")
-    val teacher: Teacher
+    val teacher: Teacher,
 )

@@ -223,4 +223,10 @@
     <string name="appearance_desc">Цветовые темы интерфейса</string>
     <string name="security_desc">Код-пароль и другое</string>
     <string name="about_desc">Разработчики, ссылки</string>
+    <string name="show_lesson_numbers">Показывать номера уроков</string>
+    <string name="show_only_plan">Скрыть дополнительные события</string>
+    <string name="show_only_plan_desc">Оставить только основные уроки</string>
+    <string name="main_rating">Рейтинг по классу</string>
+    <string name="subject_rating">Рейтинги по предметам</string>
+    <string name="ratings">Рейтинги</string>
 </resources>

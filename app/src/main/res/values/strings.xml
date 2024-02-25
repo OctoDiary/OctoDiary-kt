@@ -278,4 +278,10 @@
     <string name="appearance_desc">Color themes of the app</string>
     <string name="security_desc">Passcode and other</string>
     <string name="about_desc">Developers, links</string>
+    <string name="show_lesson_numbers">Show lesson numbers</string>
+    <string name="show_only_plan">Hide additional events</string>
+    <string name="show_only_plan_desc">Show only plan lessons</string>
+    <string name="main_rating">Class rating</string>
+    <string name="subject_rating">Subject ratings</string>
+    <string name="ratings">Ratings</string>
 </resources>

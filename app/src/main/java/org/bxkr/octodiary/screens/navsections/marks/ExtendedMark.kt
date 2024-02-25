@@ -11,7 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import org.bxkr.octodiary.components.Mark
+import org.bxkr.octodiary.components.MarkComp
 import org.bxkr.octodiary.components.defaultMarkClick
 import org.bxkr.octodiary.models.marklistdate.Mark
 
@@ -28,7 +28,7 @@ fun ExtendedMark(mark: Mark) {
                 Text(mark.subjectName, style = MaterialTheme.typography.titleMedium)
                 Text(mark.controlFormName)
             }
-            Mark(eventMark)
+            MarkComp(eventMark, subjectId = mark.subjectId)
         }
     }
 }

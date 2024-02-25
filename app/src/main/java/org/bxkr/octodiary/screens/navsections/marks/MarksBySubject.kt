@@ -8,11 +8,13 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SecondaryScrollableTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -20,13 +22,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.coroutineScope
 import org.bxkr.octodiary.DataService
 import org.bxkr.octodiary.contentDependentActionLive
 import org.bxkr.octodiary.parseFromDay
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MarksBySubject() {
+fun MarksBySubject(scrollToSubjectId: Long? = null) {
     val filterState = remember { mutableStateOf(SubjectMarkFilterType.ByAverage) }
     contentDependentActionLive.postValue { SubjectMarkFilter(state = filterState) }
     val periods = remember {
@@ -56,14 +59,24 @@ fun MarksBySubject() {
                                     }
                                 }
                             }
+                    val lazyColumnState = rememberLazyListState()
                     LazyColumn(
                         Modifier
                             .fillMaxHeight()
                             .padding(horizontal = 16.dp)
-                            .weight(1f)
+                            .weight(1f),
+                        lazyColumnState
                     ) {
                         items(subjects) {
                             SubjectCard(subject = it)
+                        }
+                    }
+                    if (scrollToSubjectId != null) {
+                        LaunchedEffect(Unit) {
+                            coroutineScope {
+                                lazyColumnState.animateScrollToItem(subjects.indexOfFirst { it.id == scrollToSubjectId })
+                                scrollToSubjectIdLive.postValue(null)
+                            }
                         }
                     }
                     SecondaryScrollableTabRow(
