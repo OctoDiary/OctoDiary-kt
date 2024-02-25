@@ -5,6 +5,7 @@ import org.bxkr.octodiary.models.classmembers.ClassMember
 import org.bxkr.octodiary.models.mealbalance.MealBalance
 import org.bxkr.octodiary.models.profilesid.ProfileId
 import org.bxkr.octodiary.models.profilesid.ProfilesId
+import org.bxkr.octodiary.network.MESOnly
 import org.bxkr.octodiary.network.NetworkService.BaseUrl
 import org.bxkr.octodiary.network.NetworkService.MESAPIConfig
 import retrofit2.Call
@@ -65,6 +66,7 @@ interface DSchoolAPI {
      * @param mesSubsystem MES subsystem (["familymp"][MESAPIConfig.FAMILYMP] by default).
      * @return [MealBalance]
      */
+    @MESOnly
     @GET("api/meals/v1/clients")
     fun mealBalance(
         @Header("auth-token") accessToken: String,

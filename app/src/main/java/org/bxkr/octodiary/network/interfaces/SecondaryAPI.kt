@@ -10,6 +10,7 @@ import org.bxkr.octodiary.models.subjectranking.SubjectRanking
 import org.bxkr.octodiary.network.NetworkService
 import org.bxkr.octodiary.network.NetworkService.BaseUrl
 import org.bxkr.octodiary.network.NetworkService.MESAPIConfig
+import org.bxkr.octodiary.network.RegionalOnly
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Header
@@ -60,6 +61,7 @@ interface SecondaryAPI {
      * @param bearerToken Bearer auth header, e.g. 'Bearer AccessToken123'.
      * @return Access token.
      */
+    @RegionalOnly
     @GET("v2/token/refresh")
     fun refreshToken(
         @Header("Authorization") bearerToken: String

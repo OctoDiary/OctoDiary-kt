@@ -10,6 +10,7 @@ import org.bxkr.octodiary.models.marklistsubject.MarkListSubjectItem
 import org.bxkr.octodiary.models.profile.ProfileResponse
 import org.bxkr.octodiary.models.schoolinfo.SchoolInfo
 import org.bxkr.octodiary.models.visits.VisitsResponse
+import org.bxkr.octodiary.network.MESOnly
 import org.bxkr.octodiary.network.NetworkService.BaseUrl
 import org.bxkr.octodiary.network.NetworkService.MESAPIConfig
 import retrofit2.Call
@@ -75,6 +76,7 @@ interface MainSchoolAPI {
      * @param mesSubsystem MES subsystem (["familymp"][MESAPIConfig.FAMILYMP] by default).
      * @return [VisitsResponse]
      */
+    @MESOnly
     @GET("family/mobile/v1/visits")
     fun visits(
         @Header("auth-token") accessToken: String,

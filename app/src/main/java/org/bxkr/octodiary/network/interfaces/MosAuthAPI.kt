@@ -5,6 +5,7 @@ import org.bxkr.octodiary.models.auth.RegisterBody
 import org.bxkr.octodiary.models.auth.RegisterResponse
 import org.bxkr.octodiary.models.auth.TokenExchange
 import org.bxkr.octodiary.network.MESLoginService
+import org.bxkr.octodiary.network.MESOnly
 import org.bxkr.octodiary.network.NetworkService.BaseUrl
 import org.bxkr.octodiary.network.NetworkService.MESAPIConfig
 import retrofit2.Call
@@ -38,6 +39,7 @@ interface MosAuthAPI {
      * @return Authorization config - [RegisterResponse].
      * @see MESAPIConfig.AUTH_ISSUER_SECRET
      */
+    @MESOnly
     @POST("sps/oauth/register")
     fun register(
         @Body body: RegisterBody,
@@ -55,6 +57,7 @@ interface MosAuthAPI {
      * @return [TokenExchange] containing mos.ru access token.
      * @see MESLoginService.MosExchangeToken
      */
+    @MESOnly
     @POST("sps/oauth/te")
     @FormUrlEncoded
     fun tokenExchange(
@@ -65,6 +68,7 @@ interface MosAuthAPI {
         @Header("Authorization") authHeader: String,
     ): Call<TokenExchange>
 
+    @MESOnly
     @POST("sps/oauth/te")
     @FormUrlEncoded
     fun tokenExchange(

@@ -365,7 +365,9 @@ object DataService {
         assert(this::token.isInitialized)
 
         if (subsystem == Diary.MES) {
-            context.refreshToken(onUpdated)
+            context.refreshToken {
+                onUpdated()
+            }
         } else {
             secondaryApi.refreshToken("Bearer $token")
                 .baseEnqueue(::baseErrorFunction) {
@@ -421,6 +423,10 @@ object DataService {
         assert(this::userId.isInitialized)
 
         externalApi().sendStat(subsystem.ordinal, deviceId).baseEnqueue { onUpdated() }
+    }
+
+    fun <Model> pushUserSettings(path: String, content: Model) {
+        
     }
 
     fun updateAll(context: Context? = null) {

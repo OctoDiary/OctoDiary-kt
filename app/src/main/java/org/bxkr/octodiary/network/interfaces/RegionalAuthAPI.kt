@@ -4,6 +4,7 @@ import okhttp3.ResponseBody
 import org.bxkr.octodiary.Diary
 import org.bxkr.octodiary.models.auth.RegionalCredentialsResponse
 import org.bxkr.octodiary.network.NetworkService.BaseUrl
+import org.bxkr.octodiary.network.RegionalOnly
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -25,11 +26,13 @@ interface RegionalAuthAPI {
         }
     }
 
+    @RegionalOnly
     @POST("lms/api/sessions")
     fun enterCredentials(
         @Body body: RegionalCredentialsResponse.Body
     ): Call<RegionalCredentialsResponse>
 
+    @RegionalOnly
     @GET("v3/auth/kauth/callback")
     fun exchangeToken(
         @Query("code") code: String
