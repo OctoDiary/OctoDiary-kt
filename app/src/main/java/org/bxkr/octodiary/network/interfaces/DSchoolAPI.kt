@@ -3,6 +3,7 @@ package org.bxkr.octodiary.network.interfaces
 import org.bxkr.octodiary.Diary
 import org.bxkr.octodiary.models.classmembers.ClassMember
 import org.bxkr.octodiary.models.mealbalance.MealBalance
+import org.bxkr.octodiary.models.persondata.PersonData
 import org.bxkr.octodiary.models.profilesid.ProfileId
 import org.bxkr.octodiary.models.profilesid.ProfilesId
 import org.bxkr.octodiary.network.MESOnly
@@ -11,6 +12,7 @@ import org.bxkr.octodiary.network.NetworkService.MESAPIConfig
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 /**
@@ -81,4 +83,11 @@ interface DSchoolAPI {
         @Query("material_id") materialId: String,
         @Header("X-Mes-Subsystem") mesSubsystem: String = MESAPIConfig.FAMILYMP
     ): Call<String>
+
+    @GET("/api/persondata/mobile/persons/{personId}")
+    fun personData(
+        @Header("authorization") authHeader: String,
+        @Header("auth-token") accessToken: String,
+        @Path("personId") personId: String
+    ): Call<PersonData>
 }

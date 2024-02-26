@@ -12,6 +12,7 @@ import org.bxkr.octodiary.models.mark.MarkInfo
 import org.bxkr.octodiary.models.marklistdate.MarkListDate
 import org.bxkr.octodiary.models.marklistsubject.MarkListSubjectItem
 import org.bxkr.octodiary.models.mealbalance.MealBalance
+import org.bxkr.octodiary.models.persondata.PersonData
 import org.bxkr.octodiary.models.profile.ProfileResponse
 import org.bxkr.octodiary.models.profilesid.ProfilesId
 import org.bxkr.octodiary.models.rankingforsubject.RankingForSubject
@@ -75,6 +76,9 @@ object DataService {
     lateinit var schoolInfo: SchoolInfo
     var hasSchoolInfo = false
 
+    lateinit var personData: PersonData
+    var hasPersonData = false
+
     // ADD_NEW_FIELD_HERE
 
     val states
@@ -92,7 +96,8 @@ object DataService {
                 ::hasHomeworks,
                 ::hasMealBalance.takeIf { subsystem == Diary.MES },
                 ::hasSchoolInfo,
-                ::hasSubjectRanking
+                ::hasSubjectRanking,
+                ::hasPersonData
             )
 
     val fields
@@ -110,7 +115,8 @@ object DataService {
                 ::homeworks,
                 ::mealBalance.takeIf { subsystem == Diary.MES },
                 ::schoolInfo,
-                ::subjectRanking
+                ::subjectRanking,
+                ::personData
             )
 
     val loadedEverything = mutableStateOf(false)
@@ -344,6 +350,22 @@ object DataService {
         }
     }
 
+
+    fun updatePersonData(onUpdated: () -> Unit) {
+        assert(this::token.isInitialized)
+        assert(this::profile.isInitialized)
+
+        dSchoolApi.personData(
+            authHeader = "Bearer $token",
+            accessToken = token,
+            personId = profile.children[currentProfile].contingentGuid
+        ).baseEnqueue(::baseErrorFunction, ::baseInternalExceptionFunction) {
+            personData = it
+            hasPersonData = true
+            onUpdated()
+        }
+    }
+
     fun getRankingForSubject(
         subjectId: Long,
         errorListener: (String) -> Unit,
@@ -468,6 +490,7 @@ object DataService {
                     if (subsystem == Diary.MES) updateVisits { onSingleItemLoad(::visits.name) }
                     if (subsystem == Diary.MES) updateMealBalance { onSingleItemLoad(::mealBalance.name) }
                     updateSchoolInfo { onSingleItemLoad(::schoolInfo.name) }
+                    updatePersonData { onSingleItemLoad(::personData.name) }
                 }
             }
         }
