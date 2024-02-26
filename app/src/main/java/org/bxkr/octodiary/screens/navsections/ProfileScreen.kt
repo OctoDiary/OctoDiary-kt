@@ -35,6 +35,7 @@ import org.bxkr.octodiary.DataService
 import org.bxkr.octodiary.Diary
 import org.bxkr.octodiary.R
 import org.bxkr.octodiary.components.profile.ClassInfo
+import org.bxkr.octodiary.components.profile.Documents
 import org.bxkr.octodiary.components.profile.PersonalData
 import org.bxkr.octodiary.components.profile.School
 import org.bxkr.octodiary.modalBottomSheetContentLive
@@ -99,9 +100,7 @@ fun ProfileScreen() {
                     openBottomSheet { School() }
                 }
                 SectionGridItem(stringResource(R.string.documents), Icons.Rounded.Description) {
-                    coroutineScope.launch {
-                        snackbarHostStateLive.value?.showSnackbar(context.getString(R.string.soon))
-                    }
+                    openBottomSheet { Documents() }
                 }
             }
         }

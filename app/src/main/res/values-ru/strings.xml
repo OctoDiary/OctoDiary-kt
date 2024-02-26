@@ -229,4 +229,9 @@
     <string name="main_rating">Рейтинг по классу</string>
     <string name="subject_rating">Рейтинги по предметам</string>
     <string name="ratings">Рейтинги</string>
+    <string name="series">Серия</string>
+    <string name="number">Номер</string>
+    <string name="issuer">Место выдачи</string>
+    <string name="issued">Дата выдачи</string>
+    <string name="subdivision_code">Код подразделения</string>
 </resources>

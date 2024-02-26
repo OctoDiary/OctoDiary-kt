@@ -284,4 +284,10 @@
     <string name="main_rating">Class rating</string>
     <string name="subject_rating">Subject ratings</string>
     <string name="ratings">Ratings</string>
+    <string name="series">Series</string>
+    <string name="number">Number</string>
+    <string name="issuer">Issuer</string>
+    <string name="issued">Issued</string>
+    <string name="subdivision_code">Subdivision code</string>
+    <string name="unknown" translatable="false">Unknown</string>
 </resources>
