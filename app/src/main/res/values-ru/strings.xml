@@ -234,4 +234,14 @@
     <string name="issuer">Место выдачи</string>
     <string name="issued">Дата выдачи</string>
     <string name="subdivision_code">Код подразделения</string>
+    <string name="food_history">История питания</string>
+    <string name="dining">Столовая</string>
+    <string name="buffet">Буфет</string>
+    <string name="meal_dining_menu">Меню в столовой</string>
+    <string name="price">Цена</string>
+    <string name="ingredients">Ингредиенты</string>
+    <string name="calories">Калории</string>
+    <string name="fats">Жиры</string>
+    <string name="carbohydrates">Углеводы</string>
+    <string name="proteins">Белки</string>
 </resources>

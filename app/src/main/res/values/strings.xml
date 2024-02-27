@@ -290,4 +290,14 @@
     <string name="issued">Issued</string>
     <string name="subdivision_code">Subdivision code</string>
     <string name="unknown" translatable="false">Unknown</string>
+    <string name="food_history">Food history</string>
+    <string name="dining">Dining</string>
+    <string name="buffet">Buffet</string>
+    <string name="meal_dining_menu">Menu in dining</string>
+    <string name="price">Price</string>
+    <string name="ingredients">Ingredients</string>
+    <string name="calories">Calories</string>
+    <string name="fats">Fats</string>
+    <string name="carbohydrates">Carbohydrates</string>
+    <string name="proteins">Proteins</string>
 </resources>

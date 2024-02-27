@@ -30,17 +30,16 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import kotlinx.coroutines.launch
 import org.bxkr.octodiary.DataService
 import org.bxkr.octodiary.Diary
 import org.bxkr.octodiary.R
 import org.bxkr.octodiary.components.profile.ClassInfo
 import org.bxkr.octodiary.components.profile.Documents
+import org.bxkr.octodiary.components.profile.Meal
 import org.bxkr.octodiary.components.profile.PersonalData
 import org.bxkr.octodiary.components.profile.School
 import org.bxkr.octodiary.modalBottomSheetContentLive
 import org.bxkr.octodiary.modalBottomSheetStateLive
-import org.bxkr.octodiary.snackbarHostStateLive
 
 @Composable
 fun ProfileScreen() {
@@ -91,9 +90,7 @@ fun ProfileScreen() {
             Row(horizontalArrangement = Arrangement.spacedBy(2.dp)) {
                 if (DataService.subsystem == Diary.MES) {
                     SectionGridItem(stringResource(R.string.meal), Icons.Rounded.Restaurant) {
-                        coroutineScope.launch {
-                            snackbarHostStateLive.value?.showSnackbar(context.getString(R.string.soon))
-                        }
+                        openBottomSheet { Meal() }
                     }
                 }
                 SectionGridItem(stringResource(R.string.school), Icons.Rounded.Apartment) {
