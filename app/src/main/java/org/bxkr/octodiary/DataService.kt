@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import com.google.gson.Gson
 import org.bxkr.octodiary.models.classmembers.ClassMember
 import org.bxkr.octodiary.models.classranking.RankingMember
+import org.bxkr.octodiary.models.daysbalanceinfo.DaysBalanceInfo
 import org.bxkr.octodiary.models.events.Event
 import org.bxkr.octodiary.models.homeworks.Homework
 import org.bxkr.octodiary.models.lessonschedule.LessonSchedule
@@ -79,6 +80,9 @@ object DataService {
     lateinit var personData: PersonData
     var hasPersonData = false
 
+    lateinit var daysBalanceInfo: DaysBalanceInfo
+    var hasDaysBalanceInfo = false
+
     // ADD_NEW_FIELD_HERE
 
     val states
@@ -98,6 +102,8 @@ object DataService {
                 ::hasSchoolInfo,
                 ::hasSubjectRanking,
                 ::hasPersonData
+                ::hasPersonData,
+                ::hasDaysBalanceInfo.takeIf { subsystem == Diary.MES },
             )
 
     val fields
@@ -117,6 +123,8 @@ object DataService {
                 ::schoolInfo,
                 ::subjectRanking,
                 ::personData
+                ::personData,
+                ::daysBalanceInfo.takeIf { subsystem == Diary.MES },
             )
 
     val loadedEverything = mutableStateOf(false)
@@ -366,6 +374,24 @@ object DataService {
         }
     }
 
+    fun updateDaysBalanceInfo(onUpdated: () -> Unit) {
+        assert(this::token.isInitialized)
+        assert(this::profile.isInitialized)
+
+        println("updateDaysBalanceInfo")
+
+        mainSchoolApi.daysBalanceInfo(
+            accessToken = token,
+            personId = profile.children[currentProfile].contingentGuid,
+            from = Date().formatToDay() + "T00:00:00.000Z",
+        ).baseEnqueue(::baseErrorFunction, ::baseInternalExceptionFunction) {
+            println("updateDaysBalanceInfo $it")
+            daysBalanceInfo = it
+            hasDaysBalanceInfo = true
+            onUpdated()
+        }
+    }
+
     fun getRankingForSubject(
         subjectId: Long,
         errorListener: (String) -> Unit,
@@ -491,6 +517,7 @@ object DataService {
                     if (subsystem == Diary.MES) updateMealBalance { onSingleItemLoad(::mealBalance.name) }
                     updateSchoolInfo { onSingleItemLoad(::schoolInfo.name) }
                     updatePersonData { onSingleItemLoad(::personData.name) }
+                    if (subsystem == Diary.MES) updateDaysBalanceInfo { onSingleItemLoad(::daysBalanceInfo.name) }
                 }
             }
         }

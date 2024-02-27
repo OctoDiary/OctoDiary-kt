@@ -226,4 +226,28 @@ interface MainSchoolAPI {
         @Header("X-Mes-Subsystem") mesSubsystem: String = MESAPIConfig.FAMILYMP,
         @Query("subsystem_id") subsystemId: Int = 1,
     ): Call<Unit>
+
+
+    /**
+     * Gets user's days balance info.
+     *
+     * @param accessToken Access token.
+     * @param authHeader Authorization header.
+     * @param mesSubsystem MES subsystem (["familymp"][MESAPIConfig.FAMILYMP] by default).
+     * @param clientType Client type. (["diary_mobile"][MESAPIConfig.DIARY_MOBILE] by default.)
+     * @param person_id Person ID.
+     * @param limit Limit. ([Int.MAX_VALUE] by default.)
+     * @param from Start date.
+     * @return [DaysBalanceInfo]
+     */
+    @GET("family/mobile/v1/day-balance-info/v2")
+    fun daysBalanceInfo(
+        @Header("auth-token") accessToken: String,
+        @Header("Authorization") authHeader: String = "Bearer $accessToken",
+        @Header("X-Mes-Subsystem") mesSubsystem: String = MESAPIConfig.FAMILYMP,
+        @Header("client-type") clientType: String = MESAPIConfig.DIARY_MOBILE,
+        @Query("person_id") personId: String,
+        @Query("limit") limit: Int = Int.MAX_VALUE,
+        @Query("from") from: String,
+    ): Call<DaysBalanceInfo>
 }
