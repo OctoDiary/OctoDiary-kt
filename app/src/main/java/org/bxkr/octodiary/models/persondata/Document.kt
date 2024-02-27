@@ -2,6 +2,7 @@ package org.bxkr.octodiary.models.persondata
 
 
 import com.google.gson.annotations.SerializedName
+import org.bxkr.octodiary.R
 
 data class Document(
     @SerializedName("actual_from")
@@ -43,5 +44,14 @@ data class Document(
     @SerializedName("validation_errors")
     val validationErrors: Any?,
     @SerializedName("validation_state_id")
-    val validationStateId: Int
-)
+    val validationStateId: Int,
+) {
+    val displayData
+        get() = mapOf(
+            R.string.series to series,
+            R.string.number to number,
+            R.string.issued to issued,
+            R.string.issuer to issuer,
+            R.string.subdivision_code to subdivisionCode
+        )
+}

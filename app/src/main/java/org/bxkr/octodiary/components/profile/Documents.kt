@@ -16,7 +16,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowDropDown
-import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -37,8 +38,19 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import org.bxkr.octodiary.DataService
 import org.bxkr.octodiary.R
-import org.bxkr.octodiary.formatToHumanDate
-import org.bxkr.octodiary.parseFromDay
+import org.bxkr.octodiary.models.persondata.Document
+
+
+val enterTransition =
+    expandVertically(
+        expandFrom = Alignment.Top, animationSpec = tween(200)
+    )
+
+val exitTransition =
+    shrinkVertically(
+        shrinkTowards = Alignment.Top, animationSpec = tween(200)
+    )
+
 
 @Composable
 fun Documents() {
@@ -47,27 +59,10 @@ fun Documents() {
             .padding(16.dp)
             .fillMaxWidth()
     ) {
-        val clipboardManager = LocalClipboardManager.current
-        val copy: (String) -> Unit = {
-            clipboardManager.setText(AnnotatedString(it))
-        }
-
         with(DataService.personData) {
-            Text(stringResource(R.string.documents), style = MaterialTheme.typography.titleLarge)
-
-            val enterTransition = remember {
-                expandVertically(
-                    expandFrom = Alignment.Top, animationSpec = tween(200)
-                )
-            }
-            val exitTransition = remember {
-                shrinkVertically(
-                    shrinkTowards = Alignment.Top, animationSpec = tween(200)
-                )
-            }
+            Text(stringResource(R.string.documents), style = MaterialTheme.typography.titleMedium)
             LazyColumn(
                 modifier = Modifier
-                    .padding(top = 16.dp)
                     .fillMaxWidth()
             ) {
                 item {
@@ -78,78 +73,73 @@ fun Documents() {
                     }
                 }
                 items(documents) {
-                    var isExpanded by remember(key1 = it.id) { mutableStateOf(false) }
-                    var rotation by remember(key1 = it.id) { mutableFloatStateOf(0f) }
+                    DocumentCard(document = it)
+                }
+            }
+        }
+    }
+}
 
-                    ElevatedCard(Modifier.padding(top = 16.dp)) {
-                        Column(Modifier.clickable {
-                            isExpanded = !isExpanded
-                            rotation += 180f
-                        }) {
-                            Row(
-                                Modifier
-                                    .padding(16.dp)
-                                    .fillMaxWidth(),
-                                horizontalArrangement = Arrangement.SpaceBetween
-                            ) {
-                                Text(
-                                    it.documentType.name,
-                                    style = MaterialTheme.typography.titleMedium
-                                )
-                                Icon(
-                                    Icons.Rounded.ArrowDropDown,
-                                    stringResource(R.string.expand),
-                                    modifier = Modifier
-                                        .clip(MaterialTheme.shapes.large)
-                                        .rotate(
-                                            animateFloatAsState(
-                                                targetValue = rotation,
-                                                animationSpec = tween(600),
-                                                label = "rotate_anim"
-                                            ).value
-                                        )
-                                        .background(MaterialTheme.colorScheme.secondaryContainer),
-                                    tint = MaterialTheme.colorScheme.onSecondaryContainer
-                                )
-                            }
-                            AnimatedVisibility(
-                                isExpanded, exit = exitTransition, enter = enterTransition
-                            ) {
-                                Column(
-                                    Modifier
-                                        .padding(16.dp)
-                                        .fillMaxWidth()
-                                ) {
-                                    if (it.series != null) {
-                                        DocumentValue(
-                                            stringResource(R.string.series), it.series
-                                        ) { copy(it.series) }
-                                    }
-                                    if (it.number != null) {
-                                        DocumentValue(
-                                            stringResource(R.string.number), it.number
-                                        ) { copy(it.number) }
-                                    }
-                                    if (it.issued != null) {
-                                        val issued = it.issued.parseFromDay().formatToHumanDate()
-                                        DocumentValue(
-                                            stringResource(R.string.issued), issued
-                                        ) { copy(issued) }
-                                    }
-                                    if (it.issuer != null) {
-                                        DocumentValue(
-                                            stringResource(R.string.issuer), it.issuer
-                                        ) { copy(it.issuer) }
-                                    }
-                                    if (it.subdivisionCode != null) {
-                                        DocumentValue(
-                                            stringResource(R.string.subdivision_code),
-                                            it.subdivisionCode
-                                        ) { copy(it.subdivisionCode) }
-                                    }
-                                }
-                            }
-                        }
+@Composable
+fun DocumentCard(document: Document) {
+    var isExpanded by remember { mutableStateOf(false) }
+    var rotation by remember { mutableFloatStateOf(0f) }
+    val rotationAnim by
+    animateFloatAsState(
+        targetValue = rotation,
+        animationSpec = tween(600),
+        label = "rotate_anim"
+    )
+
+    val clipboardManager = LocalClipboardManager.current
+    val copy: (String) -> Unit = remember {
+        { clipboardManager.setText(AnnotatedString(it)) }
+    }
+
+    Card(
+        Modifier
+            .padding(top = 16.dp)
+            .clip(CardDefaults.shape)
+            .clickable {
+                isExpanded = !isExpanded
+                rotation += 180f
+            },
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceContainer
+        )
+    ) {
+        Row(
+            Modifier
+                .padding(16.dp)
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(
+                document.documentType.name,
+                Modifier.weight(1f),
+                style = MaterialTheme.typography.titleMedium
+            )
+            Icon(
+                Icons.Rounded.ArrowDropDown,
+                stringResource(R.string.expand),
+                modifier = Modifier
+                    .clip(MaterialTheme.shapes.large)
+                    .rotate(rotationAnim)
+                    .background(MaterialTheme.colorScheme.secondaryContainer),
+                tint = MaterialTheme.colorScheme.onSecondaryContainer
+            )
+        }
+        AnimatedVisibility(
+            isExpanded, exit = exitTransition, enter = enterTransition
+        ) {
+            Column(
+                Modifier
+                    .padding(start = 16.dp, end = 16.dp, bottom = 16.dp)
+                    .fillMaxWidth()
+            ) {
+                document.displayData.forEach {
+                    if (it.value != null) {
+                        DocumentValue(stringResource(it.key), it.value!!) { copy(it.value!!) }
                     }
                 }
             }
@@ -161,7 +151,11 @@ fun Documents() {
 @Composable
 fun DocumentValue(name: String, value: String, onClick: () -> Unit) {
     Row {
-        Text(name, modifier = Modifier.padding(end = 3.dp).alpha(0.8f))
+        Text(
+            name, modifier = Modifier
+                .padding(end = 3.dp)
+                .alpha(0.8f)
+        )
         Text(value, modifier = Modifier.clickable { onClick() })
     }
 }
