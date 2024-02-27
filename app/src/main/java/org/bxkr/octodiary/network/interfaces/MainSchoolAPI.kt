@@ -250,4 +250,25 @@ interface MainSchoolAPI {
         @Query("limit") limit: Int = Int.MAX_VALUE,
         @Query("from") from: String,
     ): Call<DaysBalanceInfo>
+
+    /**
+     * Get meals menu complexes.
+     *
+     * @param accessToken Access token.
+     * @param authHeader Authorization header.
+     * @param mesSubsystem MES subsystem (["familymp"][MESAPIConfig.FAMILYMP] by default).
+     * @param clientType Client type. (["diary_mobile"][MESAPIConfig.DIARY_MOBILE] by default.)
+     * @param personId Person ID.
+     * @param onDate Date.
+     * @return [MealsMenuComplexes]
+     */
+    @GET("meals/v2/menu/complexes")
+    fun mealsMenuComplexes(
+        @Header("auth-token") accessToken: String,
+        @Header("Authorization") authHeader: String = "Bearer $accessToken",
+        @Header("X-Mes-Subsystem") mesSubsystem: String = MESAPIConfig.FAMILYMP,
+        @Header("client-type") clientType: String = MESAPIConfig.DIARY_MOBILE,
+        @Query("personId") personId: String,
+        @Query("onDate") onDate: String
+    ): Call<MealsMenuComplexes>
 }

@@ -13,6 +13,7 @@ import org.bxkr.octodiary.models.mark.MarkInfo
 import org.bxkr.octodiary.models.marklistdate.MarkListDate
 import org.bxkr.octodiary.models.marklistsubject.MarkListSubjectItem
 import org.bxkr.octodiary.models.mealbalance.MealBalance
+import org.bxkr.octodiary.models.mealsmenucomplexes.MealsMenuComplexes
 import org.bxkr.octodiary.models.persondata.PersonData
 import org.bxkr.octodiary.models.profile.ProfileResponse
 import org.bxkr.octodiary.models.profilesid.ProfilesId
@@ -83,6 +84,9 @@ object DataService {
     lateinit var daysBalanceInfo: DaysBalanceInfo
     var hasDaysBalanceInfo = false
 
+    lateinit var mealsMenuComplexes: MealsMenuComplexes
+    var hasMealsMenuComplexes = false
+
     // ADD_NEW_FIELD_HERE
 
     val states
@@ -101,9 +105,9 @@ object DataService {
                 ::hasMealBalance.takeIf { subsystem == Diary.MES },
                 ::hasSchoolInfo,
                 ::hasSubjectRanking,
-                ::hasPersonData
                 ::hasPersonData,
                 ::hasDaysBalanceInfo.takeIf { subsystem == Diary.MES },
+                ::hasMealsMenuComplexes.takeIf { subsystem == Diary.MES }
             )
 
     val fields
@@ -122,9 +126,9 @@ object DataService {
                 ::mealBalance.takeIf { subsystem == Diary.MES },
                 ::schoolInfo,
                 ::subjectRanking,
-                ::personData
                 ::personData,
                 ::daysBalanceInfo.takeIf { subsystem == Diary.MES },
+                ::mealsMenuComplexes.takeIf { subsystem == Diary.MES }
             )
 
     val loadedEverything = mutableStateOf(false)
@@ -392,6 +396,21 @@ object DataService {
         }
     }
 
+    fun updateMealsMenuComplexes(onUpdated: () -> Unit) {
+        assert(this::token.isInitialized)
+        assert(this::profile.isInitialized)
+
+        mainSchoolApi.mealsMenuComplexes(
+            accessToken = token,
+            personId = profile.children[currentProfile].contingentGuid,
+            onDate = Date().formatToDay()
+        ).baseEnqueue(::baseErrorFunction, ::baseInternalExceptionFunction) {
+            mealsMenuComplexes = it
+            hasMealsMenuComplexes = true
+            onUpdated()
+        }
+    }
+
     fun getRankingForSubject(
         subjectId: Long,
         errorListener: (String) -> Unit,
@@ -518,6 +537,7 @@ object DataService {
                     updateSchoolInfo { onSingleItemLoad(::schoolInfo.name) }
                     updatePersonData { onSingleItemLoad(::personData.name) }
                     if (subsystem == Diary.MES) updateDaysBalanceInfo { onSingleItemLoad(::daysBalanceInfo.name) }
+                    if (subsystem == Diary.MES) updateMealsMenuComplexes { onSingleItemLoad(::mealsMenuComplexes.name) }
                 }
             }
         }
