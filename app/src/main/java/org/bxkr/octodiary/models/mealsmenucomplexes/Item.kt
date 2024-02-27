@@ -23,5 +23,7 @@ data class Item(
     @SerializedName("price")
     val price: Int,
     @SerializedName("startDate")
-    val startDate: String
-)
+    val startDate: String,
+) {
+    val humanPrice get() = "${price / 100f} ₽"
+}

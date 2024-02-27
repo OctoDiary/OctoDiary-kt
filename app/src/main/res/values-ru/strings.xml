@@ -244,4 +244,6 @@
     <string name="fats">Жиры</string>
     <string name="carbohydrates">Углеводы</string>
     <string name="proteins">Белки</string>
+    <string name="energy_value">%1$s ккал</string>
+    <string name="weight_grams">%1$s г</string>
 </resources>

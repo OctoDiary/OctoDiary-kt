@@ -35,9 +35,9 @@ import org.bxkr.octodiary.Diary
 import org.bxkr.octodiary.R
 import org.bxkr.octodiary.components.profile.ClassInfo
 import org.bxkr.octodiary.components.profile.Documents
-import org.bxkr.octodiary.components.profile.Meal
 import org.bxkr.octodiary.components.profile.PersonalData
 import org.bxkr.octodiary.components.profile.School
+import org.bxkr.octodiary.components.profile.meal.Meal
 import org.bxkr.octodiary.modalBottomSheetContentLive
 import org.bxkr.octodiary.modalBottomSheetStateLive
 

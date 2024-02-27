@@ -3,8 +3,6 @@ package org.bxkr.octodiary.components.profile
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.expandVertically
-import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -27,7 +25,6 @@ import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
@@ -39,18 +36,8 @@ import androidx.compose.ui.unit.dp
 import org.bxkr.octodiary.DataService
 import org.bxkr.octodiary.R
 import org.bxkr.octodiary.models.persondata.Document
-
-
-val enterTransition =
-    expandVertically(
-        expandFrom = Alignment.Top, animationSpec = tween(200)
-    )
-
-val exitTransition =
-    shrinkVertically(
-        shrinkTowards = Alignment.Top, animationSpec = tween(200)
-    )
-
+import org.bxkr.octodiary.ui.theme.enterTransition
+import org.bxkr.octodiary.ui.theme.exitTransition
 
 @Composable
 fun Documents() {

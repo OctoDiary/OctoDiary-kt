@@ -300,4 +300,6 @@
     <string name="fats">Fats</string>
     <string name="carbohydrates">Carbohydrates</string>
     <string name="proteins">Proteins</string>
+    <string name="energy_value">%1$s kcal</string>
+    <string name="weight_grams">%1$s grams</string>
 </resources>
