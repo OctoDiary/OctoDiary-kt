@@ -57,7 +57,7 @@ fun DashboardScreen() {
                         .minByOrNull {
                             it.startAt.parseLongDate().time - Date().time
                         }
-                if (todayCalendar.isNotEmpty()) {
+                if (todayCalendar.isNotEmpty() && Date() < todayCalendar.maxBy { it.finishAt.parseLongDate() }.finishAt.parseLongDate()) {
                     Text(
                         stringResource(id = R.string.schedule_today),
                         modifier = Modifier.padding(top = 8.dp),
@@ -80,9 +80,9 @@ fun DashboardScreen() {
                 .minByOrNull {
                     it.startAt.parseLongDate().time - Date().time
                 }?.startAt?.parseLongDate()?.formatToDay()?.let { day ->
-                DataService.eventCalendar.filter {
-                    it.startAt.parseLongDate().formatToDay() == day
-                }
+                    DataService.eventCalendar.filter {
+                        it.startAt.parseLongDate().formatToDay() == day
+                    }
                 } ?: listOf(), showNumbers)
         item {
             if (LocalContext.current.mainPrefs.get("main_rating") ?: true) {
