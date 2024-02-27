@@ -202,8 +202,8 @@ fun Date.formatToHumanDay(): String =
 /** Formats [Date] to dd MMMM format [String] **/
 @ReadOnlyComposable
 @Composable
-fun Date.formatToLongHumanDay(): String =
-    SimpleDateFormat("dd MMMM", LocalConfiguration.current.locales[0]).format(this)
+fun Date.formatToLongHumanDay(includeYear: Boolean = true): String =
+    SimpleDateFormat("dd MMMM" + if (includeYear) " yyyy" else "", LocalConfiguration.current.locales[0]).format(this)
 
 /** Formats [Date] to dd.MM.yyyy format [String] **/
 @ReadOnlyComposable
