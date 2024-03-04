@@ -343,3 +343,8 @@ fun DataService.errorListenerForMessage(errorListener: (String) -> Unit): (error
 fun String.isJwtExpired() =
     split(".")[1].let { decodeFromBase64Json<Map<String, String>>(it) }.get("exp")
         ?.toIntOrNull()?.let { Date().time > it }
+
+fun getWeekday(date: Date): Int = Calendar.getInstance().run {
+    time = date
+    get(Calendar.DAY_OF_WEEK)
+}

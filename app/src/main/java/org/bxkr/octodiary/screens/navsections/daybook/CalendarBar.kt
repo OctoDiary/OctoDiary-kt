@@ -38,15 +38,12 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
-import androidx.lifecycle.MutableLiveData
 import org.bxkr.octodiary.formatToDay
 import org.bxkr.octodiary.ui.theme.OctoDiaryTheme
 import java.util.Calendar
 import java.util.Collections
 import java.util.Date
 import kotlin.math.roundToInt
-
-val daySelectedLive = MutableLiveData<Date>(Date())
 
 @Composable
 fun CalendarBar(onDaySelect: (Date) -> Unit = {}) {
