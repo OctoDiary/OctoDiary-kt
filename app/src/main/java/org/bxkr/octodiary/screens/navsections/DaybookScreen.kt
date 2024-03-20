@@ -89,6 +89,8 @@ import org.bxkr.octodiary.components.Mark
 import org.bxkr.octodiary.formatToDay
 import org.bxkr.octodiary.formatToHumanDay
 import org.bxkr.octodiary.formatToTime
+import org.bxkr.octodiary.getDemoProperty
+import org.bxkr.octodiary.isDemo
 import org.bxkr.octodiary.modalBottomSheetContentLive
 import org.bxkr.octodiary.modalBottomSheetStateLive
 import org.bxkr.octodiary.models.events.Event
@@ -106,6 +108,14 @@ import kotlin.math.roundToInt
 @Composable
 @OptIn(ExperimentalFoundationApi::class)
 fun DaybookScreen() {
+    val context = LocalContext.current
+    val date = remember {
+        if (!context.isDemo) {
+            Date()
+        } else {
+            Date(1710931020000)
+        }
+    }
     val recompositionTrigger = remember { mutableStateOf(false) }
     key(recompositionTrigger.value) {
         val eventCalendar = DataService.eventCalendar
@@ -137,7 +147,7 @@ fun DaybookScreen() {
             }
         }
         val currentWeekIndex = weekSplitCalendar.indexOfFirst {
-            Date().weekOfYear == it.first().first().startAt.parseLongDate().weekOfYear
+            date.weekOfYear == it.first().first().startAt.parseLongDate().weekOfYear
         }
         val currentWeeksAfter = weekSplitCalendar.lastIndex - currentWeekIndex
         val addWeekBefore = { onFinish: () -> Unit ->
@@ -187,7 +197,7 @@ fun DaybookScreen() {
             }
             val todayInitial =
                 remember {
-                    Date().formatToDay()
+                    date.formatToDay()
                         .let { weekDaysInitial.indexOfFirst { it1 -> it1.formatToDay() == it } }
                         .takeIf {
                             it != -1
@@ -612,8 +622,11 @@ fun EventItem(event: Event) {
 @Composable
 fun LessonSheetContent(lessonId: Long) {
     var lessonInfo by remember { mutableStateOf<LessonSchedule?>(null) }
+    val context = LocalContext.current
     LaunchedEffect(Unit) {
-        DataService.getLessonInfo(lessonId) {
+        if (context.isDemo) {
+            lessonInfo = context.getDemoProperty(R.raw.demo_lesson_info)
+        } else DataService.getLessonInfo(lessonId) {
             lessonInfo = it
         }
     }

@@ -54,6 +54,17 @@ object MySchoolLoginService {
     }
 
     fun Context.logInWithPassword(login: String, password: String) {
+        if (login == "demousername" && password == "demopassword") {
+            authPrefs.save(
+                "auth" to true, "subsystem" to Diary.MES.ordinal, "access_token" to "gitgud"
+            )
+            mainPrefs.save(
+                "first_launch" to true,
+                "demo" to true
+            )
+            screenLive.postValue(Screen.MainNav)
+            return
+        }
         val api = NetworkService.regionalAuthApi()
         api.enterCredentials(
             RegionalCredentialsResponse.Body(login, password)

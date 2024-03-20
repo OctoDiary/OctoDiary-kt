@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.pm.PackageManager.NameNotFoundException
 import android.graphics.Matrix
+import androidx.annotation.RawRes
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.ui.geometry.Size
@@ -18,6 +19,8 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.core.content.edit
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -232,7 +235,8 @@ fun Activity.logOut() {
     mainPrefs.save(
         "first_launch" to true,
         "has_pin" to false,
-        "pin" to null
+        "pin" to null,
+        "demo" to null
     )
     screenLive.value = Screen.Login
     startActivity(Intent(this, MainActivity::class.java))
@@ -285,4 +289,14 @@ val CloverShape: Shape = object : Shape {
                 .asComposePath()
         )
     }
+}
+
+var Context.isDemo
+    get() = mainPrefs.get<Boolean>("demo") ?: false
+    set(value) = mainPrefs.save("demo" to value)
+
+inline fun <reified T> Context.getDemoProperty(@RawRes propertyRes: Int): T {
+    val text =
+        resources.openRawResource(propertyRes).bufferedReader(Charsets.UTF_8).use { it.readText() }
+    return Gson().fromJson(text, object : TypeToken<T>() {}.type)
 }

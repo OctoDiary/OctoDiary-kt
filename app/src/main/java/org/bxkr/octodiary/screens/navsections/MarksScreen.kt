@@ -52,6 +52,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -68,6 +69,8 @@ import org.bxkr.octodiary.contentDependentActionLive
 import org.bxkr.octodiary.formatToDay
 import org.bxkr.octodiary.formatToLongHumanDay
 import org.bxkr.octodiary.formatToWeekday
+import org.bxkr.octodiary.getDemoProperty
+import org.bxkr.octodiary.isDemo
 import org.bxkr.octodiary.modalBottomSheetContentLive
 import org.bxkr.octodiary.modalBottomSheetStateLive
 import org.bxkr.octodiary.models.marklistdate.Mark
@@ -454,8 +457,14 @@ fun SubjectMarkFilter(state: MutableState<SubjectMarkFilterType>) {
 @Composable
 fun SubjectRatingBottomSheet(subjectId: Long, subjectName: String) {
     var ranking by remember { mutableStateOf<List<RankingForSubject>?>(null) }
+    val context = LocalContext.current
     LaunchedEffect(Unit) {
-        DataService.getRankingForSubject(subjectId) { ranking = it }
+        if (context.isDemo) {
+            ranking =
+                context.getDemoProperty<List<RankingForSubject>>(R.raw.demo_ranking_for_subject)
+        } else {
+            DataService.getRankingForSubject(subjectId) { ranking = it }
+        }
     }
 
     Box(

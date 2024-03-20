@@ -79,6 +79,7 @@ import org.bxkr.octodiary.UpdateReceiver
 import org.bxkr.octodiary.authPrefs
 import org.bxkr.octodiary.cachePrefs
 import org.bxkr.octodiary.get
+import org.bxkr.octodiary.isDemo
 import org.bxkr.octodiary.logOut
 import org.bxkr.octodiary.mainPrefs
 import org.bxkr.octodiary.navControllerLive
@@ -181,9 +182,11 @@ fun NavScreen(modifier: Modifier, pinFinished: MutableState<Boolean>) {
                 AnimatedVisibility(localLoadedState) {
                     val refreshState = rememberPullToRefreshState()
                     if (refreshState.isRefreshing) {
-                        DataService.loadedEverything.value = false
-                        DataService.loadingStarted = false
-                        DataService.updateAll()
+                        if (!isDemo) {
+                            DataService.loadedEverything.value = false
+                            DataService.loadingStarted = false
+                            DataService.updateAll()
+                        } else refreshState.endRefresh()
                     }
                     if (DataService.loadedEverything.value) {
                         refreshState.endRefresh()
@@ -243,6 +246,10 @@ fun NavScreen(modifier: Modifier, pinFinished: MutableState<Boolean>) {
                                 Diary.values()[authPrefs.get<Int>("subsystem") ?: 0]
                             DataService.loadFromCache { cachePrefs.get<String>(it) ?: "" }
                             DataService.loadedEverything.value = true
+                        } else if (isDemo) {
+                            DataService.subsystem = Diary.MES
+                            DataService.run { loadDemoCache() }
+                            DataService.loadedEverything.value = true
                         } else {
                             DataService.updateAll()
                         }
@@ -274,7 +281,7 @@ fun NavScreen(modifier: Modifier, pinFinished: MutableState<Boolean>) {
 
 @Composable
 fun EnterPinDialog(
-    pinFinished: MutableState<Boolean>
+    pinFinished: MutableState<Boolean>,
 ) {
     val currentPin = remember { mutableStateOf(emptyList<Int>()) }
     var wrongPin by remember { mutableStateOf(false) }
@@ -351,7 +358,7 @@ fun SetPinDialog(
     pinFinished: MutableState<Boolean>,
     initialPin: MutableState<List<Int>>,
     secondPin: MutableState<List<Int>>,
-    closeButtonTitle: String = stringResource(id = R.string.skip)
+    closeButtonTitle: String = stringResource(id = R.string.skip),
 ) {
     val context = LocalContext.current
     Dialog(
@@ -428,7 +435,7 @@ fun SetPinDialog(
 @Composable
 fun PinScreen(
     modifier: Modifier = Modifier,
-    into: MutableState<List<Int>>
+    into: MutableState<List<Int>>,
 ) {
     val enteredNumbers = remember { mutableStateOf(emptyList<Int>()) }
 

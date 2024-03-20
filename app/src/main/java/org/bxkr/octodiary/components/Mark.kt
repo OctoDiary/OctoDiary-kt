@@ -19,10 +19,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import org.bxkr.octodiary.DataService
 import org.bxkr.octodiary.R
+import org.bxkr.octodiary.getDemoProperty
+import org.bxkr.octodiary.isDemo
 import org.bxkr.octodiary.modalBottomSheetContentLive
 import org.bxkr.octodiary.modalBottomSheetStateLive
 import org.bxkr.octodiary.models.events.Mark
@@ -63,7 +66,14 @@ fun Mark(
 @Composable
 fun MarkSheetContent(mark: Mark) {
     var markInfo by remember { mutableStateOf<MarkInfo?>(null) }
-    LaunchedEffect(Unit) { DataService.getMarkInfo(mark.id) { markInfo = it } }
+    val context = LocalContext.current
+    LaunchedEffect(Unit) {
+        if (context.isDemo) {
+            markInfo = context.getDemoProperty(R.raw.demo_mark_info)
+        } else {
+            DataService.getMarkInfo(mark.id) { markInfo = it }
+        }
+    }
 
     Box(
         Modifier

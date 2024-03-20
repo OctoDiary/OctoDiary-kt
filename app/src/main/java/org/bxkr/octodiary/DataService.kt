@@ -1,5 +1,6 @@
 package org.bxkr.octodiary
 
+import android.content.Context
 import androidx.compose.runtime.mutableStateOf
 import com.google.gson.Gson
 import org.bxkr.octodiary.models.classmembers.ClassMember
@@ -33,6 +34,57 @@ object DataService {
     lateinit var schoolSessionApi: SchoolSessionAPI
 
     lateinit var token: String
+
+    val listOfValues
+        get() = listOfNotNull(
+            ::userId,
+            ::sessionUser,
+            ::eventCalendar,
+            ::ranking,
+            ::classMembers,
+            ::profile,
+            ::visits.takeIf { subsystem == Diary.MES },
+            ::marksDate,
+            ::marksSubject,
+            ::homeworks,
+            ::mealBalance.takeIf { subsystem == Diary.MES },
+            ::schoolInfo,
+            ::subjectRanking
+        )
+
+    val listOfStates
+        get() = listOfNotNull(
+            ::hasUserId,
+            ::hasSessionUser,
+            ::hasEventCalendar,
+            ::hasRanking,
+            ::hasClassMembers,
+            ::hasProfile,
+            ::hasVisits.takeIf { subsystem == Diary.MES },
+            ::hasMarksDate,
+            ::hasMarksSubject,
+            ::hasHomeworks,
+            ::hasMealBalance.takeIf { subsystem == Diary.MES },
+            ::hasSchoolInfo,
+            ::hasSubjectRanking
+        )
+
+    val mapOfDemoResourceIds = mapOf(
+        ::userId to R.raw.demo_user_id,
+        ::sessionUser to R.raw.demo_session_user,
+        ::eventCalendar to R.raw.demo_event_calendar,
+        ::ranking to R.raw.demo_ranking,
+        ::classMembers to R.raw.demo_class_members,
+        ::profile to R.raw.demo_profile,
+        ::visits to R.raw.demo_visits,
+        ::marksDate to R.raw.demo_marks_date,
+        ::marksSubject to R.raw.demo_marks_subject,
+        ::homeworks to R.raw.demo_homeworks,
+        ::mealBalance to R.raw.demo_meal_balance,
+        ::schoolInfo to R.raw.demo_school_info,
+        ::subjectRanking to R.raw.demo_subject_ranking
+    ).mapKeys { it.key.name }
+
     lateinit var userId: ProfilesId
     var hasUserId = false
 
@@ -73,6 +125,7 @@ object DataService {
     var hasSchoolInfo = false
 
     // ADD_NEW_FIELD_HERE
+    // Don't forget to add demo cache data in res/raw folder, preferably with MES flavor
 
     val loadedEverything = mutableStateOf(false)
 
@@ -355,25 +408,9 @@ object DataService {
 
     fun updateAll() {
         if (loadingStarted) return else loadingStarted = true
-        // ADD_NEW_FIELD_HERE
-        val states = listOfNotNull(
-            ::hasUserId,
-            ::hasSessionUser,
-            ::hasEventCalendar,
-            ::hasRanking,
-            ::hasClassMembers,
-            ::hasProfile,
-            ::hasVisits.takeIf { subsystem == Diary.MES },
-            ::hasMarksDate,
-            ::hasMarksSubject,
-            ::hasHomeworks,
-            ::hasMealBalance.takeIf { subsystem == Diary.MES },
-            ::hasSchoolInfo,
-            ::hasSubjectRanking
-        )
-        states.forEach { it.set(false) }
+        listOfStates.forEach { it.set(false) }
         val onSingleItemLoad = { name: String ->
-            val statesInit = states.map { it.get() }
+            val statesInit = listOfStates.map { it.get() }
             onSingleItemInUpdateAllLoadedHandler?.invoke(name, (statesInit.count { it }
                 .toFloat()) / (statesInit.size.toFloat()))
             if (!(statesInit.contains(false))) {
@@ -406,24 +443,19 @@ object DataService {
     }
 
     fun loadFromCache(get: (String) -> String) {
-        // ADD_NEW_FIELD_HERE
-        listOfNotNull(
-            ::userId,
-            ::sessionUser,
-            ::eventCalendar,
-            ::ranking,
-            ::classMembers,
-            ::profile,
-            ::visits.takeIf { subsystem == Diary.MES },
-            ::marksDate,
-            ::marksSubject,
-            ::homeworks,
-            ::mealBalance.takeIf { subsystem == Diary.MES },
-            ::schoolInfo,
-            ::subjectRanking
-        ).map { it.name }.forEach {
+        listOfValues.map { it.name }.forEach {
             javaClass.getDeclaredField(it)
                 .set(this, Gson().fromJson(get(it), javaClass.getDeclaredField(it).genericType))
         }
     }
+
+    fun Context.loadDemoCache() =
+        DataService.loadFromCache {
+            resources.openRawResource(
+                DataService.mapOfDemoResourceIds.getValue(
+                    it
+                )
+            ).bufferedReader(Charsets.UTF_8).use { it.readText() }
+        }
+
 }
