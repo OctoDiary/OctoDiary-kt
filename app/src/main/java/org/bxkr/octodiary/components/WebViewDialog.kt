@@ -33,6 +33,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import org.bxkr.octodiary.DataService
+import org.bxkr.octodiary.Diary
 import org.bxkr.octodiary.R
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -113,9 +114,10 @@ private fun Context.webViewFactory(url: String, urlListener: (String) -> Unit): 
         }
         settings.javaScriptEnabled = true
         settings.domStorageEnabled = true
+        val cookieHost = if (DataService.subsystem == Diary.MES) ".mos.ru" else ".mosreg.ru"
         CookieManager.getInstance().apply {
-            setCookie(".mos.ru", "aupd_token=${DataService.token}")
-            setCookie(".mos.ru", "aupd_current_role=2:1")
+            setCookie(cookieHost, "aupd_token=${DataService.token}")
+            setCookie(cookieHost, "aupd_current_role=2:1")
         }
         loadUrl(url)
     }

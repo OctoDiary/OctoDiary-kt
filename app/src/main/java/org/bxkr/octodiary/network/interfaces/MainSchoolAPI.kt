@@ -297,4 +297,12 @@ interface MainSchoolAPI {
         @Query("personId") personId: String,
         @Query("onDate") onDate: String
     ): Call<MealsMenuComplexes>
+
+    @GET("ej/partners/v1/homeworks/launch")
+    fun launchMaterial(
+        @Header("auth-token") accessToken: String,
+        @Query("homework_entry_id") homeworkEntryId: Long,
+        @Query("material_id") materialId: String,
+        @Header("X-Mes-Subsystem") mesSubsystem: String = MESAPIConfig.FAMILYMP
+    ): Call<String>
 }

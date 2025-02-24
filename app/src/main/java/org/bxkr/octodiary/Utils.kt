@@ -12,6 +12,7 @@ import android.graphics.Typeface
 import android.net.Uri
 import android.text.Layout
 import android.util.Log
+import android.webkit.CookieManager
 import androidx.annotation.RawRes
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -367,6 +368,7 @@ fun Activity.logOut(reason: String? = null) {
         "pin" to null,
         "demo" to null
     )
+    CookieManager.getInstance().removeAllCookies(null)
     cachePrefs.clear()
     notificationPrefs.clear()
     screenLive.value = Screen.Login
