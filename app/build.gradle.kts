@@ -23,8 +23,8 @@ android {
         applicationId = "org.bxkr.octodiary"
         minSdk = 26
         targetSdk = 34
-        versionCode = 27
-        versionName = "2.1.1"
+        versionCode = 28
+        versionName = "2.1.2"
         archivesName = gitLatestCommit
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
