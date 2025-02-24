@@ -486,15 +486,9 @@ object DataService {
         assert(this::token.isInitialized)
         assert(this::profile.isInitialized)
 
-        dSchoolApi.personData(
-            authHeader = "Bearer $token",
-            accessToken = token,
-            personId = profile.children[currentProfile].contingentGuid
-        ).baseEnqueue(::baseErrorFunction, ::baseInternalExceptionFunction) {
-            personData = it
-            hasPersonData = true
-            onUpdated()
-        }
+        personData = PersonData()
+        hasPersonData = true
+        onUpdated()
     }
 
     // Complicated request, so do it in background
