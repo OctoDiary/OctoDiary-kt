@@ -201,13 +201,9 @@ object DataService {
     fun updateSessionUser(onUpdated: () -> Unit) {
         assert(this::token.isInitialized)
         assert(this::userId.isInitialized)
-        schoolSessionApi.sessionUser(SessionUser.Body(token)).baseEnqueue(
-            ::baseErrorFunction, ::baseInternalExceptionFunction
-        ) { body ->
-            sessionUser = body
-            hasSessionUser = true
-            onUpdated()
-        }
+        sessionUser = SessionUser("a")
+        hasSessionUser = true
+        onUpdated()
     }
 
     fun updateEventCalendar(weeksBefore: Int = 0, weeksAfter: Int = 0, onUpdated: () -> Unit) {
