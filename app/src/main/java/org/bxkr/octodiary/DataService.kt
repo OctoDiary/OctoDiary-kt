@@ -211,11 +211,9 @@ object DataService {
         assert(this::profile.isInitialized)
         val startDate = Calendar.getInstance().also {
             it.set(Calendar.WEEK_OF_YEAR, it.get(Calendar.WEEK_OF_YEAR) - weeksBefore)
-            it.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
         }
         val endDate = Calendar.getInstance().also {
             it.set(Calendar.WEEK_OF_YEAR, it.get(Calendar.WEEK_OF_YEAR) + weeksAfter)
-            it.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY)
         }
         secondaryApi.events(
             "Bearer $token",
