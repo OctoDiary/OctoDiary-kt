@@ -296,21 +296,21 @@ object DataService {
         }
 
         // Class members request for matching names:
-        dSchoolApi.classMembers(
-            token,
-            profile.children[currentProfile].studentId,
-            profile.children[currentProfile].classUnitId
-        ).baseEnqueue({ _, _, _ ->
+//        dSchoolApi.classMembers(
+//            token,
+//            profile.children[currentProfile].studentId,
+//            profile.children[currentProfile].classUnitId
+//        ).baseEnqueue({ _, _, _ ->
             classMembers = emptyList()
             hasClassMembers = true
             classMembersFinished = true
             if (rankingFinished) onUpdated()
-        }, ::baseInternalExceptionFunction) {
-            classMembers = it
-            hasClassMembers = true
-            classMembersFinished = true
-            if (rankingFinished) onUpdated()
-        }
+//        }, ::baseInternalExceptionFunction) {
+//            classMembers = it
+//            hasClassMembers = true
+//            classMembersFinished = true
+//            if (rankingFinished) onUpdated()
+//        }
     }
 
     fun updateCustomClassMembers(onUpdated: () -> Unit) {
