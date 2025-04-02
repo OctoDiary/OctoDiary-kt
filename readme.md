@@ -6,6 +6,10 @@
 </a>
 </div>  
 
+> [!IMPORTANT]  
+> Мы смещаем акцент на разработку кроссплатформенного приложения  
+> Подробности [в новом репозитории](https://github.com/OctoDiary/OctoDiary)
+
 Android-клиент [МЭШ](https://school.mos.ru/)
 и [Моей школы МО](https://authedu.mosreg.ru/).  
 Использует Jetpack Compose.  
