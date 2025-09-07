@@ -23,7 +23,7 @@ import org.bxkr.octodiary.models.homeworks.Homework
 import org.bxkr.octodiary.parseFromDay
 
 @Composable
-fun HomeworkDay(homeworks: List<Homework>) {
+fun HomeworkDay(homeworks: List<org.bxkr.octodiary.models.homeworks2.Homework>) {
     val enabledSubjects = enabledSubjectsLive.observeAsState()
     AnimatedVisibility(visible = homeworks.any { it.subjectId in enabledSubjects.value!! }) {
         Column(Modifier.padding(bottom = 16.dp)) {
@@ -42,7 +42,7 @@ fun HomeworkDay(homeworks: List<Homework>) {
             }
             val subjectSplitHomeworks =
                 remember {
-                    homeworks.fold(mutableListOf<MutableList<Homework>>()) { sum, it ->
+                    homeworks.fold(mutableListOf<MutableList<org.bxkr.octodiary.models.homeworks2.Homework>>()) { sum, it ->
                         if (sum.isEmpty() || sum.last().first().subjectId != it.subjectId) {
                             sum.add(mutableListOf(it))
                         } else {

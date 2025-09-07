@@ -12,6 +12,7 @@ import org.bxkr.octodiary.models.daysbalanceinfo.DaysBalanceInfo
 import org.bxkr.octodiary.models.events.Event
 import org.bxkr.octodiary.models.govexams.GovExamsResponse
 import org.bxkr.octodiary.models.homeworks.Homework
+import org.bxkr.octodiary.models.lesson2.LessonResponse
 import org.bxkr.octodiary.models.lessonschedule.LessonSchedule
 import org.bxkr.octodiary.models.mark.MarkInfo
 import org.bxkr.octodiary.models.marklistdate.MarkListDate
@@ -76,7 +77,7 @@ object DataService {
     lateinit var marksSubject: List<MarkListSubjectItem>
     var hasMarksSubject = false
 
-    lateinit var homeworks: List<Homework>
+    lateinit var homeworks: List<org.bxkr.octodiary.models.homeworks2.Homework>
     var hasHomeworks = false
 
     lateinit var mealBalance: MealBalance
@@ -611,7 +612,7 @@ object DataService {
     fun getLessonInfo(
         lessonId: Long,
         errorListener: (String) -> Unit,
-        listener: (LessonSchedule) -> Unit,
+        listener: (LessonResponse) -> Unit,
     ) {
         assert(this::token.isInitialized)
         assert(this::profile.isInitialized)

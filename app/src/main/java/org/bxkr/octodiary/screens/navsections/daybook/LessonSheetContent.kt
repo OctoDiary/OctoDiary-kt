@@ -44,12 +44,14 @@ import org.bxkr.octodiary.formatToHumanDay
 import org.bxkr.octodiary.getDemoProperty
 import org.bxkr.octodiary.getMarkConfig
 import org.bxkr.octodiary.isDemo
+import org.bxkr.octodiary.models.lesson2.LessonResponse
 import org.bxkr.octodiary.models.lessonschedule.LessonSchedule
 import org.bxkr.octodiary.parseFromDay
+import androidx.core.net.toUri
 
 @Composable
 fun LessonSheetContent(lessonId: Long) {
-    var lessonInfo by remember { mutableStateOf<LessonSchedule?>(null) }
+    var lessonInfo by remember { mutableStateOf<LessonResponse?>(null) }
     var errorText by remember { mutableStateOf<String?>(null) }
     var openWebView by remember { mutableStateOf(false) }
     var webViewUrl by remember { mutableStateOf("") }
@@ -105,37 +107,32 @@ fun LessonSheetContent(lessonId: Long) {
                         Text(homework.homework, modifier = Modifier.clickable {
                             clipboardManager.setText(AnnotatedString(homework.homework))
                         })
-                        homework.materials.forEach { material ->
-                            material.items.forEach {
-                                val ctx = LocalContext.current
-                                OutlinedButton(onClick = {
-                                    if (material.type == "attachments" || context.isDemo) {
-                                        val browserIntent = Intent(
-                                            Intent.ACTION_VIEW,
-                                            Uri.parse(
-                                                it.link
-                                                    ?: it.urls.firstOrNull { it.urlType == "view" }?.url
-                                            )
-                                        )
-                                        ContextCompat.startActivity(ctx, browserIntent, null)
-                                    } else {
-                                        DataService.getLaunchUrl(
-                                            homework.homeworkEntryId,
-                                            it.uuid ?: "",
-                                        ) {
-                                            webViewUrl = it
-                                            openWebView = true
-                                        }
-                                    }
-                                }, contentPadding = ButtonDefaults.ButtonWithIconContentPadding) {
-                                    Icon(
-                                        material.icon,
-                                        stringResource(id = R.string.image),
-                                        Modifier.size(ButtonDefaults.IconSize)
+                        homework.additionalMaterials.forEach { material ->
+                            val ctx = LocalContext.current
+                            OutlinedButton(onClick = {
+                                if (material.type == "attachments" || context.isDemo) {
+                                    val browserIntent = Intent(
+                                        Intent.ACTION_VIEW,
+                                        material.urls.firstOrNull { material.type == "view" }?.url?.toUri()
                                     )
-                                    Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-                                    Text(it.title)
+                                    ContextCompat.startActivity(ctx, browserIntent, null)
+                                } else {
+                                    DataService.getLaunchUrl(
+                                        homework.homeworkEntryId,
+                                        material.uuid ?: "",
+                                    ) {
+                                        webViewUrl = it
+                                        openWebView = true
+                                    }
                                 }
+                            }, contentPadding = ButtonDefaults.ButtonWithIconContentPadding) {
+                                Icon(
+                                    material.icon,
+                                    stringResource(id = R.string.image),
+                                    Modifier.size(ButtonDefaults.IconSize)
+                                )
+                                Spacer(Modifier.size(ButtonDefaults.IconSpacing))
+                                Text(material.title)
                             }
                         }
                     }

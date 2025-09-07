@@ -79,7 +79,7 @@ fun HomeworksScreen() {
     val daySplitMarks = remember {
         DataService.homeworks.sortedBy {
             it.date.parseFromDay().toInstant().toEpochMilli()
-        }.fold(mutableListOf<MutableList<Homework>>()) { sum, it ->
+        }.fold(mutableListOf<MutableList<org.bxkr.octodiary.models.homeworks2.Homework>>()) { sum, it ->
             if (sum.isEmpty() || sum.last().first().date != it.date) {
                 sum.add(mutableListOf(it))
             } else {

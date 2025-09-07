@@ -26,7 +26,7 @@ import org.bxkr.octodiary.models.homeworks.Homework
 
 
 @Composable
-fun HomeworkSubject(homeworks: List<Homework>) {
+fun HomeworkSubject(homeworks: List<org.bxkr.octodiary.models.homeworks2.Homework>) {
     Column {
         Text(
             homeworks.first().subjectName,
@@ -43,21 +43,21 @@ fun HomeworkSubject(homeworks: List<Homework>) {
                         start = 8.dp, end = 16.dp, bottom = 16.dp
                     )) {
                 Column(Modifier.padding(start = 8.dp)) {
-                    if (it.materialsCount.isNotEmpty()) {
-                        if (it.materialsCount.any { it.selectedMode == "learn" }) {
+                    if (it.materials.isNotEmpty()) {
+                        if (it.materials.any { it.selectedMode == "learn" }) {
                             Text(
                                 stringResource(
                                     R.string.learn_t,
-                                    it.materialsCount.first { it.selectedMode == "learn" }.amount
+                                    it.materials.count { it.selectedMode == "learn" }
                                 ),
                                 color = MaterialTheme.colorScheme.secondary
                             )
                         }
-                        if (it.materialsCount.any { it.selectedMode == "execute" }) {
+                        if (it.materials.any { it.selectedMode == "execute" }) {
                             Text(
                                 stringResource(
                                     R.string.do_t,
-                                    it.materialsCount.first { it.selectedMode == "execute" }.amount
+                                    it.materials.count { it.selectedMode == "execute" }
                                 ),
                                 color = MaterialTheme.colorScheme.tertiary
                             )

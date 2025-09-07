@@ -4,6 +4,7 @@ import com.google.gson.JsonObject
 import org.bxkr.octodiary.Diary
 import org.bxkr.octodiary.models.daysbalanceinfo.DaysBalanceInfo
 import org.bxkr.octodiary.models.homeworks.HomeworksResponse
+import org.bxkr.octodiary.models.lesson2.LessonResponse
 import org.bxkr.octodiary.models.lessonschedule.LessonSchedule
 import org.bxkr.octodiary.models.mark.MarkInfo
 import org.bxkr.octodiary.models.marklistdate.MarkListDate
@@ -121,7 +122,7 @@ interface MainSchoolAPI {
      * @param mesSubsystem MES subsystem (["familymp"][MESAPIConfig.FAMILYMP] by default).
      * @return [HomeworksResponse]
      */
-    @GET("family/mobile/v1/homeworks/short")
+    @GET("family/mobile/v1/homeworks")
     fun homeworks(
         @Header("auth-token") accessToken: String,
         @Query("student_id") studentId: Long,
@@ -130,7 +131,7 @@ interface MainSchoolAPI {
         @Query("sort_column") sortField: String = MESAPIConfig.DATE_FIELD,
         @Query("sort_direction") sortDirection: String = MESAPIConfig.ASCENDING,
         @Header("X-Mes-Subsystem") mesSubsystem: String = MESAPIConfig.FAMILYMP
-    ): Call<HomeworksResponse>
+    ): Call<org.bxkr.octodiary.models.homeworks2.HomeworksResponse>
 
     /**
      * Gets school info.
@@ -224,7 +225,7 @@ interface MainSchoolAPI {
         @Path("lesson_id") lessonId: Long,
         @Query("student_id") studentId: Long,
         @Header("X-Mes-Subsystem") mesSubsystem: String = MESAPIConfig.FAMILYMP
-    ): Call<LessonSchedule>
+    ): Call<LessonResponse>
 
     // bullshit
 //    @GET("usersettings/v1")
