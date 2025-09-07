@@ -71,7 +71,7 @@ fun ChangelogDialog(onDismissRequest: () -> Unit) {
 @Composable
 private fun ChangelogNavigation(currentChangelog: Changelog, onDismissRequest: () -> Unit) {
     var currentPage by remember { mutableIntStateOf(0) }
-    val pagerState = rememberPagerState { currentChangelog.elements.size }
+    val pagerState = rememberPagerState { currentChangelog.elements?.size ?: 0 }
     val coroutineScope = rememberCoroutineScope()
     val scrollToPage = { page: Int ->
         coroutineScope.launch {
@@ -84,7 +84,7 @@ private fun ChangelogNavigation(currentChangelog: Changelog, onDismissRequest: (
     var button1Style by remember { mutableStateOf("exit") }
     var button2Style by remember { mutableStateOf("exit") }
     button1Style = if (currentPage == 0) "exit" else "back"
-    button2Style = if (currentPage == currentChangelog.elements.lastIndex) "exit" else "next"
+    button2Style = if (currentPage == currentChangelog.elements?.lastIndex) "exit" else "next"
 
     val onButton1Click = {
         if (currentPage > 0) {
@@ -94,7 +94,7 @@ private fun ChangelogNavigation(currentChangelog: Changelog, onDismissRequest: (
     }
 
     val onButton2Click = {
-        if (currentPage < currentChangelog.elements.lastIndex) {
+        if (currentPage < (currentChangelog.elements?.lastIndex ?: 0)) {
             currentPage += 1
             scrollToPage(currentPage)
         } else onDismissRequest()
@@ -142,7 +142,7 @@ private fun ChangelogNavigation(currentChangelog: Changelog, onDismissRequest: (
                         Modifier
                             .weight(1f)
                             .zoomable(rememberZoomableState(ZoomSpec(maxZoomFactor = 2f)))
-                    ) { currentChangelog.elements[innerCurrentPage].composable() }
+                    ) { currentChangelog.elements?.get(innerCurrentPage)?.composable?.invoke() }
                     Column(
                         Modifier
                             .padding(vertical = 16.dp)
@@ -150,14 +150,19 @@ private fun ChangelogNavigation(currentChangelog: Changelog, onDismissRequest: (
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center
                     ) {
+                        currentChangelog.elements?.get(innerCurrentPage)?.title?.let {
+                            Text(
+                                stringResource(it),
+                                Modifier.padding(horizontal = 16.dp),
+                                textAlign = TextAlign.Center,
+                                style = MaterialTheme.typography.titleLarge
+                            )
+                        }
                         Text(
-                            stringResource(currentChangelog.elements[innerCurrentPage].title),
-                            Modifier.padding(horizontal = 16.dp),
-                            textAlign = TextAlign.Center,
-                            style = MaterialTheme.typography.titleLarge
-                        )
-                        Text(
-                            stringResource(currentChangelog.elements[innerCurrentPage].subtitle),
+                            stringResource(
+                                currentChangelog.elements?.get(innerCurrentPage)?.subtitle
+                                    ?: R.string.error_occurred
+                            ),
                             Modifier.padding(horizontal = 16.dp),
                             textAlign = TextAlign.Center,
                             style = MaterialTheme.typography.titleMedium
@@ -167,7 +172,7 @@ private fun ChangelogNavigation(currentChangelog: Changelog, onDismissRequest: (
 
             }
             DotsIndicator(
-                dotCount = currentChangelog.elements.size,
+                dotCount = currentChangelog.elements?.size ?: 0,
                 dotSpacing = 8.dp,
                 type = WormIndicatorType(
                     dotsGraphic = DotGraphic(

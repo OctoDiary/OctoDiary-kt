@@ -63,17 +63,19 @@ fun ChangelogCard(context: Context) {
                 )
                 .clip(MaterialTheme.shapes.extraLarge)
                 .fillMaxWidth()
-                .combinedClickable(
-                    onLongClick = {
-                        context.saveNewVersion()
-                        isCardShown = false
-                    },
-                    onClick = {
-                        context.saveNewVersion()
-                        isCardShown = false
-                        isDialogShown = true
-                    }
-                )
+                .run {
+                    if (changelog.elements != null) combinedClickable(
+                        onLongClick = {
+                            context.saveNewVersion()
+                            isCardShown = false
+                        },
+                        onClick = {
+                            context.saveNewVersion()
+                            isCardShown = false
+                            isDialogShown = true
+                        }
+                    ) else this
+                }
                 .padding(16.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
@@ -102,12 +104,14 @@ fun ChangelogCard(context: Context) {
                         Text(stringResource(changelog.shortDescription))
                     }
                 }
+                if (changelog.elements != null)
                 Text(
                     stringResource(R.string.click_to_show_more),
                     Modifier.padding(top = 4.dp),
                     style = MaterialTheme.typography.labelLarge
                 )
             }
+            if (changelog.elements != null)
             Icon(
                 Icons.AutoMirrored.Rounded.ArrowForward,
                 stringResource(R.string.next),

@@ -5,7 +5,7 @@ import androidx.compose.runtime.Composable
 import org.bxkr.octodiary.BuildConfig
 
 abstract class Changelog {
-    abstract val elements: List<ChangelogItem>
+    abstract val elements: List<ChangelogItem>?
 
     @get:StringRes
     abstract val versionName: Int
@@ -25,7 +25,8 @@ abstract class Changelog {
     companion object {
         val currentChangelog: Changelog =
             when (BuildConfig.VERSION_CODE) {
-                in 26..Int.MAX_VALUE -> Changelog26()
+//                in 26..31 -> Changelog26()
+                in 32..Int.MAX_VALUE -> Changelog32()
                 else -> Changelog26()
             }
     }

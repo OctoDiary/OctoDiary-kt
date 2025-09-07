@@ -275,6 +275,8 @@ class MainActivity : FragmentActivity() {
                     MigrationDialog { modalDialogCloseListenerLive.value?.invoke() }
                 }
                 modalDialogStateLive.value = true
+            } else if ((mainPrefs.get<Int>("version") ?: 31) <= 31) {
+                logOut("Migration from version 31")
             } else if (mainPrefs.get<Int>("version") != BuildConfig.VERSION_CODE) {
                 mainPrefs.save("version" to BuildConfig.VERSION_CODE)
             }
