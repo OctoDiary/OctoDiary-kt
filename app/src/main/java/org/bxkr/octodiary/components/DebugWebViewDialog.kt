@@ -36,9 +36,10 @@ fun DebugWebViewDialog(
     aiResponses: List<String>,
     onAiResponse: (String) -> Unit
 ) {
+    val context = androidx.compose.ui.platform.LocalContext.current
     var isLoading by remember { mutableStateOf(true) }
     val webViewRef = remember { mutableStateOf<WebView?>(null) }
-    val headlessController = remember { HeadlessWebViewController(androidx.compose.ui.platform.LocalContext.current) }
+    val headlessController = remember { HeadlessWebViewController(context) }
     
     Dialog(
         properties = DialogProperties(
