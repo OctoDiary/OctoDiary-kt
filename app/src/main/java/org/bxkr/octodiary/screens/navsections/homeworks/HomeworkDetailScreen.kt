@@ -71,7 +71,7 @@ fun HomeworkDetailScreen(entryStudentId: Long) {
     val actionPlan = remember { mutableStateOf<String?>(null) }
     val extractedHtml = remember { mutableStateOf<String?>(null) }
     val scope = rememberCoroutineScope()
-    val headlessController = remember { HeadlessWebViewController(context) }
+    val headlessController = remember(context) { HeadlessWebViewController(context) }
     val showDebugWebView = remember { mutableStateOf(false) }
     val debugWebViewUrl = remember { mutableStateOf("") }
     val aiResponses = remember { mutableStateOf<List<String>>(emptyList()) }

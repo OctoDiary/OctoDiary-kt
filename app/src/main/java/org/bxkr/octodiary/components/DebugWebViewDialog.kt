@@ -39,7 +39,7 @@ fun DebugWebViewDialog(
     val context = androidx.compose.ui.platform.LocalContext.current
     var isLoading by remember { mutableStateOf(true) }
     val webViewRef = remember { mutableStateOf<WebView?>(null) }
-    val headlessController = remember { HeadlessWebViewController(context) }
+    val headlessController = remember(context) { HeadlessWebViewController(context) }
     
     Dialog(
         properties = DialogProperties(
