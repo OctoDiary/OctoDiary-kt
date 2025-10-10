@@ -79,9 +79,19 @@ class GeminiProvider : AiProvider {
     }
 
     override suspend fun solve(context: Context, taskText: String, model: String): String {
-        return withContext(Dispatchers.Default) {
-            delay(200)
-            "Автопилот решения пока не подключён. Провайдер: Gemini, модель: $model."
+        return try {
+            val response = OpenAiClient.complete(context, model, taskText)
+            // Try parse JSON response
+            try {
+                val json = com.google.gson.Gson().fromJson(response, Map::class.java)
+                val answer = json["final_answer"] as? String ?: response
+                val notes = json["notes"] as? String ?: ""
+                if (notes.isNotBlank()) "$answer\n\nШаги решения:\n$notes" else answer
+            } catch (_: Throwable) {
+                response
+            }
+        } catch (e: Exception) {
+            "Ошибка при вызове Gemini API: ${e.message}"
         }
     }
 
@@ -117,7 +127,14 @@ class MistralProvider : AiProvider {
 object AiManager {
     fun getProvider(context: Context): AiProvider {
         val enabled = context.mainPrefs.get<String>("ai_provider") ?: "disabled"
-        return if (enabled == "disabled") DisabledProvider() else OpenAiLikeProvider()
+        return when (enabled) {
+            "disabled" -> DisabledProvider()
+            "openai" -> OpenAiLikeProvider()
+            "gemini" -> GeminiProvider()
+            "openrouter" -> OpenAiLikeProvider()
+            "custom" -> OpenAiLikeProvider()
+            else -> DisabledProvider()
+        }
     }
 
     fun getSelectedModel(context: Context, provider: AiProvider): String {

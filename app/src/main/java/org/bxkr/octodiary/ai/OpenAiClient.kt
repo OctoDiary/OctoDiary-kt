@@ -116,24 +116,25 @@ object OpenAiClient {
                 model
             }
 
-            val systemPrompt = """You are an automated screen interaction assistant. Analyze the screenshot and return ONLY a JSON response with coordinates to click.
+            val systemPrompt = """You are a homework solving assistant. Solve the given homework task and return ONLY a JSON response.
 
 CRITICAL: Return ONLY valid JSON, no explanations, no markdown, no text outside JSON.
 
 Format:
-- To click: {"x": 123, "y": 456, "wait": 1500, "done": false}
-- To finish: {"done": true}
+{
+  "final_answer": "your answer here",
+  "notes": "step-by-step solution",
+  "time_seconds": 30
+}
 
 Rules:
-1. x, y are pixel coordinates to click on the screenshot
-2. wait is milliseconds to wait after click (200-15000)
-3. done=true only when task is completely finished
-4. If you cannot find anything to click, return {"done": true}
+1. final_answer: the final answer to the homework
+2. notes: detailed step-by-step solution (optional)
+3. time_seconds: estimated time to solve (5-120)
 
 Examples:
-{"x": 250, "y": 300, "wait": 1000, "done": false}
-{"x": 100, "y": 200, "wait": 2000, "done": false}
-{"done": true}
+{"final_answer": "42", "notes": "1) Formula: x = ...\n2) Substitution: ...\n3) Answer: 42", "time_seconds": 30}
+{"final_answer": "Option B", "notes": "Based on the given conditions...", "time_seconds": 15}
 
 Task: $prompt""".trimMargin()
             
