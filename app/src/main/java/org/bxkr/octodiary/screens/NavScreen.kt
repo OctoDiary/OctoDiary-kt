@@ -90,6 +90,7 @@ import org.bxkr.octodiary.authPrefs
 import org.bxkr.octodiary.cachePrefs
 import org.bxkr.octodiary.get
 import org.bxkr.octodiary.isDemo
+import org.bxkr.octodiary.isOnline
 import org.bxkr.octodiary.logOut
 import org.bxkr.octodiary.mainPrefs
 import org.bxkr.octodiary.navControllerLive
@@ -103,6 +104,7 @@ import org.bxkr.octodiary.save
 import org.bxkr.octodiary.screenLive
 import org.bxkr.octodiary.sumLists
 import org.bxkr.octodiary.ui.theme.OctoDiaryTheme
+import org.bxkr.octodiary.screens.navsections.homeworks.HomeworkDetailScreen
 import java.util.Calendar
 import java.util.Collections
 
@@ -146,7 +148,6 @@ fun NavScreen(modifier: Modifier, pinFinished: MutableState<Boolean>) {
                     NetworkService.secondaryApi(SecondaryAPI.getBaseUrl(diary))
 
                 val context = LocalActivity.current
-
                 LaunchedEffect(DataService.loadedEverything.value) {
                     if (DataService.loadedEverything.value) {
                         context.registerNotifier()
@@ -170,9 +171,15 @@ fun NavScreen(modifier: Modifier, pinFinished: MutableState<Boolean>) {
                     LaunchedEffect(Unit) {
                         DataService.sendStatistic {}
                     }
+                    // Read preferred start destination from settings; fallback to Dashboard
+                    val startDestinationRoute = remember {
+                        val pref = context.mainPrefs.get<String>("start_destination")
+                        val validRoutes = NavSection.values().map { it.route }.toSet()
+                        if (pref != null && pref in validRoutes) pref else NavSection.Dashboard.route
+                    }
                     NavHost(
                         navController = navController.value!!,
-                        startDestination = NavSection.Dashboard.route
+                        startDestination = startDestinationRoute
                     ) {
                         NavSection.values().forEach {
                             composable(it.route) { _ ->
@@ -188,6 +195,16 @@ fun NavScreen(modifier: Modifier, pinFinished: MutableState<Boolean>) {
                                 }
                             }
                         }
+                        // Homework detail screen route
+                        composable("homework/{entryStudentId}") { backStackEntry ->
+                            val id = backStackEntry.arguments?.getString("entryStudentId")?.toLongOrNull()
+                            if (id != null) {
+                                HomeworkDetailScreen(entryStudentId = id)
+                            } else {
+                                // Fallback: just show the list
+                                NavSection.Homeworks.composable()
+                            }
+                        }
                     }
                 }
                 AnimatedVisibility(!DataService.loadedEverything.value) {
@@ -197,35 +214,36 @@ fun NavScreen(modifier: Modifier, pinFinished: MutableState<Boolean>) {
                     )
                     val coroutineScope = rememberCoroutineScope()
                     DataService.onSingleItemInUpdateAllLoadedHandler = { name, progressParam ->
-                        coroutineScope.launch {
-                            progress = progressParam
-                        }
+                        coroutineScope.launch { progress = progressParam }
                         cachePrefs.save(
                             name to Gson().toJson(
                                 DataService::class.java.getDeclaredField(name).get(DataService)
-                            ), "age" to System.currentTimeMillis()
+                            ),
+                            "age" to System.currentTimeMillis()
                         )
                     }
-
                     val activity = LocalActivity.current
                     DataService.tokenExpirationHandler = {
                         activity.logOut("Performed from token expiration handler")
                     }
-
                     if (!DataService.loadingStarted) {
-                        if (cachePrefs.get<Long>("age")
-                                ?.let { (System.currentTimeMillis() - it) < 86400000 } == true
-                        ) {
-                            DataService.loadingStarted = true
-                            DataService.subsystem =
-                                Diary.values()[authPrefs.get<Int>("subsystem") ?: 0]
-                            DataService.loadFromCache { cachePrefs.get<String>(it) ?: "" }
-                            DataService.loadedEverything.value = true
+                        val cachedAge = cachePrefs.get<Long>("age")
+                        val online = activity.isOnline()
+                        if (cachedAge != null) {
+                            val isFresh = (System.currentTimeMillis() - cachedAge) < 86400000
+                            if (!online || isFresh) {
+                                DataService.loadingStarted = true
+                                DataService.subsystem = Diary.values()[authPrefs.get<Int>("subsystem") ?: 0]
+                                DataService.loadFromCache { cachePrefs.get<String>(it) ?: "" }
+                                DataService.loadedEverything.value = true
+                            } else {
+                                DataService.updateAll(context)
+                            }
                         } else if (isDemo) {
                             DataService.subsystem = Diary.MES
                             DataService.run { loadDemoCache() }
                             DataService.loadedEverything.value = true
-                        } else {
+                        } else if (online) {
                             DataService.updateAll(context)
                         }
                     }
@@ -237,6 +255,15 @@ fun NavScreen(modifier: Modifier, pinFinished: MutableState<Boolean>) {
                         LinearProgressIndicator(
                             progress = { progressAnimated },
                         )
+                        val showOffline = !LocalActivity.current.isOnline()
+                        if (showOffline) {
+                            Spacer(Modifier.size(12.dp))
+                            Text(
+                                text = stringResource(id = R.string.offline_mode),
+                                style = MaterialTheme.typography.bodyMedium,
+                                modifier = Modifier.alpha(0.8f)
+                            )
+                        }
                     }
                 }
                 screenLive.value = Screen.MainNav

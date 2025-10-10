@@ -56,6 +56,7 @@ import org.bxkr.octodiary.formatToTime
 import org.bxkr.octodiary.getMarkConfig
 import org.bxkr.octodiary.modalBottomSheetContentLive
 import org.bxkr.octodiary.modalBottomSheetStateLive
+import org.bxkr.octodiary.navControllerLive
 import org.bxkr.octodiary.models.events.Event
 import org.bxkr.octodiary.parseLongDate
 import org.bxkr.octodiary.snackbarHostStateLive
@@ -74,6 +75,16 @@ fun EventItem(event: Event, index: Int = -1, showLessonNumbers: Boolean = true) 
         )
     }
     val markConfig = getMarkConfig()
+    // Load lesson details when expanded (for lessons)
+    var lessonInfo by remember { mutableStateOf<org.bxkr.octodiary.models.lesson2.LessonResponse?>(null) }
+    var lessonError by remember { mutableStateOf<String?>(null) }
+    LaunchedEffect(isExpanded) {
+        if (isExpanded && event.source in listOf("AE", "CE", "PLAN")) {
+            org.bxkr.octodiary.DataService.getLessonInfo(event.id, { lessonError = it }) {
+                lessonInfo = it
+            }
+        }
+    }
     Column(Modifier.clickable {
         isExpanded = !isExpanded
     }) {
@@ -144,63 +155,71 @@ fun EventItem(event: Event, index: Int = -1, showLessonNumbers: Boolean = true) 
                     in listOf("AE", "CE", "PLAN") -> Box {
                         Column(
                             Modifier
-                                .padding(
-                                    bottom = 16.dp
-                                )
+                                .padding(bottom = 16.dp)
                                 .fillMaxWidth()
                         ) {
-                            if (event.roomNumber != null) {
+                            // Theme/topic
+                            val topic = event.lessonTheme ?: (lessonInfo?.comment as? String)
+                            if (!topic.isNullOrBlank()) {
+                                Text(
+                                    topic,
+                                    Modifier
+                                        .padding(bottom = 8.dp)
+                                        .animateContentSize(),
+                                    style = MaterialTheme.typography.bodyMedium
+                                )
+                            }
+                            // Teacher
+                            val teacherFio = lessonInfo?.teacher?.run { "$lastName $firstName $middleName" }
+                            if (!teacherFio.isNullOrBlank()) {
+                                Text(teacherFio)
+                            }
+                            // Location: room, building, address
+                            val roomText = (lessonInfo?.roomNumber ?: event.roomNumber)
+                            if (!roomText.isNullOrBlank()) {
                                 Row {
                                     Text(
                                         stringResource(R.string.lesson_location),
-                                        Modifier
-                                            .padding(end = 3.dp)
-                                            .alpha(0.8f)
+                                        Modifier.padding(end = 3.dp).alpha(0.8f)
                                     )
-                                    Text(event.roomNumber)
+                                    Text(roomText)
                                 }
                             }
-                            if (event.homework != null && event.homework.descriptions.isNotEmpty()) {
-                                Row {
-                                    Text(
-                                        stringResource(R.string.homework),
-                                        Modifier
-                                            .padding(end = 3.dp)
-                                            .alpha(0.8f)
-                                    )
-                                    SelectionContainer {
-                                        Column {
-                                            event.homework.descriptions.forEach { Text(it) }
-                                        }
-                                    }
-                                }
+                            val building = lessonInfo?.buildingName ?: event.buildingName
+                            if (!building.isNullOrBlank()) {
+                                Text(building, Modifier.alpha(0.8f))
                             }
+                            val address = event.address as? String
+                            if (!address.isNullOrBlank()) {
+                                Text(address, Modifier.alpha(0.8f))
+                            }
+                            // Marks row
                             if (event.marks != null) {
-                                Row {
+                                Row(Modifier.padding(top = 8.dp)) {
                                     event.marks.forEach {
                                         if (event.subjectId != null) {
-                                            MarkComp(
-                                                it,
-                                                subjectId = event.subjectId,
-                                                markConfig = markConfig
-                                            )
+                                            MarkComp(it, subjectId = event.subjectId, markConfig = markConfig)
                                         }
                                     }
                                 }
                             }
-                        }
-                        FilledTonalIconButton(
-                            onClick = {
-                                modalBottomSheetContentLive.postValue { LessonSheetContent(event.id) }
-                                modalBottomSheetStateLive.postValue(true)
-                            }, modifier = Modifier
-                                .align(Alignment.BottomEnd)
-                                .padding(bottom = 16.dp)
-                        ) {
-                            Icon(
-                                Icons.AutoMirrored.Rounded.MenuOpen,
-                                stringResource(id = R.string.expand)
-                            )
+                            // Homework presence
+                            if ((lessonInfo?.lessonHomeworks?.isNotEmpty() == true) || (event.homework != null)) {
+                                Text(stringResource(id = R.string.homework), Modifier.padding(top = 8.dp))
+                                OutlinedButton(
+                                    onClick = { navControllerLive.value?.navigate(org.bxkr.octodiary.NavSection.Homeworks.route) },
+                                    contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
+                                    modifier = Modifier.padding(top = 8.dp)
+                                ) {
+                                    Icon(
+                                        Icons.AutoMirrored.Rounded.OpenInNew,
+                                        stringResource(id = R.string.open),
+                                        Modifier.size(ButtonDefaults.IconSize)
+                                    )
+                                    Spacer(Modifier.size(ButtonDefaults.IconSpacing))
+                                    Text(stringResource(id = R.string.open))
+                                }
+                            }
                         }
                     }
 

@@ -65,9 +65,10 @@ fun LessonSheetContent(lessonId: Long) {
     }
 
     if (openWebView) {
-        WebViewDialog(url = webViewUrl) {
-            openWebView = false
-        }
+        WebViewDialog(
+            url = webViewUrl,
+            onDismissRequest = { openWebView = false }
+        )
     }
 
     Box(
