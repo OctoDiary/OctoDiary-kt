@@ -125,41 +125,25 @@ class HeadlessWebViewController(
                 
                 android.util.Log.d("HeadlessWebView", "Screenshot captured, sending to AI...")
                 
-                // Отправляем в ИИ
-                val step = OpenAiClient.completeWithScreenshot(context, "gpt-4o", aiPrompt, bitmap)
-                android.util.Log.d("HeadlessWebView", "AI response: x=${step.x}, y=${step.y}, wait=${step.waitMs}, done=${step.done}")
+                // Отправляем в ИИ для решения задания
+                val solution = try {
+                    val provider = org.bxkr.octodiary.ai.AiManager.getProvider(context)
+                    val model = org.bxkr.octodiary.ai.AiManager.getSelectedModel(context, provider)
+                    provider.solve(context, aiPrompt, model)
+                } catch (e: Exception) {
+                    android.util.Log.e("HeadlessWebView", "Error solving with AI: ${e.message}")
+                    "Ошибка решения: ${e.message}"
+                }
+                
+                android.util.Log.d("HeadlessWebView", "AI solution: $solution")
                 
                 // Отправляем ответ в DebugWebView
-                val responseText = if (step.done == true) "DONE: ${step.message ?: "Задача завершена"}" 
-                    else "CLICK: (${step.x}, ${step.y}) wait=${step.waitMs}ms"
-                onAiResponseCallback?.invoke(responseText)
+                onAiResponseCallback?.invoke("РЕШЕНИЕ: $solution")
                 
-                // Проверяем на завершение
-                if (step.done == true) {
-                    android.util.Log.d("HeadlessWebView", "Task completed by AI")
-                    onDoneCallback?.invoke(step.message ?: "Завершено по done=true")
-                    stop(); break
-                }
-                
-                // Кликаем если есть координаты
-                if (step.x != null && step.y != null) {
-                    android.util.Log.d("HeadlessWebView", "Clicking at coordinates: ${step.x}, ${step.y}")
-                    wv.simulateClick(step.x, step.y)
-                } else {
-                    android.util.Log.w("HeadlessWebView", "No coordinates provided by AI")
-                }
-                
-                // Ждём перед следующим циклом
-                val waitMs = step.waitMs.coerceIn(200, 15000)
-                android.util.Log.d("HeadlessWebView", "Waiting ${waitMs}ms before next iteration")
-                delay(waitMs.toLong())
-                
-                // Ограничиваем количество итераций для безопасности
-                if (iteration > 50) {
-                    android.util.Log.w("HeadlessWebView", "Reached max iterations (50), stopping")
-                    onDoneCallback?.invoke("Достигнуто максимальное количество итераций")
-                    stop(); break
-                }
+                // Завершаем после получения решения
+                android.util.Log.d("HeadlessWebView", "Task completed with AI solution")
+                onDoneCallback?.invoke("Решение получено: $solution")
+                stop(); break
             }
         }
     }
