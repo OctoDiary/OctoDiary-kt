@@ -43,6 +43,8 @@ fun Security() {
     }
 
     SecurityPrefs.biometric.BasicSwitchPreference()
+    
+    NfcCard()
 
     AnimatedVisibility(setPin) {
         val pinFinished = remember { mutableStateOf(false) }

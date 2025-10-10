@@ -10,6 +10,8 @@ import android.content.pm.PackageManager.NameNotFoundException
 import android.graphics.Matrix
 import android.graphics.Typeface
 import android.net.Uri
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.text.Layout
 import android.util.Log
 import android.webkit.CookieManager
@@ -91,6 +93,13 @@ val Context.authPrefs: AuthPrefs
     get() {
         return AuthPrefs(this)
     }
+
+fun Context.isOnline(): Boolean {
+    val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    val network = cm.activeNetwork ?: return false
+    val caps = cm.getNetworkCapabilities(network) ?: return false
+    return caps.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+}
 
 val Context.mainPrefs: MainPrefs
     get() {
@@ -264,9 +273,8 @@ fun DataService.baseErrorFunction(errorBody: ResponseBody, httpCode: Int, classN
 }
 
 fun DataService.baseInternalExceptionFunction(t: Throwable, className: String?) {
-    println("Error in $className:\n    ${t.message}\nTrying to reload everything...")
+    println("Error in $className:\n    ${t.message}\nSwitching to cache fallback if available")
     loadingStarted = false
-    updateAll()
 }
 
 /** Formats [Date] to yyyy-MM-dd format [String] **/

@@ -21,6 +21,7 @@ import org.bxkr.octodiary.colorSchemeLive
 import org.bxkr.octodiary.components.SwitchPreference
 import org.bxkr.octodiary.components.ThemeCard
 import org.bxkr.octodiary.darkThemeLive
+import org.bxkr.octodiary.get
 import org.bxkr.octodiary.mainPrefs
 import org.bxkr.octodiary.save
 import org.bxkr.octodiary.ui.theme.CustomColorScheme
@@ -30,6 +31,8 @@ fun Appearance() {
     val activity = LocalActivity.current
     val darkTheme = darkThemeLive.observeAsState(isSystemInDarkTheme())
     var selectedTheme by remember { mutableStateOf(colorSchemeLive.value) }
+    // Track dynamic color state based on stored theme (-1 means dynamic)
+    val dynamicState = remember { mutableStateOf(activity.mainPrefs.get<Int>("theme") == -1) }
 
     LazyRow {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
@@ -47,6 +50,7 @@ fun Appearance() {
                         colorSchemeLive.postValue(-1)
                         selectedTheme = -2
                         activity.mainPrefs.save("theme" to -1)
+                        dynamicState.value = true
                     }
                 }
             }
@@ -67,8 +71,32 @@ fun Appearance() {
                 ) {
                     colorSchemeLive.postValue(it.ordinal)
                     selectedTheme = -2
-                    activity.mainPrefs.save("theme" to it.ordinal)
+                    activity.mainPrefs.save(
+                        "theme" to it.ordinal,
+                        "last_static_theme" to it.ordinal
+                    )
+                    dynamicState.value = false
                 }
+            }
+        }
+    }
+
+    // Explicit switch to enable/disable Material You dynamic colors (Android 12+)
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+        SwitchPreference(
+            title = stringResource(R.string.wallpaper_dynamic_color),
+            listenState = dynamicState
+        ) { enabled ->
+            dynamicState.value = enabled
+            if (enabled) {
+                colorSchemeLive.postValue(-1)
+                activity.mainPrefs.save("theme" to -1)
+            } else {
+                val fallback = activity.mainPrefs.get<Int>("last_static_theme")
+                    ?: CustomColorScheme.Yellow.ordinal
+                colorSchemeLive.postValue(fallback)
+                selectedTheme = -2
+                activity.mainPrefs.save("theme" to fallback)
             }
         }
     }

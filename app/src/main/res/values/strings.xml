@@ -266,6 +266,8 @@
     <string name="fingerprint">Biometric authentication</string>
     <string name="no_account_found_please_log_in">No account found\nPlease log in</string>
     <string name="today_lowercase">today</string>
+    <string name="offline_mode">Offline mode</string>
+
     <string name="show_mark_value_in_notification">Show mark value in notification</string>
     <string name="replacement">Replacement</string>
     <string name="common">General</string>
@@ -278,6 +280,18 @@
     <string name="appearance_desc">Color themes of the app</string>
     <string name="security_desc">Passcode and other</string>
     <string name="about_desc">Developers, links</string>
+    <string name="ai_autosolve">AI solving</string>
+    <string name="ai_provider">Provider</string>
+    <string name="ai_api_key">API key</string>
+    <string name="ai_model">Model</string>
+    <string name="ai_base_url">Custom endpoint (OpenAI-compatible)</string>
+    <string name="ai_model_desc">Model description: %1$s</string>
+    <string name="provider_disabled">Disabled</string>
+    <string name="provider_openai">OpenAI</string>
+    <string name="provider_gemini">Gemini</string>
+    <string name="provider_openrouter">OpenRouter</string>
+    <string name="provider_custom">Custom</string>
+
     <string name="show_lesson_numbers">Show lesson numbers</string>
     <string name="show_only_plan">Hide additional events</string>
     <string name="show_only_plan_desc">Show only plan lessons</string>
@@ -292,10 +306,18 @@
     <string name="other_octodiary_projects">Other OctoDiary projects</string>
     <string name="bot">Telegram bot</string>
     <string name="open">Open</string>
+    <string name="reshu_oge" translatable="false">РЕШУ ОГЭ</string>
+    <string name="reshu_ege" translatable="false">РЕШУ ЕГЭ</string>
+    <string name="ai_solve">Solve with AI</string>
+    <string name="ai_solution">AI solution</string>
+    <string name="ai_prev_solutions">Previous AI solutions</string>
+    <string name="ai_time_remaining">%1$s s remaining</string>
+
     <string name="bot_description">Notifications and useful data in your chats</string>
     <string name="python_lib">Python library</string>
     <string name="python_lib_description">Use MES API in your Python projects straightly</string>
     <string name="developers">Developers</string>
+
     <string name="migration">Migration</string>
     <string name="migration_description">Unfortunately, re-authorization is required after the update. We apologize!</string>
     <string name="show_student_id">Show student ID</string>
@@ -397,4 +419,29 @@
     <string name="balance">Balance</string>
     <string name="top_up">Top up</string>
     <string name="account_number">Account number</string>
+    
+    <string name="nfc_card_emulation">NFC Card Emulation</string>
+    <string name="nfc_service_desc">Emulate access card</string>
+    <string name="nfc_aid_group_desc">Access card emulation</string>
+    <string name="nfc_not_available">NFC is not available or disabled on this device</string>
+    <string name="nfc_saved_card">Saved card</string>
+    <string name="nfc_no_card">No card saved. Scan your access card to clone it.</string>
+    <string name="nfc_scan_card">Scan card</string>
+    <string name="nfc_scanning">Scanning… Tap card</string>
+    <string name="nfc_clear_card">Clear saved card</string>
+    <string name="nfc_protected_card">Карта защищена или зашифрована. Эмуляция невозможна.</string>
+    <string name="nfc_scan_instruction">Hold your access card to the back of your phone</string>
+    <string name="nfc_emulation_info">After scanning, your phone will emulate the card when you tap it to a reader. Card emulation works in the background.</string>
+    <string name="general">General</string>
+    <string name="access">Проход</string>
+    <string name="nfc_enable_instruction">Включите NFC в настройках устройства для сканирования карт</string>
+    <string name="open_nfc_settings">Открыть настройки NFC</string>
+    <string name="nfc_emulation_active">✓ Эмуляция активна. Приложите телефон к считывателю.</string>
+    <string name="nfc_no_card_scan">Карта не сохранена. Отсканируйте карту доступа ниже.</string>
+    <string name="nfc_waiting">Ожидание</string>
+    <string name="nfc_ready">Готово</string>
+    <string name="nfc_cancelled">Отменено</string>
+    <string name="start_destination">Start screen</string>
+    <string name="ai_custom_model">Custom model</string>
+    <string name="ai_custom_model_hint">e.g., gpt-4, claude-3-opus</string>
 </resources>

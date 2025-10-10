@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import org.bxkr.octodiary.DataService
 import org.bxkr.octodiary.R
 import org.bxkr.octodiary.models.homeworks.Homework
-
+import org.bxkr.octodiary.navControllerLive
 
 @Composable
 fun HomeworkSubject(homeworks: List<org.bxkr.octodiary.models.homeworks2.Homework>) {
@@ -38,7 +38,7 @@ fun HomeworkSubject(homeworks: List<org.bxkr.octodiary.models.homeworks2.Homewor
             var expanded by remember { mutableStateOf(false) }
             Column(
                 Modifier
-                    .clickable { expanded = !expanded }
+                    .clickable { navControllerLive.value?.navigate("homework/${it.homeworkEntryStudentId}") }
                     .padding(
                         start = 8.dp, end = 16.dp, bottom = 16.dp
                     )) {
@@ -73,7 +73,9 @@ fun HomeworkSubject(homeworks: List<org.bxkr.octodiary.models.homeworks2.Homewor
                     })
                     Text(
                         it.description,
-                        Modifier.animateContentSize(),
+                        Modifier
+                            .animateContentSize()
+                            .weight(1f),
                         maxLines = if (!expanded) 3 else Int.MAX_VALUE,
                         overflow = TextOverflow.Ellipsis
                     ) // FUTURE: COPY_ON_LONG_PRESS
