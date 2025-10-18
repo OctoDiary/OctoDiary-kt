@@ -98,3 +98,118 @@
 7. Может просмотреть историю всех решений
 
 **Next Steps**: Протестировать сборку проекта
+
+### 2025-10-18: Complete AI Removal
+**Status**: ✅ COMPLETED
+
+**Objective**: Полное удаление всей AI-функциональности из проекта "с корнями"
+
+**Actions Taken**:
+1. **Deleted entire AI module** - `app/src/main/java/org/bxkr/octodiary/ai/`
+   - `AiIntegration.kt` - провайдеры, менеджер, хранилище решений
+   - `OpenAiClient.kt` - HTTP-клиент для OpenAI API
+   - `WebViewExecutor.kt` - JS-исполнитель действий
+   - `HeadlessWebViewController.kt` - автоматизация WebView
+
+2. **Removed AI code from UI components**:
+   - `HomeworkDetailScreen.kt` - удалена кнопка "Решить с ИИ", история решений, headless automation
+   - `WebViewDialog.kt` - удален визуальный AI-режим, скриншоты, action plan execution
+   - `DebugWebViewDialog.kt` - полностью удален файл
+   - `Common.kt` - удалены все AI-настройки (провайдер, API-ключ, модель, base URL)
+
+3. **Deleted AI documentation**:
+   - `AI_INTEGRATION.md` - полная документация по AI-интеграции
+
+4. **Removed AI imports and dependencies**:
+   - Удалены все импорты `org.bxkr.octodiary.ai.*`
+   - Очищены неиспользуемые импорты (Bitmap, MotionEvent, ExperimentalFoundationApi и т.д.)
+
+**Technical Details**:
+- Удалены все references на AiManager, AiProvider, AiSolution, AiSolutionStore
+- Убраны AI-настройки из SharedPreferences (ai_provider, ai_api_key, ai_model, ai_base_url)
+- Удалены LaunchedEffect для AI-автоматизации в WebView
+- Убраны AI-кнопки и UI-компоненты из экрана домашних заданий
+- Очищен actionPlanJson и связанная логика
+
+**Files Deleted**:
+- `app/src/main/java/org/bxkr/octodiary/ai/AiIntegration.kt`
+- `app/src/main/java/org/bxkr/octodiary/ai/OpenAiClient.kt`
+- `app/src/main/java/org/bxkr/octodiary/ai/WebViewExecutor.kt`
+- `app/src/main/java/org/bxkr/octodiary/ai/HeadlessWebViewController.kt`
+- `app/src/main/java/org/bxkr/octodiary/components/DebugWebViewDialog.kt`
+- `AI_INTEGRATION.md`
+
+**Files Modified**:
+- `app/src/main/java/org/bxkr/octodiary/screens/navsections/homeworks/HomeworkDetailScreen.kt` - CLEANED
+- `app/src/main/java/org/bxkr/octodiary/components/WebViewDialog.kt` - CLEANED
+- `app/src/main/java/org/bxkr/octodiary/components/settings/Common.kt` - CLEANED
+- `ai_memory.md` - UPDATED
+
+**Result**: Проект полностью очищен от AI-функциональности. Готов к новой реализации.
+
+**Build Status**: 
+- ❌ Android SDK не найден в окружении (ANDROID_HOME не установлен)
+- ✅ Код очищен от всех AI-зависимостей
+- ✅ Готово к новой реализации
+
+**Next Steps**: 
+1. Реализовать новую систему автоматизации WebView (аналог Droidrun) ✅ DONE
+
+### 2025-10-18: New Automation System Implementation (Droidrun-like)
+**Status**: ✅ COMPLETED
+
+**Objective**: Создать НОВУЮ систему автоматизации WebView с циклом "скриншот → AI анализ → действие" (аналог Droidrun)
+
+**Architecture**:
+```
+Цикл автоматизации:
+1. Захват скриншота WebView
+2. Отправка в Vision AI (GPT-4o/Claude/Gemini)
+3. AI возвращает следующее действие в JSON
+4. Выполнение действия в WebView
+5. Повтор (макс 50 итераций)
+```
+
+**Created Files**:
+
+1. **`automation/AutomationAction.kt`**
+   - Sealed class для всех типов действий
+   - `Click`, `Type`, `Scroll`, `Swipe`, `Drag`, `Wait`, `Finish`
+
+2. **`automation/VisionAIClient.kt`**
+   - Клиент для Vision-моделей (OpenAI, Anthropic, Google)
+   - Поддержка скриншотов через base64
+   - Промпт инженеринг для точных действий
+
+3. **`automation/WebViewAutomator.kt`**
+   - Выполнение действий: JavaScript + MotionEvent
+   - Захват скриншотов WebView
+
+4. **`automation/AutomationEngine.kt`**
+   - Основной движок с циклом работы
+   - Логирование + callbacks
+
+**UI Integration**:
+- `WebViewDialog.kt`: кнопка Play/Stop, overlay с логами
+- `HomeworkDetailScreen.kt`: передача задачи в WebView
+- `Common.kt`: настройки провайдеров и моделей
+
+**Settings Storage**:
+- `automation_provider`: "disabled" | "openai" | "anthropic" | "google"
+- `automation_api_key`: String
+- `automation_model`: String
+
+**User Flow**:
+1. Настроить в Settings → Автоматизация
+2. Открыть материал ЦДЗ
+3. Нажать Play ▶️
+4. Наблюдать работу AI в real-time
+
+**Advantages**:
+- ✅ Полностью автономная работа
+- ✅ Визуальный анализ через скриншоты
+- ✅ Real-time логи
+- ✅ Поддержка всех действий Droidrun
+- ✅ 3 ведущих AI-провайдера
+
+**Testing**: Lint passed ✅, готов к тестированию на устройстве

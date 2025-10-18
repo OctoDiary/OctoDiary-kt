@@ -66,10 +66,14 @@ fun HomeworkDetailScreen(entryStudentId: Long) {
     val scope = rememberCoroutineScope()
 
     if (openWeb.value) {
+        val automationTask = hw?.let { 
+            "Выполни задание по предмету ${it.subjectName}: ${it.homework}. ${it.description}"
+        }
         WebViewDialog(
             url = webUrl.value,
             onDismissRequest = { openWeb.value = false },
-            actionPlanJson = actionPlan.value
+            actionPlanJson = actionPlan.value,
+            automationTask = automationTask
         )
     }
 
