@@ -108,4 +108,21 @@ fun Appearance() {
         darkThemeLive.value = it
         activity.mainPrefs.save("is_dark_theme" to it)
     }
+    
+    // AMOLED pure black theme (only visible in dark mode)
+    if (darkTheme.value == true) {
+        val amoledState = remember { 
+            mutableStateOf(activity.mainPrefs.get<Boolean>("amoled_theme") ?: false) 
+        }
+        SwitchPreference(
+            title = "AMOLED тема",
+            description = "Чисто чёрный фон для OLED экранов (экономит батарею)",
+            listenState = amoledState
+        ) {
+            amoledState.value = it
+            activity.mainPrefs.save("amoled_theme" to it)
+            // Force recreation to apply AMOLED theme
+            activity.recreate()
+        }
+    }
 }
