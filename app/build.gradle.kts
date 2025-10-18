@@ -95,6 +95,21 @@ dependencies {
     implementation(libs.vico.compose)
     implementation(libs.zoomable)
     implementation(libs.dotsindicator)
+    
+    // Room Database
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    annotationProcessor(libs.room.compiler)
+    
+    // PDF Export
+    implementation(libs.pdfbox)
+    
+    // Local AI (ONNX Runtime for Hugging Face models)
+    implementation(libs.onnxruntime)
+    
+    // WorkManager for background tasks
+    implementation(libs.work.runtime)
+    
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
