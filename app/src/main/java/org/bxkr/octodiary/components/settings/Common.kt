@@ -12,14 +12,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import kotlinx.coroutines.launch
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import org.bxkr.octodiary.ai.OpenAiLikeProvider
 import org.bxkr.octodiary.NavSection
 import org.bxkr.octodiary.R
 import org.bxkr.octodiary.get
@@ -119,99 +116,87 @@ fun Common() {
                 }
             }
         }
-
-        // AI autosolve provider and API key
+        
+        // Automation settings
+        Category("Автоматизация (Droidrun)") {
             val providers = listOf(
-                "disabled" to stringResource(R.string.provider_disabled),
-                "openai" to stringResource(R.string.provider_openai),
-                "gemini" to stringResource(R.string.provider_gemini),
-                "openrouter" to stringResource(R.string.provider_openrouter),
-                "custom" to stringResource(R.string.provider_custom),
+                "disabled" to "Отключено",
+                "openai" to "OpenAI (GPT-4o)",
+                "anthropic" to "Anthropic (Claude 3.5)",
+                "google" to "Google (Gemini 2.5)"
             )
             val currentProvider = remember {
-                mutableStateOf(context.mainPrefs.get<String>("ai_provider") ?: "disabled")
+                mutableStateOf(context.mainPrefs.get<String>("automation_provider") ?: "disabled")
             }
-            Column(Modifier.fillMaxWidth()) {
-                DropdownPreference(
-                    title = stringResource(R.string.ai_provider),
-                    currentValue = currentProvider.value,
-                    options = providers,
+            
+            DropdownPreference(
+                title = "AI провайдер",
+                currentValue = currentProvider.value,
+                options = providers,
+                onValueChange = {
+                    currentProvider.value = it
+                    context.mainPrefs.save("automation_provider" to it)
+                }
+            )
+            
+            if (currentProvider.value != "disabled") {
+                // API Key
+                val apiKeyState = remember {
+                    mutableStateOf(context.mainPrefs.get<String>("automation_api_key") ?: "")
+                }
+                
+                OutlinedTextField(
+                    value = apiKeyState.value,
                     onValueChange = {
-                        currentProvider.value = it
-                        context.mainPrefs.save("ai_provider" to it)
-                        if (it != "disabled") {
-                            val firstModel = OpenAiLikeProvider().defaultModels().firstOrNull()?.first
-                            if (firstModel != null) context.mainPrefs.save("ai_model" to firstModel)
-                        }
-                    }
+                        apiKeyState.value = it
+                        context.mainPrefs.save("automation_api_key" to it)
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 8.dp),
+                    label = { Text("API ключ") },
+                    singleLine = true
                 )
-
-                if (currentProvider.value != "disabled") {
-                    val keyState = remember {
-                        mutableStateOf(context.mainPrefs.get<String>("ai_api_key") ?: "")
-                    }
-                    val testResult = remember { mutableStateOf<String?>(null) }
-                    val isTesting = remember { mutableStateOf(false) }
-                    val scope = rememberCoroutineScope()
-                    
-                    OutlinedTextField(
-                        value = keyState.value,
-                        onValueChange = {
-                            keyState.value = it
-                            context.mainPrefs.save("ai_api_key" to it)
-                            testResult.value = null
-                        },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp, vertical = 8.dp),
-                        label = { Text(stringResource(R.string.ai_api_key)) },
-                        singleLine = true
+                
+                // Model selection
+                val models = when (currentProvider.value) {
+                    "openai" -> listOf(
+                        "gpt-4o" to "GPT-4o (лучший баланс)",
+                        "gpt-4o-mini" to "GPT-4o mini (дешевле)",
+                        "gpt-4-turbo" to "GPT-4 Turbo (надежнее)"
                     )
-                    
-                    androidx.compose.material3.Button(
-                        onClick = {
-                            isTesting.value = true
-                            testResult.value = null
-                            scope.launch {
-                                val (success, message) = org.bxkr.octodiary.ai.OpenAiClient.testApiKey(context)
-                                testResult.value = if (success) "✓ $message" else "✗ $message"
-                                isTesting.value = false
-                            }
-                        },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp, vertical = 4.dp),
-                        enabled = !isTesting.value && keyState.value.isNotBlank()
-                    ) {
-                        Text(if (isTesting.value) "Проверка..." else "Проверить API-ключ")
-                    }
-                    
-                    if (testResult.value != null) {
-                        Text(
-                            text = testResult.value!!,
-                            style = MaterialTheme.typography.bodySmall,
-                            color = if (testResult.value!!.startsWith("✓")) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error,
-                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)
-                        )
-                    }
-
-                    // Model selection
-                    val models = OpenAiLikeProvider().defaultModels() + listOf("custom" to "Custom model")
-                    val currentModel = remember {
-                        mutableStateOf(context.mainPrefs.get<String>("ai_model") ?: models.firstOrNull()?.first.orEmpty())
-                    }
+                    "anthropic" -> listOf(
+                        "claude-3-5-sonnet-20241022" to "Claude 3.5 Sonnet (точный)",
+                        "claude-3-opus-20240229" to "Claude 3 Opus (высший класс)"
+                    )
+                    "google" -> listOf(
+                        "gemini-2.0-flash-exp" to "Gemini 2.0 Flash (быстро)",
+                        "gemini-exp-1206" to "Gemini Exp (экспериментальная)"
+                    )
+                    else -> emptyList()
+                }
+                
+                val currentModel = remember {
+                    mutableStateOf(
+                        context.mainPrefs.get<String>("automation_model") 
+                            ?: models.firstOrNull()?.first.orEmpty()
+                    )
+                }
+                
+                if (models.isNotEmpty()) {
                     Text(
-                        text = stringResource(R.string.ai_model),
+                        text = "Модель",
                         style = MaterialTheme.typography.titleSmall,
                         modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
                     )
-                    models.forEach { (id, desc) ->
+                    
+                    models.forEach { (id, name) ->
                         Row(
                             Modifier
                                 .fillMaxWidth()
                                 .clickable {
                                     currentModel.value = id
-                                    context.mainPrefs.save("ai_model" to id)
+                                    context.mainPrefs.save("automation_model" to id)
                                 }
                                 .padding(horizontal = 16.dp, vertical = 8.dp),
                             verticalAlignment = Alignment.CenterVertically
@@ -220,52 +205,18 @@ fun Common() {
                                 selected = currentModel.value == id,
                                 onClick = {
                                     currentModel.value = id
-                                    context.mainPrefs.save("ai_model" to id)
+                                    context.mainPrefs.save("automation_model" to id)
                                 }
                             )
-                            Column(Modifier.padding(start = 12.dp)) {
-                                Text(id, style = MaterialTheme.typography.bodyLarge)
-                                Text(desc, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.secondary)
-                            }
+                            Text(
+                                text = name,
+                                modifier = Modifier.padding(start = 12.dp),
+                                style = MaterialTheme.typography.bodyMedium
+                            )
                         }
-                    }
-                    
-                    // Custom model input
-                    if (currentModel.value == "custom") {
-                        val customModel = remember { mutableStateOf(context.mainPrefs.get<String>("ai_custom_model") ?: "") }
-                        OutlinedTextField(
-                            value = customModel.value,
-                            onValueChange = {
-                                customModel.value = it
-                                context.mainPrefs.save("ai_custom_model" to it)
-                            },
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 16.dp, vertical = 8.dp),
-                            label = { Text(stringResource(R.string.ai_custom_model)) },
-                            placeholder = { Text(stringResource(R.string.ai_custom_model_hint)) },
-                            singleLine = true
-                        )
-                    }
-
-                    // Custom base URL (only for "custom" provider)
-                    if (currentProvider.value == "custom") {
-                        val baseUrl = remember { mutableStateOf(context.mainPrefs.get<String>("ai_base_url") ?: "") }
-                        OutlinedTextField(
-                            value = baseUrl.value,
-                            onValueChange = {
-                                baseUrl.value = it
-                                context.mainPrefs.save("ai_base_url" to it)
-                            },
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 16.dp, vertical = 8.dp),
-                            label = { Text(stringResource(R.string.ai_base_url)) },
-                            singleLine = true,
-                            placeholder = { Text("https://api.openai.com/v1") }
-                        )
                     }
                 }
             }
+        }
     }
 }
