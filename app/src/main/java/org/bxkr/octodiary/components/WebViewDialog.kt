@@ -43,43 +43,18 @@ import androidx.compose.ui.window.DialogProperties
 import org.bxkr.octodiary.DataService
 import org.bxkr.octodiary.Diary
 import org.bxkr.octodiary.R
-import org.bxkr.octodiary.ai.WebViewExecutor
-import android.graphics.Bitmap
-import android.os.Environment
-import android.widget.Toast
-import java.io.File
-import java.io.FileOutputStream
-import kotlinx.coroutines.Dispatchers
-import org.bxkr.octodiary.ai.OpenAiClient
-import org.bxkr.octodiary.ai.ScreenAiStep
-import kotlinx.coroutines.withContext
-import android.view.MotionEvent
-import org.bxkr.octodiary.mainPrefs
-import androidx.compose.foundation.combinedClickable
-import androidx.compose.material.icons.rounded.Camera
-import androidx.compose.ui.platform.LocalContext
-import org.bxkr.octodiary.MainPrefs
-import androidx.compose.foundation.ExperimentalFoundationApi
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WebViewDialog(
     url: String,
     onDismissRequest: () -> Unit,
-    actionPlanJson: String? = null,
-    onHtmlExtracted: ((String) -> Unit)? = null,
-    onScreenshot: ((Bitmap) -> Unit)? = null,
-    aiVisualMode: Boolean = false,
-    aiPrompt: String = ""
+    actionPlanJson: String? = null
 ) {
-    val ctx = LocalContext.current
     var currentUrl = remember { url }
     var isLoading by remember { mutableStateOf(true) }
     val webViewRef = remember { mutableStateOf<WebView?>(null) }
     val scope = rememberCoroutineScope()
-    val prefs = MainPrefs(ctx)
-    val model = prefs.ctx.getSharedPreferences(prefs.prefPath, android.content.Context.MODE_PRIVATE)
-    .getString("ai_model", "gpt-4o") ?: "gpt-4o"
 
     // --- ЦИКЛ ВИЗУАЛЬНОГО ИИ-ОТОБРАЖЕНИЯ ---
     LaunchedEffect(aiVisualMode, !isLoading, aiPrompt) {
