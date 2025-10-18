@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
-import androidx.compose.material.icons.rounded.BugReport
 import androidx.compose.material.icons.automirrored.rounded.OpenInNew
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -49,12 +48,7 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.bxkr.octodiary.DataService
 import org.bxkr.octodiary.R
-import org.bxkr.octodiary.ai.AiManager
-import org.bxkr.octodiary.ai.AiSolution
-import org.bxkr.octodiary.ai.AiSolutionStore
-import org.bxkr.octodiary.ai.HeadlessWebViewController
 import org.bxkr.octodiary.components.WebViewDialog
-import org.bxkr.octodiary.components.DebugWebViewDialog
 import org.bxkr.octodiary.isDemo
 import org.bxkr.octodiary.navControllerLive
 
@@ -69,32 +63,13 @@ fun HomeworkDetailScreen(entryStudentId: Long) {
     val openWeb = remember { mutableStateOf(false) }
     val webUrl = remember { mutableStateOf("") }
     val actionPlan = remember { mutableStateOf<String?>(null) }
-    val extractedHtml = remember { mutableStateOf<String?>(null) }
     val scope = rememberCoroutineScope()
-    val headlessController = remember { HeadlessWebViewController(context) }
-    val showDebugWebView = remember { mutableStateOf(false) }
-    val debugWebViewUrl = remember { mutableStateOf("") }
-    val aiResponses = remember { mutableStateOf<List<String>>(emptyList()) }
 
     if (openWeb.value) {
         WebViewDialog(
             url = webUrl.value,
             onDismissRequest = { openWeb.value = false },
-            actionPlanJson = actionPlan.value,
-            onHtmlExtracted = { html ->
-                extractedHtml.value = html
-            }
-        )
-    }
-    
-    if (showDebugWebView.value) {
-        DebugWebViewDialog(
-            url = debugWebViewUrl.value,
-            onDismissRequest = { showDebugWebView.value = false },
-            aiResponses = aiResponses.value,
-            onAiResponse = { response ->
-                aiResponses.value = aiResponses.value + response
-            }
+            actionPlanJson = actionPlan.value
         )
     }
 
@@ -104,27 +79,6 @@ fun HomeworkDetailScreen(entryStudentId: Long) {
             navigationIcon = {
                 IconButton(onClick = { nav?.navigateUp() }) {
                     Icon(Icons.AutoMirrored.Rounded.ArrowBack, stringResource(R.string.back))
-                }
-            },
-            actions = {
-                IconButton(onClick = { 
-                    if (hw?.materials?.isNotEmpty() == true) {
-                        val material = hw.materials.first()
-                        if (material.type == "attachments" || context.isDemo) {
-                            val url = material.urls.firstOrNull { true }?.toString()
-                            if (url != null) {
-                                debugWebViewUrl.value = url
-                                showDebugWebView.value = true
-                            }
-                        } else {
-                            DataService.getLaunchUrl(hw.homeworkEntryId, material.uuid) { url ->
-                                debugWebViewUrl.value = url
-                                showDebugWebView.value = true
-                            }
-                        }
-                    }
-                }) {
-                    Icon(Icons.Rounded.BugReport, "Debug WebView")
                 }
             }
         )
@@ -237,179 +191,6 @@ fun HomeworkDetailScreen(entryStudentId: Long) {
                 }
             }
 
-            HorizontalDivider()
-
-            // AI Solve Button
-            if (AiManager.isConfigured(context)) {
-                var solving by remember { mutableStateOf(false) }
-                var countdown by remember { mutableStateOf(0) }
-                var currentSolution by remember { mutableStateOf<AiSolution?>(null) }
-                
-                Button(
-                    onClick = {
-                        scope.launch {
-                            solving = true
-                            val provider = AiManager.getProvider(context)
-                            val model = AiManager.getSelectedModel(context, provider)
-                            
-                            // Build prompt with HTML if available
-                            val taskText = buildString {
-                                append("${hw.subjectName}: ${hw.homework}\n${hw.description}")
-                                if (extractedHtml.value != null) {
-                                    append("\n\nHTML структура задания:\n")
-                                    append(extractedHtml.value)
-                                }
-                            }
-                            
-                            // Try to get URL for headless automation
-                            val materials = hw.materials
-                            if (materials.isNotEmpty()) {
-                                val material = materials.first()
-                                android.util.Log.d("HomeworkDetail", "Found material for automation: ${material.title}")
-                                
-                                if (material.type == "attachments" || context.isDemo) {
-                                    val url = material.urls.firstOrNull { true }?.toString()
-                           if (url != null) {
-                               android.util.Log.d("HomeworkDetail", "Using attachment URL: $url")
-                               headlessController.start(url, taskText, 
-                                   onDone = { result ->
-                                       android.util.Log.d("HomeworkDetail", "Headless automation completed: $result")
-                                       scope.launch {
-                                           val solution = AiSolution(
-                                               provider = "Headless-AI",
-                                               model = model,
-                                               text = "Автоматизация завершена: $result",
-                                               createdAt = System.currentTimeMillis(),
-                                               estimatedSeconds = 0
-                                           )
-                                           AiSolutionStore.append(context, entryStudentId, solution)
-                                           currentSolution = solution
-                                           solving = false
-                                           countdown = 0
-                                       }
-                                   },
-                                   onAiResponse = { response ->
-                                       aiResponses.value = aiResponses.value + response
-                                   }
-                               )
-                                    } else {
-                                        android.util.Log.w("HomeworkDetail", "No attachment URL found, using fallback")
-                                        val solutionText = provider.solve(context, taskText, model)
-                                        val solution = AiSolution(
-                                            provider = "OpenAI-compatible",
-                                            model = model,
-                                            text = solutionText,
-                                            createdAt = System.currentTimeMillis(),
-                                            estimatedSeconds = 0
-                                        )
-                                        AiSolutionStore.append(context, entryStudentId, solution)
-                                        currentSolution = solution
-                                        solving = false
-                                        countdown = 0
-                                    }
-                                } else {
-                                    // Get launch URL for non-attachment materials
-                                    android.util.Log.d("HomeworkDetail", "Getting launch URL for material")
-                           DataService.getLaunchUrl(hw.homeworkEntryId, material.uuid) { url ->
-                               android.util.Log.d("HomeworkDetail", "Got launch URL: $url")
-                               headlessController.start(url, taskText, 
-                                   onDone = { result ->
-                                       android.util.Log.d("HomeworkDetail", "Headless automation completed: $result")
-                                       scope.launch {
-                                           val solution = AiSolution(
-                                               provider = "Headless-AI",
-                                               model = model,
-                                               text = "Автоматизация завершена: $result",
-                                               createdAt = System.currentTimeMillis(),
-                                               estimatedSeconds = 0
-                                           )
-                                           AiSolutionStore.append(context, entryStudentId, solution)
-                                           currentSolution = solution
-                                           solving = false
-                                           countdown = 0
-                                       }
-                                   },
-                                   onAiResponse = { response ->
-                                       aiResponses.value = aiResponses.value + response
-                                   }
-                               )
-                           }
-                                }
-                            } else {
-                                android.util.Log.w("HomeworkDetail", "No materials found for automation, using fallback")
-                                // Fallback to old method if no URL
-                                val solutionText = provider.solve(context, taskText, model)
-                                val solution = AiSolution(
-                                    provider = "OpenAI-compatible",
-                                    model = model,
-                                    text = solutionText,
-                                    createdAt = System.currentTimeMillis(),
-                                    estimatedSeconds = 0
-                                )
-                                AiSolutionStore.append(context, entryStudentId, solution)
-                                currentSolution = solution
-                                solving = false
-                                countdown = 0
-                            }
-                        }
-                    },
-                    enabled = !solving,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    if (solving && countdown > 0) {
-                        Text(stringResource(R.string.ai_time_remaining, countdown.toString()))
-                    } else if (solving) {
-                        Text(stringResource(R.string.ai_solve) + "...")
-                    } else {
-                        Text(stringResource(R.string.ai_solve))
-                    }
-                }
-
-                // Current solution
-                currentSolution?.let { sol ->
-                    Card(
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 8.dp)
-                    ) {
-                        Column(Modifier.padding(16.dp)) {
-                            Text(
-                                stringResource(R.string.ai_solution),
-                                style = MaterialTheme.typography.titleMedium
-                            )
-                            Text(
-                                "${sol.model} • ${sol.estimatedSeconds}s",
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.secondary
-                            )
-                            Spacer(Modifier.size(8.dp))
-                            Text(sol.text, style = MaterialTheme.typography.bodyMedium)
-                        }
-                    }
-                }
-
-                // Previous solutions
-                val prevSolutions = remember { AiSolutionStore.load(context, entryStudentId) }
-                if (prevSolutions.isNotEmpty()) {
-                    Text(
-                        stringResource(R.string.ai_prev_solutions),
-                        style = MaterialTheme.typography.titleSmall,
-                        modifier = Modifier.padding(vertical = 8.dp)
-                    )
-                    prevSolutions.forEach { sol ->
-                        Card(
-                            Modifier
-                                .fillMaxWidth()
-                                .padding(vertical = 4.dp)
-                        ) {
-                            Column(Modifier.padding(12.dp)) {
-                                Text("${sol.model} • ${sol.estimatedSeconds}s", style = MaterialTheme.typography.bodySmall)
-                                Text(sol.text, style = MaterialTheme.typography.bodySmall, maxLines = 2, overflow = TextOverflow.Ellipsis)
-                            }
-                        }
-                    }
-                }
-            }
         }
     }
 }
