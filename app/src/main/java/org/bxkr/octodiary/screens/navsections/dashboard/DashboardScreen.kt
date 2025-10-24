@@ -48,6 +48,10 @@ fun DashboardScreen() {
     val context = LocalContext.current
     val showNumbers =
         context.mainPrefs.get(CommonPrefs.showLessonNumbers.prefKey) ?: true
+    
+    // Проверяем, включён ли AI для показа карточки
+    val aiEnabled = context.getSharedPreferences("main_prefs", android.content.Context.MODE_PRIVATE)
+        .getBoolean("ai_enabled", true)
     val state = rememberLazyListState()
     LazyColumn(
         state = state,
@@ -59,6 +63,12 @@ fun DashboardScreen() {
     ) {
         item {
             Spacer(Modifier.height(16.dp))
+        }
+        // AI Quick Access Card
+        if (aiEnabled) {
+            item {
+                org.bxkr.octodiary.components.ai.AiQuickAccessCard()
+            }
         }
         dashboardRatingVisits()
         item {

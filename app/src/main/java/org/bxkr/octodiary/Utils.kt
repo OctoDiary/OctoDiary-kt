@@ -571,6 +571,16 @@ fun Context.openUri(uri: String) {
     ContextCompat.startActivity(this, browserIntent, null)
 }
 
+/**
+ * Открыть URL в WebView внутри приложения
+ * Используйте этот метод вместо openUri для внутреннего отображения
+ */
+fun Context.openInAppBrowser(url: String): Boolean {
+    // Этот метод будет вызывать WebViewDialog через Compose
+    // Реализация будет в компонентах, которые используют WebViewDialog
+    return false
+}
+
 inline fun <reified T> CachePrefs.getFromJson(key: String): T {
     return this.get<String>(key).run { Gson().fromJson(this, object : TypeToken<T>() {}.type) }
 }

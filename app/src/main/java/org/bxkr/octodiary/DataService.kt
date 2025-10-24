@@ -3,8 +3,10 @@ package org.bxkr.octodiary
 import android.content.Context
 import androidx.compose.runtime.mutableStateOf
 import com.google.gson.Gson
+import kotlinx.coroutines.*
 import okhttp3.ResponseBody
 import org.bxkr.octodiary.models.avatar.Avatar
+import org.bxkr.octodiary.utils.CacheUtils
 import org.bxkr.octodiary.models.classmembers.ClassMember
 import org.bxkr.octodiary.models.classmembers.OctoClassMembers
 import org.bxkr.octodiary.models.classranking.RankingMember
@@ -33,6 +35,7 @@ import org.bxkr.octodiary.network.interfaces.DSchoolAPI
 import org.bxkr.octodiary.network.interfaces.MainSchoolAPI
 import org.bxkr.octodiary.network.interfaces.SchoolSessionAPI
 import org.bxkr.octodiary.network.interfaces.SecondaryAPI
+import org.bxkr.octodiary.utils.measurePerformance
 import java.util.Calendar
 import java.util.Date
 
@@ -101,6 +104,32 @@ object DataService {
 
     lateinit var avatars: List<Avatar>
     var hasAvatars = false
+
+    // Оптимизация: кэширование часто используемых данных
+    private val memoryCache = mutableMapOf<String, Pair<Any, Long>>()
+    private val CACHE_DURATION = 15 * 60 * 1000L // 15 минут
+
+    private fun <T> getCachedData(key: String): T? {
+        val cached = memoryCache[key]
+        return if (cached != null && (System.currentTimeMillis() - cached.second) < CACHE_DURATION) {
+            @Suppress("UNCHECKED_CAST")
+            cached.first as T
+        } else {
+            memoryCache.remove(key)
+            null
+        }
+    }
+
+    private fun setCachedData(key: String, data: Any) {
+        memoryCache[key] = Pair(data, System.currentTimeMillis())
+    }
+
+    /**
+     * Очищает кэш при низком уровне памяти
+     */
+    fun clearCacheIfLowMemory(context: Context) {
+        CacheUtils.clearCacheIfLowMemory(context, memoryCache)
+    }
 
     // ADD_NEW_FIELD_HERE
     // Don't forget to add demo cache data in res/raw folder, preferably with MES flavor
@@ -364,10 +393,20 @@ object DataService {
     fun updateProfile(onUpdated: () -> Unit) {
         assert(this::token.isInitialized)
 
+        // Оптимизация: проверяем кэш
+        val cacheKey = "profile_${token.hashCode()}"
+        val cachedProfile: ProfileResponse? = getCachedData(cacheKey)
+        if (cachedProfile != null && hasProfile) {
+            profile = cachedProfile
+            onUpdated()
+            return
+        }
+
         mainSchoolApi.profile(token)
             .baseEnqueue(::baseErrorFunction, ::baseInternalExceptionFunction) {
                 profile = it
                 hasProfile = true
+                setCachedData(cacheKey, it)
                 onUpdated()
             }
     }
@@ -550,6 +589,15 @@ object DataService {
         require(this::token.isInitialized)
         require(this::profile.isInitialized)
 
+        // Оптимизация: проверяем кэш для аватаров
+        val cacheKey = "avatars_${profile.children[currentProfile].contingentGuid}"
+        val cachedAvatars: List<Avatar>? = getCachedData(cacheKey)
+        if (cachedAvatars != null && hasAvatars) {
+            avatars = cachedAvatars
+            onUpdated()
+            return
+        }
+
         secondaryApi.avatars(
             "Bearer $token",
             profile.children[currentProfile].contingentGuid
@@ -560,6 +608,7 @@ object DataService {
         }) {
             avatars = it
             hasAvatars = true
+            setCachedData(cacheKey, it)
             onUpdated()
         }
     }
@@ -695,10 +744,15 @@ object DataService {
             }
     }
 
-    fun updateAll(context: Context? = null) {
+    fun updateAll(context: Context? = null, silent: Boolean = false) {
         if (loadingStarted) return else loadingStarted = true
+
+        // Мониторим производительность загрузки данных
+        measurePerformance("DataService", "updateAll") {
         // ADD_NEW_FIELD_HERE
-        states.forEach { it.set(false) }
+        if (!silent) {
+            states.forEach { it.set(false) }
+        }
         val onSingleItemLoad = { name: String ->
             val statesInit = states.map { it.get() }
             onSingleItemInUpdateAllLoadedHandler?.invoke(name, (statesInit.count { it }
@@ -742,6 +796,7 @@ object DataService {
                 }
             }
         }
+        } // Закрывающая скобка для measurePerformance
     }
 
     fun loadFromCache(get: (String) -> String) {

@@ -170,6 +170,7 @@ class Changelog26 : Changelog() {
                 OctoDiaryTheme(
                     darkTheme = true,
                     dynamicColor = false,
+                    amoledTheme = false,
                     LightColorScheme,
                     DarkColorScheme,
                     portable = true

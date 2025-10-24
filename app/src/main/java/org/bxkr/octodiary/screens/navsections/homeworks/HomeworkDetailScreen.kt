@@ -1,7 +1,9 @@
 package org.bxkr.octodiary.screens.navsections.homeworks
 
 import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -11,8 +13,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
+import androidx.compose.material.icons.rounded.BugReport
+import androidx.compose.material.icons.rounded.Chat
+import androidx.compose.material.icons.rounded.AutoAwesome
 import androidx.compose.material.icons.automirrored.rounded.OpenInNew
 import androidx.compose.material3.Button
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.Checkbox
@@ -48,45 +54,44 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.bxkr.octodiary.DataService
 import org.bxkr.octodiary.R
-import org.bxkr.octodiary.components.WebViewDialog
 import org.bxkr.octodiary.isDemo
 import org.bxkr.octodiary.navControllerLive
+import org.bxkr.octodiary.components.WebViewDialog
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeworkDetailScreen(entryStudentId: Long) {
+    var showWebView by rememberSaveable { mutableStateOf(false) }
+    var webViewUrl by rememberSaveable { mutableStateOf("") }
     val context = LocalContext.current
     val nav = navControllerLive.value
     val hw = remember(entryStudentId) {
         DataService.homeworks.firstOrNull { it.homeworkEntryStudentId == entryStudentId }
     }
-    val openWeb = remember { mutableStateOf(false) }
-    val webUrl = remember { mutableStateOf("") }
-    val actionPlan = remember { mutableStateOf<String?>(null) }
     val scope = rememberCoroutineScope()
+    var showAiChat by remember { mutableStateOf(false) }
 
-    if (openWeb.value) {
-        val automationTask = hw?.let { 
-            "Выполни задание по предмету ${it.subjectName}: ${it.homework}. ${it.description}"
-        }
-        WebViewDialog(
-            url = webUrl.value,
-            onDismissRequest = { openWeb.value = false },
-            actionPlanJson = actionPlan.value,
-            automationTask = automationTask
-        )
-    }
-
-    Scaffold(topBar = {
-        MediumTopAppBar(
-            title = { Text(hw?.subjectName ?: stringResource(R.string.homework)) },
-            navigationIcon = {
-                IconButton(onClick = { nav?.navigateUp() }) {
-                    Icon(Icons.AutoMirrored.Rounded.ArrowBack, stringResource(R.string.back))
+    Scaffold(
+        topBar = {
+            MediumTopAppBar(
+                title = { Text(hw?.subjectName ?: stringResource(R.string.homework)) },
+                navigationIcon = {
+                    IconButton(onClick = { nav?.navigateUp() }) {
+                        Icon(Icons.AutoMirrored.Rounded.ArrowBack, stringResource(R.string.back))
+                    }
+                }
+            )
+        },
+        floatingActionButton = {
+            if (hw != null) {
+                FloatingActionButton(
+                    onClick = { showAiChat = true }
+                ) {
+                    Icon(Icons.Rounded.Chat, "AI помощник")
                 }
             }
-        )
-    }) { padding ->
+        }
+    ) { padding ->
         Column(
             Modifier
                 .padding(padding)
@@ -137,15 +142,16 @@ fun HomeworkDetailScreen(entryStudentId: Long) {
                             Text(material.title, style = MaterialTheme.typography.titleSmall)
                             Text(material.typeName, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.secondary)
                         }
+                        
                         OutlinedButton(onClick = {
                             if (material.type == "attachments" || context.isDemo) {
                                 val url = material.urls.firstOrNull { true }?.toString() ?: return@OutlinedButton
-                                val browserIntent = Intent(Intent.ACTION_VIEW, url.toUri())
-                                ContextCompat.startActivity(context, browserIntent, null)
+                                webViewUrl = url
+                                showWebView = true
                             } else {
                                 DataService.getLaunchUrl(hw.homeworkEntryId, material.uuid) { url ->
-                                    webUrl.value = url
-                                    openWeb.value = true
+                                    webViewUrl = url
+                                    showWebView = true
                                 }
                             }
                         }, contentPadding = ButtonDefaults.ButtonWithIconContentPadding) {
@@ -180,12 +186,12 @@ fun HomeworkDetailScreen(entryStudentId: Long) {
                                 val ok = withContext(Dispatchers.IO) {
                                     try {
                                         val req = Request.Builder().head().url(primary).build()
-                                        client.newCall(req).execute().use { it.code() != 404 }
+                                        client.newCall(req).execute().use { it.code != 404 }
                                     } catch (_: Throwable) { false }
                                 }
                                 val finalUrl = if (ok) primary else "$subjectHost/test?id=$id"
-                                val browserIntent = Intent(Intent.ACTION_VIEW, finalUrl.toUri())
-                                ContextCompat.startActivity(context, browserIntent, null)
+                                webViewUrl = finalUrl
+                                showWebView = true
                             }
                         }, contentPadding = ButtonDefaults.ButtonWithIconContentPadding) {
                             Icon(Icons.AutoMirrored.Rounded.OpenInNew, contentDescription = label)
@@ -195,7 +201,24 @@ fun HomeworkDetailScreen(entryStudentId: Long) {
                 }
             }
 
+            HorizontalDivider()
         }
+    }
+    
+    // AI чат диалог
+    if (showAiChat && hw != null) {
+        org.bxkr.octodiary.components.ai.HomeworkAiChatDialog(
+            homework = hw,
+            onDismiss = { showAiChat = false }
+        )
+    }
+    
+    // WebView для открытия ссылок внутри приложения
+    if (showWebView) {
+        WebViewDialog(
+            url = webViewUrl,
+            onDismiss = { showWebView = false }
+        )
     }
 }
 

@@ -4,8 +4,10 @@ import android.Manifest
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Configuration
+import android.util.Log
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -71,6 +73,10 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.runtime.RecomposeScope
+import androidx.compose.runtime.currentRecomposeScope
+import androidx.compose.runtime.derivedStateOf
+import java.time.LocalTime
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -91,6 +97,7 @@ import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import org.bxkr.octodiary.components.DebugMenu
@@ -103,8 +110,10 @@ import org.bxkr.octodiary.screens.CallbackScreen
 import org.bxkr.octodiary.screens.CallbackType
 import org.bxkr.octodiary.screens.LoginScreen
 import org.bxkr.octodiary.screens.NavScreen
+import org.bxkr.octodiary.utils.PerformanceMonitor
 import org.bxkr.octodiary.screens.navsections.daybook.DayChooser
 import org.bxkr.octodiary.screens.navsections.profile.avatarTriggerLive
+import org.bxkr.octodiary.services.McpServerService
 import org.bxkr.octodiary.ui.theme.CustomColorScheme
 import org.bxkr.octodiary.ui.theme.OctoDiaryTheme
 import java.io.ByteArrayOutputStream
@@ -140,10 +149,57 @@ class MainActivity : FragmentActivity() {
         notificationManager.createNotificationChannel(channel)
     }
 
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        // Обработка изменения ориентации экрана
+        // При необходимости можно добавить логику для адаптации UI
+    }
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Временный отладочный Toast для проверки запуска активности
+        android.widget.Toast.makeText(
+            this,
+            "MainActivity.onCreate() - Debug Check",
+            android.widget.Toast.LENGTH_LONG
+        ).show()
         createNotificationChannel()
+
+        // Применяем сохранённый масштаб текста
+        val textScale = mainPrefs.get<Float>("text_scale") ?: 1.0f
+        val config = resources.configuration
+        config.fontScale = textScale
+        resources.updateConfiguration(config, resources.displayMetrics)
+
+        // Инициализируем мониторинг производительности
+        PerformanceMonitor.initialize(this)
+
+        // Запускаем Battery Monitor
+        org.bxkr.octodiary.utils.BatteryMonitor(this).startMonitoring { isActive ->
+            // Battery saver активирован/деактивирован
+            if (isActive) {
+                // Очищаем кэш при активации battery saver
+                DataService.clearCacheIfLowMemory(this)
+            }
+        }
+        
+        // Запускаем Bell Schedule Worker
+        org.bxkr.octodiary.workers.BellScheduleWorker.scheduleNotifications(this)
+
+        // Запускаем MCP Server Service
+        startService(Intent(this, McpServerService::class.java))
+
+        // Запускаем автоматическую запись лекций если включена в настройках
+        val aiPrefs = getSharedPreferences("ai_prefs", Context.MODE_PRIVATE)
+        if (aiPrefs.getBoolean("auto_record_lectures", false)) {
+            org.bxkr.octodiary.audio.AutomaticLectureRecordingService.startAutomaticRecording(this)
+        }
+
+        // Запускаем сервис автоматического обновления данных, если включено в настройках
+        if (mainPrefs.get<Boolean>("auto_update_enabled") != false) {
+            startService(Intent(this, AutoUpdateService::class.java))
+        }
+
         if (ActivityCompat.checkSelfPermission(
                 this,
                 Manifest.permission.POST_NOTIFICATIONS
@@ -178,7 +234,7 @@ class MainActivity : FragmentActivity() {
                 } else scale(200, 200)
             }.compress(Bitmap.CompressFormat.PNG, 100, byteOutputStream)
             val requestFile = RequestBody.create(
-                MediaType.parse("multipart/form-data"),
+                "multipart/form-data".toMediaType(),
                 byteOutputStream.toByteArray()
             )
             val part = MultipartBody.Part.createFormData("file", file.name, requestFile)
@@ -221,17 +277,53 @@ class MainActivity : FragmentActivity() {
              * When `colorScheme == -1`, it uses dynamic colors **if available**.
              * If not, it uses default (yellow).
              **/
-            AnimatedContent(targetState = darkTheme to colorScheme, label = "theme_anim") {
-                val currentScheme = when {
-                    it.second == -1 -> CustomColorScheme.Yellow
-                    else -> CustomColorScheme.values()[it.second]
+            val themeStartTime = System.currentTimeMillis()
+            val animationStartTime = System.currentTimeMillis()
+            // Оптимизация: используем remember для избежания лишних рекомпозиций
+            val currentThemeState = remember(darkTheme, colorScheme) {
+                darkTheme to colorScheme
+            }
+
+            AnimatedContent(
+                targetState = currentThemeState,
+                label = "theme_anim",
+                transitionSpec = { androidx.compose.animation.ContentTransform(
+                    targetContentEnter = androidx.compose.animation.fadeIn(androidx.compose.animation.core.tween(150)),
+                    initialContentExit = androidx.compose.animation.fadeOut(androidx.compose.animation.core.tween(150))
+                ) }
+            ) {
+                val currentScheme = remember(it.second) {
+                    when {
+                        it.second == -1 -> CustomColorScheme.Yellow
+                        else -> CustomColorScheme.values()[it.second]
+                    }
+                }
+                val amoledTheme = mainPrefs.get<Boolean>("amoled_theme") ?: false
+                if (BuildConfig.DEBUG) {
+                    Log.d("Performance", "Theme selection completed in ${System.currentTimeMillis() - themeStartTime}ms")
+                    Log.d("Performance", "Theme animation transition time: ${System.currentTimeMillis() - animationStartTime}ms")
+                    LaunchedEffect(Unit) {
+                        Log.d("Performance", "Theme AnimatedContent recomposed")
+                    }
+                }
+                // Оптимизация: проверяем влияние тем на производительность
+                val themeApplicationStart = System.currentTimeMillis()
+                val themeKey = "${it.first}_${it.second}_$amoledTheme"
+                if (BuildConfig.DEBUG) {
+                    Log.d("Performance", "Applying theme with key: $themeKey")
                 }
                 OctoDiaryTheme(
                     it.first,
                     colorScheme == -1,
+                    amoledTheme,
                     currentScheme.lightColorScheme,
                     currentScheme.darkColorScheme
                 ) {
+                    if (BuildConfig.DEBUG) {
+                        Log.d("Performance", "Theme application completed in ${System.currentTimeMillis() - themeApplicationStart}ms")
+                    }
+                    // Мониторим производительность MyApp
+                    PerformanceMonitor.TrackComposablePerformance("MyApp")
                     MyApp(modifier = Modifier.fillMaxSize())
                 }
             }
@@ -243,6 +335,12 @@ class MainActivity : FragmentActivity() {
     private fun MyApp(
         modifier: Modifier = Modifier,
     ) {
+        val startTime = System.currentTimeMillis()
+        val recomposeScope = currentRecomposeScope
+        if (BuildConfig.DEBUG) {
+            Log.d("Performance", "MyApp composition started - recompose scope: ${recomposeScope.hashCode()}")
+        }
+
         var title by rememberSaveable { mutableIntStateOf(R.string.app_name) }
         screenLive.value = if (authPrefs.get<Boolean>("auth") == true) {
             Screen.MainNav
@@ -259,12 +357,19 @@ class MainActivity : FragmentActivity() {
         val navController = navControllerLive.observeAsState()
         val surfaceColor = MaterialTheme.colorScheme.surface
         val elevatedColor = MaterialTheme.colorScheme.surfaceColorAtElevation(1.dp)
-        var topAppBarColor by remember { mutableStateOf(surfaceColor) }
+        // Оптимизация: используем derivedStateOf для topAppBarColor вместо прямого изменения
+        val navBackStackEntry by navController.value?.currentBackStackEntryAsState() ?: mutableStateOf(null)
+        val currentRoute by derivedStateOf { navBackStackEntry?.destination?.route }
+        val topAppBarColor by derivedStateOf { if (currentRoute == NavSection.Daybook.route) elevatedColor else surfaceColor }
         val contentDependentAction = contentDependentActionLive.observeAsState()
         val showDialog = modalDialogStateLive.observeAsState()
         val dialogContent = modalDialogContentLive.observeAsState()
         val showFilter = showFilterLive.observeAsState(false)
         val launchUrl = launchUrlLive.observeAsState()
+
+        if (BuildConfig.DEBUG) {
+            Log.d("Performance", "MyApp basic setup completed in ${System.currentTimeMillis() - startTime}ms")
+        }
         if (authPrefs.get<String>("access_token") != null) {
             if ((mainPrefs.get<Int>("version") ?: 25) <= 25) {
                 modalDialogCloseListenerLive.value = {
@@ -290,11 +395,9 @@ class MainActivity : FragmentActivity() {
             launchUrlLive.postValue(null)
         }
 
-        SideEffect {
-            navController.value?.addOnDestinationChangedListener { _, destination, _ ->
-                topAppBarColor =
-                    (if (destination.route == NavSection.Daybook.route) elevatedColor else surfaceColor)
-            }
+        // Оптимизация: убираем ненужные логи в продакшене
+        if (BuildConfig.DEBUG) {
+            Log.d("Performance", "Optimized navigation listener removed - using derivedStateOf instead")
         }
 
         val intentData = intent.dataString
@@ -318,14 +421,24 @@ class MainActivity : FragmentActivity() {
         CompositionLocalProvider(LocalActivity provides this) {
             Scaffold(modifier, topBar = {
                 Column {
+                    val topAppBarStartTime = System.currentTimeMillis()
                     TopAppBar(title = {
+                        val titleAnimStart = System.currentTimeMillis()
+                        val titleAnimationStart = System.currentTimeMillis()
                         AnimatedContent(targetState = title, label = "title_anim") {
                             if ((currentScreen.value == Screen.MainNav && localLoadedState) || currentScreen.value != Screen.MainNav) {
                                 Text(stringResource(it))
                             } else {
                                 Text(stringResource(R.string.app_name))
                             }
+                            if (BuildConfig.DEBUG) {
+                                Log.d("Performance", "Title AnimatedContent animation time: ${System.currentTimeMillis() - titleAnimationStart}ms")
+                                LaunchedEffect(Unit) {
+                                    Log.d("Performance", "Title AnimatedContent recomposed")
+                                }
+                            }
                         }
+                        Log.d("Performance", "Title animation completed in ${System.currentTimeMillis() - titleAnimStart}ms")
                     }, actions = {
                         if (BuildConfig.DEBUG || mainPrefs.get<Boolean>("force_debug") == true) {
                             DebugMenu(this@MainActivity)
@@ -373,11 +486,15 @@ class MainActivity : FragmentActivity() {
                                     val icon =
                                         contentDependentActionIconLive.observeAsState(Icons.Rounded.FilterAlt)
                                     IconButton(onClick = { expanded = !expanded }) {
+                                        val actionIconAnimationStart = System.currentTimeMillis()
                                         AnimatedContent(
                                             targetState = icon.value,
                                             label = "action_icon_anim"
                                         ) {
                                             Icon(it, "action")
+                                            if (BuildConfig.DEBUG) {
+                                                Log.d("Performance", "Action icon animation time: ${System.currentTimeMillis() - actionIconAnimationStart}ms")
+                                            }
                                         }
                                     }
                                     DropdownMenu(expanded, { expanded = false }) {
@@ -434,30 +551,40 @@ class MainActivity : FragmentActivity() {
                     }, colors = TopAppBarDefaults.topAppBarColors(
                         containerColor = topAppBarColor
                     )
-                    )
+                )
+                if (BuildConfig.DEBUG) {
+                    Log.d("Performance", "TopAppBar rendering completed in ${System.currentTimeMillis() - topAppBarStartTime}ms")
                 }
-            }, snackbarHost = { SnackbarHost(hostState = snackbarHostState) }, bottomBar = {
+            }
+        }, snackbarHost = { SnackbarHost(hostState = snackbarHostState) }, bottomBar = {
                 if ((currentScreen.value != Screen.MainNav) || !localLoadedState) return@Scaffold
+                val navBarStartTime = System.currentTimeMillis()
                 NavigationBar {
                     val navBackStackEntry by navController.value!!.currentBackStackEntryAsState()
                     val currentDestination = navBackStackEntry?.destination
+                    Log.d("Performance", "NavigationBar rendering started")
                     NavSection.values().forEach {
                         val selected =
                             currentDestination?.hierarchy?.any { destination -> destination.route == it.route } == true
                         NavigationBarItem(
                             selected = selected,
                             onClick = {
+                                val clickStart = System.currentTimeMillis()
                                 if (it == NavSection.Homeworks) {
                                     showFilterLive.postValue(true)
                                 } else {
                                     showFilterLive.postValue(false)
                                 }
+                                val navigationStart = System.currentTimeMillis()
                                 navController.value!!.navigate(it.route) {
                                     popUpTo(navController.value!!.graph.findStartDestination().id) {
                                         saveState = true
                                     }
                                     launchSingleTop = true
                                     restoreState = true
+                                }
+                                if (BuildConfig.DEBUG) {
+                                    Log.d("Performance", "Navigation to ${it.route} completed in ${System.currentTimeMillis() - clickStart}ms - total nav time: ${System.currentTimeMillis() - navigationStart}ms")
                                 }
                             },
                             icon = {
@@ -467,6 +594,9 @@ class MainActivity : FragmentActivity() {
                                 Text(stringResource(id = it.title))
                             })
                     }
+                }
+                if (BuildConfig.DEBUG) {
+                    Log.d("Performance", "NavigationBar rendering completed in ${System.currentTimeMillis() - navBarStartTime}ms")
                 }
             }) { padding ->
                 Surface {
@@ -491,11 +621,24 @@ class MainActivity : FragmentActivity() {
                         }
 
                         Screen.MainNav -> {
-                            NavScreen(Modifier.padding(padding), pinFinished)
-                            val navBackStackEntry by navController.value!!.currentBackStackEntryAsState()
-                            val currentRoute = navBackStackEntry?.destination?.route
-                            NavSection.values().firstOrNull { it.route == currentRoute }?.title
-                                ?: R.string.app_name
+                            val screenStartTime = System.currentTimeMillis()
+                            val result = NavScreen(Modifier.padding(padding), pinFinished)
+                            if (BuildConfig.DEBUG) {
+                                if (BuildConfig.DEBUG) {
+                                    Log.d("Performance", "NavScreen rendered in ${System.currentTimeMillis() - screenStartTime}ms")
+                                }
+                            }
+                            val navBackStackEntry = navController.value!!.currentBackStackEntryAsState()
+                            val currentRoute = navBackStackEntry.value?.destination?.route
+                            NavSection.values().firstOrNull { it.route == currentRoute }?.title ?: R.string.app_name
+                        }
+                        else -> {
+                            val screenStartTime = System.currentTimeMillis()
+                            val result = NavScreen(Modifier.padding(padding), pinFinished)
+                            Log.d("Performance", "NavScreen rendered in ${System.currentTimeMillis() - screenStartTime}ms")
+                            val navBackStackEntry = navController.value!!.currentBackStackEntryAsState()
+                            val currentRoute = navBackStackEntry.value?.destination?.route
+                            NavSection.values().firstOrNull { it.route == currentRoute }?.title ?: R.string.app_name
                         }
                     }
                 }
@@ -524,6 +667,13 @@ class MainActivity : FragmentActivity() {
                 }
                 AnimatedVisibility(visible = settingsShown) {
                     SettingsDialog { settingsShown = false }
+                }
+
+                if (BuildConfig.DEBUG) {
+                    Log.d("Performance", "MyApp composition completed in ${System.currentTimeMillis() - startTime}ms")
+                    LaunchedEffect(Unit) {
+                        Log.d("Performance", "MyApp recomposed")
+                    }
                 }
             }
         }

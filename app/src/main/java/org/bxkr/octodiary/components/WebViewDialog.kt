@@ -43,55 +43,52 @@ import androidx.compose.ui.window.DialogProperties
 import org.bxkr.octodiary.DataService
 import org.bxkr.octodiary.Diary
 import org.bxkr.octodiary.R
-import org.bxkr.octodiary.automation.AutomationEngine
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.rounded.PlayArrow
-import androidx.compose.material.icons.rounded.Stop
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.unit.dp
-import org.bxkr.octodiary.get
+import android.graphics.Bitmap
+import android.os.Environment
+import android.widget.Toast
+import java.io.File
+import java.io.FileOutputStream
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import android.view.MotionEvent
 import org.bxkr.octodiary.mainPrefs
+import androidx.compose.foundation.combinedClickable
+import androidx.compose.material.icons.rounded.Camera
+import androidx.compose.ui.platform.LocalContext
+import org.bxkr.octodiary.MainPrefs
+import androidx.compose.foundation.ExperimentalFoundationApi
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun WebViewDialog(
     url: String,
     onDismissRequest: () -> Unit,
     actionPlanJson: String? = null,
-    automationTask: String? = null
+    onHtmlExtracted: ((String) -> Unit)? = null,
+    onScreenshot: ((Bitmap) -> Unit)? = null,
+    aiVisualMode: Boolean = false,
+    aiPrompt: String = ""
 ) {
-    val context = LocalContext.current
+    val ctx = LocalContext.current
     var currentUrl = remember { url }
     var isLoading by remember { mutableStateOf(true) }
     val webViewRef = remember { mutableStateOf<WebView?>(null) }
     val scope = rememberCoroutineScope()
-    
-    // Состояние автоматизации
-    var automationRunning by remember { mutableStateOf(false) }
-    val automationLogs = remember { mutableStateOf<List<String>>(emptyList()) }
-    val automationEngine = remember { mutableStateOf<AutomationEngine?>(null) }
-    
-    // Проверяем, настроена ли автоматизация
-    val automationConfigured = remember {
-        val provider = context.mainPrefs.get<String>("automation_provider")
-        val apiKey = context.mainPrefs.get<String>("automation_api_key")
-        !provider.isNullOrBlank() && provider != "disabled" && !apiKey.isNullOrBlank()
-    }
+    val prefs = MainPrefs(ctx)
+    val model = prefs.ctx.getSharedPreferences(prefs.prefPath, android.content.Context.MODE_PRIVATE)
+    .getString("ai_model", "gpt-4o") ?: "gpt-4o"
 
+    // Extract HTML when page loads
+    LaunchedEffect(isLoading) {
+        if (!isLoading && webViewRef.value != null && onHtmlExtracted != null) {
+            webViewRef.value?.evaluateJavascript(
+                "(function() { return document.documentElement.outerHTML; })();"
+            ) { html ->
+                onHtmlExtracted(html?.removeSurrounding("\"")?.replace("\\n", "\n")?.replace("\\\"", "\"") ?: "")
+            }
+        }
+    }
+    
     
     Dialog(
         properties = DialogProperties(
@@ -154,122 +151,54 @@ fun WebViewDialog(
                                 contentDescription = stringResource(R.string.next)
                             )
                         }
-                        
-                        // Кнопка автоматизации (только если настроена и есть задача)
-                        if (automationConfigured && !automationTask.isNullOrBlank()) {
-                            IconButton(onClick = {
-                                if (automationRunning) {
-                                    // Остановить автоматизацию
-                                    automationEngine.value?.stop()
-                                    automationRunning = false
-                                } else {
-                                    // Запустить автоматизацию
+                        // Кнопка для скриншота — появится при long-press на заголовке (для теста)
+                        IconButton(
+                            onClick = {},
+                            modifier = Modifier.combinedClickable(
+                                onLongClick = {
                                     val wv = webViewRef.value
                                     if (wv != null) {
-                                        automationLogs.value = emptyList()
-                                        automationRunning = true
-                                        
-                                        val engine = AutomationEngine(
-                                            context = context,
-                                            webView = wv,
-                                            task = automationTask,
-                                            onProgress = { log ->
-                                                automationLogs.value = automationLogs.value + log
-                                            },
-                                            onComplete = { result ->
-                                                automationLogs.value = automationLogs.value + "✅ $result"
-                                                automationRunning = false
-                                            }
-                                        )
-                                        automationEngine.value = engine
-                                        
-                                        scope.launch {
-                                            engine.start()
-                                        }
+                                        val bitmap = wv.drawToBitmap()
+                                        onScreenshot?.invoke(bitmap)
+                                        // Для примера сохраняем скриншот в Pictures/OctoDiary_Screenshots
+                                        val filename = "webviewshot_${System.currentTimeMillis()}.png"
+                                        val dir = java.io.File(ctx.getExternalFilesDir(android.os.Environment.DIRECTORY_PICTURES), "OctoDiary_Screenshots")
+                                        dir.mkdirs()
+                                        val file = java.io.File(dir, filename)
+                                        val out = java.io.FileOutputStream(file)
+                                        bitmap.compress(android.graphics.Bitmap.CompressFormat.PNG, 100, out)
+                                        out.flush()
+                                        out.close()
+                                        android.widget.Toast.makeText(ctx, "Скриншот сохранён: ${file.absolutePath}", android.widget.Toast.LENGTH_LONG).show()
                                     }
-                                }
-                            }) {
-                                Icon(
-                                    imageVector = if (automationRunning) Icons.Rounded.Stop else Icons.Rounded.PlayArrow,
-                                    contentDescription = if (automationRunning) "Остановить" else "Запустить автоматизацию",
-                                    tint = if (automationRunning) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary
-                                )
-                            }
+                                },
+                                onClick = {}
+                            )
+                        ) {
+                            Icon(imageVector = Icons.Rounded.Camera, contentDescription = "Скриншот")
                         }
                     }
                 )
             }
         ) { padding ->
-            Box(Modifier.fillMaxSize()) {
-                // WebView
-                Surface(
-                    Modifier
-                        .padding(padding)
-                        .fillMaxSize()
-                ) {
-                    Column {
-                        if (isLoading) {
-                            LinearProgressIndicator()
-                        }
-                        AndroidView(
-                            factory = { ctx ->
-                                ctx.webViewFactory(url,
-                                    onUrlChange = { newUrl -> currentUrl = newUrl },
-                                    onLoadState = { loading -> isLoading = loading }
-                                ).also { webViewRef.value = it }
-                            },
-                            modifier = Modifier.fillMaxSize()
-                        )
+            Surface(
+                Modifier
+                    .padding(padding)
+                    .fillMaxSize()
+            ) {
+                Column {
+                    if (isLoading) {
+                        LinearProgressIndicator()
                     }
-                }
-                
-                // Overlay с логами автоматизации
-                if (automationLogs.value.isNotEmpty()) {
-                    Box(
-                        modifier = Modifier
-                            .align(Alignment.BottomEnd)
-                            .padding(16.dp)
-                            .width(300.dp)
-                    ) {
-                        Card(
-                            colors = CardDefaults.cardColors(
-                                containerColor = Color.Black.copy(alpha = 0.85f)
-                            ),
-                            shape = RoundedCornerShape(12.dp)
-                        ) {
-                            Column(Modifier.padding(12.dp)) {
-                                Text(
-                                    text = if (automationRunning) "🤖 Автоматизация активна" else "🤖 Автоматизация",
-                                    color = Color.White,
-                                    style = MaterialTheme.typography.titleSmall
-                                )
-                                Spacer(Modifier.height(8.dp))
-                                
-                                val listState = rememberLazyListState()
-                                LaunchedEffect(automationLogs.value.size) {
-                                    if (automationLogs.value.isNotEmpty()) {
-                                        listState.animateScrollToItem(automationLogs.value.size - 1)
-                                    }
-                                }
-                                
-                                LazyColumn(
-                                    state = listState,
-                                    modifier = Modifier.height(200.dp)
-                                ) {
-                                    items(automationLogs.value.takeLast(20)) { log ->
-                                        Text(
-                                            text = log,
-                                            color = Color.White,
-                                            style = MaterialTheme.typography.bodySmall,
-                                            modifier = Modifier
-                                                .fillMaxWidth()
-                                                .padding(vertical = 2.dp)
-                                        )
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    AndroidView(
+                        factory = { ctx ->
+                            ctx.webViewFactory(url,
+                                onUrlChange = { newUrl -> currentUrl = newUrl },
+                                onLoadState = { loading -> isLoading = loading }
+                            ).also { webViewRef.value = it }
+                        },
+                        modifier = Modifier.fillMaxSize()
+                    )
                 }
             }
         }
@@ -310,4 +239,12 @@ private fun Context.webViewFactory(
         }
         loadUrl(url)
     }
+}
+
+// Вспомогательная функция — расширение
+fun WebView.drawToBitmap(): Bitmap {
+    val bmp = Bitmap.createBitmap(this.width, this.height, Bitmap.Config.ARGB_8888)
+    val canvas = android.graphics.Canvas(bmp)
+    this.draw(canvas)
+    return bmp
 }

@@ -1,0 +1,30 @@
+{
+  "name": "octodiary-content-server",
+  "version": "1.0.0",
+  "description": "MCP server for accessing textbook table of contents and paragraph content from OctoDiary",
+  "main": "build/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc && chmod +x build/index.js",
+    "build:win": "tsc",
+    "start": "node build/index.js"
+  },
+  "keywords": [
+    "mcp",
+    "educational",
+    "content",
+    "textbook",
+    "toc"
+  ],
+  "author": "OctoDiary",
+  "license": "ISC",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^0.5.0",
+    "axios": "^1.6.0",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.9.3"
+  }
+}

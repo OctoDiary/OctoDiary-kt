@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- AI Features -->
+    <string name="ai_helper">AI Помощник</string>
+    <string name="ai_chat">AI Чат</string>
+    <string name="ai_dashboard">AI Дашборд</string>
+    <string name="homework_helper">Помощь с ДЗ</string>
+    <string name="study_plan">План учёбы</string>
+    <string name="smart_vocabulary">Умный словарь</string>
+    <string name="lecture_notes">Конспекты</string>
+    <string name="streaks">Стрики</string>
+    <string name="achievements">Достижения</string>
+    
+    <!-- API Settings -->
+    <string name="gemini_api_key">API ключ Gemini</string>
+    <string name="api_key_not_set">API ключ не установлен</string>
+    <string name="get_free_key">Получите бесплатный ключ на ai.google.dev</string>
+    <string name="bed_time">Время отхода ко сну</string>
+    <string name="auto_record_lectures">Автозапись уроков</string>
+    
+    <!-- Streaks -->
+    <string name="streak_homework">Домашние задания</string>
+    <string name="streak_grades">Хорошие оценки</string>
+    <string name="streak_study">Учёба</string>
+    <string name="current_streak">Текущий стрик</string>
+    <string name="longest_streak">Рекорд</string>
+    <string name="streak_lost">Стрик потерян</string>
+    <string name="days_in_row">дней подряд</string>
+    
+    <!-- Actions -->
+    <string name="ask_ai">Спросить AI</string>
+    <string name="scan_words">Сканировать слова</string>
+    <string name="record_lecture">Записать урок</string>
+    <string name="generate_plan">Сгенерировать план</string>
+    <string name="analyze_homework">Анализировать ДЗ</string>
+    
+    <!-- Messages -->
+    <string name="ai_thinking">Думаю…</string>
+    <string name="generating_plan">Составляю план…</string>
+    <string name="scanning_image">Распознаю изображение…</string>
+    <string name="no_plan_today">Нет плана на сегодня</string>
+    <string name="ai_will_help">AI поможет составить персональный план</string>
+</resources>

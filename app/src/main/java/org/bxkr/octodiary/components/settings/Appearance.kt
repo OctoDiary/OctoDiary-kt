@@ -48,7 +48,7 @@ fun Appearance() {
                         true
                     ) {
                         colorSchemeLive.postValue(-1)
-                        selectedTheme = -2
+                        selectedTheme = -1
                         activity.mainPrefs.save("theme" to -1)
                         dynamicState.value = true
                     }
@@ -70,7 +70,7 @@ fun Appearance() {
                     surfaceVariant
                 ) {
                     colorSchemeLive.postValue(it.ordinal)
-                    selectedTheme = -2
+                    selectedTheme = it.ordinal
                     activity.mainPrefs.save(
                         "theme" to it.ordinal,
                         "last_static_theme" to it.ordinal
@@ -90,12 +90,13 @@ fun Appearance() {
             dynamicState.value = enabled
             if (enabled) {
                 colorSchemeLive.postValue(-1)
+                selectedTheme = -1
                 activity.mainPrefs.save("theme" to -1)
             } else {
                 val fallback = activity.mainPrefs.get<Int>("last_static_theme")
                     ?: CustomColorScheme.Yellow.ordinal
                 colorSchemeLive.postValue(fallback)
-                selectedTheme = -2
+                selectedTheme = fallback
                 activity.mainPrefs.save("theme" to fallback)
             }
         }
@@ -109,20 +110,19 @@ fun Appearance() {
         activity.mainPrefs.save("is_dark_theme" to it)
     }
     
-    // AMOLED pure black theme (only visible in dark mode)
+    // AMOLED тема (только для темного режима)
     if (darkTheme.value == true) {
         val amoledState = remember { 
             mutableStateOf(activity.mainPrefs.get<Boolean>("amoled_theme") ?: false) 
         }
+        
         SwitchPreference(
             title = "AMOLED тема",
-            description = "Чисто чёрный фон для OLED экранов (экономит батарею)",
+            description = "Чисто чёрный фон для OLED экранов",
             listenState = amoledState
         ) {
             amoledState.value = it
             activity.mainPrefs.save("amoled_theme" to it)
-            // Force recreation to apply AMOLED theme
-            activity.recreate()
         }
     }
 }

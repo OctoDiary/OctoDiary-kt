@@ -12,6 +12,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import kotlinx.coroutines.launch
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -24,6 +26,11 @@ import org.bxkr.octodiary.mainPrefs
 import org.bxkr.octodiary.save
 
 object CommonPrefs {
+    val autoUpdateEnabled = SwitchPreferenceSpec(
+        titleRes = R.string.auto_update_enabled,
+        prefKey = "auto_update_enabled",
+        defaultValue = true
+    )
     val breaks = SwitchPreferenceSpec(
         titleRes = R.string.show_breaks,
         prefKey = "breaks",
@@ -67,6 +74,9 @@ object CommonPrefs {
 fun Common() {
     val context = LocalContext.current
     with(CommonPrefs) {
+        Category(stringResource(R.string.general)) {
+            autoUpdateEnabled.BasicSwitchPreference()
+        }
         Category(stringResource(R.string.diary)) {
             breaks.BasicSwitchPreference()
             showLessonNumbers.BasicSwitchPreference()
@@ -112,108 +122,6 @@ fun Common() {
                             modifier = Modifier.padding(start = 12.dp),
                             style = MaterialTheme.typography.bodyLarge
                         )
-                    }
-                }
-            }
-        }
-        
-        // Automation settings
-        Category("Автоматизация (Droidrun)") {
-            val providers = listOf(
-                "disabled" to "Отключено",
-                "openai" to "OpenAI (GPT-4o)",
-                "anthropic" to "Anthropic (Claude 3.5)",
-                "google" to "Google (Gemini 2.5)"
-            )
-            val currentProvider = remember {
-                mutableStateOf(context.mainPrefs.get<String>("automation_provider") ?: "disabled")
-            }
-            
-            DropdownPreference(
-                title = "AI провайдер",
-                currentValue = currentProvider.value,
-                options = providers,
-                onValueChange = {
-                    currentProvider.value = it
-                    context.mainPrefs.save("automation_provider" to it)
-                }
-            )
-            
-            if (currentProvider.value != "disabled") {
-                // API Key
-                val apiKeyState = remember {
-                    mutableStateOf(context.mainPrefs.get<String>("automation_api_key") ?: "")
-                }
-                
-                OutlinedTextField(
-                    value = apiKeyState.value,
-                    onValueChange = {
-                        apiKeyState.value = it
-                        context.mainPrefs.save("automation_api_key" to it)
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp),
-                    label = { Text("API ключ") },
-                    singleLine = true
-                )
-                
-                // Model selection
-                val models = when (currentProvider.value) {
-                    "openai" -> listOf(
-                        "gpt-4o" to "GPT-4o (лучший баланс)",
-                        "gpt-4o-mini" to "GPT-4o mini (дешевле)",
-                        "gpt-4-turbo" to "GPT-4 Turbo (надежнее)"
-                    )
-                    "anthropic" -> listOf(
-                        "claude-3-5-sonnet-20241022" to "Claude 3.5 Sonnet (точный)",
-                        "claude-3-opus-20240229" to "Claude 3 Opus (высший класс)"
-                    )
-                    "google" -> listOf(
-                        "gemini-2.0-flash-exp" to "Gemini 2.0 Flash (быстро)",
-                        "gemini-exp-1206" to "Gemini Exp (экспериментальная)"
-                    )
-                    else -> emptyList()
-                }
-                
-                val currentModel = remember {
-                    mutableStateOf(
-                        context.mainPrefs.get<String>("automation_model") 
-                            ?: models.firstOrNull()?.first.orEmpty()
-                    )
-                }
-                
-                if (models.isNotEmpty()) {
-                    Text(
-                        text = "Модель",
-                        style = MaterialTheme.typography.titleSmall,
-                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
-                    )
-                    
-                    models.forEach { (id, name) ->
-                        Row(
-                            Modifier
-                                .fillMaxWidth()
-                                .clickable {
-                                    currentModel.value = id
-                                    context.mainPrefs.save("automation_model" to id)
-                                }
-                                .padding(horizontal = 16.dp, vertical = 8.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            RadioButton(
-                                selected = currentModel.value == id,
-                                onClick = {
-                                    currentModel.value = id
-                                    context.mainPrefs.save("automation_model" to id)
-                                }
-                            )
-                            Text(
-                                text = name,
-                                modifier = Modifier.padding(start = 12.dp),
-                                style = MaterialTheme.typography.bodyMedium
-                            )
-                        }
                     }
                 }
             }

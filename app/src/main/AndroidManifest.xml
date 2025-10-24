@@ -7,6 +7,9 @@
     <uses-permission android:name="android.permission.USE_BIOMETRIC" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.NFC" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE" />
     
     <uses-feature
         android:name="android.hardware.nfc"
@@ -20,6 +23,7 @@
         <package android:name="ru.mes.dnevnik.fgis" />
     </queries>
     <application
+        android:name=".OctoDiaryApp"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -56,10 +60,25 @@
                 android:name="android.nfc.cardemulation.host_apdu_service"
                 android:resource="@xml/apduservice" />
         </service>
+        <service
+            android:name=".services.RecordingService"
+            android:enabled="true"
+            android:exported="false"
+            android:foregroundServiceType="microphone" />
+        <service
+            android:name=".services.McpServerService"
+            android:enabled="true"
+            android:exported="false" />
+        <service
+            android:name=".AutoUpdateService"
+            android:enabled="true"
+            android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:theme="@style/Theme.OctoDiary">
+            android:theme="@style/Theme.OctoDiary"
+            android:screenOrientation="fullSensor"
+            android:configChanges="orientation|screenSize|keyboardHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

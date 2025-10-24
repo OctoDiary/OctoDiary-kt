@@ -21,8 +21,6 @@ import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 import org.bxkr.octodiary.ui.theme.yellow.DarkColorScheme
 import org.bxkr.octodiary.ui.theme.yellow.LightColorScheme
-import org.bxkr.octodiary.get
-import org.bxkr.octodiary.mainPrefs
 
 val enterTransition = expandVertically(
     expandFrom = Alignment.Top, animationSpec = tween(200)
@@ -53,25 +51,23 @@ fun OctoDiaryTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = true,
+    amoledTheme: Boolean = false,
     lightScheme: ColorScheme = LightColorScheme,
     darkScheme: ColorScheme = DarkColorScheme,
     portable: Boolean = false,
     content: @Composable () -> Unit,
 ) {
-    val context = LocalContext.current
-    val amoledEnabled = context.mainPrefs.get<Boolean>("amoled_theme") ?: false
-    
     val colorScheme = when {
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
+            val context = LocalContext.current
             if (darkTheme) {
-                if (amoledEnabled) AmoledColorScheme
-                else dynamicDarkColorScheme(context)
+                if (amoledTheme) AmoledColorScheme else dynamicDarkColorScheme(context)
             } else {
                 dynamicLightColorScheme(context)
             }
         }
 
-        darkTheme -> if (amoledEnabled) AmoledColorScheme else darkScheme
+        darkTheme -> if (amoledTheme) AmoledColorScheme else darkScheme
         else -> lightScheme
     }
     val view = LocalView.current

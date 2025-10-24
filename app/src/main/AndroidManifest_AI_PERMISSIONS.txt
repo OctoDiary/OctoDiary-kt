@@ -1,0 +1,15 @@
+<!-- Добавить в AndroidManifest.xml для AI фич -->
+
+<!-- Permissions для записи аудио (конспекты) -->
+<uses-permission android:name="android.permission.RECORD_AUDIO" />
+<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" 
+    android:maxSdkVersion="28" />
+<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+    android:maxSdkVersion="32" />
+
+<!-- Permissions для камеры (сканирование словаря) -->
+<uses-permission android:name="android.permission.CAMERA" />
+
+<!-- Features -->
+<uses-feature android:name="android.hardware.camera" android:required="false" />
+<uses-feature android:name="android.hardware.microphone" android:required="false" />

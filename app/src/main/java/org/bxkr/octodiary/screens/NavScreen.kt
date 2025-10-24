@@ -5,6 +5,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
+import android.util.Log
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG
 import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_WEAK
@@ -104,13 +105,19 @@ import org.bxkr.octodiary.save
 import org.bxkr.octodiary.screenLive
 import org.bxkr.octodiary.sumLists
 import org.bxkr.octodiary.ui.theme.OctoDiaryTheme
+import org.bxkr.octodiary.utils.PerformanceMonitor
 import org.bxkr.octodiary.screens.navsections.homeworks.HomeworkDetailScreen
+import org.bxkr.octodiary.screens.AiDashboardScreen
+import org.bxkr.octodiary.screens.VocabularySmartScreen
+import org.bxkr.octodiary.screens.LectureNotesScreen
 import java.util.Calendar
 import java.util.Collections
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NavScreen(modifier: Modifier, pinFinished: MutableState<Boolean>) {
+    PerformanceMonitor.TrackComposablePerformance("NavScreen")
+
     with(LocalContext.current) {
         val initialPin = remember { mutableStateOf(emptyList<Int>()) }
         val secondPin = remember { mutableStateOf(emptyList<Int>()) }
@@ -154,19 +161,38 @@ fun NavScreen(modifier: Modifier, pinFinished: MutableState<Boolean>) {
                     }
                 }
                 AnimatedVisibility(DataService.loadedEverything.value) {
+                    val pullToRefreshStart = System.currentTimeMillis()
                     val refreshState = rememberPullToRefreshState()
                     var duringRefresh by rememberSaveable { mutableStateOf(false) }
-                    if (refreshState.isRefreshing && !duringRefresh) {
+                    var lastRefreshTime by rememberSaveable { mutableStateOf(0L) }
+
+                    // Оптимизация: ограничиваем частоту обновлений (минимум 30 секунд между обновлениями)
+                    if (refreshState.isRefreshing && !duringRefresh &&
+                        (System.currentTimeMillis() - lastRefreshTime) > 30000) {
+                        val refreshStart = System.currentTimeMillis()
+                        Log.d("Performance", "Pull-to-refresh started")
                         if (!isDemo) {
                             DataService.loadedEverything.value = false
                             DataService.loadingStarted = false
                             DataService.updateAll(context)
                             duringRefresh = true
-                        } else refreshState.endRefresh()
+                            lastRefreshTime = refreshStart
+                        } else {
+                            refreshState.endRefresh()
+                            Log.d("Performance", "Pull-to-refresh completed (demo) in ${System.currentTimeMillis() - refreshStart}ms")
+                        }
+                    } else if (refreshState.isRefreshing && (System.currentTimeMillis() - lastRefreshTime) <= 30000) {
+                        // Слишком частое обновление - отменяем
+                        refreshState.endRefresh()
+                        Log.d("Performance", "Pull-to-refresh cancelled - too frequent")
                     }
+
                     if (DataService.loadedEverything.value) {
                         refreshState.endRefresh()
                         duringRefresh = false
+                        if (duringRefresh) { // Only log if we actually refreshed
+                            Log.d("Performance", "Pull-to-refresh data load completed in ${System.currentTimeMillis() - pullToRefreshStart}ms")
+                        }
                     }
                     LaunchedEffect(Unit) {
                         DataService.sendStatistic {}
@@ -199,12 +225,33 @@ fun NavScreen(modifier: Modifier, pinFinished: MutableState<Boolean>) {
                         composable("homework/{entryStudentId}") { backStackEntry ->
                             val id = backStackEntry.arguments?.getString("entryStudentId")?.toLongOrNull()
                             if (id != null) {
+                                PerformanceMonitor.TrackComposablePerformance("HomeworkDetailScreen")
                                 HomeworkDetailScreen(entryStudentId = id)
                             } else {
                                 // Fallback: just show the list
                                 NavSection.Homeworks.composable()
                             }
                         }
+                        
+                        // Новые экраны
+                        composable("formulas") { FormulaBaseScreen() }
+                        
+                        // AI Screens
+                        composable(Screen.AiDashboard.route) { AiDashboardScreen() }
+                        composable(Screen.VocabularySmartScreen.route) { VocabularySmartScreen() }
+                        composable(Screen.LectureNotesScreen.route) { LectureNotesScreen() }
+                        composable(Screen.TextbookExtractorScreen.route) { TextbookExtractorScreen() }
+                        composable(Screen.TextbooksScreen.route) {
+                            TextbooksScreen(onBack = { navController.value?.navigateUp() })
+                        }
+                        composable("quotes") { QuoteBookScreen() }
+                        composable("vocabulary") { VocabularyScreen() }
+                        composable("notes") { NotesScreen() }
+                        composable("analytics") { AnalyticsScreen() }
+                        composable("recommendations") { RecommendationsScreen() }
+                        composable("parent_reports") { ParentReportsScreen() }
+                        composable("theme_creator") { ThemeCreatorScreen() }
+                        composable("comparison") { ComparisonScreen() }
                     }
                 }
                 AnimatedVisibility(!DataService.loadedEverything.value) {
@@ -215,12 +262,15 @@ fun NavScreen(modifier: Modifier, pinFinished: MutableState<Boolean>) {
                     val coroutineScope = rememberCoroutineScope()
                     DataService.onSingleItemInUpdateAllLoadedHandler = { name, progressParam ->
                         coroutineScope.launch { progress = progressParam }
-                        cachePrefs.save(
-                            name to Gson().toJson(
-                                DataService::class.java.getDeclaredField(name).get(DataService)
-                            ),
-                            "age" to System.currentTimeMillis()
-                        )
+                        // Оптимизация: кэшируем только критически важные данные
+                        if (name in listOf("profile", "marksSubject", "homeworks", "schedule")) {
+                            cachePrefs.save(
+                                name to Gson().toJson(
+                                    DataService::class.java.getDeclaredField(name).get(DataService)
+                                )
+                            )
+                        }
+                        cachePrefs.save("age" to System.currentTimeMillis())
                     }
                     val activity = LocalActivity.current
                     DataService.tokenExpirationHandler = {
