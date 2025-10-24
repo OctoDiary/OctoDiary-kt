@@ -28,6 +28,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -50,6 +52,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationRail
+import androidx.compose.material3.NavigationRailItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -414,6 +418,10 @@ class MainActivity : FragmentActivity() {
 
         var localLoadedState by remember { mutableStateOf(false) }
         var settingsShown by remember { mutableStateOf(false) }
+        
+        // Определяем ориентацию экрана
+        val configuration = LocalConfiguration.current
+        val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
         LaunchedEffect(rememberCoroutineScope()) {
             snapshotFlow { DataService.loadedEverything.value }.onEach { localLoadedState = it }
                 .launchIn(this)
@@ -557,7 +565,7 @@ class MainActivity : FragmentActivity() {
                 }
             }
         }, snackbarHost = { SnackbarHost(hostState = snackbarHostState) }, bottomBar = {
-                if ((currentScreen.value != Screen.MainNav) || !localLoadedState) return@Scaffold
+                if ((currentScreen.value != Screen.MainNav) || !localLoadedState || isLandscape) return@Scaffold
                 val navBarStartTime = System.currentTimeMillis()
                 NavigationBar {
                     val navBackStackEntry by navController.value!!.currentBackStackEntryAsState()
@@ -599,6 +607,81 @@ class MainActivity : FragmentActivity() {
                     Log.d("Performance", "NavigationBar rendering completed in ${System.currentTimeMillis() - navBarStartTime}ms")
                 }
             }) { padding ->
+            if (isLandscape && (currentScreen.value == Screen.MainNav) && localLoadedState) {
+                // Альбомный режим с NavigationRail справа
+                Row(modifier = Modifier.fillMaxSize()) {
+                    // Основной контент
+                    Box(modifier = Modifier.weight(1f)) {
+                        Surface {
+                            title = when (currentScreen.value!!) {
+                                Screen.Login -> {
+                                    LoginScreen(Modifier.padding(padding))
+                                    R.string.log_in
+                                }
+
+                                Screen.Callback -> {
+                                    CallbackScreen(Modifier.padding(padding))
+                                    R.string.auth
+                                }
+
+                                Screen.MainNav -> {
+                                    val screenStartTime = System.currentTimeMillis()
+                                    val result = NavScreen(Modifier.padding(padding), pinFinished)
+                                    if (BuildConfig.DEBUG) {
+                                        if (BuildConfig.DEBUG) {
+                                            Log.d("Performance", "NavScreen rendered in ${System.currentTimeMillis() - screenStartTime}ms")
+                                        }
+                                    }
+                                    val navBackStackEntry = navController.value!!.currentBackStackEntryAsState()
+                                    val currentRoute = navBackStackEntry.value?.destination?.route
+                                    NavSection.values().firstOrNull { it.route == currentRoute }?.title ?: R.string.app_name
+                                }
+                                else -> {
+                                    val screenStartTime = System.currentTimeMillis()
+                                    val result = NavScreen(Modifier.padding(padding), pinFinished)
+                                    Log.d("Performance", "NavScreen rendered in ${System.currentTimeMillis() - screenStartTime}ms")
+                                    val navBackStackEntry = navController.value!!.currentBackStackEntryAsState()
+                                    val currentRoute = navBackStackEntry.value?.destination?.route
+                                    NavSection.values().firstOrNull { it.route == currentRoute }?.title ?: R.string.app_name
+                                }
+                            }
+                        }
+                    }
+                    
+                    // NavigationRail справа
+                    NavigationRail {
+                        val navBackStackEntry by navController.value!!.currentBackStackEntryAsState()
+                        val currentDestination = navBackStackEntry?.destination
+                        NavSection.values().forEach {
+                            val selected =
+                                currentDestination?.hierarchy?.any { destination -> destination.route == it.route } == true
+                            NavigationRailItem(
+                                selected = selected,
+                                onClick = {
+                                    if (it == NavSection.Homeworks) {
+                                        showFilterLive.postValue(true)
+                                    } else {
+                                        showFilterLive.postValue(false)
+                                    }
+                                    navController.value!!.navigate(it.route) {
+                                        popUpTo(navController.value!!.graph.findStartDestination().id) {
+                                            saveState = true
+                                        }
+                                        launchSingleTop = true
+                                        restoreState = true
+                                    }
+                                },
+                                icon = {
+                                    Icon(it.icon, stringResource(id = it.title))
+                                },
+                                label = {
+                                    Text(stringResource(id = it.title))
+                                })
+                        }
+                    }
+                }
+            } else {
+                // Портретный режим - обычный контент
                 Surface {
                     title = when (currentScreen.value!!) {
                         Screen.Login -> {
