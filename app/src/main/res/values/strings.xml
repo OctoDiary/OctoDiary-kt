@@ -322,10 +322,10 @@
     <string name="c26_widget_subtitle">Shows current status of learning</string>
     <string name="c26_version_shortname" translatable="false">v2.1.0</string>
     <string name="c32_version_shortname" translatable="false">v2.1.6</string>
-    <string name="c33_version_shortname" translatable="false">v2.1.7</string>
+    <string name="c33_version_shortname" translatable="false">v2.1.8</string>
     <string name="c26_description">• New schedule design\n• Final marks\n• Learning status widget</string>
     <string name="c32_description">• Happy new learning year!</string>
-    <string name="c33_description">• Fixed attachments opening</string>
+    <string name="c33_description">• Fix attachments opening\n• Fix visits and meal balance</string>
     <string name="c26_version_name">Version 2.1.0</string>
     <string name="c32_version_name">Version 2.1.6</string>
     <string name="c33_version_name">Version 2.1.7</string>
