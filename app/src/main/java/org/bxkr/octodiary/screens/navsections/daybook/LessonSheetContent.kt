@@ -1,7 +1,6 @@
 package org.bxkr.octodiary.screens.navsections.daybook
 
 import android.content.Intent
-import android.net.Uri
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -35,6 +34,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import org.bxkr.octodiary.DataService
 import org.bxkr.octodiary.R
 import org.bxkr.octodiary.components.ErrorMessage
@@ -45,9 +45,7 @@ import org.bxkr.octodiary.getDemoProperty
 import org.bxkr.octodiary.getMarkConfig
 import org.bxkr.octodiary.isDemo
 import org.bxkr.octodiary.models.lesson2.LessonResponse
-import org.bxkr.octodiary.models.lessonschedule.LessonSchedule
 import org.bxkr.octodiary.parseFromDay
-import androidx.core.net.toUri
 
 @Composable
 fun LessonSheetContent(lessonId: Long) {
@@ -113,7 +111,7 @@ fun LessonSheetContent(lessonId: Long) {
                                 if (material.type == "attachments" || context.isDemo) {
                                     val browserIntent = Intent(
                                         Intent.ACTION_VIEW,
-                                        material.urls.firstOrNull { material.type == "view" }?.url?.toUri()
+                                        material.urls.firstOrNull { it.type == "file_link" }?.url?.toUri()
                                     )
                                     ContextCompat.startActivity(ctx, browserIntent, null)
                                 } else {
