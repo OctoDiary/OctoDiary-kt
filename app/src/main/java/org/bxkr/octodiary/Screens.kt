@@ -17,10 +17,17 @@ import org.bxkr.octodiary.screens.navsections.homeworks.HomeworksScreen
 import org.bxkr.octodiary.screens.navsections.marks.MarksScreen
 import org.bxkr.octodiary.screens.navsections.profile.ProfileScreen2
 
-enum class Screen {
-    Login,
-    Callback,
-    MainNav
+sealed class Screen(val route: String) {
+    object Login : Screen("login")
+    object Callback : Screen("callback")
+    object MainNav : Screen("main_nav")
+    object AiDashboard : Screen("ai_dashboard")
+    object VocabularySmartScreen : Screen("vocabulary_smart")
+    object LectureNotesScreen : Screen("lecture_notes")
+    object LectureDetailScreen : Screen("lecture_detail")
+    object TextbooksScreen : Screen("textbooks")
+    object TextbookExtractorScreen : Screen("textbook_extractor")
+    object WebViewScreen : Screen("webview")
 }
 
 enum class NavSection(

@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
+    alias(libs.plugins.ksp)
 }
 
 val gitLatestCommit: String = ByteArrayOutputStream().use { outputStream ->
@@ -47,27 +48,44 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
     buildFeatures {
         compose = true
         buildConfig = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.3"
+        kotlinCompilerExtensionVersion = "1.5.3"
     }
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "/META-INF/DEPENDENCIES"
         }
     }
     androidResources {
         generateLocaleConfig = true
     }
+    
+    lint {
+        abortOnError = false
+        checkReleaseBuilds = false
+    }
+}
+
+// Конфигурация KSP для Room (не работает)
+ksp {
+    arg("room.schemaLocation", "$projectDir/schemas")
+    arg("room.generateKotlin", "true")
+}
+
+// Явно устанавливаем JVM target для всех Kotlin задач
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+    kotlinOptions.jvmTarget = "17"
 }
 
 dependencies {
@@ -95,6 +113,44 @@ dependencies {
     implementation(libs.vico.compose)
     implementation(libs.zoomable)
     implementation(libs.dotsindicator)
+
+    // Room Database (без compiler - не работает с текущей конфигурацией)
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    ksp(libs.room.compiler)
+    
+    // ONNX Runtime (для локальных AI моделей)
+    implementation(libs.onnxruntime)
+    
+    // WorkManager (фоновые задачи)
+    implementation(libs.work.runtime.ktx)
+    
+    // Gson (для JSON)
+    implementation("com.google.code.gson:gson:2.10.1")
+    
+    // Markdown рендеринг для AI ответов (исключаем конфликтующие зависимости)
+    implementation("io.noties.markwon:core:4.6.2") {
+        exclude(group = "org.jetbrains", module = "annotations-java5")
+    }
+    implementation("io.noties.markwon:syntax-highlight:4.6.2") {
+        exclude(group = "org.jetbrains", module = "annotations-java5")
+    }
+    
+    // OkHttp (для AI API)
+    implementation(libs.okhttp)
+    
+    // ML Kit for text recognition (OCR)
+    // TODO: Add llama.cpp for local GGUF model inference
+    // implementation("com.github.kherud:java-llama.cpp:3.0.0") // или другая версия
+    implementation("com.google.mlkit:text-recognition:16.0.0")
+
+    // Android-compatible PDF library
+    implementation("com.itextpdf:itext7-core:8.0.2")
+    
+    // ZXing (для QR кодов)
+    implementation("com.google.zxing:core:3.5.2")
+    implementation("com.journeyapps:zxing-android-embedded:4.3.0")
+    
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)

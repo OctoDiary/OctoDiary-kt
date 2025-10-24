@@ -51,6 +51,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.bxkr.octodiary.R
+import android.util.Log
 import org.bxkr.octodiary.components.MarkComp
 import org.bxkr.octodiary.formatToTime
 import org.bxkr.octodiary.getMarkConfig
@@ -254,6 +255,47 @@ fun EventItem(event: Event, index: Int = -1, showLessonNumbers: Boolean = true) 
                             val viewConfiguration = LocalViewConfiguration.current
 
 
+                            LaunchedEffect(interactionSource) {
+                                var isLongClick = false
+                                Log.d("EventItem", "Launched interactionSource effect for conference link")
+
+                                interactionSource.interactions.collectLatest { interaction ->
+                                    Log.d("EventItem", "Conference link interaction: $interaction")
+                                    when (interaction) {
+                                        is PressInteraction.Press -> {
+                                            Log.d("EventItem", "Press start for conference link")
+                                            isLongClick = false
+                                            delay(viewConfiguration.longPressTimeoutMillis)
+                                            Log.d("EventItem", "Long press timeout reached for conference link")
+                                            isLongClick = true
+                                            clipboardManager.setText(
+                                                AnnotatedString(event.conferenceLink)
+                                            )
+                                            coroutineScope.launch {
+                                                snackbarHostStateLive.value?.showSnackbar(
+                                                    urlCopiedMessage
+                                                )
+                                            }
+                                            Log.d("EventItem", "Long click action completed for conference link")
+                                        }
+
+                                        is PressInteraction.Release -> {
+                                            Log.d("EventItem", "Press release for conference link, isLongClick=$isLongClick")
+                                            if (!isLongClick && URLUtil.isValidUrl(event.conferenceLink)) {
+                                                Log.d("EventItem", "Opening URL: ${event.conferenceLink}")
+                                                uriHandler.openUri(event.conferenceLink)
+                                            } else if (!URLUtil.isValidUrl(event.conferenceLink)) {
+                                                Log.d("EventItem", "Invalid URL, showing error")
+                                                coroutineScope.launch {
+                                                    snackbarHostStateLive.value?.showSnackbar(
+                                                        unsupportedUrlMessage
+                                                    )
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                             LaunchedEffect(interactionSource) {
                                 var isLongClick = false
 

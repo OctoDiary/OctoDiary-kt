@@ -51,6 +51,7 @@ fun OctoDiaryTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = true,
+    amoledTheme: Boolean = false,
     lightScheme: ColorScheme = LightColorScheme,
     darkScheme: ColorScheme = DarkColorScheme,
     portable: Boolean = false,
@@ -59,10 +60,14 @@ fun OctoDiaryTheme(
     val colorScheme = when {
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
             val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+            if (darkTheme) {
+                if (amoledTheme) AmoledColorScheme else dynamicDarkColorScheme(context)
+            } else {
+                dynamicLightColorScheme(context)
+            }
         }
 
-        darkTheme -> darkScheme
+        darkTheme -> if (amoledTheme) AmoledColorScheme else darkScheme
         else -> lightScheme
     }
     val view = LocalView.current

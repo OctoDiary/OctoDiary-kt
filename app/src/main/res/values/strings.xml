@@ -433,6 +433,7 @@
     <string name="nfc_scan_instruction">Hold your access card to the back of your phone</string>
     <string name="nfc_emulation_info">After scanning, your phone will emulate the card when you tap it to a reader. Card emulation works in the background.</string>
     <string name="general">General</string>
+    <string name="auto_update_enabled">Automatic data update</string>
     <string name="access">Проход</string>
     <string name="nfc_enable_instruction">Включите NFC в настройках устройства для сканирования карт</string>
     <string name="open_nfc_settings">Открыть настройки NFC</string>

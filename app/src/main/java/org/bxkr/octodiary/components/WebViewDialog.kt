@@ -43,15 +43,12 @@ import androidx.compose.ui.window.DialogProperties
 import org.bxkr.octodiary.DataService
 import org.bxkr.octodiary.Diary
 import org.bxkr.octodiary.R
-import org.bxkr.octodiary.ai.WebViewExecutor
 import android.graphics.Bitmap
 import android.os.Environment
 import android.widget.Toast
 import java.io.File
 import java.io.FileOutputStream
 import kotlinx.coroutines.Dispatchers
-import org.bxkr.octodiary.ai.OpenAiClient
-import org.bxkr.octodiary.ai.ScreenAiStep
 import kotlinx.coroutines.withContext
 import android.view.MotionEvent
 import org.bxkr.octodiary.mainPrefs
@@ -81,42 +78,6 @@ fun WebViewDialog(
     val model = prefs.ctx.getSharedPreferences(prefs.prefPath, android.content.Context.MODE_PRIVATE)
     .getString("ai_model", "gpt-4o") ?: "gpt-4o"
 
-    // --- ЦИКЛ ВИЗУАЛЬНОГО ИИ-ОТОБРАЖЕНИЯ ---
-    LaunchedEffect(aiVisualMode, !isLoading, aiPrompt) {
-        if (aiVisualMode && !isLoading && webViewRef.value != null && aiPrompt.isNotBlank()) {
-            var done = false
-            var lastStep: ScreenAiStep? = null
-            while (!done) {
-                val wv = webViewRef.value!!
-                val bmp = withContext(Dispatchers.Main) { wv.drawToBitmap() }
-                val step = OpenAiClient.completeWithScreenshot(ctx, model, aiPrompt, bmp)
-                lastStep = step
-                if (step.x != null && step.y != null && !step.done) {
-                    withContext(Dispatchers.Main) {
-                        // Генерируем физический клик по координатам в WebView
-                        val down = MotionEvent.obtain(System.currentTimeMillis(), System.currentTimeMillis(), MotionEvent.ACTION_DOWN, step.x.toFloat(), step.y.toFloat(), 0)
-                        val up = MotionEvent.obtain(System.currentTimeMillis()+40, System.currentTimeMillis()+40, MotionEvent.ACTION_UP, step.x.toFloat(), step.y.toFloat(), 0)
-                        wv.dispatchTouchEvent(down)
-                        wv.dispatchTouchEvent(up)
-                        down.recycle()
-                        up.recycle()
-                    }
-                }
-                if (step.done) {
-                    done = true
-                    if (step.message != null) {
-                        withContext(Dispatchers.Main) {
-                            android.widget.Toast.makeText(ctx, step.message, android.widget.Toast.LENGTH_LONG).show()
-                        }
-                    }
-                    break
-                }
-                val waitMs = step.waitMs.coerceIn(200, 15000)
-                kotlinx.coroutines.delay(waitMs.toLong())
-            }
-        }
-    }
-    
     // Extract HTML when page loads
     LaunchedEffect(isLoading) {
         if (!isLoading && webViewRef.value != null && onHtmlExtracted != null) {
@@ -128,17 +89,6 @@ fun WebViewDialog(
         }
     }
     
-    // Execute action plan when page loads
-    LaunchedEffect(actionPlanJson, isLoading) {
-        if (!isLoading && actionPlanJson != null && webViewRef.value != null) {
-            val plan = WebViewExecutor.parsePlan(actionPlanJson)
-            if (plan != null) {
-                scope.launch {
-                    WebViewExecutor.execute(webViewRef.value!!, plan)
-                }
-            }
-        }
-    }
     
     Dialog(
         properties = DialogProperties(

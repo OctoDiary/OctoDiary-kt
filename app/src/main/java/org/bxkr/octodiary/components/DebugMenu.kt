@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import org.bxkr.octodiary.MainActivity
+import android.util.Log
 import org.bxkr.octodiary.authPrefs
 import org.bxkr.octodiary.components.debugutils.PrefEditor
 import org.bxkr.octodiary.components.debugutils.RemoteEditor
@@ -38,6 +39,34 @@ fun DebugMenu(
     var currentFunction: @Composable () -> Unit by remember { mutableStateOf({}) }
     val interactionSource = remember { MutableInteractionSource() }
     val viewConfiguration = LocalViewConfiguration.current
+    LaunchedEffect(interactionSource) {
+        var isLongClick = false
+
+        interactionSource.interactions.collectLatest { interaction ->
+            Log.d("DebugMenu", "Interaction received: $interaction")
+            when (interaction) {
+                is PressInteraction.Press -> {
+                    Log.d("DebugMenu", "PressInteraction.Press detected")
+                    isLongClick = false
+                    delay(viewConfiguration.longPressTimeoutMillis)
+                    Log.d("DebugMenu", "Long press timeout reached: ${viewConfiguration.longPressTimeoutMillis}ms")
+                    isLongClick = true
+                    isHide = true
+                    Log.d("DebugMenu", "Long click triggered, hiding debug menu")
+                }
+
+                is PressInteraction.Release -> {
+                    Log.d("DebugMenu", "PressInteraction.Release detected, isLongClick=$isLongClick")
+                    if (isLongClick.not()) {
+                        Log.d("DebugMenu", "Short click detected, toggling menu")
+                        isShownMenu = !isShownMenu
+                    } else {
+                        Log.d("DebugMenu", "Long click completed")
+                    }
+                }
+            }
+        }
+    }
     LaunchedEffect(interactionSource) {
         var isLongClick = false
 

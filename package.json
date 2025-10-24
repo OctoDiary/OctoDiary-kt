@@ -1,0 +1,22 @@
+{
+  "name": "octodiary",
+  "version": "1.0.0",
+  "description": "Android-клиент [МЭШ](https://school.mos.ru/) и [Моей школы МО](https://authedu.mosreg.ru/).   Использует Jetpack Compose.   Android 8.0+",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:mcp-server": "cd content-server && npm run build && node build/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/F1xTrack/OctoDiary-kt-Fix.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/F1xTrack/OctoDiary-kt-Fix/issues"
+  },
+  "homepage": "https://github.com/F1xTrack/OctoDiary-kt-Fix#readme"
+}

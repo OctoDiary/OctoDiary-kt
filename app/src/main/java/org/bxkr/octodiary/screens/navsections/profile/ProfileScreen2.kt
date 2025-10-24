@@ -303,7 +303,16 @@ private fun ProfileCard(
                 shape = MaterialTheme.shapes.extraSmall
             )
             .clip(MaterialTheme.shapes.extraSmall)
-            .combinedClickable(onLongClick = onLongClick) { onClick() }
+            .combinedClickable(
+                onLongClick = {
+                    android.util.Log.d("ProfileCard", "Long click on card: $text")
+                    onLongClick()
+                },
+                onClick = {
+                    android.util.Log.d("ProfileCard", "Click on card: $text")
+                    onClick()
+                }
+            )
             .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {

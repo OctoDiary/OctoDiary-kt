@@ -25,6 +25,9 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.automirrored.rounded.OpenInNew
+import androidx.compose.material.icons.rounded.Accessibility
+import androidx.compose.material.icons.rounded.AutoAwesome
+import androidx.compose.material.icons.rounded.BatteryAlert
 import androidx.compose.material.icons.rounded.Brush
 import androidx.compose.material.icons.rounded.BugReport
 import androidx.compose.material.icons.rounded.Done
@@ -32,6 +35,7 @@ import androidx.compose.material.icons.rounded.Image
 import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material.icons.rounded.Lock
 import androidx.compose.material.icons.rounded.Notifications
+import androidx.compose.material.icons.rounded.Schedule
 import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -71,7 +75,11 @@ import org.bxkr.octodiary.DataService
 import org.bxkr.octodiary.LocalActivity
 import org.bxkr.octodiary.R
 import org.bxkr.octodiary.components.settings.About
+import org.bxkr.octodiary.components.settings.AccessibilitySettings
+import org.bxkr.octodiary.components.settings.AiSettings
 import org.bxkr.octodiary.components.settings.Appearance
+import org.bxkr.octodiary.components.settings.BatterySaverSettings
+import org.bxkr.octodiary.components.settings.BellScheduleSettings
 import org.bxkr.octodiary.components.settings.Common
 import org.bxkr.octodiary.components.settings.Notifications
 import org.bxkr.octodiary.components.settings.Security
@@ -253,6 +261,16 @@ fun SettingsDialog(onDismissRequest: () -> Unit) {
                                 stringResource(R.string.notifications_desc)
                             ) { Notifications() }
                             SettingsSection(
+                                Icons.Rounded.Schedule,
+                                "Расписание звонков",
+                                "Уведомления о начале/конце уроков с обратным отсчётом"
+                            ) { BellScheduleSettings() }
+                            SettingsSection(
+                                Icons.Rounded.AutoAwesome,
+                                "Настройки AI",
+                                "AI помощник, выбор модели, персональный план"
+                            ) { AiSettings() }
+                            SettingsSection(
                                 Icons.Rounded.Brush,
                                 stringResource(R.string.appearance),
                                 stringResource(R.string.appearance_desc)
@@ -262,6 +280,16 @@ fun SettingsDialog(onDismissRequest: () -> Unit) {
                                 stringResource(R.string.security),
                                 stringResource(R.string.security_desc)
                             ) { Security() }
+                            SettingsSection(
+                                Icons.Rounded.BatteryAlert,
+                                "Экономия батареи",
+                                "Автоматический режим экономии при низком заряде"
+                            ) { BatterySaverSettings() }
+                            SettingsSection(
+                                Icons.Rounded.Accessibility,
+                                "Специальные возможности",
+                                "Режим дислексии, масштаб текста, контрастность"
+                            ) { AccessibilitySettings() }
                             SettingsSection(
                                 Icons.Rounded.Info,
                                 stringResource(R.string.about),
