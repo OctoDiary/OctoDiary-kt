@@ -17,14 +17,14 @@ val gitLatestCommit: String = ByteArrayOutputStream().use { outputStream ->
 
 android {
     namespace = "org.bxkr.octodiary"
-    compileSdk = 34
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "org.bxkr.octodiary"
         minSdk = 26
-        targetSdk = 35
-        versionCode = 32
-        versionName = "2.1.6"
+        targetSdk = 36
+        versionCode = 33
+        versionName = "2.1.7"
         archivesName = gitLatestCommit
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

@@ -26,7 +26,8 @@ abstract class Changelog {
         val currentChangelog: Changelog =
             when (BuildConfig.VERSION_CODE) {
 //                in 26..31 -> Changelog26()
-                in 32..Int.MAX_VALUE -> Changelog32()
+//                in 32..32 -> Changelog32()
+                in 33..Int.MAX_VALUE -> Changelog33()
                 else -> Changelog26()
             }
     }

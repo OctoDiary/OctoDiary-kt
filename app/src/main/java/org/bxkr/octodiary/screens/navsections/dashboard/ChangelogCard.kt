@@ -63,19 +63,19 @@ fun ChangelogCard(context: Context) {
                 )
                 .clip(MaterialTheme.shapes.extraLarge)
                 .fillMaxWidth()
-                .run {
-                    if (changelog.elements != null) combinedClickable(
-                        onLongClick = {
-                            context.saveNewVersion()
-                            isCardShown = false
-                        },
-                        onClick = {
-                            context.saveNewVersion()
-                            isCardShown = false
+                .combinedClickable(
+                    onLongClick = {
+                        context.saveNewVersion()
+                        isCardShown = false
+                    },
+                    onClick = {
+                        context.saveNewVersion()
+                        isCardShown = false
+                        if (changelog.elements != null) {
                             isDialogShown = true
                         }
-                    ) else this
-                }
+                    }
+                )
                 .padding(16.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically

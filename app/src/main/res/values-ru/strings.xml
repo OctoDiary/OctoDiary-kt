@@ -268,8 +268,10 @@
     <string name="c26_widget_subtitle">Показывает текущее состояние учёбы</string>
     <string name="c26_version_name">Версия 2.1.0</string>
     <string name="c32_version_name">Версия 2.1.6</string>
+    <string name="c33_version_name">Версия 2.1.7</string>
     <string name="c26_description">• Новый вид расписания\n• Итоговые оценки\n• Виджет состояния учёбы</string>
     <string name="c32_description">• Поздравляем с новым учебным годом!</string>
+    <string name="c33_description">• Исправлено открытие прикрепленных файлов</string>
     <string name="back_exit">назад/выйти</string>
     <string name="close">Закрыть</string>
     <string name="background">Фон</string>
