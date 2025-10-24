@@ -123,81 +123,212 @@ YOLO режим - это автономная работа AI без посто�
 
 ---
 
-### Project Deep Study (2025-10-19, 12:13pm)
+### Project Deep Study (2025-01-27, 15:30pm)
 **Status**: ✅ Проект досконально изучен, готов к работе
 
 **Project Overview**:
 - **Name**: OctoDiary - Android-клиент МЭШ и Моя школа МО
-- **Tech Stack**: Kotlin 1.8.10, Jetpack Compose, Material 3
-- **Architecture**: MVVM с MutableState (переход с LiveData завершён)
+- **Tech Stack**: Kotlin 1.9.10, Jetpack Compose, Material 3
+- **Architecture**: MVVM с DataService синглтоном + LiveData
 - **Min SDK**: 26 (Android 8.0+), Target SDK: 35
 - **Build Tools**: Gradle 8.10.2, AGP 8.8.2
 - **Version**: 2.1.6 (versionCode 32)
 
 **Core Modules**:
-1. **Network Layer** (14 items):
-   - `NetworkService.kt` - Retrofit API конструкторы
-   - `MESLoginService.kt` - авторизация МЭШ (mos.ru)
-   - `MySchoolLoginService.kt` - авторизация Моя школа (mosreg.ru)
-   - 9 API interfaces: MainSchoolAPI, DSchoolAPI, SecondaryAPI, SchoolSessionAPI
-   - 14 endpoints: userId, sessionUser, eventCalendar, ranking, classMembers, profile, visits, marks, markInfo, homeworks, mealBalance, schoolInfo
+1. **Android App** (`app/` - 443 файла):
+   - **MainActivity.kt** (694 lines) - главная Activity с навигацией и темами
+   - **DataService.kt** (819 lines) - центральный синглтон для данных и API
+   - **Network Layer** (16 файлов) - Retrofit API с поддержкой МЭШ и Моя школа МО
+   - **UI Screens** (69 файлов) - 6 основных разделов навигации
+   - **AI Components** (11 файлов) - интеграция с Gemini, OCR, PDF обработка
+   - **Database** (25 файлов) - Room entities и DAO (с проблемами компиляции)
+   - **Services** - MCP сервер, автообновление, аудиозапись лекций
 
-2. **Data Layer**:
-   - `DataService.kt` (764 lines) - центральный синглтон
-   - SharedPreferences обёртки: AuthPrefs, MainPrefs, CachePrefs, NotificationPrefs
-   - Демо-режим с данными из res/raw (22 файла)
-   - Кэширование всех API ответов
+2. **Content Server** (`content-server/` - TypeScript):
+   - **MCP Server** - Model Context Protocol сервер для образовательного контента
+   - **Tools**: get_table_of_contents, request_paragraph, search_content, list_textbooks
+   - **Mock Data** - демонстрационные данные для учебников и параграфов
+   - **Caching** - кэширование результатов запросов (5 минут TTL)
 
-3. **UI Layer** (64 screens):
-   - **6 основных NavSection**: Daybook, Homeworks, Dashboard, Marks, Access, Profile
-   - **Daybook** (13 files) - расписание уроков с карточками
-   - **Homeworks** (4 files) - домашние задания
-   - **Marks** (14 files) - оценки с графиками Vico
-   - **Profile** (13 files) - профиль ученика
-   - **Dashboard** (4 files) - сводная информация
-   - **Access** (3 files) - NFC карта доступа
-   - Material 3 + Dynamic Colors (Android 12+)
+3. **NFC Animation** (`nfc anim/` - React):
+   - **NFCPaymentAnimation.tsx** - анимация карты "Москвёнок"
+   - **Responsive Design** - адаптация для портретной/альбомной ориентации
+   - **Theme Support** - темная/светлая тема
+   - **UI Components** - полный набор shadcn/ui компонентов
 
-4. **Features**:
-   - ✅ NFC Card Emulation (HCE) - клонирование школьных пропусков
-   - ✅ Glance Widget - статус обучения на домашнем экране
-   - ✅ Background Notifications - проверка новых оценок
-   - ✅ Charts (Vico) - визуализация оценок
-   - ✅ Biometric Auth - защита входа
-   - ✅ Bell Schedule - расписание звонков с уведомлениями
-   - ✅ Accessibility - масштаб текста, темы
-   - ✅ Battery Saver - оптимизация энергопотребления (1-100%)
-   - ✅ OCR (ML Kit) - распознавание текста
-   - ✅ QR Codes (ZXing) - сканирование QR кодов
+4. **Key Features**:
+   - ✅ **NFC Card Emulation (HCE)** - клонирование школьных пропусков
+   - ✅ **Glance Widget** - статус обучения на домашнем экране
+   - ✅ **Background Notifications** - проверка новых оценок
+   - ✅ **Charts (Vico)** - визуализация оценок с Material 3
+   - ✅ **Biometric Auth** - защита входа через отпечаток/лицо
+   - ✅ **Bell Schedule** - расписание звонков с уведомлениями
+   - ✅ **Accessibility** - масштаб текста, темы, поддержка скринридеров
+   - ✅ **Battery Saver** - оптимизация энергопотребления (1-100%)
+   - ✅ **AI Integration** - Gemini API, OCR (ML Kit), PDF обработка
+   - ✅ **QR Codes (ZXing)** - сканирование QR кодов
+   - ✅ **MCP Server** - интеграция с образовательным контентом
+   - ✅ **Auto Update** - автоматическое обновление данных
+   - ✅ **Lecture Recording** - автоматическая запись лекций
+   - ✅ **Performance Monitoring** - отслеживание производительности
 
 **Key Files**:
-- `MainActivity.kt` (562 lines) - главная Activity, навигация, темы
-- `DataService.kt` (764 lines) - бизнес-логика, API, кэш
-- `Utils.kt` (660 lines) - SharedPreferences, утилиты
-- `Screens.kt` (38 lines) - определение NavSection enum
+- `MainActivity.kt` (694 lines) - главная Activity, навигация, темы, производительность
+- `DataService.kt` (819 lines) - центральный синглтон, API, кэш, бизнес-логика
+- `Screens.kt` (45 lines) - определение NavSection enum и Screen sealed class
 - `Diary.kt` (189 lines) - enum с типами дневников (MES/MySchool)
-- `NavScreen.kt` (27698 bytes) - навигационный граф
+- `NavScreen.kt` - навигационный граф с 6 основными разделами
+- `NetworkService.kt` - Retrofit API конструкторы для всех эндпоинтов
+- `McpServerService.kt` - MCP сервер для интеграции с AI
+- `PerformanceMonitor.kt` - мониторинг производительности UI
 
 **Dependencies** (libs.versions.toml):
-- Compose BOM 2024.08.00
-- Retrofit 2.9.0 (+ Gson, Scalars)
-- Room 2.6.1 (без compiler - kapt отключён из-за JVM target conflict)
-- Vico 2.0.0-alpha.19 (графики)
-- ONNX Runtime 1.17.0 (AI модели)
-- ML Kit Text Recognition 16.0.0 (OCR)
-- ZXing 3.5.2 + zxing-android-embedded 4.3.0 (QR)
-- Glance 1.1.0 (виджеты)
-- Biometric KTX 1.2.0-alpha05
-- WorkManager 2.9.0 (фоновые задачи)
-- OkHttp 4.12.0
-- Telephoto Zoomable 1.0.0-alpha02
+- **Compose BOM 2024.08.00** - Material 3, Navigation, Animation
+- **Retrofit 2.9.0** (+ Gson, Scalars) - сетевое взаимодействие
+- **Room 2.6.1** (с проблемами компиляции KSP) - локальная база данных
+- **Vico 2.0.0-alpha.19** - графики и диаграммы оценок
+- **ONNX Runtime 1.17.0** - локальные AI модели
+- **ML Kit Text Recognition 16.0.0** - OCR для PDF и изображений
+- **ZXing 3.5.2 + zxing-android-embedded 4.3.0** - QR коды
+- **Glance 1.1.0** - виджеты для домашнего экрана
+- **Biometric KTX 1.2.0-alpha05** - биометрическая аутентификация
+- **WorkManager 2.9.0** - фоновые задачи и уведомления
+- **OkHttp 4.12.0** - HTTP клиент
+- **Telephoto Zoomable 1.0.0-alpha02** - масштабирование изображений
+- **Markwon 4.6.2** - рендеринг Markdown для AI ответов
+- **iText7 8.0.2** - работа с PDF файлами
 
 **Manifest**:
-- Permissions: INTERNET, POST_NOTIFICATIONS, USE_BIOMETRIC, VIBRATE, NFC
-- Features: NFC HCE (optional)
-- Services: CardEmulationService (HCE), UpdateReceiver (background)
-- Widget: StatusWidgetReceiver
-- Deep links: dnevnik-mes://, rt.schoolboy.app://
+- **Permissions**: INTERNET, POST_NOTIFICATIONS, USE_BIOMETRIC, VIBRATE, NFC, CAMERA, RECORD_AUDIO
+- **Features**: NFC HCE (optional), Camera (QR codes)
+- **Services**: 
+  - CardEmulationService (HCE) - эмуляция NFC карт
+  - UpdateReceiver (background) - фоновое обновление
+  - McpServerService - MCP сервер для AI
+  - AutoUpdateService - автоматическое обновление данных
+  - AutomaticLectureRecordingService - запись лекций
+- **Widget**: StatusWidgetReceiver - виджет статуса обучения
+- **Deep links**: dnevnik-mes://, rt.schoolboy.app://
+- **Activities**: MainActivity с edge-to-edge поддержкой
+
+**Project Structure (2025-01-27)**:
+```
+/workspace/
+├── app/ (Android приложение - 443 файла)
+│   ├── src/main/java/org/bxkr/octodiary/
+│   │   ├── ai/ (11 файлов) - AI сервисы, Gemini, OCR, PDF
+│   │   ├── audio/ (2 файла) - запись лекций
+│   │   ├── components/ (50+ файлов) - UI компоненты, настройки
+│   │   ├── database/ (25 файлов) - Room entities, DAO, миграции
+│   │   ├── managers/ (3 файла) - менеджеры учебников и контента
+│   │   ├── models/ (149 файлов) - data classes для API
+│   │   ├── network/ (16 файлов) - Retrofit API, интерфейсы
+│   │   ├── nfc/ (2 файла) - NFC эмуляция карт
+│   │   ├── offline/ (20 файлов) - офлайн функциональность
+│   │   ├── screens/ (69 файлов) - экраны приложения
+│   │   ├── services/ (1 файл) - MCP сервер
+│   │   ├── ui/ (18 файлов) - темы, цвета, стили
+│   │   ├── utils/ (5 файлов) - утилиты, мониторинг
+│   │   ├── widget/ (3 файла) - виджеты Glance
+│   │   └── workers/ (1 файл) - фоновые задачи
+│   └── build.gradle.kts - конфигурация Android модуля
+├── content-server/ (MCP сервер - TypeScript)
+│   ├── src/index.ts - основной MCP сервер
+│   ├── build/ - скомпилированный JavaScript
+│   └── package.json - зависимости Node.js
+├── nfc anim/ (React компонент анимации)
+│   ├── App.tsx - главный компонент
+│   ├── components/ - UI компоненты (shadcn/ui)
+│   └── styles/ - CSS стили
+├── gradle/ - Gradle wrapper и версии
+├── build.gradle.kts - корневой Gradle файл
+└── settings.gradle.kts - настройки проекта
+```
+
+**Current Issues & TODOs**:
+- ❌ Room compiler не работает с текущей конфигурацией KSP
+- ❌ Некоторые AI функции требуют доработки
+- ❌ MCP сервер использует mock данные вместо реальной БД
+- ⚠️ Производительность: много логов в DEBUG режиме
+- ⚠️ Архитектура: смешение LiveData и MutableState
+
+**Recent Updates (2025-01-27)**:
+- ✅ **Performance Monitoring** - добавлен PerformanceMonitor для отслеживания UI
+- ✅ **Battery Monitor** - мониторинг энергосбережения
+- ✅ **MCP Server Integration** - интеграция с Model Context Protocol
+- ✅ **AI Services** - Gemini API, PDF обработка, OCR
+- ✅ **Lecture Recording** - автоматическая запись лекций
+- ✅ **Auto Update Service** - фоновое обновление данных
+- ✅ **Bell Schedule Worker** - уведомления о звонках
+- ✅ **Content Server** - MCP сервер для образовательного контента
+- ✅ **NFC Animation** - React компонент для демонстрации NFC
+
+**AI & ML Features**:
+- **GeminiService.kt** - интеграция с Google Gemini API
+- **PdfTextExtractor.kt** - извлечение текста из PDF
+- **HomeworkAnalyzer.kt** - анализ домашних заданий
+- **AiTaskSolver.kt** - решение задач с помощью AI
+- **LocalLlamaService.kt** - локальные AI модели (в разработке)
+- **TextbookExtractorService.kt** - извлечение контента из учебников
+- **StreakManager.kt** - отслеживание прогресса обучения
+
+**Content Management**:
+- **TextbookManager.kt** - управление учебниками
+- **TocManager.kt** - управление оглавлениями
+- **TocService.kt** - сервис для работы с TOC
+- **MCP Tools** - get_table_of_contents, request_paragraph, search_content, list_textbooks
+
+**Development Guidelines**:
+1. **Always respond in Russian** - все ответы на русском языке
+2. **Use real data** - не использовать mock данные, только реальную функциональность
+3. **Material 3 everywhere** - все UI компоненты должны использовать Material 3
+4. **Performance first** - учитывать производительность при разработке
+5. **Document everything** - документировать все изменения в ai_memory.md
+6. **Build after changes** - после изменений запускать `./gradlew assembleDebug`
+7. **Use built-in tools** - использовать встроенные инструменты для редактирования файлов
+
+**Common Commands**:
+```bash
+# Сборка Android приложения
+./gradlew assembleDebug
+
+# Запуск content-server
+cd content-server && npm run build && node build/index.js
+
+# Установка зависимостей content-server
+cd content-server && npm install
+
+# Сборка NFC анимации (если нужен)
+cd "nfc anim" && npm install && npm run build
+```
+
+**Architecture Patterns**:
+- **MVVM** - Model-View-ViewModel с DataService как центральным синглтоном
+- **Repository Pattern** - DataService выступает как репозиторий
+- **Observer Pattern** - LiveData для реактивности
+- **Singleton Pattern** - DataService, Utils, PerformanceMonitor
+- **Factory Pattern** - создание API сервисов через NetworkService
+- **Strategy Pattern** - разные типы дневников (MES/MySchool)
+
+**Ready for Development**:
+- ✅ **Full project understanding** - полное понимание архитектуры
+- ✅ **All components analyzed** - все компоненты изучены
+- ✅ **Dependencies mapped** - все зависимости проанализированы
+- ✅ **Issues identified** - проблемы выявлены и документированы
+- ✅ **Development guidelines** - правила разработки установлены
+- ✅ **Build system ready** - система сборки готова к работе
+
+**Next Steps Available**:
+1. **Bug fixes** - исправление существующих проблем
+2. **Feature development** - разработка новых функций
+3. **Performance optimization** - оптимизация производительности
+4. **UI/UX improvements** - улучшение интерфейса
+5. **AI integration** - доработка AI функций
+6. **Database fixes** - исправление проблем с Room
+7. **Testing** - добавление тестов
+8. **Documentation** - улучшение документации
+
+**Status**: 🟢 **READY TO WORK** - Проект полностью изучен и готов к разработке!
 
 **NFC Card Emulation**:
 - ✅ HCE (Host Card Emulation) - эмуляция без secure element

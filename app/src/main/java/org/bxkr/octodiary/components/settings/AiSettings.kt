@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.*
 import androidx.compose.material3.*
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.ListItem
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -154,7 +155,7 @@ fun AiSettings() {
         
         androidx.compose.animation.AnimatedVisibility(visible = aiEnabled.value) {
             Column {
-                Divider(Modifier.padding(horizontal = 16.dp, vertical = 8.dp))
+                HorizontalDivider(Modifier.padding(horizontal = 16.dp, vertical = 8.dp))
                 
                 // Выбор провайдера
                 Text(
@@ -373,7 +374,7 @@ fun AiSettings() {
                     Spacer(Modifier.height(16.dp))
                 }
                 
-                Divider(Modifier.padding(horizontal = 16.dp, vertical = 8.dp))
+                HorizontalDivider(Modifier.padding(horizontal = 16.dp, vertical = 8.dp))
                 
                 // Дополнительные настройки
                 Text(
@@ -431,7 +432,7 @@ fun AiSettings() {
                     }
                 }
                 
-                Divider(Modifier.padding(horizontal = 16.dp, vertical = 8.dp))
+                HorizontalDivider(Modifier.padding(horizontal = 16.dp, vertical = 8.dp))
                 
                 // Информация
                 Card(

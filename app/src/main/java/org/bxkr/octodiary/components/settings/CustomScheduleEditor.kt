@@ -7,6 +7,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.*
 import androidx.compose.material3.*
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -119,7 +120,7 @@ fun CustomScheduleEditor(
                     }
                     
                     if (index < schedule.size - 1) {
-                        Divider(Modifier.padding(vertical = 4.dp))
+                        HorizontalDivider(Modifier.padding(vertical = 4.dp))
                     }
                 }
             }
