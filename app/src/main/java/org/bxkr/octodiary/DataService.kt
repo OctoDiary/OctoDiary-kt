@@ -11,9 +11,7 @@ import org.bxkr.octodiary.models.classranking.RankingMember
 import org.bxkr.octodiary.models.daysbalanceinfo.DaysBalanceInfo
 import org.bxkr.octodiary.models.events.Event
 import org.bxkr.octodiary.models.govexams.GovExamsResponse
-import org.bxkr.octodiary.models.homeworks.Homework
 import org.bxkr.octodiary.models.lesson2.LessonResponse
-import org.bxkr.octodiary.models.lessonschedule.LessonSchedule
 import org.bxkr.octodiary.models.mark.MarkInfo
 import org.bxkr.octodiary.models.marklistdate.MarkListDate
 import org.bxkr.octodiary.models.marklistsubject.MarkListSubjectItem
@@ -101,6 +99,8 @@ object DataService {
 
     lateinit var avatars: List<Avatar>
     var hasAvatars = false
+
+    var contractId: Long? = null
 
     // ADD_NEW_FIELD_HERE
     // Don't forget to add demo cache data in res/raw folder, preferably with MES flavor
@@ -377,9 +377,11 @@ object DataService {
         assert(this::profile.isInitialized)
         assert(subsystem == Diary.MES)
 
+        val localContractId = contractId
+        if (localContractId != null)
         mainSchoolApi.visits(
             token,
-            profile.children[0].contractId,
+            localContractId,
             fromDate = Calendar.getInstance().apply {
                 time = Date()
                 set(Calendar.DAY_OF_YEAR, get(Calendar.DAY_OF_YEAR) - 61)
@@ -453,11 +455,13 @@ object DataService {
         assert(this::profile.isInitialized)
         assert(subsystem == Diary.MES)
 
-        dSchoolApi.mealBalance(
+        mainSchoolApi.mealBalance(
+            "Bearer $token",
             token,
-            contractId = profile.children[currentProfile].contractId
+            personId = profile.children[currentProfile].contingentGuid
         ).baseEnqueue(::baseErrorFunction, ::baseInternalExceptionFunction) {
             mealBalance = it
+            contractId = it.clientId.contractId
             hasMealBalance = true
             onUpdated()
         }
@@ -732,8 +736,10 @@ object DataService {
                     }
                     updateGovExams { onSingleItemLoad(::govExams.name) }
                     updateSubjectRanking { onSingleItemLoad(::subjectRanking.name) }
-                    if (subsystem == Diary.MES) updateVisits { onSingleItemLoad(::visits.name) }
-                    if (subsystem == Diary.MES) updateMealBalance { onSingleItemLoad(::mealBalance.name) }
+                    if (subsystem == Diary.MES) updateMealBalance {
+                        updateVisits { onSingleItemLoad(::visits.name) }
+                        onSingleItemLoad(::mealBalance.name)
+                    }
                     updateSchoolInfo { onSingleItemLoad(::schoolInfo.name) }
                     updateAvatars { onSingleItemLoad(::avatars.name) }
                     updatePersonData { onSingleItemLoad(::personData.name) }

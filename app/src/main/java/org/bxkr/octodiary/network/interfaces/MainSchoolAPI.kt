@@ -9,6 +9,7 @@ import org.bxkr.octodiary.models.lessonschedule.LessonSchedule
 import org.bxkr.octodiary.models.mark.MarkInfo
 import org.bxkr.octodiary.models.marklistdate.MarkListDate
 import org.bxkr.octodiary.models.marklistsubjectshort.MarkListSubjectItem
+import org.bxkr.octodiary.models.mealbalance.MealBalance
 import org.bxkr.octodiary.models.mealsmenucomplexes.MealsMenuComplexes
 import org.bxkr.octodiary.models.profile.ProfileResponse
 import org.bxkr.octodiary.models.schoolinfo.SchoolInfo
@@ -306,4 +307,14 @@ interface MainSchoolAPI {
         @Query("material_id") materialId: String,
         @Header("X-Mes-Subsystem") mesSubsystem: String = MESAPIConfig.FAMILYMP
     ): Call<String>
+
+
+    @MESOnly
+    @GET("meals/v2/clients")
+    fun mealBalance(
+        @Header("authorization") authorization: String,
+        @Header("auth-token") accessToken: String,
+        @Query("personId") personId: String,
+        @Header("X-Mes-Subsystem") mesSubsystem: String = MESAPIConfig.FAMILYMP
+    ): Call<MealBalance>
 }

@@ -2,11 +2,9 @@ package org.bxkr.octodiary.network.interfaces
 
 import org.bxkr.octodiary.Diary
 import org.bxkr.octodiary.models.classmembers.ClassMember
-import org.bxkr.octodiary.models.mealbalance.MealBalance
 import org.bxkr.octodiary.models.persondata.PersonData
 import org.bxkr.octodiary.models.profilesid.ProfileId
 import org.bxkr.octodiary.models.profilesid.ProfilesId
-import org.bxkr.octodiary.network.MESOnly
 import org.bxkr.octodiary.network.NetworkService.BaseUrl
 import org.bxkr.octodiary.network.NetworkService.MESAPIConfig
 import retrofit2.Call
@@ -61,22 +59,6 @@ interface DSchoolAPI {
         @Query("types") types: String = "student",
         @Header("profile-type") profileType: String = "student",
     ): Call<List<ClassMember>>
-
-    /**
-     * Gets meal balance.
-     *
-     * @param accessToken Access token.
-     * @param contractId Contract ID.
-     * @param mesSubsystem MES subsystem (["familymp"][MESAPIConfig.FAMILYMP] by default).
-     * @return [MealBalance]
-     */
-    @MESOnly
-    @GET("api/meals/v1/clients")
-    fun mealBalance(
-        @Header("auth-token") accessToken: String,
-        @Query("contractId") contractId: Long,
-        @Header("X-Mes-Subsystem") mesSubsystem: String = MESAPIConfig.FAMILYMP
-    ): Call<MealBalance>
 
     @GET("ej/family/homework/launch")
     fun launchMaterial(

@@ -14,8 +14,6 @@ data class Children(
     val classUnitId: Long,
     @SerializedName("contingent_guid")
     val contingentGuid: String,
-    @SerializedName("contract_id")
-    val contractId: Long,
     @SerializedName("email")
     val email: Any?,
     @SerializedName("enrollment_date")
