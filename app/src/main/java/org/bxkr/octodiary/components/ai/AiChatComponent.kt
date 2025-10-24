@@ -15,6 +15,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.AttachFile
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.Send
+import androidx.compose.material.icons.AutoMirrored.rounded.Send
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -214,7 +215,7 @@ fun AiChatComponent(
                 },
                 enabled = !isLoading && (inputText.isNotBlank() || selectedImageUri != null)
             ) {
-                Icon(Icons.Rounded.Send, "Отправить")
+                Icon(Icons.AutoMirrored.Rounded.Send, "Отправить")
             }
         }
         

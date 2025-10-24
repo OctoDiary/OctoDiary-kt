@@ -143,7 +143,7 @@ fun PdfTextExtractorDialog(
                             )
                             Spacer(Modifier.width(8.dp))
                         } else {
-                            Icon(Icons.Rounded.TextSnippet, null)
+                            Icon(Icons.AutoMirrored.Rounded.TextSnippet, null)
                             Spacer(Modifier.width(8.dp))
                         }
                         Text(if (isExtracting) "Извлечение..." else "Извлечь текст")

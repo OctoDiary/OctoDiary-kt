@@ -12,7 +12,7 @@
     <string name="retrofit_error" translatable="false">Retrofit error: %s</string>
     <string name="wrong">Wrong username or/and password!</string>
     <string name="auth_out_of_date">Authentication data is out of date</string>
-    <string name="week_n">Week from %s to %s</string>
+    <string name="week_n" formatted="false">Week from %s to %s</string>
     <string name="auth_out_of_date_extra" translatable="false">auth_out_of_date</string>
     <string name="time_from_to" translatable="false">%s - %s</string>
     <string name="free_day">Free day!</string>
@@ -118,15 +118,15 @@
     <string name="feed_type_comment">Lesson comment</string>
     <string name="image">Image</string>
     <string name="data_update_channel_name">School data update channel</string>
-    <string name="notification_new_mark_text">New mark: %s, %s, %s</string>
-    <string name="notification_new_mark_text_no_value">New mark: %s, %s</string>
+    <string name="notification_new_mark_text" formatted="false">New mark: %s, %s, %s</string>
+    <string name="notification_new_mark_text_no_value" formatted="false">New mark: %s, %s</string>
     <string name="notification_new_mark_title">New mark!</string>
     <string name="period_marks">Period Marks</string>
     <string name="period_marks_data_key" translatable="false">period_marks</string>
     <string name="average_mark">Average</string>
     <string name="average_important">By work-marks</string>
     <string name="not_yet">Not yet</string>
-    <string name="period_average_extended">Average mark: %s – %s for the %s</string>
+    <string name="period_average_extended" formatted="false">Average mark: %s – %s for the %s</string>
     <string name="placeholder_period_average" translatable="false">Average mark: 4.5 – 5 for the semester</string>
     <string name="placeholder_period_weighted" translatable="false">Weighted average: 4.5 – 5 for the semester</string>
     <string name="half_year">half-year</string>
@@ -169,7 +169,7 @@
     <string name="check_connection">Server is down or no internet connection</string>
     <string name="kundelik">Kundelik</string>
     <string name="weighted_template">Weighted average: %s</string>
-    <string name="weighted_template_extended">Weighted average: %s - %s for the %s</string>
+    <string name="weighted_template_extended" formatted="false">Weighted average: %s - %s for the %s</string>
     <string name="unknowns">Unknowns</string>
     <string name="change_the_avatar">Change the avatar</string>
     <string name="weighted_average">Weighted</string>
@@ -258,7 +258,7 @@
     <string name="holidays">Holidays</string>
     <string name="report_issue">Report an issue</string>
     <string name="s_till_the_start">%s till the start</string>
-    <string name="when_to_go">School on %s at %s</string>
+    <string name="when_to_go" formatted="false">School on %s at %s</string>
     <string name="widget_lesson_desc_template" translatable="false">%s: %s - %s</string>
     <string name="widget_name">Studying status</string>
     <string name="widget_description">The most important info about lessons on your homescreen</string>
@@ -331,7 +331,7 @@
     <string name="log_in_by_token">Log in by token</string>
     <string name="token_auth_warning">Authorization will be active until the token expires</string>
     <string name="invalid_token">Invalid JWT token!</string>
-    <string name="token_description">Subsystem: %s\nValid through: %s</string>
+    <string name="token_description" formatted="false">Subsystem: %s\nValid through: %s</string>
     <string name="paste">Paste</string>
     <string name="changelog">What\'s new</string>
     <string name="click_to_show_more">Click to show more</string>

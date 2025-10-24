@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.*
 import androidx.compose.material3.*
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -83,7 +84,7 @@ fun BellScheduleSettings() {
         
         androidx.compose.animation.AnimatedVisibility(visible = bellScheduleEnabled.value) {
             Column {
-                Divider(Modifier.padding(horizontal = 16.dp, vertical = 8.dp))
+                HorizontalDivider(Modifier.padding(horizontal = 16.dp, vertical = 8.dp))
                 
                 // Тип расписания
                 Text(
@@ -218,7 +219,7 @@ fun BellScheduleSettings() {
                     }
                 }
                 
-                Divider(Modifier.padding(horizontal = 16.dp, vertical = 16.dp))
+                HorizontalDivider(Modifier.padding(horizontal = 16.dp, vertical = 16.dp))
                 
                 // Настройки уведомлений
                 Text(
@@ -275,7 +276,7 @@ fun BellScheduleSettings() {
                     activity.mainPrefs.save("bell_schedule_show_countdown" to it)
                 }
                 
-                Divider(Modifier.padding(horizontal = 16.dp, vertical = 8.dp))
+                HorizontalDivider(Modifier.padding(horizontal = 16.dp, vertical = 8.dp))
                 
                 // Информация
                 Card(

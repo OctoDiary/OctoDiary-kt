@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.*
 import androidx.compose.material3.*
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -122,7 +123,7 @@ fun BatterySaverSettings() {
             }
         }
         
-        Divider(Modifier.padding(horizontal = 16.dp, vertical = 8.dp))
+        HorizontalDivider(Modifier.padding(horizontal = 16.dp, vertical = 8.dp))
         
         // Включение режима экономии
         SwitchPreference(
@@ -142,7 +143,7 @@ fun BatterySaverSettings() {
         // Настройки порога
         AnimatedVisibility(visible = batterySaverEnabled.value) {
             Column {
-                Divider(Modifier.padding(horizontal = 16.dp, vertical = 4.dp))
+                HorizontalDivider(Modifier.padding(horizontal = 16.dp, vertical = 4.dp))
                 
                 Column(Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
                     Row(
@@ -178,7 +179,7 @@ fun BatterySaverSettings() {
                     )
                 }
                 
-                Divider(Modifier.padding(horizontal = 16.dp, vertical = 4.dp))
+                HorizontalDivider(Modifier.padding(horizontal = 16.dp, vertical = 4.dp))
                 
                 // Что делает режим экономии
                 Text(
@@ -214,7 +215,7 @@ fun BatterySaverSettings() {
                     activity.mainPrefs.save("battery_saver_reduce_sync" to it)
                 }
 
-                Divider(Modifier.padding(horizontal = 16.dp, vertical = 4.dp))
+                HorizontalDivider(Modifier.padding(horizontal = 16.dp, vertical = 4.dp))
 
                 // Настройки автообновления для экономии энергии
                 Text(
@@ -286,7 +287,7 @@ fun BatterySaverSettings() {
             }
         }
         
-        Divider(Modifier.padding(horizontal = 16.dp, vertical = 8.dp))
+        HorizontalDivider(Modifier.padding(horizontal = 16.dp, vertical = 8.dp))
         
         // Информация
         Card(

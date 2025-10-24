@@ -51,8 +51,8 @@ fun TextbookExtractCard(
                     val (icon, color) = when (extract.extractType) {
                         "question" -> Icons.Rounded.QuestionMark to MaterialTheme.colorScheme.primary
                         "exercise" -> Icons.Rounded.Edit to MaterialTheme.colorScheme.secondary
-                        "assignment" -> Icons.Rounded.Assignment to MaterialTheme.colorScheme.tertiary
-                        else -> Icons.Rounded.Help to MaterialTheme.colorScheme.onSurfaceVariant
+                        "assignment" -> Icons.AutoMirrored.Rounded.Assignment to MaterialTheme.colorScheme.tertiary
+                        else -> Icons.AutoMirrored.Rounded.Help to MaterialTheme.colorScheme.onSurfaceVariant
                     }
 
                     Icon(

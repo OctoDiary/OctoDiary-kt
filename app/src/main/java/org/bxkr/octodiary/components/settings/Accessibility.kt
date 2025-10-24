@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.*
 import androidx.compose.material3.*
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -80,7 +81,7 @@ fun AccessibilitySettings() {
             }
         }
         
-        Divider(Modifier.padding(horizontal = 16.dp, vertical = 4.dp))
+        HorizontalDivider(Modifier.padding(horizontal = 16.dp, vertical = 4.dp))
         
         // Масштаб текста
         Column(Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
@@ -122,7 +123,7 @@ fun AccessibilitySettings() {
             )
         }
         
-        Divider(Modifier.padding(horizontal = 16.dp, vertical = 4.dp))
+        HorizontalDivider(Modifier.padding(horizontal = 16.dp, vertical = 4.dp))
         
         // Жирный текст
         SwitchPreference(
@@ -164,7 +165,7 @@ fun AccessibilitySettings() {
             activity.mainPrefs.save("large_buttons" to it)
         }
         
-        Divider(Modifier.padding(horizontal = 16.dp, vertical = 4.dp))
+        HorizontalDivider(Modifier.padding(horizontal = 16.dp, vertical = 4.dp))
         
         // Информация
         Card(

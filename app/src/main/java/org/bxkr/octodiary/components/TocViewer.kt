@@ -224,7 +224,7 @@ fun TocViewer(
                     verticalArrangement = Arrangement.Center
                 ) {
                     Icon(
-                        Icons.Rounded.MenuBook,
+                        Icons.AutoMirrored.Rounded.MenuBook,
                         contentDescription = null,
                         modifier = Modifier.size(64.dp),
                         tint = MaterialTheme.colorScheme.primary
