@@ -41,8 +41,7 @@ fun Security() {
             pinEnabled.value = false
         }
     }
-
-    SecurityPrefs.biometric.BasicSwitchPreference()
+    SecurityPrefs.biometric.BasicSwitchPreference(pinEnabled.value)
 
     AnimatedVisibility(setPin) {
         val pinFinished = remember { mutableStateOf(false) }

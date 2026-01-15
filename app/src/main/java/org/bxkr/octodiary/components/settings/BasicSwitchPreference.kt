@@ -19,11 +19,13 @@ class SwitchPreferenceSpec(
 )
 
 @Composable
-fun SwitchPreferenceSpec.BasicSwitchPreference() {
+fun SwitchPreferenceSpec.BasicSwitchPreference(
+    enabled: Boolean = true,
+) {
     val context = LocalContext.current
     val state = remember { mutableStateOf(context.mainPrefs.get(prefKey) ?: defaultValue) }
 
-    SwitchPreference(stringResource(titleRes), descriptionRes?.let { stringResource(it) }, state) {
+    SwitchPreference(stringResource(titleRes), descriptionRes?.let { stringResource(it) }, state, enabled = enabled) {
         state.value = it
         context.mainPrefs.save(prefKey to it)
     }
