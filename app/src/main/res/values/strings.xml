@@ -400,4 +400,6 @@
     <string name="balance">Balance</string>
     <string name="top_up">Top up</string>
     <string name="account_number">Account number</string>
+    <string name="debug_on">You are now a developer!</string>
+    <string name="debug_off">You just downgraded to a user!</string>
 </resources>

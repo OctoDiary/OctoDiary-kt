@@ -1,5 +1,6 @@
 package org.bxkr.octodiary.components.settings
 
+import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -92,6 +93,8 @@ private fun Card() {
             }
             Row {
                 Box {
+                    val debugOn = stringResource(id = R.string.debug_on)
+                    val debugOff = stringResource(id = R.string.debug_off)
                     Box(
                         Modifier
                             .size(56.dp)
@@ -100,6 +103,10 @@ private fun Card() {
                             .clickable {
                                 isDebug = !isDebug
                                 context.mainPrefs.save("force_debug" to isDebug)
+                                if (isDebug)
+                                    Toast.makeText(context, debugOn, Toast.LENGTH_SHORT).show()
+                                else
+                                    Toast.makeText(context, debugOff, Toast.LENGTH_SHORT).show()
                             }
                             .background(MaterialTheme.colorScheme.run { if (isDebug) onSecondary else secondary })
                     )
