@@ -75,6 +75,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -464,7 +465,10 @@ class MainActivity : FragmentActivity() {
                                 Icon(it.icon, stringResource(id = it.title))
                             },
                             label = {
-                                Text(stringResource(id = it.title))
+                                Text(stringResource(id = it.title),
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis
+                                )
                             })
                     }
                 }
