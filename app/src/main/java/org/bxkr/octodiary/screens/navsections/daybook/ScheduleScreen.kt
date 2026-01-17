@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -44,7 +46,6 @@ import org.bxkr.octodiary.models.events.Event
 import org.bxkr.octodiary.parseLongDate
 import java.text.SimpleDateFormat
 import java.util.Calendar
-import java.util.Collections
 import java.util.Date
 
 val customScheduleRefreshListenerLive = MutableLiveData<() -> Unit>(null)
@@ -54,10 +55,10 @@ val daySelectedLive = MutableLiveData<Date>()
 @Composable
 fun ScheduleScreen() {
     key(updatedScheduleLive.observeAsState().value) {
-        val eventCalendar = DataService.eventCalendar.let {
+        val eventCalendar = DataService.eventCalendar.let { calendar ->
             if (LocalContext.current.mainPrefs.get(CommonPrefs.showOnlyPlan.prefKey) ?: false) {
-                it.filter { it.source == "PLAN" }
-            } else it
+                calendar.filter { it.source == "PLAN" }
+            } else calendar
         }
         Column {
             CalendarBar()
@@ -76,12 +77,24 @@ fun WeekPager(eventsLoaded: List<Event>) {
     val showNumbers =
         LocalContext.current.mainPrefs.get(CommonPrefs.showLessonNumbers.prefKey) ?: true
     val showBreaks = areBreaksShown()
-    val weekdays = remember { (1..7).toList().also { Collections.rotate(it, -1) } }
-    val dayPosition =
-        rememberPagerState(
-            initialPage = weekdays.indexOf(getWeekday(if (!isDemo) Date() else demoScheduleDate)) + 1,
-            pageCount = { 7 })
+
+    val weekdays = remember {
+        listOf(
+            Calendar.MONDAY,
+            Calendar.TUESDAY,
+            Calendar.WEDNESDAY,
+            Calendar.THURSDAY,
+            Calendar.FRIDAY,
+            Calendar.SATURDAY,
+            Calendar.SUNDAY
+        )
+    }
     val currentDay = daySelectedLive.observeAsState(if (!isDemo) Date() else demoScheduleDate)
+    val dayPosition = rememberPagerState(
+        initialPage = weekdays.indexOf(getWeekday(currentDay.value)),
+        pageCount = { 7 }
+    )
+
     LaunchedEffect(dayPosition) {
         snapshotFlow { dayPosition.currentPage }.collect { page ->
             if (weekdays.indexOf(getWeekday(currentDay.value)) != page) {
@@ -145,7 +158,7 @@ fun WeekPager(eventsLoaded: List<Event>) {
                     }
                 } else {
                     Column(
-                        Modifier.fillMaxSize(),
+                        Modifier.fillMaxSize().verticalScroll(rememberScrollState()),
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
