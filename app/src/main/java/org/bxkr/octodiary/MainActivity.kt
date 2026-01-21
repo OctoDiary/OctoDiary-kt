@@ -254,9 +254,7 @@ class MainActivity : FragmentActivity() {
         val bottomSheetContent by modalBottomSheetContentLive.observeAsState()
         val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
         val snackbarHostState = snackbarHostStateLive.value!!
-        if (navControllerLive.value == null) {
-            navControllerLive.value = rememberNavController()
-        }
+        navControllerLive.value = rememberNavController()
         val navController = navControllerLive.observeAsState()
         val surfaceColor = MaterialTheme.colorScheme.surface
         val elevatedColor = MaterialTheme.colorScheme.surfaceColorAtElevation(1.dp)
