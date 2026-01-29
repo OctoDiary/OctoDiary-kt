@@ -147,6 +147,7 @@ interface MainSchoolAPI {
     fun schoolInfo(
         @Header("auth-token") accessToken: String,
         @Query("school_id") schoolId: Long,
+        @Query("student_id") studentId: Long,
         @Query("class_unit_id") classUnitId: Long,
         @Header("X-Mes-Subsystem") mesSubsystem: String = MESAPIConfig.FAMILYMP
     ): Call<SchoolInfo>
