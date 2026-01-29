@@ -13,9 +13,9 @@ data class Developer(
                 "https://t.me/qikel"
             ),
             Developer(
-                "Den4ikSuperOstryyPer4ik",
-                "https://github.com/Den4ikSuperOstryyPer4ik",
-                "https://t.me/Den4ikSOP"
+                "pixwet",
+                "https://github.com/pixwet",
+                "https://t.me/pixwet"
             )
         )
     }
