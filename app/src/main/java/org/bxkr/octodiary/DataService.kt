@@ -238,12 +238,12 @@ object DataService {
         val startDate = Calendar.getInstance().also {
             it.time = date
             it.set(Calendar.WEEK_OF_YEAR, it.get(Calendar.WEEK_OF_YEAR))
-            it.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
+            it.set(Calendar.DAY_OF_WEEK, Calendar.getInstance().firstDayOfWeek)
         }
         val endDate = Calendar.getInstance().also {
             it.time = date
             it.set(Calendar.WEEK_OF_YEAR, it.get(Calendar.WEEK_OF_YEAR))
-            it.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY)
+            it.set(Calendar.DAY_OF_WEEK, (Calendar.getInstance().firstDayOfWeek + 5)%7+1)
         }
         secondaryApi.events(
             "Bearer $token",
