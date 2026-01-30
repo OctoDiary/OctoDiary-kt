@@ -27,7 +27,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
 import org.bxkr.octodiary.formatToDay
 import java.util.Calendar
-import java.util.Collections
 import java.util.Date
 import kotlin.math.roundToInt
 
@@ -38,16 +37,9 @@ fun CalendarRow(
     onDaySelect: (Date) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val weekdays = remember {
-        listOf(
-            Calendar.MONDAY,
-            Calendar.TUESDAY,
-            Calendar.WEDNESDAY,
-            Calendar.THURSDAY,
-            Calendar.FRIDAY,
-            Calendar.SATURDAY,
-            Calendar.SUNDAY
-        )
+    val weekdays = remember(date.firstDayOfWeek) {
+        val first = date.firstDayOfWeek
+        (0..6).map { offset -> ((first + offset - 1) % 7) + 1 }
     }
     var selectedPositionX: Float by remember { mutableFloatStateOf(0f) }
     val selectedPosition = animateFloatAsState(selectedPositionX)

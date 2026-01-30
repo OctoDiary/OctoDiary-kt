@@ -77,19 +77,13 @@ fun WeekPager(eventsLoaded: List<Event>) {
     val showNumbers =
         LocalContext.current.mainPrefs.get(CommonPrefs.showLessonNumbers.prefKey) ?: true
     val showBreaks = areBreaksShown()
-
-    val weekdays = remember {
-        listOf(
-            Calendar.MONDAY,
-            Calendar.TUESDAY,
-            Calendar.WEDNESDAY,
-            Calendar.THURSDAY,
-            Calendar.FRIDAY,
-            Calendar.SATURDAY,
-            Calendar.SUNDAY
-        )
-    }
     val currentDay = daySelectedLive.observeAsState(if (!isDemo) Date() else demoScheduleDate)
+    val weekdays = remember(currentDay.value) {
+        val cal = Calendar.getInstance().apply { time = currentDay.value }
+        val first = cal.firstDayOfWeek
+        (0..6).map { offset -> ((first + offset - 1) % 7) + 1 }
+    }
+
     val dayPosition = rememberPagerState(
         initialPage = weekdays.indexOf(getWeekday(currentDay.value)),
         pageCount = { 7 }

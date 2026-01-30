@@ -15,13 +15,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import org.bxkr.octodiary.demoScheduleDate
+import org.bxkr.octodiary.isDemo
 import java.util.Calendar
 import java.util.Date
 
 @Composable
 fun CalendarBar() {
-    val daySelected = daySelectedLive.observeAsState(Date())
+    val isDemo = LocalContext.current.isDemo
+    val daySelected = daySelectedLive.observeAsState(if (!isDemo) Date() else demoScheduleDate)
+
     var calendar by remember {
         mutableStateOf(
             Calendar.getInstance().apply {
