@@ -29,7 +29,7 @@ fun LazyListScope.DayItem(
     reversed: Boolean = false,
     addBelow: @Composable () -> Unit = {},
 ) {
-    itemsIndexed(day.let { if (reversed) it.reversed() else it }) { index, it ->
+    itemsIndexed(day.let { if (reversed) it.asReversed() else it }) { index, it ->
         val cardShape =
             if (day.size == 1) MaterialTheme.shapes.large else if (day.indexOf(it) == 0) MaterialTheme.shapes.extraSmall.copy(
                 topStart = MaterialTheme.shapes.large.topStart,

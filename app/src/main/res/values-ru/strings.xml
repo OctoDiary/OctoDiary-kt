@@ -341,4 +341,6 @@
     <string name="balance">Баланс</string>
     <string name="top_up">Пополнение</string>
     <string name="account_number">Лицевой счёт</string>
+    <string name="debug_on">Вы стали разработчиком!</string>
+    <string name="debug_off">Поздравляем, вы снова обычный юзер!</string>
 </resources>

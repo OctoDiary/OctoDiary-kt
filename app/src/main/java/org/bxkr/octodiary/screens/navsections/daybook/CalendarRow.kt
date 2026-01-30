@@ -38,7 +38,17 @@ fun CalendarRow(
     onDaySelect: (Date) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val weekdays = remember { (1..7).toList().also { Collections.rotate(it, -1) } }
+    val weekdays = remember {
+        listOf(
+            Calendar.MONDAY,
+            Calendar.TUESDAY,
+            Calendar.WEDNESDAY,
+            Calendar.THURSDAY,
+            Calendar.FRIDAY,
+            Calendar.SATURDAY,
+            Calendar.SUNDAY
+        )
+    }
     var selectedPositionX: Float by remember { mutableFloatStateOf(0f) }
     val selectedPosition = animateFloatAsState(selectedPositionX)
     var cellSize by remember { mutableStateOf<IntSize?>(null) }

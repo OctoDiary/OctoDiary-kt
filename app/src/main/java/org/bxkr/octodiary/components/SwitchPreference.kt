@@ -21,6 +21,7 @@ fun SwitchPreference(
     title: String,
     description: String? = null,
     listenState: State<Boolean>,
+    enabled: Boolean = true,
     onToggled: (Boolean) -> Unit,
 ) {
     Row(
@@ -48,8 +49,10 @@ fun SwitchPreference(
                 }
             }
             Switch(
-                checked = listenState.value, onCheckedChange = onToggled, Modifier
-                    .weight(1f, false)
+                checked = listenState.value,
+                onCheckedChange = onToggled,
+                Modifier.weight(1f, false),
+                enabled = enabled,
             )
         }
     }

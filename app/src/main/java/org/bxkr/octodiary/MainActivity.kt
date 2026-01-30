@@ -75,6 +75,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -253,9 +254,7 @@ class MainActivity : FragmentActivity() {
         val bottomSheetContent by modalBottomSheetContentLive.observeAsState()
         val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
         val snackbarHostState = snackbarHostStateLive.value!!
-        if (navControllerLive.value == null) {
-            navControllerLive.value = rememberNavController()
-        }
+        navControllerLive.value = rememberNavController()
         val navController = navControllerLive.observeAsState()
         val surfaceColor = MaterialTheme.colorScheme.surface
         val elevatedColor = MaterialTheme.colorScheme.surfaceColorAtElevation(1.dp)
@@ -464,7 +463,10 @@ class MainActivity : FragmentActivity() {
                                 Icon(it.icon, stringResource(id = it.title))
                             },
                             label = {
-                                Text(stringResource(id = it.title))
+                                Text(stringResource(id = it.title),
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis
+                                )
                             })
                     }
                 }

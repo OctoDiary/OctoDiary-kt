@@ -474,7 +474,8 @@ object DataService {
         mainSchoolApi.schoolInfo(
             token,
             schoolId = profile.children[currentProfile].school.id,
-            classUnitId = profile.children[currentProfile].classUnitId
+            classUnitId = profile.children[currentProfile].classUnitId,
+            studentId = profile.children[currentProfile].studentId
         ).baseEnqueue(::baseErrorFunction, ::baseInternalExceptionFunction) {
             schoolInfo = it
             hasSchoolInfo = true
