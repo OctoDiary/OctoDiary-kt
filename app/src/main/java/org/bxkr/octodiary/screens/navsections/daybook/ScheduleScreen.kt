@@ -77,19 +77,16 @@ fun WeekPager(eventsLoaded: List<Event>) {
     val showNumbers =
         LocalContext.current.mainPrefs.get(CommonPrefs.showLessonNumbers.prefKey) ?: true
     val showBreaks = areBreaksShown()
-
-    val weekdays = remember {
-        listOf(
-            Calendar.MONDAY,
-            Calendar.TUESDAY,
-            Calendar.WEDNESDAY,
-            Calendar.THURSDAY,
-            Calendar.FRIDAY,
-            Calendar.SATURDAY,
-            Calendar.SUNDAY
-        )
-    }
     val currentDay = daySelectedLive.observeAsState(if (!isDemo) Date() else demoScheduleDate)
+    val weekStartsAlwaysMonday =
+        LocalContext.current.mainPrefs.get(CommonPrefs.weekStartsAlwaysMonday.prefKey) ?: false
+
+    val weekdays = remember(currentDay.value) {
+        val cal = Calendar.getInstance().apply { time = currentDay.value }
+        val first = if (weekStartsAlwaysMonday) Calendar.MONDAY else cal.firstDayOfWeek
+        (0..6).map { offset -> ((first + offset - 1) % 7) + 1 }
+    }
+
     val dayPosition = rememberPagerState(
         initialPage = weekdays.indexOf(getWeekday(currentDay.value)),
         pageCount = { 7 }
@@ -101,6 +98,8 @@ fun WeekPager(eventsLoaded: List<Event>) {
                 daySelectedLive.postValue(currentDay.value.let {
                     Calendar.getInstance().apply {
                         time = it
+                        if (weekStartsAlwaysMonday)
+                            firstDayOfWeek = Calendar.MONDAY
                         set(Calendar.DAY_OF_WEEK, weekdays[page])
                     }.time
                 })
@@ -118,7 +117,7 @@ fun WeekPager(eventsLoaded: List<Event>) {
             }
             if (!date.isDateBetween(currentDateRange) && !isDemo) {
                 isLoadingNewEvents = true
-                DataService.getEventWeek(date) { eventsResponse, range ->
+                DataService.getEventWeek(date, weekStartsAlwaysMonday) { eventsResponse, range ->
                     currentDateRange = range
                     events = eventsResponse
                     isLoadingNewEvents = false
@@ -130,6 +129,8 @@ fun WeekPager(eventsLoaded: List<Event>) {
         val date = currentDay.value.let {
             Calendar.getInstance().apply {
                 time = it
+                if (weekStartsAlwaysMonday)
+                    firstDayOfWeek = Calendar.MONDAY
                 set(Calendar.DAY_OF_WEEK, weekdays[weekdayIndex])
             }.time
         }

@@ -15,13 +15,23 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import org.bxkr.octodiary.components.settings.CommonPrefs
+import org.bxkr.octodiary.demoScheduleDate
+import org.bxkr.octodiary.get
+import org.bxkr.octodiary.isDemo
+import org.bxkr.octodiary.mainPrefs
 import java.util.Calendar
 import java.util.Date
 
 @Composable
 fun CalendarBar() {
-    val daySelected = daySelectedLive.observeAsState(Date())
+    val isDemo = LocalContext.current.isDemo
+    val daySelected = daySelectedLive.observeAsState(if (!isDemo) Date() else demoScheduleDate)
+    val weekStartsAlwaysMonday =
+        LocalContext.current.mainPrefs.get(CommonPrefs.weekStartsAlwaysMonday.prefKey) ?: false
+
     var calendar by remember {
         mutableStateOf(
             Calendar.getInstance().apply {
@@ -32,6 +42,8 @@ fun CalendarBar() {
     LaunchedEffect(daySelected.value) {
         val day = daySelected.value
         calendar = Calendar.getInstance().apply { time = day }
+        if (weekStartsAlwaysMonday)
+            calendar.setFirstDayOfWeek(Calendar.MONDAY)
     }
     Column(
         horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.background(

@@ -21,6 +21,12 @@ object CommonPrefs {
         prefKey = "show_only_plan",
         defaultValue = false
     )
+    val weekStartsAlwaysMonday = SwitchPreferenceSpec(
+        titleRes = R.string.week_starts_always_on_monday,
+        descriptionRes = R.string.week_starts_always_on_monday_desc,
+        prefKey = "week_starts_always_on_monday",
+        defaultValue = false
+    )
     val mainRating = SwitchPreferenceSpec(
         titleRes = R.string.main_rating,
         prefKey = "main_rating",
@@ -51,6 +57,7 @@ fun Common() {
             breaks.BasicSwitchPreference()
             showLessonNumbers.BasicSwitchPreference()
             showOnlyPlan.BasicSwitchPreference()
+            weekStartsAlwaysMonday.BasicSwitchPreference()
         }
         Category(stringResource(R.string.ratings)) {
             mainRating.BasicSwitchPreference()
