@@ -343,4 +343,6 @@
     <string name="account_number">Лицевой счёт</string>
     <string name="debug_on">Вы стали разработчиком!</string>
     <string name="debug_off">Поздравляем, вы снова обычный юзер!</string>
+    <string name="week_starts_always_on_monday">Неделя начинается с понедельника</string>
+    <string name="week_starts_always_on_monday_desc">Неделя всегда начинается с понедельника</string>
 </resources>

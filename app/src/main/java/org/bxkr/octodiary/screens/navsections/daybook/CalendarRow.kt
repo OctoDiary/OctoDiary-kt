@@ -20,12 +20,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.layout.positionInParent
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
+import org.bxkr.octodiary.components.settings.CommonPrefs
 import org.bxkr.octodiary.formatToDay
+import org.bxkr.octodiary.get
+import org.bxkr.octodiary.mainPrefs
 import java.util.Calendar
 import java.util.Date
 import kotlin.math.roundToInt
@@ -37,8 +41,11 @@ fun CalendarRow(
     onDaySelect: (Date) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val weekStartsAlwaysMonday =
+        LocalContext.current.mainPrefs.get(CommonPrefs.weekStartsAlwaysMonday.prefKey) ?: false
+
     val weekdays = remember(date.firstDayOfWeek) {
-        val first = date.firstDayOfWeek
+        val first = if (weekStartsAlwaysMonday) Calendar.MONDAY else date.firstDayOfWeek
         (0..6).map { offset -> ((first + offset - 1) % 7) + 1 }
     }
     var selectedPositionX: Float by remember { mutableFloatStateOf(0f) }
@@ -66,6 +73,8 @@ fun CalendarRow(
             weekdays.forEach { weekday ->
                 val cellDate =
                     (date.clone() as Calendar).apply {
+                        if (weekStartsAlwaysMonday)
+                            firstDayOfWeek = Calendar.MONDAY
                         set(Calendar.DAY_OF_WEEK, weekday)
                     }
 

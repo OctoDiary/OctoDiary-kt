@@ -402,4 +402,6 @@
     <string name="account_number">Account number</string>
     <string name="debug_on">You are now a developer!</string>
     <string name="debug_off">You just downgraded to a user!</string>
+    <string name="week_starts_always_on_monday">Week starts on Monday</string>
+    <string name="week_starts_always_on_monday_desc">The week always starts on Monday</string>
 </resources>

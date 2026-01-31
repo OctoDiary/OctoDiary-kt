@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.compose.runtime.mutableStateOf
 import com.google.gson.Gson
 import okhttp3.ResponseBody
+import org.bxkr.octodiary.components.settings.CommonPrefs
 import org.bxkr.octodiary.models.avatar.Avatar
 import org.bxkr.octodiary.models.classmembers.ClassMember
 import org.bxkr.octodiary.models.classmembers.OctoClassMembers
@@ -207,17 +208,22 @@ object DataService {
         onUpdated()
     }
 
-    fun updateEventCalendar(weeksBefore: Int = 0, weeksAfter: Int = 0, onUpdated: () -> Unit) {
+    fun updateEventCalendar(weeksBefore: Int = 0, weeksAfter: Int = 0, weekStartsAlwaysMonday: Boolean = false, onUpdated: () -> Unit) {
         assert(this::token.isInitialized)
         assert(this::profile.isInitialized)
-        val startDate = Calendar.getInstance().also {
-            it.set(Calendar.WEEK_OF_YEAR, it.get(Calendar.WEEK_OF_YEAR) - weeksBefore)
-            it.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
-        }
-        val endDate = Calendar.getInstance().also {
-            it.set(Calendar.WEEK_OF_YEAR, it.get(Calendar.WEEK_OF_YEAR) + weeksAfter)
-            it.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY)
-        }
+
+        val cal = Calendar.getInstance()
+        cal.firstDayOfWeek = if (weekStartsAlwaysMonday) Calendar.MONDAY else cal.firstDayOfWeek
+        cal.minimalDaysInFirstWeek = 4
+
+        val startDate = cal.clone() as Calendar
+        startDate.add(Calendar.WEEK_OF_YEAR, -weeksBefore)
+        startDate.set(Calendar.DAY_OF_WEEK, cal.firstDayOfWeek)
+
+        val endDate = cal.clone() as Calendar
+        endDate.add(Calendar.WEEK_OF_YEAR, weeksAfter)
+        endDate.set(Calendar.DAY_OF_WEEK, ((cal.firstDayOfWeek + 6 - 1) % 7 + 1))
+
         secondaryApi.events(
             "Bearer $token",
             personIds = profile.children[currentProfile].contingentGuid,
@@ -232,19 +238,19 @@ object DataService {
         }
     }
 
-    fun getEventWeek(date: Date, listener: (events: List<Event>, range: List<Long>) -> Unit) {
+    fun getEventWeek(date: Date, weekStartsAlwaysMonday: Boolean = false, listener: (events: List<Event>, range: List<Long>) -> Unit) {
         assert(this::token.isInitialized)
         assert(this::profile.isInitialized)
-        val startDate = Calendar.getInstance().also {
-            it.time = date
-            it.set(Calendar.WEEK_OF_YEAR, it.get(Calendar.WEEK_OF_YEAR))
-            it.set(Calendar.DAY_OF_WEEK, Calendar.getInstance().firstDayOfWeek)
-        }
-        val endDate = Calendar.getInstance().also {
-            it.time = date
-            it.set(Calendar.WEEK_OF_YEAR, it.get(Calendar.WEEK_OF_YEAR))
-            it.set(Calendar.DAY_OF_WEEK, (Calendar.getInstance().firstDayOfWeek + 5)%7+1)
-        }
+
+        val cal = Calendar.getInstance().apply { time = date }
+        cal.firstDayOfWeek = if (weekStartsAlwaysMonday) Calendar.MONDAY else cal.firstDayOfWeek
+        cal.minimalDaysInFirstWeek = 4
+
+        val startDate = cal.clone() as Calendar
+        startDate.set(Calendar.DAY_OF_WEEK, cal.firstDayOfWeek)
+        val endDate = cal.clone() as Calendar
+        endDate.set(Calendar.DAY_OF_WEEK, (cal.firstDayOfWeek + 6 - 1) % 7 + 1)
+
         secondaryApi.events(
             "Bearer $token",
             personIds = profile.children[currentProfile].contingentGuid,
@@ -722,7 +728,9 @@ object DataService {
                 onSingleItemLoad(::sessionUser.name)
                 updateProfile {
                     onSingleItemLoad(::profile.name)
-                    updateEventCalendar {
+                    updateEventCalendar(
+                        weekStartsAlwaysMonday=context?.mainPrefs?.get(CommonPrefs.weekStartsAlwaysMonday.prefKey) ?: false
+                    ) {
                         onSingleItemLoad(::eventCalendar.name)
                         onSingleItemLoad(::eventsRange.name)
                     }
