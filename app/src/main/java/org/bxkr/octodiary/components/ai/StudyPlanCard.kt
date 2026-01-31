@@ -1,9 +1,9 @@
 package org.bxkr.octodiary.components.ai
 
-import androidx.compose.foundation.layout.*
+
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.CheckCircle
-import androidx.compose.material.icons.rounded.Schedule
+import androidx.compose.material.icons.filled.Schedule
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -40,7 +40,7 @@ fun StudyPlanCard(plan: StudyPlan, modifier: Modifier = Modifier) {
                 )
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(
-                        Icons.Rounded.Schedule,
+                        Icons.Default.Schedule,
                         null,
                         Modifier.size(16.dp)
                     )
@@ -116,3 +116,6 @@ fun StudyTaskItem(task: StudyTask) {
         }
     }
 }
+
+
+

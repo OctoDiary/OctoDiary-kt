@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.database.dao
 
+
+import androidx.compose.material.icons.Icons
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 import org.bxkr.octodiary.database.entity.StudyReminderEntity
@@ -65,3 +67,6 @@ interface StudyReminderDao {
     @Query("DELETE FROM study_reminders")
     suspend fun deleteAll()
 }
+
+
+

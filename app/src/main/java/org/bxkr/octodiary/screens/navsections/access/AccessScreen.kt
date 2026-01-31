@@ -1,5 +1,11 @@
 package org.bxkr.octodiary.screens.navsections.access
 
+
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CreditCard
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Nfc
+import androidx.compose.material.icons.filled.Settings
 import android.content.Intent
 import android.provider.Settings
 import androidx.compose.foundation.layout.Arrangement
@@ -13,11 +19,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.layout.Box
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.CreditCard
-import androidx.compose.material.icons.rounded.Delete
-import androidx.compose.material.icons.rounded.Nfc
-import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -99,7 +100,7 @@ fun AccessScreen() {
                 enabled = nfcAvailable
             ) {
                 Icon(
-                    if (isScanning) Icons.Rounded.Nfc else Icons.Rounded.CreditCard,
+                    if (isScanning) Icons.Default.Nfc else Icons.Default.CreditCard,
                     contentDescription = null
                 )
                 Spacer(Modifier.size(ButtonDefaults.IconSpacing))
@@ -116,7 +117,7 @@ fun AccessScreen() {
                 modifier = Modifier.weight(1f),
                 enabled = savedCard != null
             ) {
-                Icon(Icons.Rounded.Delete, contentDescription = null)
+                Icon(Icons.Default.Delete, contentDescription = null)
                 Spacer(Modifier.size(ButtonDefaults.IconSpacing))
                 Text(stringResource(R.string.nfc_clear_card))
             }
@@ -135,7 +136,7 @@ fun AccessScreen() {
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         Icon(
-                            Icons.Rounded.Settings,
+                            Icons.Default.Settings,
                             contentDescription = null,
                             tint = MaterialTheme.colorScheme.error
                         )
@@ -156,7 +157,7 @@ fun AccessScreen() {
                         },
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Icon(Icons.Rounded.Settings, contentDescription = null)
+                        Icon(Icons.Default.Settings, contentDescription = null)
                         Spacer(Modifier.size(ButtonDefaults.IconSpacing))
                         Text(stringResource(R.string.open_nfc_settings))
                     }
@@ -206,3 +207,6 @@ fun AccessScreen() {
         }
     }
 }
+
+
+

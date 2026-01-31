@@ -1,5 +1,12 @@
 package org.bxkr.octodiary.components.ai
 
+
+
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.automirrored.filled.*
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Send
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -11,10 +18,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.AttachFile
-import androidx.compose.material.icons.rounded.Delete
-import androidx.compose.material.icons.rounded.Send
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -118,7 +121,7 @@ fun AiChatComponent(
             IconButton(
                 onClick = { imagePickerLauncher.launch("image/*") }
             ) {
-                Icon(Icons.Rounded.AttachFile, "Прикрепить")
+                Icon(Icons.Default.AttachFile, "Прикрепить")
             }
             
             // Кнопка очистки чата
@@ -134,7 +137,7 @@ fun AiChatComponent(
                 },
                 enabled = messages.isNotEmpty()
             ) {
-                Icon(Icons.Rounded.Delete, "Очистить чат")
+                Icon(Icons.Default.Delete, "Очистить чат")
             }
             
             TextField(
@@ -214,7 +217,7 @@ fun AiChatComponent(
                 },
                 enabled = !isLoading && (inputText.isNotBlank() || selectedImageUri != null)
             ) {
-                Icon(Icons.Rounded.Send, "Отправить")
+                Icon(Icons.Default.Send, "Отправить")
             }
         }
         
@@ -326,3 +329,6 @@ private fun saveChatHistory(context: android.content.Context, chatId: String, me
     val json = gson.toJson(messages)
     prefs.edit().putString("chat_$chatId", json).apply()
 }
+
+
+

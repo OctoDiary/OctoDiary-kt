@@ -1,5 +1,8 @@
 package org.bxkr.octodiary.components
 
+
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ContentPaste
 import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -8,8 +11,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.ContentPaste
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -66,7 +67,7 @@ fun TokenLogin() {
                     tokenValue = clipboardManager.getText()?.text ?: tokenValue
                 }) {
                     Icon(
-                        Icons.Rounded.ContentPaste,
+                        Icons.Default.ContentPaste,
                         stringResource(R.string.paste)
                     )
                 }
@@ -120,3 +121,6 @@ fun Context.logInByToken(token: String, subsystem: Diary) {
     screenLive.postValue(Screen.MainNav)
     setUpdateFor(Date())
 }
+
+
+

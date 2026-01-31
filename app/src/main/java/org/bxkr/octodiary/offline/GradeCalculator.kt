@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.offline
 
+
+import androidx.compose.material.icons.Icons
 import java.time.LocalDate
 import kotlin.math.roundToInt
 
@@ -141,3 +143,5 @@ object GradeCalculator {
         val subjectsNeedingImprovement: List<String>
     )
 }
+
+

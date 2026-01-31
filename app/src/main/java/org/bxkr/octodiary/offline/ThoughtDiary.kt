@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.offline
 
+
+import androidx.compose.material.icons.Icons
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -454,3 +456,5 @@ object ThoughtDiary {
     // Оператор range для LocalDate
     private operator fun LocalDate.rangeTo(other: LocalDate) = generateSequence(this) { it.plusDays(1) }.takeWhile { it <= other }
 }
+
+

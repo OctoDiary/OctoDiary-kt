@@ -1,5 +1,6 @@
 package org.bxkr.octodiary.network.interfaces
 
+
 import org.bxkr.octodiary.Diary
 import org.bxkr.octodiary.models.auth.SchoolAuthBody
 import org.bxkr.octodiary.models.auth.SchoolAuthResponse
@@ -49,3 +50,5 @@ interface SchoolSessionAPI {
         @Body body: SchoolAuthBody
     ): Call<SchoolAuthResponse>
 }
+
+

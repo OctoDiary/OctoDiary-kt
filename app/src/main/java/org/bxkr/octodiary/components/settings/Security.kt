@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.components.settings
 
+
+import androidx.compose.material.icons.Icons
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -14,7 +16,7 @@ import org.bxkr.octodiary.components.SwitchPreference
 import org.bxkr.octodiary.get
 import org.bxkr.octodiary.mainPrefs
 import org.bxkr.octodiary.save
-import org.bxkr.octodiary.screens.SetPinDialog
+import org.bxkr.octodiary.components.SetPinDialog
 
 object SecurityPrefs {
     val biometric =
@@ -82,3 +84,5 @@ fun Security() {
         }
     }
 }
+
+

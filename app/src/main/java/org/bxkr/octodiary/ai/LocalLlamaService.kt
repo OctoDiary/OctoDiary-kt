@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.ai
 
+
+import androidx.compose.material.icons.Icons
 import android.content.Context
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -21,7 +23,7 @@ object LocalLlamaService {
     /**
      * Загрузить GGUF модель
      */
-    suspend fun loadModel(context: Context, modelPath: String): Result<Boolean> = withContext(Dispatchers.IO) {
+    suspend fun loadModel(_context: Context, _modelPath: String): Result<Boolean> = withContext(Dispatchers.IO) {
         try {
             // TODO: Реализовать загрузку модели через llama.cpp
             // val model = LlamaModel(modelPath)
@@ -38,10 +40,10 @@ object LocalLlamaService {
      * Отправить запрос к локальной модели
      */
     suspend fun generate(
-        context: Context,
-        prompt: String,
-        maxTokens: Int = 512,
-        temperature: Float = 0.7f
+        _context: Context,
+        _prompt: String,
+        _maxTokens: Int = 512,
+        _temperature: Float = 0.7f
     ): Result<String> = withContext(Dispatchers.IO) {
         try {
             if (!modelLoaded) {
@@ -83,3 +85,6 @@ object LocalLlamaService {
         }
     }
 }
+
+
+

@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.nfc
 
+
+import androidx.compose.material.icons.Icons
 import android.app.Activity
 import android.content.Context
 import android.nfc.NfcAdapter
@@ -159,3 +161,6 @@ data class CardData(
     val isProtected: Boolean = false,
     val protectionReason: String = ""
 )
+
+
+

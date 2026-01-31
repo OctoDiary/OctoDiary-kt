@@ -1,6 +1,8 @@
 package org.bxkr.octodiary.models.lessonschedule
 
 
+
+import androidx.compose.material.icons.Icons
 import com.google.gson.annotations.SerializedName
 
 data class Material(
@@ -15,3 +17,5 @@ data class Material(
     @SerializedName("type_name")
     val typeName: String
 )
+
+

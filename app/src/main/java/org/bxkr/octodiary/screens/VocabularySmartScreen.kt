@@ -1,5 +1,11 @@
 package org.bxkr.octodiary.screens
 
+
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.CameraAlt
+import androidx.compose.material.icons.filled.Delete
 import android.graphics.Bitmap
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -7,9 +13,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowBack
-import androidx.compose.material.icons.rounded.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -125,19 +128,19 @@ fun VocabularySmartScreen() {
                 title = { Text("Умный словарь") },
                 navigationIcon = {
                     IconButton(onClick = { nav?.navigateUp() }) {
-                        Icon(Icons.AutoMirrored.Rounded.ArrowBack, "Назад")
+                        Icon(Icons.AutoMirrored.Default.ArrowBack, "Назад")
                     }
                 },
                 actions = {
                     IconButton(onClick = { imagePickerLauncher.launch("image/*") }) {
-                        Icon(Icons.Rounded.CameraAlt, "Сканировать")
+                        Icon(Icons.Default.CameraAlt, "Сканировать")
                     }
                 }
             )
         },
         floatingActionButton = {
             FloatingActionButton(onClick = { /* Добавить слово вручную */ }) {
-                Icon(Icons.Rounded.Add, "Добавить")
+                Icon(Icons.Default.Add, "Добавить")
             }
         }
     ) { padding ->
@@ -182,7 +185,7 @@ fun VocabularySmartScreen() {
                 Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Icon(
-                            Icons.Rounded.CameraAlt,
+                            Icons.Default.CameraAlt,
                             null,
                             Modifier.size(64.dp),
                             tint = MaterialTheme.colorScheme.primary
@@ -236,8 +239,11 @@ fun VocabularyCard(word: Any, onDelete: () -> Unit) {
                 )
             }
             IconButton(onClick = onDelete) {
-                Icon(Icons.Rounded.Delete, "Удалить")
+                Icon(Icons.Default.Delete, "Удалить")
             }
         }
     }
 }
+
+
+

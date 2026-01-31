@@ -1,6 +1,8 @@
 package org.bxkr.octodiary.models.rankingforsubject
 
 
+
+import androidx.compose.material.icons.Icons
 import com.google.gson.annotations.SerializedName
 
 data class RankingForSubject(
@@ -13,3 +15,5 @@ data class RankingForSubject(
     @SerializedName("rank")
     val rank: Rank
 )
+
+

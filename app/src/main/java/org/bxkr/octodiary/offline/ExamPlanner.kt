@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.offline
 
+
+import androidx.compose.material.icons.Icons
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -388,3 +390,5 @@ object ExamPlanner {
         return "exam_${System.currentTimeMillis()}_${(0..9999).random()}"
     }
 }
+
+

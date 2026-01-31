@@ -1,5 +1,9 @@
 package org.bxkr.octodiary.components.debugutils
 
+
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import android.content.Context
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
@@ -13,9 +17,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowForward
-import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenu
@@ -69,7 +70,7 @@ fun MainActivity.PrefEditor(clear: () -> Unit) {
                     )
                 }
                 Surface(onClick = { clear() }) {
-                    Icon(Icons.Rounded.Close, "close", Modifier.padding(16.dp))
+                    Icon(Icons.Default.Close, "close", Modifier.padding(16.dp))
                 }
             }
             var textFieldValue by remember { mutableStateOf("") }
@@ -85,7 +86,7 @@ fun MainActivity.PrefEditor(clear: () -> Unit) {
                 singleLine = true,
                 trailingIcon = {
                     IconButton(onClick = { confirmedKey = textFieldValue }) {
-                        Icon(Icons.AutoMirrored.Rounded.ArrowForward, "go")
+                        Icon(Icons.AutoMirrored.Default.ArrowForward, "go")
                     }
                 },
                 label = { Text(text = "Storage name") })
@@ -320,3 +321,5 @@ private enum class PrefTypes(val sample: Any, val castFn: (String) -> Any) {
     LongT(0L, { it.toLong() }),
     FloatT(0f, { it.toFloat() })
 }
+
+

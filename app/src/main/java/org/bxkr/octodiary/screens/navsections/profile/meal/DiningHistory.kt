@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.screens.navsections.profile.meal
 
+
+import androidx.compose.material.icons.Icons
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Arrangement
@@ -235,3 +237,5 @@ private fun DayContent(day: Day) {
         }
     }
 }
+
+

@@ -1,5 +1,6 @@
 package org.bxkr.octodiary.network
 
+import okhttp3.OkHttpClient
 import org.bxkr.octodiary.network.interfaces.DSchoolAPI
 import org.bxkr.octodiary.network.interfaces.ExternalAPI
 import org.bxkr.octodiary.network.interfaces.MainSchoolAPI
@@ -10,6 +11,7 @@ import org.bxkr.octodiary.network.interfaces.SecondaryAPI
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
+import java.util.concurrent.TimeUnit
 
 object NetworkService {
     object MESAPIConfig {
@@ -72,21 +74,37 @@ object NetworkService {
         const val EXTERNAL_API = "https://octodiary.den4iksop.org/"
     }
 
+    private val sharedClient by lazy {
+        OkHttpClient.Builder()
+            .connectTimeout(30, TimeUnit.SECONDS)
+            .readTimeout(30, TimeUnit.SECONDS)
+            .addInterceptor { chain ->
+                val request = chain.request().newBuilder()
+                    .header("User-Agent", "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36")
+                    .build()
+                chain.proceed(request)
+            }
+            .build()
+    }
+
     private inline fun <reified T> baseApiConstructor(baseUrl: String): T {
         val retrofit = Retrofit.Builder()
             .baseUrl(baseUrl)
+            .client(sharedClient)
             .addConverterFactory(ScalarsConverterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         return retrofit.create(T::class.java)
     }
 
-    fun mosAuthApi() = baseApiConstructor<MosAuthAPI>(BaseUrl.MOS_AUTH)
-    fun regionalAuthApi() = baseApiConstructor<RegionalAuthAPI>(BaseUrl.MOSREG_SECONDARY)
-    fun externalApi() = baseApiConstructor<ExternalAPI>(BaseUrl.EXTERNAL_API)
+    val mosAuthApi: MosAuthAPI by lazy { baseApiConstructor(BaseUrl.MOS_AUTH) }
+    val regionalAuthApi: RegionalAuthAPI by lazy { baseApiConstructor(BaseUrl.MOSREG_SECONDARY) }
+    val externalApi: ExternalAPI by lazy { baseApiConstructor(BaseUrl.EXTERNAL_API) }
 
     fun dSchoolApi(baseUrl: String) = baseApiConstructor<DSchoolAPI>(baseUrl)
     fun mainSchoolApi(baseUrl: String) = baseApiConstructor<MainSchoolAPI>(baseUrl)
     fun schoolSessionApi(baseUrl: String) = baseApiConstructor<SchoolSessionAPI>(baseUrl)
     fun secondaryApi(baseUrl: String) = baseApiConstructor<SecondaryAPI>(baseUrl)
 }
+
+

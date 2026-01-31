@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.database.dao
 
+
+import androidx.compose.material.icons.Icons
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
@@ -19,3 +21,6 @@ interface AiChatDao {
     @Query("SELECT DISTINCT chatId FROM ai_chat_messages")
     suspend fun getAllChatIds(): List<String>
 }
+
+
+

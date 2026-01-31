@@ -1,5 +1,9 @@
 package org.bxkr.octodiary.components.changelog
 
+
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material.icons.automirrored.filled.AddToHomeScreen
 import android.appwidget.AppWidgetManager
 import android.content.ComponentName
 import android.content.Context
@@ -23,9 +27,6 @@ import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.AddToHomeScreen
-import androidx.compose.material.icons.rounded.Warning
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
@@ -279,7 +280,7 @@ class Changelog26 : Changelog() {
                 elevation = FloatingActionButtonDefaults.loweredElevation()
             ) {
                 Icon(
-                    Icons.AutoMirrored.Rounded.AddToHomeScreen,
+                    Icons.AutoMirrored.Default.AddToHomeScreen,
                     stringResource(R.string.add_to_home_screen)
                 )
             }
@@ -288,7 +289,7 @@ class Changelog26 : Changelog() {
 
     @Composable
     private fun ImageFailure() = Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Icon(Icons.Rounded.Warning, "Error")
+        Icon(Icons.Default.Warning, "Error")
         Text(stringResource(R.string.error_occurred))
     }
 
@@ -405,3 +406,5 @@ class Changelog26 : Changelog() {
         )
     }
 }
+
+

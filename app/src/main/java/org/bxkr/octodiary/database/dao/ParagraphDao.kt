@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.database.dao
 
+
+import androidx.compose.material.icons.Icons
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 import org.bxkr.octodiary.database.entity.ParagraphEntity
@@ -66,3 +68,5 @@ interface ParagraphDao {
     @Query("UPDATE paragraphs SET accessCount = accessCount + 1, lastAccessedAt = :accessedAt WHERE id = :id")
     suspend fun incrementAccessCount(id: Long, accessedAt: java.util.Date)
 }
+
+

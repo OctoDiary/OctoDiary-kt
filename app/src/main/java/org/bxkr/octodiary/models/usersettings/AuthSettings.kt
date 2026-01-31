@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.models.usersettings
 
+
+import androidx.compose.material.icons.Icons
 import com.google.gson.annotations.SerializedName
 
 data class AuthSettings(
@@ -12,3 +14,6 @@ data class AuthSettings(
     @SerializedName("access_token")
     val accessToken: String?,
 )
+
+
+

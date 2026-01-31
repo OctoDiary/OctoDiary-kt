@@ -1,5 +1,6 @@
 package org.bxkr.octodiary.network.interfaces
 
+
 import android.net.Uri
 import okhttp3.MultipartBody
 import org.bxkr.octodiary.Diary
@@ -194,3 +195,5 @@ interface SecondaryAPI {
         @Header("X-Mes-Subsystem") mesSubsystem: String = MESAPIConfig.FAMILYMP,
     ): Call<Unit>
 }
+
+

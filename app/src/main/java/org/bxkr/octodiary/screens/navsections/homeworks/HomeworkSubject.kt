@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.screens.navsections.homeworks
 
+
+import androidx.compose.material.icons.Icons
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -84,3 +86,5 @@ fun HomeworkSubject(homeworks: List<org.bxkr.octodiary.models.homeworks2.Homewor
         }
     }
 }
+
+

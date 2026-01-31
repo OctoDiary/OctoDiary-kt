@@ -1,6 +1,8 @@
 package org.bxkr.octodiary.models.schoolinfo
 
 
+
+import androidx.compose.material.icons.Icons
 import com.google.gson.annotations.SerializedName
 
 data class Teacher(
@@ -13,3 +15,5 @@ data class Teacher(
     @SerializedName("subject_names")
     val subjectNames: List<String>
 )
+
+

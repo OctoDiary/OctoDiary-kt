@@ -1,5 +1,6 @@
 package org.bxkr.octodiary.network.interfaces
 
+
 import org.bxkr.octodiary.Diary
 import org.bxkr.octodiary.models.classmembers.ClassMember
 import org.bxkr.octodiary.models.mealbalance.MealBalance
@@ -86,10 +87,12 @@ interface DSchoolAPI {
         @Header("X-Mes-Subsystem") mesSubsystem: String = MESAPIConfig.FAMILYMP
     ): Call<String>
 
-    @GET("/api/persondata/mobile/persons/{personId}")
+    @GET("api/persondata/mobile/persons/{personId}")
     fun personData(
         @Header("authorization") authHeader: String,
         @Header("auth-token") accessToken: String,
         @Path("personId") personId: String
     ): Call<PersonData>
 }
+
+

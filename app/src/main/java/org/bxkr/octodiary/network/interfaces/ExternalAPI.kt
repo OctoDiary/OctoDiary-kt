@@ -1,5 +1,6 @@
 package org.bxkr.octodiary.network.interfaces
 
+
 import org.bxkr.octodiary.models.ParagraphResponse
 import org.bxkr.octodiary.network.NetworkService
 import retrofit2.Call
@@ -7,6 +8,10 @@ import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Query
 
+/**
+ * Interface for interactions with the external OctoDiary backend.
+ * Used for statistics and auxiliary features (e.g. paragraph generation).
+ */
 interface ExternalAPI {
     @POST("stats/enter")
     fun sendStat(
@@ -23,3 +28,5 @@ interface ExternalAPI {
         @Header("verify-token") verifyToken: String = NetworkService.ExternalIntegrationConfig.VERIFY_TOKEN
     ): Call<ParagraphResponse>
 }
+
+

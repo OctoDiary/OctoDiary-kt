@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.ai
 
+
+import androidx.compose.material.icons.Icons
 import android.content.Context
 import android.graphics.Bitmap
 import android.util.Base64
@@ -231,3 +233,6 @@ data class ChatMessage(
     val timestamp: Long = System.currentTimeMillis(),
     val imageUri: String? = null
 )
+
+
+

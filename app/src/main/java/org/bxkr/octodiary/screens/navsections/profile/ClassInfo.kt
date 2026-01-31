@@ -1,5 +1,10 @@
 package org.bxkr.octodiary.screens.navsections.profile
 
+
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.ContentPaste
+import androidx.compose.material.icons.automirrored.filled.HelpOutline
 import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
@@ -16,10 +21,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowBack
-import androidx.compose.material.icons.automirrored.rounded.HelpOutline
-import androidx.compose.material.icons.rounded.ContentPaste
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -108,7 +109,7 @@ fun ClassInfo() {
         ) {
             Column {
                 IconButton(onClick = { showRanking = false }) {
-                    Icon(Icons.AutoMirrored.Rounded.ArrowBack, stringResource(id = R.string.back))
+                    Icon(Icons.AutoMirrored.Default.ArrowBack, stringResource(id = R.string.back))
                 }
                 RankingList()
             }
@@ -285,7 +286,7 @@ private fun AssignIdDialog(member: ClassMember) {
                         }
                     }) {
                         Icon(
-                            Icons.AutoMirrored.Rounded.HelpOutline,
+                            Icons.AutoMirrored.Default.HelpOutline,
                             stringResource(R.string.what_is_it),
                             tint = MaterialTheme.colorScheme.secondary
                         )
@@ -342,7 +343,7 @@ private fun textField(
         trailingIcon = {
             if (helpCopy) IconButton(onClick = onHelpCopyClick) {
                 Icon(
-                    Icons.Rounded.ContentPaste,
+                    Icons.Default.ContentPaste,
                     stringResource(R.string.paste)
                 )
             }
@@ -401,3 +402,5 @@ private fun assignPersonId(
 //        infoRecomposeTrigger.postValue(infoRecomposeTrigger.value?.not())
 //    }
 //}
+
+

@@ -1,9 +1,15 @@
 package org.bxkr.octodiary.components.ai
 
+
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.AutoAwesome
+import androidx.compose.material.icons.filled.Book
+import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.LocalFireDepartment
+import androidx.compose.material.icons.filled.Remove
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -133,10 +139,10 @@ private fun StreakInfoDialog(
         onDismissRequest = onDismiss,
         icon = {
             when (type) {
-                "homework" -> Icon(Icons.Rounded.CheckCircle, null)
-                "diary" -> Icon(Icons.Rounded.Book, null)
-                "ai_usage" -> Icon(Icons.Rounded.AutoAwesome, null)
-                else -> Icon(Icons.Rounded.LocalFireDepartment, null)
+                "homework" -> Icon(Icons.Default.CheckCircle, null)
+                "diary" -> Icon(Icons.Default.Book, null)
+                "ai_usage" -> Icon(Icons.Default.AutoAwesome, null)
+                else -> Icon(Icons.Default.LocalFireDepartment, null)
             }
         },
         title = { Text(title) },
@@ -221,7 +227,7 @@ private fun StreakInfoDialog(
                                 prefs.edit().putInt("${type}_goal", goalDays).apply()
                             }
                         }) {
-                            Icon(Icons.Rounded.Remove, null)
+                            Icon(Icons.Default.Remove, null)
                         }
                         Text(
                             "$goalDays",
@@ -233,7 +239,7 @@ private fun StreakInfoDialog(
                                 prefs.edit().putInt("${type}_goal", goalDays).apply()
                             }
                         }) {
-                            Icon(Icons.Rounded.Add, null)
+                            Icon(Icons.Default.Add, null)
                         }
                     }
                 }
@@ -298,3 +304,6 @@ private fun getDayWord(count: Int): String {
         else -> "дней"
     }
 }
+
+
+

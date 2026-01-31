@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.database.dao
 
+
+import androidx.compose.material.icons.Icons
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
@@ -32,3 +34,6 @@ interface VocabularyDao {
     @Query("DELETE FROM vocabulary WHERE id = :id")
     suspend fun deleteWord(id: Long)
 }
+
+
+

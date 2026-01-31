@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.database.dao
 
+
+import androidx.compose.material.icons.Icons
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
@@ -26,3 +28,6 @@ interface LectureNoteDao {
     @Query("DELETE FROM lecture_notes WHERE id = :id")
     suspend fun deleteNote(id: Long)
 }
+
+
+

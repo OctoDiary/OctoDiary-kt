@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.components.ai
 
+
+import androidx.compose.material.icons.Icons
 import android.content.Context
 import org.bxkr.octodiary.managers.TextbookManager
 import java.text.SimpleDateFormat
@@ -64,3 +66,6 @@ object GeneralAiHelper {
         )
     }
 }
+
+
+

@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.models
 
+
+import androidx.compose.material.icons.Icons
 import java.time.LocalTime
 
 data class BellSchedule(
@@ -58,3 +60,6 @@ data class BellScheduleConfig(
     val notifyAtLessonEndMinutes: Int = 1,
     val showCountdown: Boolean = true
 )
+
+
+

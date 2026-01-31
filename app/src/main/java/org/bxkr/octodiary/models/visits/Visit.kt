@@ -1,6 +1,8 @@
 package org.bxkr.octodiary.models.visits
 
 
+
+import androidx.compose.material.icons.Icons
 import com.google.gson.annotations.SerializedName
 
 data class Visit(
@@ -19,3 +21,5 @@ data class Visit(
     @SerializedName("type")
     val type: String?
 )
+
+

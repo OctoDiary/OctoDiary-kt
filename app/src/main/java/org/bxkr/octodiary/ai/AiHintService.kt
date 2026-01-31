@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.ai
 
+
+import androidx.compose.material.icons.Icons
 import android.content.Context
 import android.graphics.Bitmap
 import android.util.Log
@@ -94,3 +96,6 @@ object AiHintService {
         return Base64.encodeToString(byteArray, Base64.NO_WRAP)
     }
 }
+
+
+

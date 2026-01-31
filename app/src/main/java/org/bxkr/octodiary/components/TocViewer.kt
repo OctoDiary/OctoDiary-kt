@@ -1,5 +1,15 @@
 package org.bxkr.octodiary.components
 
+
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AutoAwesome
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.MenuBook
+import androidx.compose.material.icons.filled.Pause
+import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.Restore
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.SearchOff
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.clickable
@@ -8,8 +18,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -120,7 +128,7 @@ fun TocViewer(
                             }
                         }
                     }) {
-                        Icon(Icons.Rounded.Delete, "Удалить оглавление")
+                        Icon(Icons.Default.Delete, "Удалить оглавление")
                     }
                 }
             }
@@ -128,14 +136,13 @@ fun TocViewer(
             Spacer(modifier = Modifier.height(8.dp))
 
             if (hasToc) {
-                OutlinedTextField(
-                    value = searchQuery,
-                    onValueChange = { searchQuery = it },
-                    placeholder = { Text("Поиск по оглавлению...") },
-                    leadingIcon = {
-                        Icon(Icons.Rounded.Search, contentDescription = "Поиск")
-                    },
-                    modifier = Modifier.fillMaxWidth(),
+                                    OutlinedTextField(
+                                        value = searchQuery,
+                                        onValueChange = { searchQuery = it },
+                                        placeholder = { Text("Поиск по оглавлению...") },
+                                        leadingIcon = {
+                                            Icon(Icons.Default.Search, contentDescription = "Поиск")
+                                        },                    modifier = Modifier.fillMaxWidth(),
                     singleLine = true
                 )
             }
@@ -185,7 +192,7 @@ fun TocViewer(
                         enabled = progress.canResume
                     ) {
                         Icon(
-                            if (isPaused) Icons.Rounded.PlayArrow else Icons.Rounded.Pause,
+                            if (isPaused) Icons.Default.PlayArrow else Icons.Default.Pause,
                             contentDescription = if (isPaused) "Возобновить" else "Приостановить"
                         )
                     }
@@ -224,7 +231,7 @@ fun TocViewer(
                     verticalArrangement = Arrangement.Center
                 ) {
                     Icon(
-                        Icons.Rounded.MenuBook,
+                        Icons.Default.MenuBook,
                         contentDescription = null,
                         modifier = Modifier.size(64.dp),
                         tint = MaterialTheme.colorScheme.primary
@@ -287,7 +294,7 @@ fun TocViewer(
                         modifier = Modifier.fillMaxWidth(0.8f),
                         enabled = !isGenerating
                     ) {
-                        Icon(Icons.Rounded.AutoAwesome, contentDescription = null)
+                        Icon(Icons.Default.AutoAwesome, contentDescription = null)
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(if (isGenerating) "Создание..." else "Создать оглавление")
                     }
@@ -335,7 +342,7 @@ fun TocViewer(
                             modifier = Modifier.fillMaxWidth(0.8f),
                             enabled = !isGenerating
                         ) {
-                            Icon(Icons.Rounded.Restore, contentDescription = null)
+                            Icon(Icons.Default.Restore, contentDescription = null)
                             Spacer(modifier = Modifier.width(8.dp))
                             Text("Продолжить с последнего сохранения")
                         }
@@ -353,7 +360,7 @@ fun TocViewer(
                     verticalArrangement = Arrangement.Center
                 ) {
                     Icon(
-                        Icons.Rounded.SearchOff,
+                        Icons.Default.SearchOff,
                         contentDescription = null,
                         modifier = Modifier.size(48.dp),
                         tint = MaterialTheme.colorScheme.onSurfaceVariant
@@ -455,7 +462,7 @@ private fun TocEntryItem(
             //         verticalAlignment = Alignment.CenterVertically
             //     ) {
             //         Icon(
-            //             Icons.Rounded.Tag,
+            //             Icons.Default.Tag,
             //             contentDescription = null,
             //             modifier = Modifier.size(12.dp),
             //             tint = MaterialTheme.colorScheme.onSurfaceVariant
@@ -472,3 +479,5 @@ private fun TocEntryItem(
         }
     }
 }
+
+

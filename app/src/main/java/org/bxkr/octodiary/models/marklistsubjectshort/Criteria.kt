@@ -1,6 +1,8 @@
 package org.bxkr.octodiary.models.marklistsubjectshort
 
 
+
+import androidx.compose.material.icons.Icons
 import com.google.gson.annotations.SerializedName
 
 data class Criteria(
@@ -9,3 +11,5 @@ data class Criteria(
     @SerializedName("value")
     val value: String
 )
+
+

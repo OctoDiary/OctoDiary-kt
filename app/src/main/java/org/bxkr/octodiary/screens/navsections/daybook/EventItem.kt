@@ -1,5 +1,8 @@
 package org.bxkr.octodiary.screens.navsections.daybook
 
+
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.OpenInNew
 import android.webkit.URLUtil
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
@@ -20,9 +23,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.selection.SelectionContainer
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.MenuOpen
-import androidx.compose.material.icons.automirrored.rounded.OpenInNew
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.material3.Icon
@@ -213,7 +213,7 @@ fun EventItem(event: Event, index: Int = -1, showLessonNumbers: Boolean = true) 
                                     modifier = Modifier.padding(top = 8.dp)
                                 ) {
                                     Icon(
-                                        Icons.AutoMirrored.Rounded.OpenInNew,
+                                        Icons.AutoMirrored.Default.OpenInNew,
                                         stringResource(id = R.string.open),
                                         Modifier.size(ButtonDefaults.IconSize)
                                     )
@@ -338,7 +338,7 @@ fun EventItem(event: Event, index: Int = -1, showLessonNumbers: Boolean = true) 
                                 interactionSource = interactionSource
                             ) {
                                 Icon(
-                                    Icons.AutoMirrored.Rounded.OpenInNew,
+                                    Icons.AutoMirrored.Default.OpenInNew,
                                     stringResource(id = R.string.conference),
                                     Modifier.size(ButtonDefaults.IconSize),
                                     tint = MaterialTheme.colorScheme.onTertiaryContainer
@@ -356,3 +356,5 @@ fun EventItem(event: Event, index: Int = -1, showLessonNumbers: Boolean = true) 
         }
     }
 }
+
+

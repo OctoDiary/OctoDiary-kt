@@ -1,5 +1,11 @@
 package org.bxkr.octodiary.components
 
+
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
+import androidx.compose.material.icons.filled.Camera
+import androidx.compose.material.icons.filled.Link
 import android.annotation.SuppressLint
 import android.content.Context
 import android.view.ViewGroup
@@ -9,10 +15,6 @@ import android.webkit.WebViewClient
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowBack
-import androidx.compose.material.icons.rounded.Link
-import androidx.compose.material.icons.automirrored.rounded.ArrowForward
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -53,7 +55,6 @@ import kotlinx.coroutines.withContext
 import android.view.MotionEvent
 import org.bxkr.octodiary.mainPrefs
 import androidx.compose.foundation.combinedClickable
-import androidx.compose.material.icons.rounded.Camera
 import androidx.compose.ui.platform.LocalContext
 import org.bxkr.octodiary.MainPrefs
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -103,7 +104,7 @@ fun WebViewDialog(
                     navigationIcon = {
                         IconButton(onClick = { onDismissRequest() }) {
                             Icon(
-                                Icons.AutoMirrored.Rounded.ArrowBack,
+                                Icons.AutoMirrored.Default.ArrowBack,
                                 stringResource(R.string.back)
                             )
                         }
@@ -124,7 +125,7 @@ fun WebViewDialog(
                                 clipboardManager.setText(AnnotatedString(currentUrl))
                             }) {
                                 Icon(
-                                    Icons.Rounded.Link,
+                                    Icons.Default.Link,
                                     stringResource(R.string.copy_link)
                                 )
                             }
@@ -147,7 +148,7 @@ fun WebViewDialog(
                             webViewRef.value?.evaluateJavascript(js, null)
                         }) {
                             Icon(
-                                imageVector = Icons.AutoMirrored.Rounded.ArrowForward,
+                                imageVector = Icons.AutoMirrored.Default.ArrowForward,
                                 contentDescription = stringResource(R.string.next)
                             )
                         }
@@ -175,7 +176,7 @@ fun WebViewDialog(
                                 onClick = {}
                             )
                         ) {
-                            Icon(imageVector = Icons.Rounded.Camera, contentDescription = "Скриншот")
+                            Icon(imageVector = Icons.Default.Camera, contentDescription = "Скриншот")
                         }
                     }
                 )
@@ -248,3 +249,5 @@ fun WebView.drawToBitmap(): Bitmap {
     this.draw(canvas)
     return bmp
 }
+
+

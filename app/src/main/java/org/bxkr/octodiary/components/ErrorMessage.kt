@@ -1,13 +1,14 @@
 package org.bxkr.octodiary.components
 
+
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.BugReport
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.BugReport
-import androidx.compose.material.icons.rounded.Warning
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -32,7 +33,7 @@ fun ErrorMessage(modifier: Modifier = Modifier, errorText: String) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Icon(
-            Icons.Rounded.Warning,
+            Icons.Default.Warning,
             stringResource(R.string.error_occurred),
             Modifier.size(64.dp),
             MaterialTheme.colorScheme.secondary
@@ -57,7 +58,7 @@ fun ErrorMessage(modifier: Modifier = Modifier, errorText: String) {
             contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
         ) {
             Icon(
-                Icons.Rounded.BugReport,
+                Icons.Default.BugReport,
                 stringResource(id = R.string.report_issue),
                 Modifier.size(ButtonDefaults.IconSize)
             )
@@ -66,3 +67,5 @@ fun ErrorMessage(modifier: Modifier = Modifier, errorText: String) {
         }
     }
 }
+
+

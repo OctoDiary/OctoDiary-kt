@@ -1,5 +1,13 @@
 package org.bxkr.octodiary.screens
 
+
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.List
+import androidx.compose.material.icons.filled.MenuBook
+import androidx.compose.material.icons.filled.PictureAsPdf
 import android.content.Intent
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -8,9 +16,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowBack
-import androidx.compose.material.icons.rounded.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -60,12 +65,12 @@ fun TextbooksScreen(
                 title = { Text("Учебники") },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.AutoMirrored.Rounded.ArrowBack, "Назад")
+                        Icon(Icons.AutoMirrored.Default.ArrowBack, "Назад")
                     }
                 },
                 actions = {
                     IconButton(onClick = { pdfPickerLauncher.launch("application/pdf") }) {
-                        Icon(Icons.Rounded.Add, "Добавить учебник")
+                        Icon(Icons.Default.Add, "Добавить учебник")
                     }
                 }
             )
@@ -73,7 +78,7 @@ fun TextbooksScreen(
         floatingActionButton = {
             ExtendedFloatingActionButton(
                 onClick = { pdfPickerLauncher.launch("application/pdf") },
-                icon = { Icon(Icons.Rounded.Add, null) },
+                icon = { Icon(Icons.Default.Add, null) },
                 text = { Text("Добавить PDF") }
             )
         }
@@ -90,7 +95,7 @@ fun TextbooksScreen(
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     Icon(
-                        Icons.Rounded.MenuBook,
+                        Icons.Default.MenuBook,
                         contentDescription = null,
                         modifier = Modifier.size(64.dp),
                         tint = MaterialTheme.colorScheme.primary
@@ -266,7 +271,7 @@ private fun TextbookCard(
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Icon(
-                Icons.Rounded.PictureAsPdf,
+                Icons.Default.PictureAsPdf,
                 contentDescription = null,
                 modifier = Modifier.size(40.dp),
                 tint = MaterialTheme.colorScheme.primary
@@ -306,11 +311,11 @@ private fun TextbookCard(
 
             Row {
                 IconButton(onClick = onViewToc) {
-                    Icon(Icons.Rounded.List, "Оглавление")
+                    Icon(Icons.Default.List, "Оглавление")
                 }
 
                 IconButton(onClick = { showDeleteDialog = true }) {
-                    Icon(Icons.Rounded.Delete, "Удалить")
+                    Icon(Icons.Default.Delete, "Удалить")
                 }
             }
         }
@@ -446,3 +451,6 @@ private fun formatDate(timestamp: Long): String {
     val sdf = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
     return sdf.format(Date(timestamp))
 }
+
+
+

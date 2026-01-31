@@ -1,6 +1,8 @@
 package org.bxkr.octodiary.models.auth
 
 
+
+import androidx.compose.material.icons.Icons
 import com.google.gson.annotations.SerializedName
 
 data class RegionalCredentialsResponse(
@@ -42,3 +44,5 @@ data class RegionalCredentialsResponse(
         val password: String
     )
 }
+
+

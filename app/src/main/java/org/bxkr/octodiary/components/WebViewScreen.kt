@@ -1,11 +1,12 @@
 package org.bxkr.octodiary.components
 
+
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.AutoAwesome
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowBack
-import androidx.compose.material.icons.rounded.AutoAwesome
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -53,7 +54,7 @@ fun WebViewDialog(
                     title = { Text(title, maxLines = 1) },
                     navigationIcon = {
                         IconButton(onClick = onDismiss) {
-                            Icon(Icons.AutoMirrored.Rounded.ArrowBack, "Назад")
+                            Icon(Icons.AutoMirrored.Default.ArrowBack, "Назад")
                         }
                     },
                     actions = {
@@ -62,7 +63,7 @@ fun WebViewDialog(
                             onClick = { showHintPanel = true }
                         ) {
                             Icon(
-                                Icons.Rounded.AutoAwesome,
+                                Icons.Default.AutoAwesome,
                                 contentDescription = "Получить подсказку",
                                 tint = MaterialTheme.colorScheme.primary
                             )
@@ -172,7 +173,7 @@ private fun HintPanel(
                     style = MaterialTheme.typography.titleMedium
                 )
                 IconButton(onClick = onDismiss, modifier = Modifier.size(24.dp)) {
-                    Icon(Icons.AutoMirrored.Rounded.ArrowBack, "Закрыть")
+                    Icon(Icons.AutoMirrored.Default.ArrowBack, "Закрыть")
                 }
             }
             
@@ -212,7 +213,7 @@ private fun HintPanel(
                             onClick = onGetHint,
                             modifier = Modifier.fillMaxWidth()
                         ) {
-                            Icon(Icons.Rounded.AutoAwesome, null, Modifier.size(20.dp))
+                            Icon(Icons.Default.AutoAwesome, null, Modifier.size(20.dp))
                             Spacer(Modifier.width(8.dp))
                             Text("Получить новую подсказку")
                         }
@@ -239,7 +240,7 @@ private fun HintPanel(
                             onClick = onGetHint,
                             modifier = Modifier.fillMaxWidth()
                         ) {
-                            Icon(Icons.Rounded.AutoAwesome, null, Modifier.size(20.dp))
+                            Icon(Icons.Default.AutoAwesome, null, Modifier.size(20.dp))
                             Spacer(Modifier.width(8.dp))
                             Text("Получить подсказку")
                         }
@@ -270,3 +271,6 @@ private fun captureWebViewScreenshot(webView: WebView?): Bitmap? {
         null
     }
 }
+
+
+

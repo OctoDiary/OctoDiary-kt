@@ -1,6 +1,8 @@
 package org.bxkr.octodiary.models.classmembers
 
 
+
+import androidx.compose.material.icons.Icons
 import androidx.compose.ui.util.fastJoinToString
 import com.google.gson.annotations.SerializedName
 
@@ -19,3 +21,5 @@ data class ClassMember(
             listOf(lastName, firstName, middleName).fastJoinToString(" ")
         }
 }
+
+

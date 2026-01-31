@@ -1,5 +1,14 @@
 package org.bxkr.octodiary.screens.navsections.profile
 
+
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Description
+import androidx.compose.material.icons.filled.Grade
+import androidx.compose.material.icons.filled.Group
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Restaurant
+import androidx.compose.material.icons.filled.School
+import androidx.compose.material.icons.filled.Wallet
 import android.annotation.SuppressLint
 import android.net.Uri
 import androidx.annotation.StringRes
@@ -20,14 +29,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Description
-import androidx.compose.material.icons.rounded.Grade
-import androidx.compose.material.icons.rounded.Group
-import androidx.compose.material.icons.rounded.Person
-import androidx.compose.material.icons.rounded.Restaurant
-import androidx.compose.material.icons.rounded.School
-import androidx.compose.material.icons.rounded.Wallet
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
@@ -223,16 +224,16 @@ private fun Cards() {
             .clip(MaterialTheme.shapes.large),
         verticalArrangement = Arrangement.spacedBy(2.dp)
     ) {
-        ProfileCard(R.string.personal_data, Icons.Rounded.Person) { PersonalData() }
-        ProfileCard(R.string.class_label, Icons.Rounded.Group) { ClassInfo() }
-        ProfileCard(R.string.school_and_teachers, Icons.Rounded.School) { School() }
+        ProfileCard(R.string.personal_data, Icons.Default.Person) { PersonalData() }
+        ProfileCard(R.string.class_label, Icons.Default.Group) { ClassInfo() }
+        ProfileCard(R.string.school_and_teachers, Icons.Default.School) { School() }
         if (isExamsNotEmpty()) ProfileCard(
             R.string.exam_results,
-            Icons.Rounded.Grade
+            Icons.Default.Grade
         ) { ExamResults() }
-        if (is77) ProfileCard(R.string.wallet, Icons.Rounded.Wallet) { Wallet() }
-        ProfileCard(R.string.meal, Icons.Rounded.Restaurant, onClick = ::mealOnClick)
-        ProfileCard(R.string.documents, Icons.Rounded.Description) { Documents() }
+        if (is77) ProfileCard(R.string.wallet, Icons.Default.Wallet) { Wallet() }
+        ProfileCard(R.string.meal, Icons.Default.Restaurant, onClick = ::mealOnClick)
+        ProfileCard(R.string.documents, Icons.Default.Description) { Documents() }
     }
 }
 
@@ -327,3 +328,5 @@ private fun openBottomSheet(content: @Composable () -> Unit) {
     modalBottomSheetStateLive.postValue(true)
     modalBottomSheetContentLive.postValue(content)
 }
+
+

@@ -1,5 +1,13 @@
 package org.bxkr.octodiary
 
+
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CalendarMonth
+import androidx.compose.material.icons.filled.FilterAlt
+import androidx.compose.material.icons.filled.Groups
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import android.Manifest
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -32,13 +40,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowBack
-import androidx.compose.material.icons.rounded.CalendarMonth
-import androidx.compose.material.icons.rounded.FilterAlt
-import androidx.compose.material.icons.rounded.Groups
-import androidx.compose.material.icons.rounded.MoreVert
-import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
@@ -87,8 +88,11 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.core.app.ActivityCompat
 import androidx.core.graphics.scale
-import androidx.fragment.app.FragmentActivity
+import androidx.activity.ComponentActivity
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
@@ -118,6 +122,10 @@ import org.bxkr.octodiary.ui.theme.CustomColorScheme
 import org.bxkr.octodiary.ui.theme.OctoDiaryTheme
 import java.io.ByteArrayOutputStream
 import java.io.File
+import com.google.gson.Gson
+import android.app.PendingIntent
+import android.app.AlarmManager
+import java.util.Calendar
 
 val modalBottomSheetStateLive = MutableLiveData(false)
 val modalBottomSheetContentLive = MutableLiveData<@Composable () -> Unit> {}
@@ -125,7 +133,7 @@ val snackbarHostStateLive = MutableLiveData(SnackbarHostState())
 val navControllerLive = MutableLiveData<NavHostController?>(null)
 val showFilterLive = MutableLiveData(false)
 val contentDependentActionLive = MutableLiveData<@Composable () -> Unit> {}
-val contentDependentActionIconLive = MutableLiveData(Icons.Rounded.FilterAlt)
+val contentDependentActionIconLive = MutableLiveData(Icons.Default.FilterAlt)
 val screenLive = MutableLiveData<Screen>()
 val modalDialogStateLive = MutableLiveData(false)
 val modalDialogContentLive = MutableLiveData<@Composable () -> Unit> {}
@@ -135,11 +143,11 @@ val darkThemeLive = MutableLiveData<Boolean>(null)
 val colorSchemeLive = MutableLiveData(-1)
 val launchUrlLive = MutableLiveData<Uri?>(null)
 val launchPickerLive = MutableLiveData<() -> Unit>({})
-val LocalActivity = staticCompositionLocalOf<FragmentActivity> {
+val LocalActivity = staticCompositionLocalOf<ComponentActivity> {
     error("No LocalActivity provided!")
 }
 
-class MainActivity : FragmentActivity() {
+class MainActivity : ComponentActivity() {
     private fun createNotificationChannel() {
         val name = getString(R.string.data_update_channel_name)
         val importance = NotificationManager.IMPORTANCE_DEFAULT
@@ -157,12 +165,6 @@ class MainActivity : FragmentActivity() {
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // Временный отладочный Toast для проверки запуска активности
-        android.widget.Toast.makeText(
-            this,
-            "MainActivity.onCreate() - Debug Check",
-            android.widget.Toast.LENGTH_LONG
-        ).show()
         createNotificationChannel()
 
         // Применяем сохранённый масштаб текста
@@ -212,56 +214,58 @@ class MainActivity : FragmentActivity() {
         }
         val picker = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
             uri ?: return@registerForActivityResult
-            val cursor = contentResolver.query(uri, null, null, null)
-            val result: String =
-                if (cursor == null) { // Source is Dropbox or other similar local file path
-                    uri.path!!
-                } else {
-                    cursor.moveToFirst()
-                    val idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA)
-                    val string = cursor.getString(idx)
-                    cursor.close()
-                    string
-                }
-            val file = File(result)
-            val bitmap = BitmapFactory.decodeFile(file.path)
-            val byteOutputStream = ByteArrayOutputStream()
-            bitmap.run {
-                if (height > width) {
-                    scale(200, height / (width / 200))
-                } else if (width > height) {
-                    scale(width / (height / 200), 200)
-                } else scale(200, 200)
-            }.compress(Bitmap.CompressFormat.PNG, 100, byteOutputStream)
-            val requestFile = RequestBody.create(
-                "multipart/form-data".toMediaType(),
-                byteOutputStream.toByteArray()
-            )
-            val part = MultipartBody.Part.createFormData("file", file.name, requestFile)
-
-            val upload = {
-                DataService.secondaryApi.uploadAvatar(
-                    "Bearer ${DataService.token}",
-                    DataService.profile.children[DataService.currentProfile].contingentGuid,
-                    part
-                ).baseEnqueueOrNull {
-                    DataService.updateAvatars {
-                        modalDialogStateLive.postValue(false)
-                        avatarTriggerLive.postValue(avatarTriggerLive.value?.not() ?: true)
+            lifecycleScope.launch(Dispatchers.IO) {
+                val cursor = contentResolver.query(uri, null, null, null)
+                val result: String =
+                    if (cursor == null) { // Source is Dropbox or other similar local file path
+                        uri.path!!
+                    } else {
+                        cursor.moveToFirst()
+                        val idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA)
+                        val string = cursor.getString(idx)
+                        cursor.close()
+                        string
                     }
-                }
-            }
+                val file = File(result)
+                val bitmap = BitmapFactory.decodeFile(file.path)
+                val byteOutputStream = ByteArrayOutputStream()
+                bitmap.run {
+                    if (height > width) {
+                        scale(200, height / (width / 200))
+                    } else if (width > height) {
+                        scale(width / (height / 200), 200)
+                    } else scale(200, 200)
+                }.compress(Bitmap.CompressFormat.PNG, 100, byteOutputStream)
+                val requestFile = RequestBody.create(
+                    "multipart/form-data".toMediaType(),
+                    byteOutputStream.toByteArray()
+                )
+                val part = MultipartBody.Part.createFormData("file", file.name, requestFile)
 
-            DataService.run {
-                if (avatars.isNotEmpty()) {
-                    secondaryApi.deleteAvatar(
-                        "Bearer $token",
-                        profile.children[currentProfile].contingentGuid,
-                        avatars.first().id.toString()
+                val upload = {
+                    DataService.secondaryApi.uploadAvatar(
+                        "Bearer ${DataService.token}",
+                        DataService.profile.children[DataService.currentProfile].contingentGuid,
+                        part
                     ).baseEnqueueOrNull {
-                        upload()
+                        DataService.updateAvatars {
+                            modalDialogStateLive.postValue(false)
+                            avatarTriggerLive.postValue(avatarTriggerLive.value?.not() ?: true)
+                        }
                     }
-                } else upload()
+                }
+
+                DataService.run {
+                    if (avatars.isNotEmpty()) {
+                        secondaryApi.deleteAvatar(
+                            "Bearer $token",
+                            profile.children[currentProfile].contingentGuid,
+                            avatars.first().id.toString()
+                        ).baseEnqueueOrNull {
+                            upload()
+                        }
+                    } else upload()
+                }
             }
         }
         launchPickerLive.postValue {
@@ -444,22 +448,22 @@ class MainActivity : FragmentActivity() {
                             DebugMenu(this@MainActivity)
                         }
                         if (localLoadedState && currentScreen.value == Screen.MainNav) {
-                            val currentRoute =
+                            val localCurrentRoute =
                                 navController.value!!.currentBackStackEntryAsState().value?.destination?.route
-                            AnimatedVisibility(currentRoute == NavSection.Profile.route) {
+                            AnimatedVisibility(localCurrentRoute == NavSection.Profile.route) {
                                 Row(Modifier) {
                                     IconButton(onClick = {
                                         modalDialogContentLive.value = { ProfileChooser() }
                                         modalDialogStateLive.postValue(true)
                                     }) {
                                         Icon(
-                                            Icons.Rounded.Groups,
+                                            Icons.Default.Groups,
                                             stringResource(id = R.string.choose_context_profile)
                                         )
                                     }
                                     IconButton(onClick = { settingsShown = true }) {
                                         Icon(
-                                            Icons.Rounded.Settings,
+                                            Icons.Default.Settings,
                                             stringResource(id = R.string.settings)
                                         )
                                     }
@@ -472,7 +476,7 @@ class MainActivity : FragmentActivity() {
                                         modalDialogStateLive.postValue(true)
                                     }) {
                                         Icon(
-                                            Icons.Rounded.CalendarMonth,
+                                            Icons.Default.CalendarMonth,
                                             stringResource(id = R.string.by_date)
                                         )
                                     }
@@ -484,7 +488,7 @@ class MainActivity : FragmentActivity() {
                                 }
                                 Box(contentAlignment = Alignment.Center) {
                                     val icon =
-                                        contentDependentActionIconLive.observeAsState(Icons.Rounded.FilterAlt)
+                                        contentDependentActionIconLive.observeAsState(Icons.Default.FilterAlt)
                                     IconButton(onClick = { expanded = !expanded }) {
                                         val actionIconAnimationStart = System.currentTimeMillis()
                                         AnimatedContent(
@@ -508,7 +512,7 @@ class MainActivity : FragmentActivity() {
                             var showAboutDialog by remember { mutableStateOf(false) }
                             IconButton(onClick = { expanded = !expanded }) {
                                 Icon(
-                                    Icons.Rounded.MoreVert,
+                                    Icons.Default.MoreVert,
                                     stringResource(R.string.menu)
                                 )
                             }
@@ -538,7 +542,7 @@ class MainActivity : FragmentActivity() {
                                                 Modifier.padding(8.dp)
                                             ) {
                                                 Icon(
-                                                    Icons.AutoMirrored.Rounded.ArrowBack,
+                                                    Icons.AutoMirrored.Default.ArrowBack,
                                                     stringResource(R.string.back)
                                                 )
                                             }
@@ -622,23 +626,23 @@ class MainActivity : FragmentActivity() {
 
                         Screen.MainNav -> {
                             val screenStartTime = System.currentTimeMillis()
-                            val result = NavScreen(Modifier.padding(padding), pinFinished)
+                            NavScreen(Modifier.padding(padding), pinFinished)
                             if (BuildConfig.DEBUG) {
                                 if (BuildConfig.DEBUG) {
                                     Log.d("Performance", "NavScreen rendered in ${System.currentTimeMillis() - screenStartTime}ms")
                                 }
                             }
-                            val navBackStackEntry = navController.value!!.currentBackStackEntryAsState()
-                            val currentRoute = navBackStackEntry.value?.destination?.route
-                            NavSection.values().firstOrNull { it.route == currentRoute }?.title ?: R.string.app_name
+                            val mainNavBackStackEntry = navController.value?.currentBackStackEntryAsState()
+                            val mainCurrentRoute = mainNavBackStackEntry?.value?.destination?.route
+                            NavSection.values().firstOrNull { it.route == mainCurrentRoute }?.title ?: R.string.app_name
                         }
                         else -> {
                             val screenStartTime = System.currentTimeMillis()
-                            val result = NavScreen(Modifier.padding(padding), pinFinished)
+                            NavScreen(Modifier.padding(padding), pinFinished)
                             Log.d("Performance", "NavScreen rendered in ${System.currentTimeMillis() - screenStartTime}ms")
-                            val navBackStackEntry = navController.value!!.currentBackStackEntryAsState()
-                            val currentRoute = navBackStackEntry.value?.destination?.route
-                            NavSection.values().firstOrNull { it.route == currentRoute }?.title ?: R.string.app_name
+                            val elseNavBackStackEntry = navController.value?.currentBackStackEntryAsState()
+                            val elseCurrentRoute = elseNavBackStackEntry?.value?.destination?.route
+                            NavSection.values().firstOrNull { it.route == elseCurrentRoute }?.title ?: R.string.app_name
                         }
                     }
                 }
@@ -692,3 +696,6 @@ class MainActivity : FragmentActivity() {
         }
     }
 }
+
+
+

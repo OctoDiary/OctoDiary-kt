@@ -1,13 +1,17 @@
 package org.bxkr.octodiary.components.settings
 
+
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Bedtime
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import android.Manifest
 import android.content.pm.PackageManager
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.*
 import androidx.compose.material3.*
 import androidx.compose.material3.ListItem
 import androidx.compose.runtime.*
@@ -395,7 +399,7 @@ fun AiSettings() {
                         headlineContent = { Text("Время отхода ко сну") },
                         supportingContent = { Text("Для составления персонального плана") },
                         leadingContent = {
-                            Icon(Icons.Rounded.Bedtime, null)
+                            Icon(Icons.Default.Bedtime, null)
                         },
                         trailingContent = {
                             Text(
@@ -448,7 +452,7 @@ fun AiSettings() {
                             .fillMaxWidth()
                     ) {
                         Icon(
-                            Icons.Rounded.Info,
+                            Icons.Default.Info,
                             contentDescription = null,
                             tint = MaterialTheme.colorScheme.primary,
                             modifier = Modifier.padding(end = 12.dp)
@@ -584,7 +588,7 @@ fun AiSettings() {
                         IconButton(onClick = { 
                             tempHour = (tempHour + 1) % 24 
                         }) {
-                            Icon(Icons.Rounded.KeyboardArrowUp, null)
+                            Icon(Icons.Default.KeyboardArrowUp, null)
                         }
                         Text(
                             String.format("%02d", tempHour),
@@ -593,7 +597,7 @@ fun AiSettings() {
                         IconButton(onClick = { 
                             tempHour = if (tempHour - 1 < 0) 23 else tempHour - 1
                         }) {
-                            Icon(Icons.Rounded.KeyboardArrowDown, null)
+                            Icon(Icons.Default.KeyboardArrowDown, null)
                         }
                     }
                     
@@ -608,7 +612,7 @@ fun AiSettings() {
                         IconButton(onClick = { 
                             tempMinute = (tempMinute + 15) % 60
                         }) {
-                            Icon(Icons.Rounded.KeyboardArrowUp, null)
+                            Icon(Icons.Default.KeyboardArrowUp, null)
                         }
                         Text(
                             String.format("%02d", tempMinute),
@@ -617,7 +621,7 @@ fun AiSettings() {
                         IconButton(onClick = { 
                             tempMinute = if (tempMinute - 15 < 0) 45 else tempMinute - 15
                         }) {
-                            Icon(Icons.Rounded.KeyboardArrowDown, null)
+                            Icon(Icons.Default.KeyboardArrowDown, null)
                         }
                     }
                 }
@@ -678,3 +682,6 @@ fun AiSettings() {
         )
     }
 }
+
+
+

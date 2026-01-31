@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.ui.theme.pink
 
+
+import androidx.compose.material.icons.Icons
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 
@@ -68,4 +70,7 @@ val DarkColorScheme = darkColorScheme(
     surfaceVariant = md_theme_dark_surfaceVariant,
     onSurfaceVariant = md_theme_dark_onSurfaceVariant,
 )
+
+
+
 

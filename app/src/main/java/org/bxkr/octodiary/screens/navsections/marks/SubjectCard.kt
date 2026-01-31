@@ -1,5 +1,11 @@
 package org.bxkr.octodiary.screens.navsections.marks
 
+
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.ArrowDropUp
+import androidx.compose.material.icons.filled.Calculate
+import androidx.compose.material.icons.filled.Done
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -20,11 +26,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.ArrowDropDown
-import androidx.compose.material.icons.rounded.ArrowDropUp
-import androidx.compose.material.icons.rounded.Calculate
-import androidx.compose.material.icons.rounded.Done
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.FilledIconButton
@@ -138,13 +139,13 @@ fun SubjectCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(
-                    Icons.Rounded.Calculate,
+                    Icons.Default.Calculate,
                     stringResource(R.string.mark_calculator),
                     Modifier.padding(horizontal = 16.dp),
                     MaterialTheme.colorScheme.outline
                 )
                 Icon(
-                    Icons.Rounded.Calculate,
+                    Icons.Default.Calculate,
                     stringResource(R.string.mark_calculator),
                     Modifier.padding(horizontal = 16.dp),
                     MaterialTheme.colorScheme.outline
@@ -275,13 +276,13 @@ fun AverageChip(value: String, dynamic: String, showArrow: Boolean = true, onCli
             if (showArrow) {
                 if (dynamic == "UP") {
                     Icon(
-                        imageVector = Icons.Rounded.ArrowDropUp,
+                        imageVector = Icons.Default.ArrowDropUp,
                         contentDescription = dynamic,
                         tint = MaterialTheme.colorScheme.primary
                     )
                 } else {
                     Icon(
-                        imageVector = Icons.Rounded.ArrowDropDown,
+                        imageVector = Icons.Default.ArrowDropDown,
                         contentDescription = dynamic,
                         tint = MaterialTheme.colorScheme.tertiary
                     )
@@ -304,7 +305,7 @@ fun FinalChip(fixedValue: String) {
         },
         leadingIcon = {
             Icon(
-                imageVector = Icons.Rounded.Done,
+                imageVector = Icons.Default.Done,
                 contentDescription = stringResource(id = R.string.final_mark),
                 modifier = Modifier.size(FilterChipDefaults.IconSize)
             )
@@ -312,3 +313,5 @@ fun FinalChip(fixedValue: String) {
         modifier = Modifier.padding(start = 16.dp)
     )
 }
+
+

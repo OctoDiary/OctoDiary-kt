@@ -1,6 +1,8 @@
 package org.bxkr.octodiary.models.lessonschedule
 
 
+
+import androidx.compose.material.icons.Icons
 import com.google.gson.annotations.SerializedName
 
 data class Teacher(
@@ -17,3 +19,5 @@ data class Teacher(
     @SerializedName("user_id")
     val userId: Any?
 )
+
+

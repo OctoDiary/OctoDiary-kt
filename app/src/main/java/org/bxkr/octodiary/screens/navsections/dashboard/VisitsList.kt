@@ -1,12 +1,13 @@
 package org.bxkr.octodiary.screens.navsections.dashboard
 
+
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowForward
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
@@ -51,7 +52,7 @@ fun VisitsList() {
                                 modifier = Modifier.padding(end = 4.dp)
                             )
                             Icon(
-                                Icons.AutoMirrored.Rounded.ArrowForward,
+                                Icons.AutoMirrored.Default.ArrowForward,
                                 stringResource(id = R.string.to),
                                 modifier = Modifier.padding(end = 4.dp)
                             )
@@ -69,3 +70,5 @@ fun VisitsList() {
         }
     }
 }
+
+

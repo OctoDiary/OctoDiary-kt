@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.screens.navsections.homeworks
 
+
+import androidx.compose.material.icons.Icons
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -70,3 +72,5 @@ fun HomeworkDay(homeworks: List<org.bxkr.octodiary.models.homeworks2.Homework>) 
         }
     }
 }
+
+

@@ -1,5 +1,8 @@
 package org.bxkr.octodiary.screens
 
+
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.OpenInNew
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -8,8 +11,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.OpenInNew
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -175,7 +176,7 @@ private fun DiaryIcon(diary: Diary) {
         }
         else -> {
             Icon(
-                Icons.AutoMirrored.Rounded.OpenInNew,
+                Icons.AutoMirrored.Default.OpenInNew,
                 contentDescription = stringResource(id = R.string.log_in),
                 modifier = Modifier.padding(start = 16.dp, end = 8.dp),
                 tint = Color.White
@@ -227,3 +228,6 @@ fun LoginPreview() {
         }
     }
 }
+
+
+

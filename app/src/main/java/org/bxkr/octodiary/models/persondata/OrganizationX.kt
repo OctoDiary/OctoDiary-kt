@@ -1,6 +1,8 @@
 package org.bxkr.octodiary.models.persondata
 
 
+
+import androidx.compose.material.icons.Icons
 import com.google.gson.annotations.SerializedName
 
 data class OrganizationX(
@@ -15,3 +17,5 @@ data class OrganizationX(
     @SerializedName("status_id")
     val statusId: Int
 )
+
+

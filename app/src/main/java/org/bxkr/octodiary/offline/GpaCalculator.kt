@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.offline
 
+
+import androidx.compose.material.icons.Icons
 /**
  * Специализированный калькулятор GPA с поддержкой различных шкал оценок.
  * Поддерживает международные шкалы и конвертацию между ними.
@@ -378,3 +380,5 @@ object GpaCalculator {
         }
     }
 }
+
+

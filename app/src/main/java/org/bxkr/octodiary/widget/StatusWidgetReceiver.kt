@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.widget
 
+
+import androidx.compose.material.icons.Icons
 import android.content.Context
 import android.content.Intent
 import androidx.glance.appwidget.GlanceAppWidget
@@ -15,3 +17,5 @@ class StatusWidgetReceiver : GlanceAppWidgetReceiver() {
         runBlocking { glanceAppWidget.updateAll(context) }
     }
 }
+
+

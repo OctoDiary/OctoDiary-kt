@@ -25,7 +25,7 @@ interface MosAuthAPI {
         override fun getBaseUrl(diary: Diary): String {
             return when (diary) {
                 Diary.MES -> BaseUrl.MOS_AUTH
-                Diary.MySchool -> throw NoSuchFieldError()
+                Diary.MySchool -> throw IllegalArgumentException("MosAuthAPI is not supported for MySchool")
             }
         }
     }
@@ -77,3 +77,5 @@ interface MosAuthAPI {
         @Header("Authorization") authHeader: String,
     ): Call<TokenExchange.Refresh>
 }
+
+

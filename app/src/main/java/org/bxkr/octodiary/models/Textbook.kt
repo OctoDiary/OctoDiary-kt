@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.models
 
+
+import androidx.compose.material.icons.Icons
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
@@ -17,3 +19,6 @@ data class Textbook(
     @SerializedName("addedDate") val addedDate: Long = System.currentTimeMillis(),
     @SerializedName("pageCount") val pageCount: Int? = null
 ) : Serializable
+
+
+

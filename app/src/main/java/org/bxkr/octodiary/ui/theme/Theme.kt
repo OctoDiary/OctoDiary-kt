@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.ui.theme
 
+
+import androidx.compose.material.icons.Icons
 import android.app.Activity
 import android.os.Build
 import androidx.compose.animation.core.tween
@@ -85,3 +87,5 @@ fun OctoDiaryTheme(
         content = content
     )
 }
+
+

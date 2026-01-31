@@ -7,7 +7,7 @@
     <string name="auth">Аутентификация</string>
     <string name="wrong">Неправильное имя пользователя и/или пароль!</string>
     <string name="auth_out_of_date">Аутентификационные данные устарели</string>
-    <string name="week_n">Неделя с %s по %s</string>
+    <string name="week_n" formatted="false">Неделя с %s по %s</string>
     <string name="free_day">Свободный день!</string>
     <string name="diary">Дневник</string>
     <string name="profile">Профиль</string>
@@ -72,14 +72,14 @@
     <string name="feed_type_comment">Комментарий к уроку</string>
     <string name="image">Картинка</string>
     <string name="data_update_channel_name">Обновление школьных данных</string>
-    <string name="notification_new_mark_text">Новая оценка: %s, %s, %s</string>
-    <string name="notification_new_mark_text_no_value">Новая оценка: %s, %s</string>
+    <string name="notification_new_mark_text" formatted="false">Новая оценка: %s, %s, %s</string>
+    <string name="notification_new_mark_text_no_value" formatted="false">Новая оценка: %s, %s</string>
     <string name="notification_new_mark_title">Новая оценка!</string>
     <string name="period_marks">Оценки за период</string>
     <string name="average_mark">Средний балл</string>
     <string name="average_important">За работы</string>
     <string name="not_yet">Пока нет</string>
-    <string name="period_average_extended">Средний балл: %s – %s за %s</string>
+    <string name="period_average_extended" formatted="false">Средний балл: %s – %s за %s</string>
     <string name="half_year">полугодие</string>
     <string name="quarter">четверть</string>
     <string name="semester">семестр</string>
@@ -118,7 +118,7 @@
     <string name="check_connection">Сервер не отвечает или нет интернета</string>
     <string name="kundelik">Күнделiк</string>
     <string name="weighted_template">Взвеш. сред. балл: %s</string>
-    <string name="weighted_template_extended">Взвеш. сред. балл: %s - %s за %s</string>
+    <string name="weighted_template_extended" formatted="false">Взвеш. сред. балл: %s - %s за %s</string>
     <string name="unknowns">Неизвестные</string>
     <string name="change_the_avatar">Поменять аватарку</string>
     <string name="weighted_average">Взвешенный</string>
@@ -204,7 +204,7 @@
     <string name="holidays">Каникулы</string>
     <string name="report_issue">Сообщить о проблеме</string>
     <string name="s_till_the_start">%s до начала</string>
-    <string name="when_to_go">На учёбу %s в %s</string>
+    <string name="when_to_go" formatted="false">На учёбу %s в %s</string>
     <string name="widget_name">Состояние учёбы</string>
     <string name="widget_description">Самая важная информация об уроках на главном экране</string>
     <string name="error_occurred">Произошла ошибка!</string>
@@ -255,7 +255,7 @@
     <string name="token_auth_warning">Авторизация будет активна до истечения срока действия токена</string>
     <string name="token">Токен</string>
     <string name="invalid_token">Не является JWT токеном!</string>
-    <string name="token_description">Система: %s\nАктивен до: %s</string>
+    <string name="token_description" formatted="false">Система: %s\nАктивен до: %s</string>
     <string name="paste">Вставить</string>
     <string name="changelog">Что нового</string>
     <string name="click_to_show_more">Нажмите, чтобы показать больше</string>
@@ -304,7 +304,7 @@
     <string name="approbation_suffix">(пробный)</string>
     <string name="variant">Вариант</string>
     <string name="results">Результаты</string>
-    <string name="t_points_of_t">%s/%s баллов</string>
+    <string name="t_points_of_t" formatted="false">%s/%s баллов</string>
     <string name="t_points">%s баллов</string>
     <string name="part_a">Часть A</string>
     <string name="part_b">Часть B</string>

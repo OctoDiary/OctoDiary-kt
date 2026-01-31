@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.network.interfaces
 
+
+import androidx.compose.material.icons.Icons
 import okhttp3.ResponseBody
 import org.bxkr.octodiary.Diary
 import org.bxkr.octodiary.models.auth.RegionalCredentialsResponse
@@ -38,3 +40,5 @@ interface RegionalAuthAPI {
         @Query("code") code: String
     ): Call<ResponseBody>
 }
+
+

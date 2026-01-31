@@ -1,5 +1,8 @@
 package org.bxkr.octodiary.screens.navsections.profile.meal
 
+
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -11,8 +14,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.ArrowDropDown
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -59,7 +60,7 @@ fun ElevatedCardWithContent(
                 ) {
                     icons()
                     Icon(
-                        Icons.Rounded.ArrowDropDown,
+                        Icons.Default.ArrowDropDown,
                         stringResource(R.string.expand),
                         modifier = Modifier
                             .clip(MaterialTheme.shapes.large)
@@ -80,3 +81,5 @@ fun ElevatedCardWithContent(
         }
     }
 }
+
+

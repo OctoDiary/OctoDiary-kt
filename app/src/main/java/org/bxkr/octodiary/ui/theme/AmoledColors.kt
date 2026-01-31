@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.ui.theme
 
+
+import androidx.compose.material.icons.Icons
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.ui.graphics.Color
 
@@ -63,3 +65,6 @@ val AmoledColorScheme = darkColorScheme(
     // Инверсия для primary
     inversePrimary = Color(0xFF1976D2)
 )
+
+
+

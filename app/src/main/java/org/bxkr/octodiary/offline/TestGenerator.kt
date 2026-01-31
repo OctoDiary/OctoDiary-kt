@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.offline
 
+
+import androidx.compose.material.icons.Icons
 /**
  * Генератор тестов для самопроверки знаний.
  * Создаёт различные типы тестов на основе учебного материала.
@@ -466,3 +468,5 @@ object TestGenerator {
         return "question_${System.currentTimeMillis()}_${(0..9999).random()}"
     }
 }
+
+

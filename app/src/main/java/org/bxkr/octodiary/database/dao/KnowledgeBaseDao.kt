@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.database.dao
 
+
+import androidx.compose.material.icons.Icons
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 import org.bxkr.octodiary.database.entity.KnowledgeBaseEntity
@@ -66,3 +68,6 @@ interface KnowledgeBaseDao {
     @Query("DELETE FROM knowledge_base")
     suspend fun deleteAll()
 }
+
+
+

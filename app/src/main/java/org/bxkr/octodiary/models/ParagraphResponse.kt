@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.models
 
+
+import androidx.compose.material.icons.Icons
 data class ParagraphResponse(
     val requestId: String,
     val title: String,
@@ -12,3 +14,5 @@ data class ParagraphResponse(
     val success: Boolean,
     val errorMessage: String? = null
 )
+
+

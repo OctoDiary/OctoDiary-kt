@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.components
 
+
+import androidx.compose.material.icons.Icons
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -80,3 +82,5 @@ fun ProfileChooser() {
         }
     }
 }
+
+

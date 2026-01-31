@@ -1,6 +1,8 @@
 package org.bxkr.octodiary.models.profile
 
 
+
+import androidx.compose.material.icons.Icons
 import com.google.gson.annotations.SerializedName
 
 data class Representative(
@@ -29,3 +31,5 @@ data class Representative(
     @SerializedName("user_id")
     val userId: Any?
 )
+
+

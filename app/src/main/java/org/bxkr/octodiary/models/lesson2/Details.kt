@@ -1,6 +1,8 @@
 package org.bxkr.octodiary.models.lesson2
 
 
+
+import androidx.compose.material.icons.Icons
 import com.google.gson.annotations.SerializedName
 
 data class Details(
@@ -15,3 +17,5 @@ data class Details(
     @SerializedName("theme")
     val theme: Theme
 )
+
+

@@ -1,5 +1,9 @@
 package org.bxkr.octodiary.screens.navsections.daybook
 
+
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
@@ -8,9 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.shape.CornerSize
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowLeft
-import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -81,7 +82,7 @@ fun DateSeeker(
                     }, enabled = loadingFinished.value) {
                         AnimatedVisibility(visible = loadingFinished.value) {
                             Icon(
-                                Icons.AutoMirrored.Rounded.KeyboardArrowLeft,
+                                Icons.AutoMirrored.Default.KeyboardArrowLeft,
                                 stringResource(id = R.string.add_week_before),
                                 tint = MaterialTheme.colorScheme.primary
                             )
@@ -118,7 +119,7 @@ fun DateSeeker(
                     }, enabled = loadingFinished.value) {
                         AnimatedVisibility(visible = loadingFinished.value) {
                             Icon(
-                                Icons.AutoMirrored.Rounded.KeyboardArrowRight,
+                                Icons.AutoMirrored.Default.KeyboardArrowRight,
                                 stringResource(id = R.string.add_week_after),
                                 tint = MaterialTheme.colorScheme.primary
                             )
@@ -147,3 +148,5 @@ fun DateSeeker(
         }
     }
 }
+
+

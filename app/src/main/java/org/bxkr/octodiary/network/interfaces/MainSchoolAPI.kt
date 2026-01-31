@@ -1,5 +1,6 @@
 package org.bxkr.octodiary.network.interfaces
 
+
 import com.google.gson.JsonObject
 import org.bxkr.octodiary.Diary
 import org.bxkr.octodiary.models.daysbalanceinfo.DaysBalanceInfo
@@ -227,15 +228,6 @@ interface MainSchoolAPI {
         @Header("X-Mes-Subsystem") mesSubsystem: String = MESAPIConfig.FAMILYMP
     ): Call<LessonResponse>
 
-    // bullshit
-//    @GET("usersettings/v1")
-//    fun <Model> pullUserSettings(
-//        @Header("auth-token") accessToken: String,
-//        @Query("name") path: String,
-//        @Header("X-Mes-Subsystem") mesSubsystem: String = MESAPIConfig.FAMILYMP,
-//        @Query("subsystem_id") subsystemId: Int = 1,
-//    ): Call<Model>
-
     @GET("usersettings/v1")
     fun pullUserSettingsRaw(
         @Header("auth-token") accessToken: String,
@@ -307,3 +299,5 @@ interface MainSchoolAPI {
         @Header("X-Mes-Subsystem") mesSubsystem: String = MESAPIConfig.FAMILYMP
     ): Call<String>
 }
+
+

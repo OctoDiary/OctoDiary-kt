@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.offline
 
+
+import androidx.compose.material.icons.Icons
 /**
  * Генератор мотивационных цитат и сообщений.
  * Предоставляет вдохновляющие цитаты для разных ситуаций в учёбе.
@@ -286,3 +288,5 @@ object MotivationGenerator {
         return "quote_${System.currentTimeMillis()}_${(0..9999).random()}"
     }
 }
+
+

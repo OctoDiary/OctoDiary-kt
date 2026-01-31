@@ -1,6 +1,8 @@
 package org.bxkr.octodiary.models.lessonschedule
 
 
+
+import androidx.compose.material.icons.Icons
 import com.google.gson.annotations.SerializedName
 
 data class Url(
@@ -9,3 +11,5 @@ data class Url(
     @SerializedName("url_type")
     val urlType: String
 )
+
+

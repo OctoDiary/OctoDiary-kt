@@ -1,9 +1,10 @@
 package org.bxkr.octodiary.screens
 
+
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Lightbulb
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -31,7 +32,7 @@ fun RecommendationsScreen() {
                     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer)
                 ) {
                     Column(Modifier.padding(16.dp)) {
-                        Icon(Icons.Rounded.Lightbulb, null, Modifier.size(32.dp), tint = MaterialTheme.colorScheme.primary)
+                        Icon(Icons.Default.Lightbulb, null, Modifier.size(32.dp), tint = MaterialTheme.colorScheme.primary)
                         Spacer(Modifier.height(8.dp))
                         Text("Начните делать ДЗ в 18:00", style = MaterialTheme.typography.titleMedium)
                         Text("С учётом времени отхода ко сну (21:00) и сложности заданий", style = MaterialTheme.typography.bodySmall)
@@ -54,3 +55,6 @@ fun RecommendationsScreen() {
         }
     }
 }
+
+
+

@@ -1,9 +1,12 @@
 package org.bxkr.octodiary.screens
 
+
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Palette
+import androidx.compose.material.icons.filled.Save
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -22,10 +25,10 @@ fun ThemeCreatorScreen() {
                 title = { Text("Создатель тем") },
                 actions = {
                     IconButton(onClick = { }) {
-                        Icon(Icons.Rounded.Share, "Поделиться")
+                        Icon(Icons.Default.Share, "Поделиться")
                     }
                     IconButton(onClick = { }) {
-                        Icon(Icons.Rounded.Save, "Сохранить")
+                        Icon(Icons.Default.Save, "Сохранить")
                     }
                 }
             )
@@ -63,10 +66,13 @@ fun ThemeCreatorScreen() {
                 onClick = { },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Icon(Icons.Rounded.Palette, null)
+                Icon(Icons.Default.Palette, null)
                 Spacer(Modifier.width(8.dp))
                 Text("Применить тему")
             }
         }
     }
 }
+
+
+

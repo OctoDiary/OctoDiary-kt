@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.screens.navsections.access
 
+
+import androidx.compose.material.icons.Icons
 import android.content.Context
 import android.os.Build
 import android.os.VibrationEffect
@@ -45,3 +47,6 @@ fun performHaptic(context: Context, type: HapticType) {
 enum class HapticType {
     SUCCESS, ERROR, LIGHT
 }
+
+
+

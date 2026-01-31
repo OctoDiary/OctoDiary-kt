@@ -1,6 +1,8 @@
 package org.bxkr.octodiary.models.homeworks
 
 
+
+import androidx.compose.material.icons.Icons
 import com.google.gson.annotations.SerializedName
 
 data class Material(
@@ -9,3 +11,5 @@ data class Material(
     @SerializedName("selected_mode")
     val selectedMode: String
 )
+
+

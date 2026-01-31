@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.nfc
 
+
+import androidx.compose.material.icons.Icons
 import android.nfc.cardemulation.HostApduService
 import android.os.Bundle
 import android.util.Log
@@ -42,7 +44,12 @@ class CardEmulationService : HostApduService() {
             if (savedUid != null) {
                 Log.d(TAG, "Emulating card with UID: $savedUid")
                 // Возвращаем UID + SUCCESS
-                return savedUid.hexToByteArray() + SUCCESS
+                val uidBytes = savedUid.hexToByteArray()
+                if (uidBytes.isNotEmpty()) {
+                    return uidBytes + SUCCESS
+                } else {
+                    Log.e(TAG, "Invalid saved UID format")
+                }
             }
         }
         
@@ -50,7 +57,8 @@ class CardEmulationService : HostApduService() {
         val savedResponse = cachePrefs.get<String>("nfc_card_response")
         return if (savedResponse != null) {
             Log.d(TAG, "Returning saved response: $savedResponse")
-            savedResponse.hexToByteArray()
+            val responseBytes = savedResponse.hexToByteArray()
+            if (responseBytes.isNotEmpty()) responseBytes else SUCCESS
         } else {
             SUCCESS
         }
@@ -65,6 +73,17 @@ class CardEmulationService : HostApduService() {
     }
     
     private fun String.hexToByteArray(): ByteArray {
-        return chunked(2).map { it.toInt(16).toByte() }.toByteArray()
+        return try {
+            val clean = this.replace(" ", "").uppercase()
+            // Если длина нечетная, добавляем ведущий ноль (хотя для UID это может быть неверно, но безопаснее чем краш)
+            val finalString = if (clean.length % 2 != 0) "0$clean" else clean
+            finalString.chunked(2).map { it.toInt(16).toByte() }.toByteArray()
+        } catch (e: Exception) {
+            Log.e(TAG, "Error parsing hex string: $this", e)
+            byteArrayOf()
+        }
     }
 }
+
+
+

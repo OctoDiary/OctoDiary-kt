@@ -1,5 +1,12 @@
 package org.bxkr.octodiary.components.settings
 
+
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
+import androidx.compose.material.icons.filled.Book
+import androidx.compose.material.icons.filled.Campaign
+import androidx.compose.material.icons.filled.Code
+import androidx.compose.material.icons.filled.SmartToy
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -13,12 +20,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowForward
-import androidx.compose.material.icons.rounded.Book
-import androidx.compose.material.icons.rounded.Campaign
-import androidx.compose.material.icons.rounded.Code
-import androidx.compose.material.icons.rounded.SmartToy
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.FilledTonalIconButton
@@ -139,7 +140,7 @@ private fun Card() {
                     context.openUri(NetworkService.ExternalIntegrationConfig.GITHUB_REPO_URL)
                 }) {
                     Icon(
-                        Icons.Rounded.Code,
+                        Icons.Default.Code,
                         "GitHub"
                     )
                 }
@@ -147,7 +148,7 @@ private fun Card() {
                     context.openUri(NetworkService.ExternalIntegrationConfig.TELEGRAM_CHANNEL_URL)
                 }) {
                     Icon(
-                        Icons.Rounded.Campaign,
+                        Icons.Default.Campaign,
                         "Telegram"
                     )
                 }
@@ -295,7 +296,7 @@ private fun OtherProjects() {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Icon(
-                        Icons.Rounded.SmartToy,
+                        Icons.Default.SmartToy,
                         stringResource(R.string.bot),
                         Modifier
                             .padding(end = 8.dp)
@@ -313,7 +314,7 @@ private fun OtherProjects() {
                     }
                 }
                 Icon(
-                    Icons.AutoMirrored.Rounded.ArrowForward,
+                    Icons.AutoMirrored.Default.ArrowForward,
                     stringResource(R.string.open),
                     Modifier
                         .padding(end = 8.dp)
@@ -352,7 +353,7 @@ private fun OtherProjects() {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Icon(
-                        Icons.Rounded.Book,
+                        Icons.Default.Book,
                         stringResource(R.string.bot),
                         Modifier
                             .padding(end = 8.dp)
@@ -370,7 +371,7 @@ private fun OtherProjects() {
                     }
                 }
                 Icon(
-                    Icons.AutoMirrored.Rounded.ArrowForward,
+                    Icons.AutoMirrored.Default.ArrowForward,
                     stringResource(R.string.open),
                     Modifier
                         .padding(end = 8.dp)
@@ -391,3 +392,5 @@ fun AboutPreview() {
         }
     }
 }
+
+

@@ -1,6 +1,8 @@
 package org.bxkr.octodiary.models.persondata
 
 
+
+import androidx.compose.material.icons.Icons
 import com.google.gson.annotations.SerializedName
 
 data class Addresse(
@@ -35,3 +37,5 @@ data class Addresse(
     @SerializedName("validation_state_id")
     val validationStateId: Int
 )
+
+

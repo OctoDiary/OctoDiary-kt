@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.offline
 
+
+import androidx.compose.material.icons.Icons
 /**
  * Локальный словарь терминов для хранения и поиска учебных терминов.
  * Поддерживает несколько языков и предметов.
@@ -324,3 +326,5 @@ object TermDictionary {
 
     private fun Double.pow(exponent: Int): Double = Math.pow(this, exponent.toDouble())
 }
+
+

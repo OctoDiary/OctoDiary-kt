@@ -1,13 +1,18 @@
 package org.bxkr.octodiary.screens
 
+
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.AutoAwesome
+import androidx.compose.material.icons.filled.Book
+import androidx.compose.material.icons.filled.FileUpload
+import androidx.compose.material.icons.filled.Visibility
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -58,11 +63,11 @@ fun TextbookItemCard(
 
                 if (item.structuredText != null) {
                     IconButton(onClick = onViewStructure) {
-                        Icon(Icons.Rounded.Visibility, "Просмотр структуры")
+                        Icon(Icons.Default.Visibility, "Просмотр структуры")
                     }
                 } else {
                     IconButton(onClick = onStructureClick) {
-                        Icon(Icons.Rounded.AutoAwesome, "Структурировать AI")
+                        Icon(Icons.Default.AutoAwesome, "Структурировать AI")
                     }
                 }
             }
@@ -138,14 +143,14 @@ fun LibraryScreen() {
                 title = { Text("Библиотека учебников") },
                 actions = {
                     IconButton(onClick = { pdfPicker.launch("application/pdf") }) {
-                        Icon(Icons.Rounded.Add, "Добавить PDF")
+                        Icon(Icons.Default.Add, "Добавить PDF")
                     }
                 }
             )
         },
         floatingActionButton = {
             FloatingActionButton(onClick = { pdfPicker.launch("application/pdf") }) {
-                Icon(Icons.Rounded.FileUpload, "Загрузить PDF")
+                Icon(Icons.Default.FileUpload, "Загрузить PDF")
             }
         }
     ) { padding ->
@@ -181,7 +186,7 @@ fun LibraryScreen() {
                             .padding(16.dp)
                     ) {
                         Column(Modifier.padding(16.dp)) {
-                            Icon(Icons.Rounded.Book, null, Modifier.size(48.dp))
+                            Icon(Icons.Default.Book, null, Modifier.size(48.dp))
                             Spacer(Modifier.height(8.dp))
                             Text("Ваши учебники появятся здесь", style = MaterialTheme.typography.titleMedium)
                             Text("Загрузите PDF файлы учебников для удобного чтения и структурирования через AI", style = MaterialTheme.typography.bodySmall)
@@ -240,3 +245,6 @@ fun LibraryScreen() {
         }
     }
 }
+
+
+

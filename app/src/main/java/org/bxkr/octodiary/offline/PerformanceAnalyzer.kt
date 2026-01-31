@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.offline
 
+
+import androidx.compose.material.icons.Icons
 /**
  * Локальный анализатор успеваемости без использования API.
  * Анализирует оценки, паттерны обучения и предсказывает будущие результаты.
@@ -592,3 +594,5 @@ object PerformanceAnalyzer {
         val subject: String? = null
     )
 }
+
+

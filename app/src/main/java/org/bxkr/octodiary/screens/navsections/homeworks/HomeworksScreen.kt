@@ -1,13 +1,14 @@
 package org.bxkr.octodiary.screens.navsections.homeworks
 
+
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.FilterAlt
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.FilterAlt
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.MaterialTheme
@@ -50,7 +51,7 @@ fun HomeworksScreen() {
             }
         }
         enabledSubjectsLive.postValue(DataService.homeworks.map { it.subjectId })
-        contentDependentActionIconLive.postValue(Icons.Rounded.FilterAlt)
+        contentDependentActionIconLive.postValue(Icons.Default.FilterAlt)
         contentDependentActionLive.postValue {
             DataService.homeworks.map { it.subjectId to it.subjectName }.toSet().forEach {
                 var checked by rememberSaveable(key = it.first.toString()) {
@@ -108,3 +109,6 @@ fun HomeworksScreen() {
         }
     }
 }
+
+
+

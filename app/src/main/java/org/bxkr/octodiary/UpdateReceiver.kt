@@ -1,5 +1,7 @@
 package org.bxkr.octodiary
 
+
+import androidx.compose.material.icons.Icons
 import android.Manifest
 import android.app.Notification
 import android.app.PendingIntent
@@ -170,3 +172,5 @@ class UpdateReceiver : BroadcastReceiver() {
         }
     }
 }
+
+

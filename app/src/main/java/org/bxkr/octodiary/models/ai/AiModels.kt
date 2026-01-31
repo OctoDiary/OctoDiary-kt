@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.models.ai
 
+
+import androidx.compose.material.icons.Icons
 import java.time.LocalDateTime
 
 /**
@@ -172,3 +174,6 @@ data class StudyAdvice(
     val tips: List<String>,
     val createdAt: Long = System.currentTimeMillis()
 )
+
+
+

@@ -17,7 +17,28 @@ function CardsIcon({ className }: { className?: string }) {
   );
 }
 
-export function NFCPaymentAnimation() {
+const ANIMATION_DELAYS = {
+  START: 500,
+  APPROACH: 1000,
+  PROCESS: 800,
+  RETURN: 1000,
+  RESET: 800,
+};
+
+const CARD_OFFSETS = {
+  WAITING: {
+    PORTRAIT: { x: -150, y: -350 },
+    LANDSCAPE: { x: -150, y: -300 },
+  },
+};
+
+interface NFCPaymentAnimationProps {
+  cardTitle?: string;
+}
+
+export function NFCPaymentAnimation({
+  cardTitle = "Москвёнок",
+}: NFCPaymentAnimationProps) {
   const [stage, setStage] = useState<
     | "waiting"
     | "approaching"
@@ -25,47 +46,61 @@ export function NFCPaymentAnimation() {
     | "error"
     | "returning"
   >("waiting");
-  const [result, setResult] = useState<"success" | "error">(
-    "success",
-  );
+  const [result, setResult] = useState<"success" | "error">("success");
 
   useEffect(() => {
+    let isMounted = true;
+    const wait = (ms: number) =>
+      new Promise((resolve) => setTimeout(resolve, ms));
+
     // Автоматическая анимация
     const sequence = async () => {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await wait(ANIMATION_DELAYS.START);
+      if (!isMounted) return;
+      
+      // Start
+      await wait(ANIMATION_DELAYS.APPROACH);
+      if (!isMounted) return;
       setStage("approaching");
 
-      await new Promise((resolve) => setTimeout(resolve, 800));
+      await wait(ANIMATION_DELAYS.PROCESS);
+      if (!isMounted) return;
+      
       // Случайный результат
       const isSuccess = Math.random() > 0.3;
       setResult(isSuccess ? "success" : "error");
       setStage(isSuccess ? "success" : "error");
 
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await wait(ANIMATION_DELAYS.RETURN);
+      if (!isMounted) return;
       setStage("returning");
 
-      await new Promise((resolve) => setTimeout(resolve, 800));
+      await wait(ANIMATION_DELAYS.RESET);
+      if (!isMounted) return;
       setStage("waiting");
     };
 
     if (stage === "waiting") {
-      const timer = setTimeout(sequence, 500);
-      return () => clearTimeout(timer);
+      sequence();
     }
+
+    return () => {
+      isMounted = false;
+    };
   }, [stage]);
 
   // Адаптивные позиции карты для разных ориентаций
   const cardPosition = {
     waiting: {
-      portrait: { x: -150, y: -350 },
-      landscape: { x: -150, y: -300 },
+      portrait: CARD_OFFSETS.WAITING.PORTRAIT,
+      landscape: CARD_OFFSETS.WAITING.LANDSCAPE,
     },
     approaching: { x: 0, y: 0 },
     success: { x: 0, y: 0 },
     error: { x: 0, y: 0 },
     returning: {
-      portrait: { x: -150, y: -350 },
-      landscape: { x: -150, y: -300 },
+      portrait: CARD_OFFSETS.WAITING.PORTRAIT,
+      landscape: CARD_OFFSETS.WAITING.LANDSCAPE,
     },
   };
 
@@ -144,7 +179,7 @@ export function NFCPaymentAnimation() {
           </motion.div>
         </motion.div>
 
-        {/* Карта "Москвёнок" */}
+        {/* Карта */}
         <motion.div
           className="absolute w-56 h-36 bg-slate-700 dark:bg-slate-800 rounded-2xl shadow-2xl"
           animate={getCardPosition(stage)}
@@ -159,9 +194,9 @@ export function NFCPaymentAnimation() {
             marginLeft: "-112px",
           }}
         >
-          {/* Название "Москвёнок" в углу */}
+          {/* Название в углу */}
           <p className="absolute top-6 left-6 text-white text-xl tracking-wide">
-            Москвёнок
+            {cardTitle}
           </p>
 
           {/* Чип */}

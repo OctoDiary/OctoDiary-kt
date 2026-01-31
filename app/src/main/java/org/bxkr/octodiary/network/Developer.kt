@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.network
 
+
+import androidx.compose.material.icons.Icons
 data class Developer(
     val nickname: String,
     val githubLink: String?,
@@ -20,3 +22,5 @@ data class Developer(
         )
     }
 }
+
+

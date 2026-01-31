@@ -1,6 +1,8 @@
 package org.bxkr.octodiary.models.mark
 
 
+
+import androidx.compose.material.icons.Icons
 import com.google.gson.annotations.SerializedName
 
 data class MarksDistribution(
@@ -11,3 +13,5 @@ data class MarksDistribution(
     @SerializedName("percentage_of_students")
     val percentageOfStudents: Int,
 )
+
+

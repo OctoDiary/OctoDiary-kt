@@ -1,6 +1,8 @@
 package org.bxkr.octodiary.models.auth
 
 
+
+import androidx.compose.material.icons.Icons
 import com.google.gson.annotations.SerializedName
 
 data class RequestParameters(
@@ -9,3 +11,5 @@ data class RequestParameters(
     @SerializedName("mos_id_token")
     val mosIdToken: Any
 )
+
+

@@ -1,5 +1,10 @@
 package org.bxkr.octodiary.components.debugutils
 
+
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccessTime
+import androidx.compose.material.icons.filled.CalendarMonth
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
@@ -10,10 +15,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.AccessTime
-import androidx.compose.material.icons.rounded.CalendarMonth
-import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material3.Button
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
@@ -76,7 +77,7 @@ fun MainActivity.WidgetConfig(clear: () -> Unit) {
                         )
                     }
                     Surface(onClick = { clear() }) {
-                        Icon(Icons.Rounded.Close, "close", Modifier.padding(16.dp))
+                        Icon(Icons.Default.Close, "close", Modifier.padding(16.dp))
                     }
                 }
                 var textFieldValue by remember { mutableStateOf("") }
@@ -95,7 +96,7 @@ fun MainActivity.WidgetConfig(clear: () -> Unit) {
                     singleLine = true,
                     trailingIcon = {
                         IconButton(onClick = { showPicker = true }) {
-                            Icon(Icons.Rounded.CalendarMonth, "go")
+                            Icon(Icons.Default.CalendarMonth, "go")
                         }
                     },
                     supportingText = { Text("Click on widget to update it with new date") },
@@ -156,7 +157,7 @@ fun MainActivity.WidgetConfig(clear: () -> Unit) {
                                     .padding(8.dp)
                             ) {
                                 Icon(
-                                    if (isClockMode) Icons.Rounded.CalendarMonth else Icons.Rounded.AccessTime,
+                                    if (isClockMode) Icons.Default.CalendarMonth else Icons.Default.AccessTime,
                                     "Go to other mode"
                                 )
                             }
@@ -181,3 +182,5 @@ private fun MainActivity.setDemo(onSet: () -> Unit) {
     cachePrefs.save("eventCalendar" to Gson().toJson(events))
     onSet()
 }
+
+

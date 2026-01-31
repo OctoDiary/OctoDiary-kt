@@ -1,5 +1,12 @@
 package org.bxkr.octodiary.components.ai
 
+
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Description
+import androidx.compose.material.icons.filled.Error
+import androidx.compose.material.icons.filled.FileOpen
+import androidx.compose.material.icons.filled.TextSnippet
 import android.content.Intent
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -7,8 +14,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -18,6 +23,25 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import org.bxkr.octodiary.ai.PdfTextExtractor
+
+/**
+ * Получить имя файла из URI
+ */
+private fun getFileNameFromUri(context: android.content.Context, uri: Uri): String? {
+    return try {
+        val cursor = context.contentResolver.query(uri, null, null, null, null)
+        cursor?.use {
+            if (it.moveToFirst()) {
+                val displayNameIndex = it.getColumnIndex(android.provider.MediaStore.MediaColumns.DISPLAY_NAME)
+                if (displayNameIndex != -1) {
+                    it.getString(displayNameIndex)
+                } else null
+            } else null
+        }
+    } catch (e: Exception) {
+        null
+    }
+}
 
 /**
  * Диалог для извлечения текста из PDF файлов
@@ -67,7 +91,7 @@ fun PdfTextExtractorDialog(
                         },
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Icon(Icons.Rounded.FileOpen, null)
+                        Icon(Icons.Default.FileOpen, null)
                         Spacer(Modifier.width(8.dp))
                         Text("Выбрать PDF файл")
                     }
@@ -86,7 +110,7 @@ fun PdfTextExtractorDialog(
                             horizontalArrangement = Arrangement.spacedBy(12.dp)
                         ) {
                             Icon(
-                                Icons.Rounded.Description,
+                                Icons.Default.Description,
                                 null,
                                 tint = MaterialTheme.colorScheme.primary
                             )
@@ -111,7 +135,7 @@ fun PdfTextExtractorDialog(
                                     error = null
                                 }
                             ) {
-                                Icon(Icons.Rounded.Clear, null)
+                                Icon(Icons.Default.Clear, null)
                             }
                         }
                     }
@@ -143,7 +167,7 @@ fun PdfTextExtractorDialog(
                             )
                             Spacer(Modifier.width(8.dp))
                         } else {
-                            Icon(Icons.Rounded.TextSnippet, null)
+                            Icon(Icons.Default.TextSnippet, null)
                             Spacer(Modifier.width(8.dp))
                         }
                         Text(if (isExtracting) "Извлечение..." else "Извлечь текст")
@@ -164,7 +188,7 @@ fun PdfTextExtractorDialog(
                             horizontalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
                             Icon(
-                                Icons.Rounded.Error,
+                                Icons.Default.Error,
                                 null,
                                 tint = MaterialTheme.colorScheme.error
                             )
@@ -213,23 +237,4 @@ fun PdfTextExtractorDialog(
             }
         }
     )
-}
-
-/**
- * Получить имя файла из URI
- */
-private fun getFileNameFromUri(context: android.content.Context, uri: Uri): String? {
-    return try {
-        val cursor = context.contentResolver.query(uri, null, null, null, null)
-        cursor?.use {
-            if (it.moveToFirst()) {
-                val displayNameIndex = it.getColumnIndex(android.provider.MediaStore.MediaColumns.DISPLAY_NAME)
-                if (displayNameIndex != -1) {
-                    it.getString(displayNameIndex)
-                } else null
-            } else null
-        }
-    } catch (e: Exception) {
-        null
-    }
 }

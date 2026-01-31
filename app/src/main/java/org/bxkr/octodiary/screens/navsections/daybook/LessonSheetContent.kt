@@ -1,5 +1,10 @@
 package org.bxkr.octodiary.screens.navsections.daybook
 
+
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Image
+import androidx.compose.ui.graphics.vector.ImageVector
+import org.bxkr.octodiary.models.lessonschedule.AdditionalMaterialX
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.clickable
@@ -152,3 +157,5 @@ fun LessonSheetContent(lessonId: Long) {
         }
     }
 }
+
+

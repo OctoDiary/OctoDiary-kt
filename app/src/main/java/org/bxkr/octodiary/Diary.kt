@@ -1,5 +1,10 @@
 package org.bxkr.octodiary
 
+
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Landscape
+import androidx.compose.material.icons.filled.LocationCity
+import androidx.compose.material.icons.automirrored.filled.OpenInNew
 import android.content.Context
 import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
@@ -12,10 +17,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.OpenInNew
-import androidx.compose.material.icons.rounded.Landscape
-import androidx.compose.material.icons.rounded.LocationCity
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -53,7 +54,7 @@ enum class Diary(
 ) {
     MES(
         R.string.mes,
-        Icons.Rounded.LocationCity,
+        Icons.Default.LocationCity,
         listOf(R.color.mosru_primary, R.color.mosru_primary),
         R.string.log_in_on_mosru,
         { MESLoginService.logInWithMosRu(it) },
@@ -84,7 +85,7 @@ enum class Diary(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(
-                    Icons.AutoMirrored.Rounded.OpenInNew,
+                    Icons.AutoMirrored.Default.OpenInNew,
                     contentDescription = stringResource(id = R.string.log_in),
                     modifier = Modifier.padding(start = 16.dp, end = 8.dp),
                     tint = Color.White
@@ -98,7 +99,7 @@ enum class Diary(
     ),
     MySchool(
         R.string.myschool,
-        Icons.Rounded.Landscape,
+        Icons.Default.Landscape,
         listOf(R.color.blue, R.color.red),
         R.string.log_in_on_gosuslugi,
         { MySchoolLoginService.logInWithEsia(it, MySchool) },
@@ -187,3 +188,5 @@ enum class Diary(
         }
     )
 }
+
+

@@ -1,6 +1,8 @@
 package org.bxkr.octodiary.models.marklistsubject
 
 
+
+import androidx.compose.material.icons.Icons
 import com.google.gson.annotations.SerializedName
 
 data class Period(
@@ -27,3 +29,5 @@ data class Period(
     @SerializedName("value")
     val value: String,
 )
+
+

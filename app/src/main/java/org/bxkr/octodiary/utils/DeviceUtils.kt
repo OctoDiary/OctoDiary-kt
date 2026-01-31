@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.utils
 
+
+import androidx.compose.material.icons.Icons
 import android.content.Context
 import android.content.res.Configuration
 
@@ -42,3 +44,6 @@ object DeviceUtils {
         }
     }
 }
+
+
+

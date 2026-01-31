@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.database.dao
 
+
+import androidx.compose.material.icons.Icons
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 import org.bxkr.octodiary.database.entity.TextbookExtractEntity
@@ -59,3 +61,5 @@ interface TextbookExtractDao {
     @Query("UPDATE textbook_extracts SET isCompleted = :completed, completedAt = :completedAt, updatedAt = :updatedAt WHERE id = :id")
     suspend fun updateCompletionStatus(id: Long, completed: Boolean, completedAt: java.util.Date?, updatedAt: java.util.Date)
 }
+
+

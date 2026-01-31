@@ -1,6 +1,8 @@
 package org.bxkr.octodiary.models.mealbalance
 
 
+
+import androidx.compose.material.icons.Icons
 import com.google.gson.annotations.SerializedName
 
 data class MealBalance(
@@ -17,3 +19,5 @@ data class MealBalance(
     @SerializedName("preorderAllowed")
     val preorderAllowed: Boolean
 )
+
+

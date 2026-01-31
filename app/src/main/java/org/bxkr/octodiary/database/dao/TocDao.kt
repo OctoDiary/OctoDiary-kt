@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.database.dao
 
+
+import androidx.compose.material.icons.Icons
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 import org.bxkr.octodiary.models.TocEntry
@@ -81,3 +83,5 @@ interface TocDao {
     @Query("SELECT COUNT(*) FROM toc_entries WHERE textbookId = :textbookId")
     suspend fun hasTocForTextbook(textbookId: String): Int
 }
+
+

@@ -1,8 +1,12 @@
 package org.bxkr.octodiary.components.ai
 
-import androidx.compose.foundation.layout.*
+
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.*
+import androidx.compose.material.icons.filled.Mic
+import androidx.compose.material.icons.filled.MicOff
+import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.Stop
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -45,7 +49,7 @@ fun AutomaticRecordingStatusCard() {
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 Icon(
-                    imageVector = if (isServiceRunning) Icons.Rounded.Mic else Icons.Rounded.MicOff,
+                    imageVector = if (isServiceRunning) Icons.Default.Mic else Icons.Default.MicOff,
                     contentDescription = null,
                     tint = if (isServiceRunning) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline
                 )
@@ -99,7 +103,7 @@ fun AutomaticRecordingStatusCard() {
                             currentRecordingSubject = null
                         }
                     ) {
-                        Icon(Icons.Rounded.Stop, null, modifier = Modifier.size(16.dp))
+                        Icon(Icons.Default.Stop, null, modifier = Modifier.size(16.dp))
                         Spacer(Modifier.width(4.dp))
                         Text("Остановить")
                     }
@@ -111,7 +115,7 @@ fun AutomaticRecordingStatusCard() {
                         },
                         enabled = autoRecordEnabled
                     ) {
-                        Icon(Icons.Rounded.PlayArrow, null, modifier = Modifier.size(16.dp))
+                        Icon(Icons.Default.PlayArrow, null, modifier = Modifier.size(16.dp))
                         Spacer(Modifier.width(4.dp))
                         Text("Запустить")
                     }
@@ -120,3 +124,5 @@ fun AutomaticRecordingStatusCard() {
         }
     }
 }
+
+

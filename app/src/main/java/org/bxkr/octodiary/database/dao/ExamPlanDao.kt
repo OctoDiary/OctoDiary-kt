@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.database.dao
 
+
+import androidx.compose.material.icons.Icons
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 import org.bxkr.octodiary.database.entity.ExamPlanEntity
@@ -59,3 +61,6 @@ interface ExamPlanDao {
     @Query("DELETE FROM exam_plans")
     suspend fun deleteAll()
 }
+
+
+

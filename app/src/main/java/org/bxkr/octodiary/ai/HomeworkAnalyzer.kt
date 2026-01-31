@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.ai
 
+
+import androidx.compose.material.icons.Icons
 import android.content.Context
 import org.bxkr.octodiary.DataService
 import org.bxkr.octodiary.models.homeworks2.Homework
@@ -87,9 +89,7 @@ object HomeworkAnalyzer {
             4.0
         }
         
-        val homeworksInfo = homeworks.joinToString("\n") { hw ->
-            "- ${hw.subjectName}: ${hw.description}"
-        }
+
         
         val prompt = """
             Составь персональный план выполнения домашних заданий.
@@ -179,3 +179,6 @@ object HomeworkAnalyzer {
         }
     }
 }
+
+
+

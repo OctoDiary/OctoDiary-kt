@@ -1,6 +1,8 @@
 package org.bxkr.octodiary.models.marklistsubject
 
 
+
+import androidx.compose.material.icons.Icons
 import com.google.gson.annotations.SerializedName
 import org.bxkr.octodiary.parseFromDay
 import java.util.Date
@@ -28,3 +30,5 @@ data class MarkListSubjectItem(
                 (it.startIso.parseFromDay() < currentDate) and (it.endIso.parseFromDay() > currentDate)
             }
 }
+
+

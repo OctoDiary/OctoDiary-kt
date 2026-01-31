@@ -1,5 +1,21 @@
 package org.bxkr.octodiary.components
 
+
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Accessibility
+import androidx.compose.material.icons.filled.AutoAwesome
+import androidx.compose.material.icons.filled.BatteryAlert
+import androidx.compose.material.icons.filled.Brush
+import androidx.compose.material.icons.filled.BugReport
+import androidx.compose.material.icons.filled.Done
+import androidx.compose.material.icons.filled.Image
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.automirrored.filled.OpenInNew
+import androidx.compose.material.icons.filled.Schedule
+import androidx.compose.material.icons.filled.Settings
 import android.net.Uri
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
@@ -22,21 +38,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowBack
-import androidx.compose.material.icons.automirrored.rounded.OpenInNew
-import androidx.compose.material.icons.rounded.Accessibility
-import androidx.compose.material.icons.rounded.AutoAwesome
-import androidx.compose.material.icons.rounded.BatteryAlert
-import androidx.compose.material.icons.rounded.Brush
-import androidx.compose.material.icons.rounded.BugReport
-import androidx.compose.material.icons.rounded.Done
-import androidx.compose.material.icons.rounded.Image
-import androidx.compose.material.icons.rounded.Info
-import androidx.compose.material.icons.rounded.Lock
-import androidx.compose.material.icons.rounded.Notifications
-import androidx.compose.material.icons.rounded.Schedule
-import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -120,7 +121,7 @@ fun SettingsDialog(onDismissRequest: () -> Unit) {
                             }
                         }) {
                             Icon(
-                                Icons.AutoMirrored.Rounded.ArrowBack,
+                                Icons.AutoMirrored.Default.ArrowBack,
                                 stringResource(R.string.back)
                             )
                         }
@@ -145,7 +146,7 @@ fun SettingsDialog(onDismissRequest: () -> Unit) {
                                     style = MaterialTheme.typography.labelMedium
                                 )
                                 Icon(
-                                    Icons.Rounded.BugReport,
+                                    Icons.Default.BugReport,
                                     stringResource(R.string.report_issue),
                                     tint = MaterialTheme.colorScheme.onErrorContainer
                                 )
@@ -251,47 +252,47 @@ fun SettingsDialog(onDismissRequest: () -> Unit) {
                                 .verticalScroll(rememberScrollState())
                         ) {
                             SettingsSection(
-                                Icons.Rounded.Settings,
+                                Icons.Default.Settings,
                                 stringResource(R.string.common),
                                 stringResource(R.string.common_desc),
                             ) { Common() }
                             SettingsSection(
-                                Icons.Rounded.Notifications,
+                                Icons.Default.Notifications,
                                 stringResource(R.string.notifications),
                                 stringResource(R.string.notifications_desc)
                             ) { Notifications() }
                             SettingsSection(
-                                Icons.Rounded.Schedule,
+                                Icons.Default.Schedule,
                                 "Расписание звонков",
                                 "Уведомления о начале/конце уроков с обратным отсчётом"
                             ) { BellScheduleSettings() }
                             SettingsSection(
-                                Icons.Rounded.AutoAwesome,
+                                Icons.Default.AutoAwesome,
                                 "Настройки AI",
                                 "AI помощник, выбор модели, персональный план"
                             ) { AiSettings() }
                             SettingsSection(
-                                Icons.Rounded.Brush,
+                                Icons.Default.Brush,
                                 stringResource(R.string.appearance),
                                 stringResource(R.string.appearance_desc)
                             ) { Appearance() }
                             SettingsSection(
-                                Icons.Rounded.Lock,
+                                Icons.Default.Lock,
                                 stringResource(R.string.security),
                                 stringResource(R.string.security_desc)
                             ) { Security() }
                             SettingsSection(
-                                Icons.Rounded.BatteryAlert,
+                                Icons.Default.BatteryAlert,
                                 "Экономия батареи",
                                 "Автоматический режим экономии при низком заряде"
                             ) { BatterySaverSettings() }
                             SettingsSection(
-                                Icons.Rounded.Accessibility,
+                                Icons.Default.Accessibility,
                                 "Специальные возможности",
                                 "Режим дислексии, масштаб текста, контрастность"
                             ) { AccessibilitySettings() }
                             SettingsSection(
-                                Icons.Rounded.Info,
+                                Icons.Default.Info,
                                 stringResource(R.string.about),
                                 stringResource(R.string.about_desc)
                             ) { About() }
@@ -338,7 +339,7 @@ fun SettingsDialog(onDismissRequest: () -> Unit) {
                                     interactionSource = interactionSource
                                 ) {
                                     Icon(
-                                        Icons.AutoMirrored.Rounded.OpenInNew,
+                                        Icons.AutoMirrored.Default.OpenInNew,
                                         stringResource(R.string.image),
                                         Modifier.size(ButtonDefaults.IconSize)
                                     )
@@ -392,7 +393,7 @@ fun ThemeCard(
                 }
                 if (showIcon) {
                     Icon(
-                        Icons.Rounded.Image,
+                        Icons.Default.Image,
                         stringResource(R.string.wallpaper_dynamic_color),
                         Modifier
                             .align(Alignment.Center)
@@ -406,7 +407,7 @@ fun ThemeCard(
         }
         AnimatedVisibility(selected) {
             Icon(
-                Icons.Rounded.Done,
+                Icons.Default.Done,
                 stringResource(R.string.wallpaper_dynamic_color),
                 Modifier
                     .align(Alignment.TopStart)
@@ -420,3 +421,6 @@ fun ThemeCard(
         }
     }
 }
+
+
+

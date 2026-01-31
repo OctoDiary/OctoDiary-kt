@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.components
 
+
+import androidx.compose.material.icons.Icons
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideOut
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -28,6 +30,7 @@ import org.bxkr.octodiary.authPrefs
 import org.bxkr.octodiary.components.debugutils.PrefEditor
 import org.bxkr.octodiary.components.debugutils.RemoteEditor
 import org.bxkr.octodiary.components.debugutils.WidgetConfig
+import org.bxkr.octodiary.components.debugutils.ExtendedDebugMenu
 import org.bxkr.octodiary.get
 
 @Composable
@@ -123,5 +126,8 @@ enum class DebugMenuItems(
     ConfigureWidget(
         "Widget config",
         { clearFn -> WidgetConfig { clearFn() } }
-    )
+    ),
+    ExtendedDebug("Расширенное отладочное меню", { clearFn -> ExtendedDebugMenu(this, clearFn) })
 }
+
+

@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.network
 
+
+import androidx.compose.material.icons.Icons
 import android.content.Context
 import android.net.Uri
 import androidx.browser.customtabs.CustomTabsIntent
@@ -104,3 +106,5 @@ object MySchoolLoginService {
         }
     }
 }
+
+

@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.components
 
+
+import androidx.compose.material.icons.Icons
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
@@ -90,3 +92,5 @@ fun RankingMemberCard(
         }
     }
 }
+
+

@@ -1,6 +1,8 @@
 package org.bxkr.octodiary.models.lessonschedule
 
 
+
+import androidx.compose.material.icons.Icons
 import com.google.gson.annotations.SerializedName
 
 data class ItemX(
@@ -55,3 +57,5 @@ data class ItemX(
     @SerializedName("views")
     val views: Any?
 )
+
+

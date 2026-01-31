@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.ai
 
+
+import androidx.compose.material.icons.Icons
 import android.content.Context
 import java.util.Date
 import org.bxkr.octodiary.database.AppDatabase
@@ -163,3 +165,5 @@ object TextbookExtractorService {
         }
     }
 }
+
+

@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.components.settings
 
+
+import androidx.compose.material.icons.Icons
 import android.Manifest
 import android.content.pm.PackageManager
 import androidx.compose.runtime.Composable
@@ -33,3 +35,5 @@ fun Notifications() {
         }
     }
 }
+
+

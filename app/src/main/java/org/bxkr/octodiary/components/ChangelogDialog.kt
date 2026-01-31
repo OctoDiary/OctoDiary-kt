@@ -1,5 +1,11 @@
 package org.bxkr.octodiary.components
 
+
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Done
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -17,11 +23,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowBack
-import androidx.compose.material.icons.automirrored.rounded.ArrowForward
-import androidx.compose.material.icons.rounded.Close
-import androidx.compose.material.icons.rounded.Done
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -106,7 +107,7 @@ private fun ChangelogNavigation(currentChangelog: Changelog, onDismissRequest: (
             Box {
                 IconButton({ onDismissRequest() }, Modifier.padding(4.dp)) {
                     Icon(
-                        Icons.AutoMirrored.Rounded.ArrowBack,
+                        Icons.AutoMirrored.Default.ArrowBack,
                         stringResource(R.string.close)
                     )
                 }
@@ -208,8 +209,8 @@ private fun ChangelogNavigation(currentChangelog: Changelog, onDismissRequest: (
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Icon(
                                 when (innerStyle) {
-                                    "exit" -> Icons.Rounded.Close
-                                    else -> Icons.AutoMirrored.Rounded.ArrowBack
+                                    "exit" -> Icons.Default.Close
+                                    else -> Icons.AutoMirrored.Default.ArrowBack
                                 },
                                 stringResource(R.string.back_exit),
                                 Modifier
@@ -256,8 +257,8 @@ private fun ChangelogNavigation(currentChangelog: Changelog, onDismissRequest: (
                             )
                             Icon(
                                 when (innerStyle) {
-                                    "exit" -> Icons.Rounded.Done
-                                    else -> Icons.AutoMirrored.Rounded.ArrowForward
+                                    "exit" -> Icons.Default.Done
+                                    else -> Icons.AutoMirrored.Default.ArrowForward
                                 },
                                 stringResource(R.string.next),
                                 Modifier
@@ -272,3 +273,5 @@ private fun ChangelogNavigation(currentChangelog: Changelog, onDismissRequest: (
         }
     }
 }
+
+

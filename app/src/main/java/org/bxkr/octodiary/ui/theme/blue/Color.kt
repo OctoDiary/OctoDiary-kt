@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.ui.theme.blue
 
+
+import androidx.compose.material.icons.Icons
 import androidx.compose.ui.graphics.Color
 
 val md_theme_light_primary = Color(0xFF294DE1)
@@ -64,3 +66,6 @@ val md_theme_dark_onSurfaceVariant = Color(0xFFC6C5D0)
 
 
 val seed = Color(0xFF1640D6)
+
+
+

@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.components.settings
 
+
+import androidx.compose.material.icons.Icons
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -28,3 +30,5 @@ fun SwitchPreferenceSpec.BasicSwitchPreference() {
         context.mainPrefs.save(prefKey to it)
     }
 }
+
+

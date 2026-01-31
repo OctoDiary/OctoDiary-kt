@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.offline
 
+
+import androidx.compose.material.icons.Icons
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 
@@ -468,3 +470,5 @@ object SubjectProgressCalculator {
         val insights: List<String>
     )
 }
+
+

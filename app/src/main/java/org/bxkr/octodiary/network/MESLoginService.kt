@@ -5,6 +5,7 @@ import android.net.Uri
 import android.util.Log
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.platform.LocalContext
@@ -33,7 +34,7 @@ import java.util.Date
 
 object MESLoginService {
     fun logInWithMosRu(context: Context) {
-        val issueCall = NetworkService.mosAuthApi().register(
+        val issueCall = NetworkService.mosAuthApi.register(
             body = RegisterBody(
                 softwareId = MESAPIConfig.SOFTWARE_ID,
                 deviceType = MESAPIConfig.DEVICE_TYPE,
@@ -77,24 +78,27 @@ object MESLoginService {
     @Composable
     fun MosExchangeToken(code: String, hasToken: MutableState<Boolean>) {
         val context = LocalContext.current
-        context.getSharedPreferences("auth", Context.MODE_PRIVATE).apply {
-            val codeVerifier = getString("code_verifier", "")!!
-            val clientId = getString("client_id", "")
-            val clientSecret = getString("client_secret", "")
+        
+        LaunchedEffect(code) {
+            context.authPrefs.apply {
+                val codeVerifier = getString("code_verifier", "")!!
+                val clientId = getString("client_id", "")
+                val clientSecret = getString("client_secret", "")
 
-            val authorization = encodeToBase64("$clientId:$clientSecret".toByteArray())
-            val authHeader = "Basic $authorization"
+                val authorization = encodeToBase64("$clientId:$clientSecret".toByteArray())
+                val authHeader = "Basic $authorization"
 
-            val exchangeCall = NetworkService.mosAuthApi().tokenExchange(
-                grantType = MESAPIConfig.GRANT_TYPE_CODE,
-                redirectUri = MESAPIConfig.REDIRECT_URI,
-                code,
-                codeVerifier,
-                authHeader
-            )
-            exchangeCall.baseEnqueue { body ->
-                context.authPrefs.save("mos_refresh_token" to body.refreshToken)
-                mosToMesToken(context, mosToken = body.accessToken, hasToken)
+                val exchangeCall = NetworkService.mosAuthApi.tokenExchange(
+                    grantType = MESAPIConfig.GRANT_TYPE_CODE,
+                    redirectUri = MESAPIConfig.REDIRECT_URI,
+                    code,
+                    codeVerifier,
+                    authHeader
+                )
+                exchangeCall.baseEnqueue { body ->
+                    context.authPrefs.save("mos_refresh_token" to body.refreshToken)
+                    mosToMesToken(context, mosToken = body.accessToken, hasToken)
+                }
             }
         }
     }
@@ -131,7 +135,7 @@ object MESLoginService {
     }
 
     fun Context.refreshToken(onUpdated: () -> Unit) {
-        getSharedPreferences("auth", Context.MODE_PRIVATE).apply {
+        authPrefs.apply {
             var clientId = getString("client_id", "")
             var clientSecret = getString("client_secret", "")
             var refreshToken = getString("mos_refresh_token", "")
@@ -172,7 +176,7 @@ object MESLoginService {
             val authorization = encodeToBase64("$clientId:$clientSecret".toByteArray())
             val authHeader = "Basic $authorization"
             if (refreshToken != null) {
-                val exchangeCall = NetworkService.mosAuthApi().tokenExchange(
+                val exchangeCall = NetworkService.mosAuthApi.tokenExchange(
                     grantType = MESAPIConfig.GRANT_TYPE_REFRESH,
                     refreshToken = refreshToken!!,
                     authHeader = authHeader
@@ -200,3 +204,5 @@ object MESLoginService {
         }
     }
 }
+
+

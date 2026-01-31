@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.offline
 
+
+import androidx.compose.material.icons.Icons
 /**
  * Калькулятор времени на выполнение домашних заданий.
  * Оценивает время на основе сложности, типа задания и индивидуальных факторов.
@@ -428,3 +430,5 @@ object HomeworkTimeCalculator {
         return "homework_${System.currentTimeMillis()}_${(0..9999).random()}"
     }
 }
+
+

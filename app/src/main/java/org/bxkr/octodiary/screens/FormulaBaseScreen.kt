@@ -1,10 +1,12 @@
 package org.bxkr.octodiary.screens
 
+
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Calculate
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -46,7 +48,7 @@ fun FormulaBaseScreen() {
                 title = { Text("База формул") },
                 actions = {
                     IconButton(onClick = { }) {
-                        Icon(Icons.Rounded.Add, "Добавить")
+                        Icon(Icons.Default.Add, "Добавить")
                     }
                 }
             )
@@ -126,7 +128,7 @@ fun FormulaCard(formula: Formula) {
                 Spacer(Modifier.height(8.dp))
                 Row {
                     Icon(
-                        Icons.Rounded.Calculate,
+                        Icons.Default.Calculate,
                         null,
                         tint = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.size(16.dp)
@@ -142,3 +144,6 @@ fun FormulaCard(formula: Formula) {
         }
     }
 }
+
+
+

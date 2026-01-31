@@ -1,5 +1,8 @@
 package org.bxkr.octodiary.screens.navsections.marks
 
+
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Arrangement
@@ -12,8 +15,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -159,7 +160,7 @@ fun MarksBySubject(scrollToSubjectId: Long? = null) {
                     text = {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Icon(
-                                Icons.Rounded.Star,
+                                Icons.Default.Star,
                                 stringResource(R.string.finals),
                                 Modifier
                                     .padding(end = 4.dp)
@@ -189,3 +190,5 @@ fun MarksBySubject(scrollToSubjectId: Long? = null) {
         }
     }
 }
+
+

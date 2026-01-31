@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.screens.navsections.profile
 
+
+import androidx.compose.material.icons.Icons
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Arrangement
@@ -147,3 +149,5 @@ fun Wallet() {
         }
     }
 }
+
+

@@ -1,6 +1,8 @@
 package org.bxkr.octodiary.models.mark
 
 
+
+import androidx.compose.material.icons.Icons
 import com.google.gson.annotations.SerializedName
 
 data class Value(
@@ -15,3 +17,5 @@ data class Value(
     @SerializedName("nmax")
     val nmax: Int,
 )
+
+

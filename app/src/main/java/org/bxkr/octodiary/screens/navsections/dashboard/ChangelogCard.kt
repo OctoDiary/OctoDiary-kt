@@ -1,5 +1,8 @@
 package org.bxkr.octodiary.screens.navsections.dashboard
 
+
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import android.content.Context
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -17,8 +20,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowForward
 import androidx.compose.material3.DividerDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -113,7 +114,7 @@ fun ChangelogCard(context: Context) {
             }
             if (changelog.elements != null)
             Icon(
-                Icons.AutoMirrored.Rounded.ArrowForward,
+                Icons.AutoMirrored.Default.ArrowForward,
                 stringResource(R.string.next),
                 Modifier
                     .padding(end = 8.dp)
@@ -132,3 +133,5 @@ private fun Context.getInitialIsShown() =
 
 private fun Context.saveNewVersion() =
     mainPrefs.save("read_changelog_version" to BuildConfig.VERSION_CODE)
+
+

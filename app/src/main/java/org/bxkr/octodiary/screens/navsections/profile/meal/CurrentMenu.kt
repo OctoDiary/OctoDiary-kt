@@ -1,5 +1,9 @@
 package org.bxkr.octodiary.screens.navsections.profile.meal
 
+
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
@@ -17,9 +21,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowBack
-import androidx.compose.material.icons.rounded.CalendarMonth
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DatePicker
@@ -129,7 +130,7 @@ private fun MealsMenuComplexes.MenuItems(
                         contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
                     ) {
                         Icon(
-                            Icons.Rounded.CalendarMonth,
+                            Icons.Default.CalendarMonth,
                             null,
                             Modifier.size(ButtonDefaults.IconSize)
                         )
@@ -184,7 +185,7 @@ fun MenuItemLayout(title: String, screen: @Composable () -> Unit, onClick: () ->
         ) {
             IconButton(onClick = onClick, Modifier.padding(8.dp)) {
                 Icon(
-                    Icons.AutoMirrored.Rounded.ArrowBack, stringResource(R.string.back)
+                    Icons.AutoMirrored.Default.ArrowBack, stringResource(R.string.back)
                 )
             }
             Text(title, style = MaterialTheme.typography.titleLarge)
@@ -289,3 +290,5 @@ private fun MenuItemInfoValue(name: String, value: String) {
         Text(value)
     }
 }
+
+

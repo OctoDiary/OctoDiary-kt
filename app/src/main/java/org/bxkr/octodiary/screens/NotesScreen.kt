@@ -1,9 +1,13 @@
 package org.bxkr.octodiary.screens
 
+
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.CameraAlt
+import androidx.compose.material.icons.filled.Mic
+import androidx.compose.material.icons.filled.NoteAdd
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -18,17 +22,17 @@ fun NotesScreen() {
                 title = { Text("Конспекты") },
                 actions = {
                     IconButton(onClick = { /* OCR */ }) {
-                        Icon(Icons.Rounded.CameraAlt, "Сканировать")
+                        Icon(Icons.Default.CameraAlt, "Сканировать")
                     }
                     IconButton(onClick = { /* Voice */ }) {
-                        Icon(Icons.Rounded.Mic, "Голосовой ввод")
+                        Icon(Icons.Default.Mic, "Голосовой ввод")
                     }
                 }
             )
         },
         floatingActionButton = {
             FloatingActionButton(onClick = { }) {
-                Icon(Icons.Rounded.Add, "Новый конспект")
+                Icon(Icons.Default.Add, "Новый конспект")
             }
         }
     ) { padding ->
@@ -41,7 +45,7 @@ fun NotesScreen() {
             item {
                 Card(Modifier.fillMaxWidth()) {
                     Column(Modifier.padding(16.dp)) {
-                        Icon(Icons.Rounded.NoteAdd, null, Modifier.size(48.dp))
+                        Icon(Icons.Default.NoteAdd, null, Modifier.size(48.dp))
                         Spacer(Modifier.height(8.dp))
                         Text("Создайте первый конспект", style = MaterialTheme.typography.titleMedium)
                         Text("Сфотографируйте доску или введите текст", style = MaterialTheme.typography.bodySmall)
@@ -51,3 +55,6 @@ fun NotesScreen() {
         }
     }
 }
+
+
+

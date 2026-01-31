@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.database.entity
 
+
+import androidx.compose.material.icons.Icons
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -14,3 +16,6 @@ data class AiChatMessageEntity(
     val imageUri: String? = null,
     val attachments: String? = null // JSON array
 )
+
+
+

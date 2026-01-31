@@ -1,8 +1,12 @@
 package org.bxkr.octodiary.components.ai
 
-import androidx.compose.foundation.layout.*
+
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.*
+import androidx.compose.material.icons.filled.AutoAwesome
+import androidx.compose.material.icons.filled.Book
+import androidx.compose.material.icons.filled.Dashboard
+import androidx.compose.material.icons.filled.Mic
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -50,7 +54,7 @@ fun AiQuickAccessCard() {
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Icon(
-                        Icons.Rounded.AutoAwesome,
+                        Icons.Default.AutoAwesome,
                         null,
                         tint = MaterialTheme.colorScheme.primary
                     )
@@ -87,7 +91,7 @@ fun AiQuickAccessCard() {
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.spacedBy(4.dp)
                     ) {
-                        Icon(Icons.Rounded.Book, null, Modifier.size(20.dp))
+                        Icon(Icons.Default.Book, null, Modifier.size(20.dp))
                         Text("Словарь", style = MaterialTheme.typography.labelSmall)
                     }
                 }
@@ -100,7 +104,7 @@ fun AiQuickAccessCard() {
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.spacedBy(4.dp)
                     ) {
-                        Icon(Icons.Rounded.Mic, null, Modifier.size(20.dp))
+                        Icon(Icons.Default.Mic, null, Modifier.size(20.dp))
                         Text("Конспекты", style = MaterialTheme.typography.labelSmall)
                     }
                 }
@@ -113,7 +117,7 @@ fun AiQuickAccessCard() {
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.spacedBy(4.dp)
                     ) {
-                        Icon(Icons.Rounded.Dashboard, null, Modifier.size(20.dp))
+                        Icon(Icons.Default.Dashboard, null, Modifier.size(20.dp))
                         Text("Дашборд", style = MaterialTheme.typography.labelSmall)
                     }
                 }
@@ -121,3 +125,6 @@ fun AiQuickAccessCard() {
         }
     }
 }
+
+
+

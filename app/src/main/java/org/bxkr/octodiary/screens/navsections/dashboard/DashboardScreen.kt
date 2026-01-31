@@ -1,5 +1,8 @@
 package org.bxkr.octodiary.screens.navsections.dashboard
 
+
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import android.content.Context
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -14,8 +17,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowForward
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -189,7 +190,7 @@ fun LazyListScope.dashboardRatingVisits() {
                             ) {
                                 Text(lastVisit.visits[0].inX)
                                 Icon(
-                                    Icons.AutoMirrored.Rounded.ArrowForward,
+                                    Icons.AutoMirrored.Default.ArrowForward,
                                     stringResource(id = R.string.to)
                                 )
                                 Text(lastVisit.visits[0].out)
@@ -201,3 +202,6 @@ fun LazyListScope.dashboardRatingVisits() {
         }
     }
 }
+
+
+

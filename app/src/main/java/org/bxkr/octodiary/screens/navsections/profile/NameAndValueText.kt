@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.screens.navsections.profile
 
+
+import androidx.compose.material.icons.Icons
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -20,3 +22,5 @@ fun NameAndValueText(name: String, value: String, onClick: (() -> Unit)? = null)
         Text(value, modifier = if (onClick != null) Modifier.clickable { onClick() } else Modifier)
     }
 }
+
+

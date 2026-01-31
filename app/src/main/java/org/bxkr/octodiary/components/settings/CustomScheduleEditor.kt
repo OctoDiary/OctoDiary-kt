@@ -1,11 +1,14 @@
 package org.bxkr.octodiary.components.settings
 
+
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import android.content.Context
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -61,7 +64,7 @@ fun CustomScheduleEditor(
                     style = MaterialTheme.typography.titleSmall
                 )
                 IconButton(onClick = { showAddDialog = true }) {
-                    Icon(Icons.Rounded.Add, "Добавить урок")
+                    Icon(Icons.Default.Add, "Добавить урок")
                 }
             }
             
@@ -105,7 +108,7 @@ fun CustomScheduleEditor(
                         
                         Row {
                             IconButton(onClick = { editingLesson = index to lesson }) {
-                                Icon(Icons.Rounded.Edit, "Редактировать", tint = MaterialTheme.colorScheme.primary)
+                                Icon(Icons.Default.Edit, "Редактировать", tint = MaterialTheme.colorScheme.primary)
                             }
                             IconButton(onClick = {
                                 schedule = schedule.filterIndexed { i, _ -> i != index }
@@ -113,7 +116,7 @@ fun CustomScheduleEditor(
                                         lesson.copy(lessonNumber = newIndex + 1)
                                     }
                             }) {
-                                Icon(Icons.Rounded.Delete, "Удалить", tint = MaterialTheme.colorScheme.error)
+                                Icon(Icons.Default.Delete, "Удалить", tint = MaterialTheme.colorScheme.error)
                             }
                         }
                     }
@@ -278,3 +281,6 @@ private fun saveCustomSchedule(prefs: android.content.SharedPreferences, schedul
     val json = Gson().toJson(schedule)
     prefs.edit().putString("schedule", json).apply()
 }
+
+
+

@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.database.entity
 
+
+import androidx.compose.material.icons.Icons
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -13,3 +15,6 @@ data class StudyPlanEntity(
     val totalEstimatedMinutes: Int,
     val generatedAt: Long
 )
+
+
+

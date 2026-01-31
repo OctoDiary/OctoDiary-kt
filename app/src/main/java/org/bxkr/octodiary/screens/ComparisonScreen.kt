@@ -1,9 +1,9 @@
 package org.bxkr.octodiary.screens
 
+
+import androidx.compose.material.icons.Icons
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -75,3 +75,6 @@ fun SubjectComparison(subject: String, yourGrade: Float, avgGrade: Float) {
         Text("Класс: $avgGrade", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f))
     }
 }
+
+
+

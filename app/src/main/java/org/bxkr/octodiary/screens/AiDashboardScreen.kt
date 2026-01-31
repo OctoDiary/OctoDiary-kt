@@ -1,10 +1,20 @@
 package org.bxkr.octodiary.screens
 
+
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.AutoStories
+import androidx.compose.material.icons.filled.Book
+import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.Key
+import androidx.compose.material.icons.filled.MenuBook
+import androidx.compose.material.icons.filled.Mic
+import androidx.compose.material.icons.filled.PictureAsPdf
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.SmartToy
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowBack
-import androidx.compose.material.icons.rounded.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -47,12 +57,12 @@ fun AiDashboardScreen() {
                 title = { Text("AI Помощник") },
                 navigationIcon = {
                     IconButton(onClick = { nav?.navigateUp() }) {
-                        Icon(Icons.AutoMirrored.Rounded.ArrowBack, "Назад")
+                        Icon(Icons.AutoMirrored.Default.ArrowBack, "Назад")
                     }
                 },
                 actions = {
                     IconButton(onClick = { /* Open settings */ }) {
-                        Icon(Icons.Rounded.Settings, "Настройки")
+                        Icon(Icons.Default.Settings, "Настройки")
                     }
                 }
             )
@@ -68,7 +78,7 @@ fun AiDashboardScreen() {
                 verticalArrangement = Arrangement.Center
             ) {
                 Icon(
-                    Icons.Rounded.Key,
+                    Icons.Default.Key,
                     null,
                     Modifier.size(64.dp),
                     tint = MaterialTheme.colorScheme.primary
@@ -135,21 +145,21 @@ fun AiDashboardScreen() {
                     StreakCard(
                         type = "homework",
                         title = "Домашние задания",
-                        icon = Icons.Rounded.CheckCircle
+                        icon = Icons.Default.CheckCircle
                     )
                 }
                 item {
                     StreakCard(
                         type = "grades",
                         title = "Хорошие оценки",
-                        icon = Icons.Rounded.Star
+                        icon = Icons.Default.Star
                     )
                 }
                 item {
                     StreakCard(
                         type = "study",
                         title = "Учёба",
-                        icon = Icons.Rounded.MenuBook
+                        icon = Icons.Default.MenuBook
                     )
                 }
                 
@@ -244,7 +254,7 @@ fun AiDashboardScreen() {
                             onClick = { /* Открыть словарь */ },
                             Modifier.weight(1f)
                         ) {
-                            Icon(Icons.Rounded.Book, null)
+                            Icon(Icons.Default.Book, null)
                             Spacer(Modifier.width(8.dp))
                             Text("Словарь")
                         }
@@ -252,7 +262,7 @@ fun AiDashboardScreen() {
                             onClick = { /* Открыть конспекты */ },
                             Modifier.weight(1f)
                         ) {
-                            Icon(Icons.Rounded.Mic, null)
+                            Icon(Icons.Default.Mic, null)
                             Spacer(Modifier.width(8.dp))
                             Text("Конспекты")
                         }
@@ -263,7 +273,7 @@ fun AiDashboardScreen() {
                         onClick = { nav?.navigate(org.bxkr.octodiary.Screen.TextbookExtractorScreen.route) },
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Icon(Icons.Rounded.AutoStories, null)
+                        Icon(Icons.Default.AutoStories, null)
                         Spacer(Modifier.width(8.dp))
                         Text("🔍 Извлечение из учебников")
                     }
@@ -273,7 +283,7 @@ fun AiDashboardScreen() {
                         onClick = { nav?.navigate(org.bxkr.octodiary.Screen.TextbooksScreen.route) },
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Icon(Icons.Rounded.MenuBook, null)
+                        Icon(Icons.Default.MenuBook, null)
                         Spacer(Modifier.width(8.dp))
                         Text("📚 Библиотека учебников")
                     }
@@ -283,7 +293,7 @@ fun AiDashboardScreen() {
                         onClick = { showPdfExtractor = true },
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Icon(Icons.Rounded.PictureAsPdf, null)
+                        Icon(Icons.Default.PictureAsPdf, null)
                         Spacer(Modifier.width(8.dp))
                         Text("📄 Извлечь текст из PDF")
                     }
@@ -301,7 +311,7 @@ fun AiDashboardScreen() {
                             contentColor = MaterialTheme.colorScheme.onPrimaryContainer
                         )
                     ) {
-                        Icon(Icons.Rounded.SmartToy, null, Modifier.size(24.dp))
+                        Icon(Icons.Default.SmartToy, null, Modifier.size(24.dp))
                         Spacer(Modifier.width(12.dp))
                         Text(
                             "🤖 Общий AI Помощник",
@@ -362,3 +372,6 @@ fun AiDashboardScreen() {
         )
     }
 }
+
+
+

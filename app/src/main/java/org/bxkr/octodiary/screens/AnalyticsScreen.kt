@@ -1,9 +1,12 @@
 package org.bxkr.octodiary.screens
 
+
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountTree
+import androidx.compose.material.icons.filled.ErrorOutline
+import androidx.compose.material.icons.filled.TrendingUp
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -30,7 +33,7 @@ fun AnalyticsScreen() {
                 Card(Modifier.fillMaxWidth()) {
                     Column(Modifier.padding(16.dp)) {
                         Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
-                            Icon(Icons.Rounded.AccountTree, null, Modifier.size(24.dp))
+                            Icon(Icons.Default.AccountTree, null, Modifier.size(24.dp))
                             Spacer(Modifier.width(8.dp))
                             Text("Карта знаний", style = MaterialTheme.typography.titleMedium)
                         }
@@ -46,7 +49,7 @@ fun AnalyticsScreen() {
                 Card(Modifier.fillMaxWidth()) {
                     Column(Modifier.padding(16.dp)) {
                         Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
-                            Icon(Icons.Rounded.TrendingUp, null, Modifier.size(24.dp))
+                            Icon(Icons.Default.TrendingUp, null, Modifier.size(24.dp))
                             Spacer(Modifier.width(8.dp))
                             Text("Прогноз оценок", style = MaterialTheme.typography.titleMedium)
                         }
@@ -62,7 +65,7 @@ fun AnalyticsScreen() {
                 Card(Modifier.fillMaxWidth()) {
                     Column(Modifier.padding(16.dp)) {
                         Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
-                            Icon(Icons.Rounded.ErrorOutline, null, Modifier.size(24.dp))
+                            Icon(Icons.Default.ErrorOutline, null, Modifier.size(24.dp))
                             Spacer(Modifier.width(8.dp))
                             Text("Типичные ошибки", style = MaterialTheme.typography.titleMedium)
                         }
@@ -74,3 +77,6 @@ fun AnalyticsScreen() {
         }
     }
 }
+
+
+

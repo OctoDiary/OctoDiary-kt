@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.components.changelog
 
+
+import androidx.compose.material.icons.Icons
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
 import org.bxkr.octodiary.BuildConfig
@@ -31,3 +33,5 @@ abstract class Changelog {
             }
     }
 }
+
+

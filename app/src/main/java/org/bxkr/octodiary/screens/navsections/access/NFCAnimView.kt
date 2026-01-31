@@ -1,5 +1,10 @@
 package org.bxkr.octodiary.screens.navsections.access
 
+
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Wifi
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
@@ -7,10 +12,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Check
-import androidx.compose.material.icons.rounded.Close
-import androidx.compose.material.icons.rounded.Wifi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -113,9 +114,12 @@ fun NFCAnimView(
         }
         // Состояние
         when (stage) {
-            "waiting", "approaching", "returning" -> Icon(Icons.Rounded.Wifi, contentDescription = null, modifier = Modifier.align(Alignment.Center).size(44.dp).rotate(90f), tint = Color(0xFFfb923c))
-            "success" -> Icon(Icons.Rounded.Check, contentDescription = null, modifier = Modifier.align(Alignment.Center).size(44.dp), tint = Color(0xFF22c55e))
-            "error" -> Icon(Icons.Rounded.Close, contentDescription = null, modifier = Modifier.align(Alignment.Center).size(44.dp), tint = Color(0xFFef4444))
+            "waiting", "approaching", "returning" -> Icon(Icons.Default.Wifi, contentDescription = null, modifier = Modifier.align(Alignment.Center).size(44.dp).rotate(90f), tint = Color(0xFFfb923c))
+            "success" -> Icon(Icons.Default.Check, contentDescription = null, modifier = Modifier.align(Alignment.Center).size(44.dp), tint = Color(0xFF22c55e))
+            "error" -> Icon(Icons.Default.Close, contentDescription = null, modifier = Modifier.align(Alignment.Center).size(44.dp), tint = Color(0xFFef4444))
         }
     }
 }
+
+
+

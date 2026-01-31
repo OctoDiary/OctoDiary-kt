@@ -1,7 +1,9 @@
 package org.bxkr.octodiary
 
+
 import android.app.Application
 import android.util.Log
+import org.bxkr.octodiary.ai.AIManager // Import AIManager
 
 class OctoDiaryApp : Application() {
     override fun onCreate() {
@@ -13,6 +15,9 @@ class OctoDiaryApp : Application() {
             // DataService это object (синглтон), не нужно его инициализировать
             // просто установим subsystem
             DataService.subsystem = Diary.MES
+
+            // Инициализация AIManager
+            AIManager.initialize(applicationContext) // Pass application context
         } catch (e: Exception) {
             Log.e("OctoDiaryApp", "Failed to initialize components", e)
         }
@@ -22,3 +27,5 @@ class OctoDiaryApp : Application() {
         const val TAG = "OctoDiaryApp"
     }
 }
+
+

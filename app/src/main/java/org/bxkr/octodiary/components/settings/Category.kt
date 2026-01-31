@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.components.settings
 
+
+import androidx.compose.material.icons.Icons
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.padding
@@ -24,3 +26,5 @@ fun Category(title: String, content: @Composable ColumnScope.() -> Unit) {
         content()
     }
 }
+
+

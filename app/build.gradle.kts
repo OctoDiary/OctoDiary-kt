@@ -78,10 +78,10 @@ android {
 }
 
 // Конфигурация KSP для Room (не работает)
-ksp {
-    arg("room.schemaLocation", "$projectDir/schemas")
-    arg("room.generateKotlin", "true")
-}
+// ksp {
+//     arg("room.schemaLocation", "$projectDir/schemas")
+//     arg("room.generateKotlin", "true")
+// }
 
 // Явно устанавливаем JVM target для всех Kotlin задач
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
@@ -117,7 +117,7 @@ dependencies {
     // Room Database (без compiler - не работает с текущей конфигурацией)
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
-    ksp(libs.room.compiler)
+    // ksp(libs.room.compiler) // REMOVED
     
     // ONNX Runtime (для локальных AI моделей)
     implementation(libs.onnxruntime)

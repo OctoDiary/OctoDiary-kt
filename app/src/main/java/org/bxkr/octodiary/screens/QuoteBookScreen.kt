@@ -1,9 +1,11 @@
 package org.bxkr.octodiary.screens
 
+
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.staggeredgrid.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -27,14 +29,14 @@ fun QuoteBookScreen() {
                 title = { Text("Цитатник") },
                 actions = {
                     IconButton(onClick = { }) {
-                        Icon(Icons.Rounded.Search, "Поиск")
+                        Icon(Icons.Default.Search, "Поиск")
                     }
                 }
             )
         },
         floatingActionButton = {
             FloatingActionButton(onClick = { }) {
-                Icon(Icons.Rounded.Add, "Добавить цитату")
+                Icon(Icons.Default.Add, "Добавить цитату")
             }
         }
     ) { padding ->
@@ -66,3 +68,6 @@ fun QuoteBookScreen() {
         }
     }
 }
+
+
+

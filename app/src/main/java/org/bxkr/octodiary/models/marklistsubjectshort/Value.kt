@@ -1,6 +1,8 @@
 package org.bxkr.octodiary.models.marklistsubjectshort
 
 
+
+import androidx.compose.material.icons.Icons
 import com.google.gson.annotations.SerializedName
 import org.bxkr.octodiary.models.events.Grade
 
@@ -14,3 +16,5 @@ data class Value(
     @SerializedName("name")
     val name: Any?
 )
+
+

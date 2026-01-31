@@ -1,6 +1,8 @@
 package org.bxkr.octodiary.models.auth
 
 
+
+import androidx.compose.material.icons.Icons
 import com.google.gson.annotations.SerializedName
 
 data class RegionalProfile(
@@ -27,3 +29,5 @@ data class RegionalProfile(
     @SerializedName("user_id")
     val userId: Long
 )
+
+

@@ -1,6 +1,8 @@
 package org.bxkr.octodiary.models.profile
 
 
+
+import androidx.compose.material.icons.Icons
 import com.google.gson.annotations.SerializedName
 
 data class ProfileResponse(
@@ -11,3 +13,5 @@ data class ProfileResponse(
     @SerializedName("profile")
     val profile: Profile
 )
+
+

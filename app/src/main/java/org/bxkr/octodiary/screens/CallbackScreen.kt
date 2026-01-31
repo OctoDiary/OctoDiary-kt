@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.screens
 
+
+import androidx.compose.material.icons.Icons
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -71,3 +73,5 @@ enum class CallbackType(val host: String) {
     Esia("authRegionRedirect"),
     TgBot("tgbot")
 }
+
+

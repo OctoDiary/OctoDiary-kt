@@ -1,9 +1,13 @@
 package org.bxkr.octodiary.components.settings
 
+
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.BatteryAlert
+import androidx.compose.material.icons.filled.BatteryChargingFull
+import androidx.compose.material.icons.filled.BatteryFull
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -98,9 +102,9 @@ fun BatterySaverSettings() {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(
                         when {
-                            isCharging -> Icons.Rounded.BatteryChargingFull
-                            currentBatteryLevel > 20 -> Icons.Rounded.BatteryFull
-                            else -> Icons.Rounded.BatteryAlert
+                            isCharging -> Icons.Default.BatteryChargingFull
+                            currentBatteryLevel > 20 -> Icons.Default.BatteryFull
+                            else -> Icons.Default.BatteryAlert
                         },
                         contentDescription = null,
                         tint = when {
@@ -303,7 +307,7 @@ fun BatterySaverSettings() {
                     .fillMaxWidth()
             ) {
                 Icon(
-                    Icons.Rounded.Info,
+                    Icons.Default.Info,
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.tertiary,
                     modifier = Modifier.padding(end = 12.dp)
@@ -325,3 +329,6 @@ fun BatterySaverSettings() {
         }
     }
 }
+
+
+

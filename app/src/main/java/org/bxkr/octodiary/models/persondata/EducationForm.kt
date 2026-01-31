@@ -1,6 +1,8 @@
 package org.bxkr.octodiary.models.persondata
 
 
+
+import androidx.compose.material.icons.Icons
 import com.google.gson.annotations.SerializedName
 
 data class EducationForm(
@@ -13,3 +15,5 @@ data class EducationForm(
     @SerializedName("name")
     val name: String
 )
+
+

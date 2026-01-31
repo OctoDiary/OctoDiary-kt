@@ -1,6 +1,8 @@
 package org.bxkr.octodiary.models.persondata
 
 
+
+import androidx.compose.material.icons.Icons
 import com.google.gson.annotations.SerializedName
 
 data class Education(
@@ -51,3 +53,5 @@ data class Education(
     @SerializedName("updated_by")
     val updatedBy: Any?
 )
+
+

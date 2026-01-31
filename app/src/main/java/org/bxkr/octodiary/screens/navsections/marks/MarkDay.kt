@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.screens.navsections.marks
 
+
+import androidx.compose.material.icons.Icons
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -62,3 +64,5 @@ fun MarkDay(marks: List<Mark>, filterType: MutableState<DateMarkFilterType>) {
         }
     }
 }
+
+

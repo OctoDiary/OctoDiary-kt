@@ -1,6 +1,8 @@
 package org.bxkr.octodiary.models.daysbalanceinfo
 
 
+
+import androidx.compose.material.icons.Icons
 import com.google.gson.annotations.SerializedName
 
 data class DaysBalanceInfo(
@@ -9,3 +11,5 @@ data class DaysBalanceInfo(
     @SerializedName("has_next_page")
     val hasNextPage: Boolean,
 )
+
+

@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.database
 
+
+import androidx.compose.material.icons.Icons
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
@@ -91,3 +93,6 @@ abstract class AppDatabase : RoomDatabase() {
         }
     }
 }
+
+
+

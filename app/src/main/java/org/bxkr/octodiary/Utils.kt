@@ -1,5 +1,7 @@
 package org.bxkr.octodiary
 
+
+import androidx.compose.material.icons.Icons
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
@@ -266,14 +268,14 @@ inline fun <reified T> Call<T>.extendedEnqueue(
     }
 })
 
-fun DataService.baseErrorFunction(errorBody: ResponseBody, httpCode: Int, className: String?) {
-    if (httpCode in listOf(401, 403)) {
+fun DataService.baseErrorFunction(errorBody: ResponseBody, _httpCode: Int, _className: String?) {
+    if (_httpCode in listOf(401, 403)) {
         tokenExpirationHandler?.invoke()
-    } else println("Error in $className: ${errorBody.string()}")
+    } else println("Error in $_className: ${errorBody.string()}")
 }
 
-fun DataService.baseInternalExceptionFunction(t: Throwable, className: String?) {
-    println("Error in $className:\n    ${t.message}\nSwitching to cache fallback if available")
+fun DataService.baseInternalExceptionFunction(t: Throwable, _className: String?) {
+    println("Error in $_className:\n    ${t.message}\nSwitching to cache fallback if available")
     loadingStarted = false
 }
 
@@ -442,7 +444,7 @@ fun Calendar.getRussianWeekdayOnFormat(): String =
     }
 
 fun errorListenerForMessage(errorListener: (String) -> Unit): (errorBody: ResponseBody, httpCode: Int, className: String?) -> Unit {
-    return { errorBody: ResponseBody, httpCode: Int, className: String? ->
+    return { errorBody: ResponseBody, _: Int, _: String? ->
         val contents = errorBody.string()
         try {
             val body = Gson().fromJson(contents, ErrorBody::class.java)
@@ -575,7 +577,7 @@ fun Context.openUri(uri: String) {
  * Открыть URL в WebView внутри приложения
  * Используйте этот метод вместо openUri для внутреннего отображения
  */
-fun Context.openInAppBrowser(url: String): Boolean {
+fun Context.openInAppBrowser(_url: String): Boolean {
     // Этот метод будет вызывать WebViewDialog через Compose
     // Реализация будет в компонентах, которые используют WebViewDialog
     return false
@@ -667,3 +669,6 @@ inline fun <reified Original> jsonSaver() = Saver<Original, String>(
     save = { Gson().toJson(it) },
     restore = { it.fromJson() }
 )
+
+
+

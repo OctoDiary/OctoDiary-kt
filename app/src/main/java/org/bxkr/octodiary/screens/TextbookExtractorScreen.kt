@@ -1,11 +1,14 @@
 package org.bxkr.octodiary.screens
 
+
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.AutoStories
+import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Error
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowBack
-import androidx.compose.material.icons.rounded.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -49,7 +52,7 @@ fun TextbookExtractorScreen() {
                 title = { Text("Извлечение из учебников") },
                 navigationIcon = {
                     IconButton(onClick = { nav?.navigateUp() }) {
-                        Icon(Icons.AutoMirrored.Rounded.ArrowBack, "Назад")
+                        Icon(Icons.AutoMirrored.Default.ArrowBack, "Назад")
                     }
                 },
                 actions = {
@@ -65,7 +68,7 @@ fun TextbookExtractorScreen() {
                                 }
                             }
                         }) {
-                            Icon(Icons.Rounded.Clear, "Очистить")
+                            Icon(Icons.Default.Clear, "Очистить")
                         }
                     }
                 }
@@ -128,7 +131,7 @@ fun TextbookExtractorScreen() {
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Icon(
-                                Icons.Rounded.Error,
+                                Icons.Default.Error,
                                 contentDescription = null,
                                 tint = MaterialTheme.colorScheme.error
                             )
@@ -203,7 +206,7 @@ fun TextbookExtractorScreen() {
                         verticalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
                         Icon(
-                            Icons.Rounded.AutoStories,
+                            Icons.Default.AutoStories,
                             contentDescription = null,
                             modifier = Modifier.size(64.dp),
                             tint = MaterialTheme.colorScheme.onSurfaceVariant
@@ -253,3 +256,5 @@ fun TextbookExtractorScreen() {
         }
     }
 }
+
+

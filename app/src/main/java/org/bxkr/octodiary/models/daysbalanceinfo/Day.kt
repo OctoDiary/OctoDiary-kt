@@ -1,6 +1,8 @@
 package org.bxkr.octodiary.models.daysbalanceinfo
 
 
+
+import androidx.compose.material.icons.Icons
 import com.google.gson.annotations.SerializedName
 
 data class Day(
@@ -11,3 +13,5 @@ data class Day(
     @SerializedName("transactions")
     val transactions: List<Transaction>
 )
+
+

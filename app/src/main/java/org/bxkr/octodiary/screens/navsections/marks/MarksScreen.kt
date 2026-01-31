@@ -1,9 +1,10 @@
 package org.bxkr.octodiary.screens.navsections.marks
 
+
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Sort
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Column
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.Sort
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -31,7 +32,7 @@ val scrollToSubjectIdLive = MutableLiveData<Long?>(null)
 fun MarksScreen() {
     val scrollToSubjectId = scrollToSubjectIdLive.observeAsState()
     showFilterLive.postValue(true)
-    contentDependentActionIconLive.postValue(Icons.AutoMirrored.Rounded.Sort)
+    contentDependentActionIconLive.postValue(Icons.AutoMirrored.Default.Sort)
     var currentTab by remember { mutableStateOf(if (scrollToSubjectId.value != null) MarksScreenTab.BySubject else MarksScreenTab.ByDate) }
     Column {
         if (DataService.marksSubject.isNotEmpty()) {
@@ -57,3 +58,6 @@ fun MarksScreen() {
         }
     }
 }
+
+
+

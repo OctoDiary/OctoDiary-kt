@@ -1,10 +1,14 @@
 package org.bxkr.octodiary.screens
 
+
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.CameraAlt
+import androidx.compose.material.icons.filled.FileDownload
+import androidx.compose.material.icons.filled.VolumeUp
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -36,17 +40,17 @@ fun VocabularyScreen() {
                 title = { Text("Словарь") },
                 actions = {
                     IconButton(onClick = { /* OCR from photo */ }) {
-                        Icon(Icons.Rounded.CameraAlt, "Сфотографировать таблицу")
+                        Icon(Icons.Default.CameraAlt, "Сфотографировать таблицу")
                     }
                     IconButton(onClick = { }) {
-                        Icon(Icons.Rounded.FileDownload, "Экспорт")
+                        Icon(Icons.Default.FileDownload, "Экспорт")
                     }
                 }
             )
         },
         floatingActionButton = {
             FloatingActionButton(onClick = { }) {
-                Icon(Icons.Rounded.Add, "Добавить слово")
+                Icon(Icons.Default.Add, "Добавить слово")
             }
         }
     ) { padding ->
@@ -68,7 +72,7 @@ fun VocabularyScreen() {
                         ) {
                             Text(word.word, style = MaterialTheme.typography.titleLarge)
                             IconButton(onClick = { /* Play audio */ }) {
-                                Icon(Icons.Rounded.VolumeUp, "Произношение")
+                                Icon(Icons.Default.VolumeUp, "Произношение")
                             }
                         }
                         word.transcription?.let {
@@ -86,3 +90,6 @@ fun VocabularyScreen() {
         }
     }
 }
+
+
+

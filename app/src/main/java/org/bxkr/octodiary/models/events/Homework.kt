@@ -1,6 +1,8 @@
 package org.bxkr.octodiary.models.events
 
 
+
+import androidx.compose.material.icons.Icons
 import com.google.gson.annotations.SerializedName
 
 data class Homework(
@@ -19,3 +21,5 @@ data class Homework(
     @SerializedName("total_count")
     val totalCount: Int
 )
+
+

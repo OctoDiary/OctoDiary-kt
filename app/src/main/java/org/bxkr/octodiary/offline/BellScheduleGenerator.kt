@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.offline
 
+
+import androidx.compose.material.icons.Icons
 import java.time.DayOfWeek
 import java.time.LocalTime
 
@@ -307,3 +309,5 @@ object BellScheduleGenerator {
         HIGH("старшей школы")
     }
 }
+
+

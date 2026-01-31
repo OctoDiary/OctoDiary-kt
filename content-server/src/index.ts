@@ -90,14 +90,86 @@ const server = new Server(
 // Handle tool calls
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
   const { name, arguments: args } = request.params;
+  
+  // Input validation for security
+  if (!args || typeof args !== 'object') {
+    return {
+      content: [
+        {
+          type: "text",
+          text: "Invalid arguments: arguments must be provided and be an object"
+        }
+      ],
+      isError: true
+    };
+  }
+  
+  // Sanitize string inputs to prevent injection
+  const sanitizeString = (input: any): string => {
+    if (typeof input !== 'string') return '';
+    // Remove potential injection patterns
+    return input.replace(/[\x00-\x1F\x7F-\x9F<>'"&]/g, '').trim();
+  };
+  
+  const cacheKey = getCacheKey(name, args);
 
+  // Проверяем кэш для часто используемых запросов
+  if (name === "get_table_of_contents" || name === "list_textbooks") {
+    const cachedResult = getCachedResult(cacheKey);
+    if (cachedResult) {
+      return cachedResult;
+    }
+  }
+
+  let result;
   switch (name) {
-    case "get_table_of_contents": {
+case "get_table_of_contents": {
       const { textbookId, level } = args as { textbookId: string; level?: number };
+      
+      // Validate and sanitize inputs
+      if (!textbookId || typeof textbookId !== 'string') {
+        result = {
+          content: [
+            {
+              type: "text",
+              text: "Invalid argument: textbookId is required and must be a string"
+            }
+          ],
+          isError: true
+        };
+        break;
+      }
+      
+      const sanitizedTextbookId = sanitizeString(textbookId);
+      if (!sanitizedTextbookId) {
+        result = {
+          content: [
+            {
+              type: "text",
+              text: "Invalid textbookId: contains invalid characters"
+            }
+          ],
+          isError: true
+        };
+        break;
+      }
+      
+      if (level !== undefined && (typeof level !== 'number' || level < 0 || !Number.isInteger(level))) {
+        result = {
+          content: [
+            {
+              type: "text",
+              text: "Invalid level: must be a non-negative integer"
+            }
+          ],
+          isError: true
+        };
+        break;
+      }
 
       try {
         // Filter TOC entries by textbook and optionally by level
-        let entries = mockTocEntries.filter(entry => entry.textbookId === textbookId);
+        let entries = mockTocEntries.filter(entry => entry.textbookId === sanitizedTextbookId);
 
         if (level !== undefined) {
           entries = entries.filter(entry => entry.level <= level);
@@ -106,12 +178,12 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         // Sort by orderIndex
         entries.sort((a, b) => a.orderIndex - b.orderIndex);
 
-        return {
+        result = {
           content: [
             {
               type: "text",
               text: JSON.stringify({
-                textbookId,
+                textbookId: sanitizedTextbookId,
                 entries: entries.map(entry => ({
                   id: entry.id,
                   title: entry.title,
@@ -126,7 +198,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           ]
         };
       } catch (error) {
-        return {
+        result = {
           content: [
             {
               type: "text",
@@ -136,6 +208,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           isError: true
         };
       }
+      break;
     }
 
     case "request_paragraph": {
@@ -196,29 +269,73 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       }
     }
 
-    case "search_content": {
+case "search_content": {
       const { query, textbookId, limit } = args as { query: string; textbookId?: string; limit?: number };
+      
+      // Validate and sanitize inputs
+      if (!query || typeof query !== 'string') {
+        result = {
+          content: [
+            {
+              type: "text",
+              text: "Invalid argument: query is required and must be a string"
+            }
+          ],
+          isError: true
+        };
+        break;
+      }
+      
+      const sanitizedQuery = sanitizeString(query);
+      if (!sanitizedQuery) {
+        result = {
+          content: [
+            {
+              type: "text",
+              text: "Invalid query: contains invalid characters or is empty"
+            }
+          ],
+          isError: true
+        };
+        break;
+      }
+      
+      const sanitizedTextbookId = textbookId ? sanitizeString(textbookId) : undefined;
+      
+      if (limit !== undefined && (typeof limit !== 'number' || limit < 1 || limit > 100 || !Number.isInteger(limit))) {
+        result = {
+          content: [
+            {
+              type: "text",
+              text: "Invalid limit: must be an integer between 1 and 100"
+            }
+          ],
+          isError: true
+        };
+        break;
+      }
 
       try {
         // Search in TOC entries
         let tocResults = mockTocEntries.filter(entry => {
-          if (textbookId && entry.textbookId !== textbookId) return false;
+          if (sanitizedTextbookId && entry.textbookId !== sanitizedTextbookId) return false;
 
           const searchText = `${entry.title} ${entry.summary || ''} ${entry.keywords.join(' ')}`.toLowerCase();
-          return searchText.includes(query.toLowerCase());
+          return searchText.includes(sanitizedQuery.toLowerCase());
         });
 
         // Search in paragraphs
         let paragraphResults = mockParagraphs.filter(p => {
-          if (textbookId && !p.tags.includes(textbookId)) return false;
+          if (sanitizedTextbookId && !p.tags.includes(sanitizedTextbookId)) return false;
 
           const searchText = `${p.title} ${p.content} ${p.tags.join(' ')}`.toLowerCase();
-          return searchText.includes(query.toLowerCase());
+          return searchText.includes(sanitizedQuery.toLowerCase());
         });
 
         // Combine and limit results
+        const halfLimit = Math.floor((limit || 10) / 2);
         const results = [
-          ...tocResults.slice(0, (limit || 10) / 2).map(entry => ({
+          ...tocResults.slice(0, halfLimit).map(entry => ({
             type: "toc_entry",
             id: entry.id,
             title: entry.title,
@@ -226,7 +343,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
             textbookId: entry.textbookId,
             pageNumber: entry.pageNumber
           })),
-          ...paragraphResults.slice(0, (limit || 10) / 2).map(p => ({
+          ...paragraphResults.slice(0, halfLimit).map(p => ({
             type: "paragraph",
             id: p.requestId,
             title: p.title,
@@ -234,14 +351,14 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
             source: p.source,
             tags: p.tags
           }))
-        ].slice(0, limit || 10);
+].slice(0, limit || 10);
 
-        return {
+        result = {
           content: [
             {
               type: "text",
               text: JSON.stringify({
-                query,
+                query: sanitizedQuery,
                 totalResults: results.length,
                 results
               }, null, 2)
@@ -249,7 +366,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           ]
         };
       } catch (error) {
-        return {
+        result = {
           content: [
             {
               type: "text",
@@ -259,9 +376,10 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           isError: true
         };
       }
+      break;
     }
 
-    case "list_textbooks": {
+case "list_textbooks": {
       try {
         // Extract unique textbook IDs from TOC entries
         const textbookIds = [...new Set(mockTocEntries.map(entry => entry.textbookId))];
@@ -272,7 +390,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           tocEntriesCount: mockTocEntries.filter(entry => entry.textbookId === id).length
         }));
 
-        return {
+        result = {
           content: [
             {
               type: "text",
@@ -284,7 +402,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           ]
         };
       } catch (error) {
-        return {
+        result = {
           content: [
             {
               type: "text",
@@ -294,11 +412,19 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           isError: true
         };
       }
+      break;
     }
 
-    default:
+default:
       throw new McpError(ErrorCode.MethodNotFound, `Unknown tool: ${name}`);
   }
+
+  // Кэшируем результат для часто используемых запросов
+  if (name === "get_table_of_contents" || name === "list_textbooks") {
+    setCachedResult(cacheKey, result);
+  }
+
+  return result;
 });
 // Handle listing tools
 server.setRequestHandler(ListToolsRequestSchema, async () => {
@@ -375,139 +501,7 @@ function setCachedResult(key: string, data: any): void {
   cache.set(key, { data, timestamp: Date.now() });
 }
 
-// Handle tool calls with caching
-server.setRequestHandler(CallToolRequestSchema, async (request) => {
-  const { name, arguments: args } = request.params;
-  const cacheKey = getCacheKey(name, args);
 
-  // Проверяем кэш для часто используемых запросов
-  if (name === "get_table_of_contents" || name === "list_textbooks") {
-    const cachedResult = getCachedResult(cacheKey);
-    if (cachedResult) {
-      return cachedResult;
-    }
-  }
-
-  let result;
-  switch (name) {
-    // ... остальной код без изменений
-    case "get_table_of_contents": {
-      const { textbookId, level } = args as { textbookId: string; level?: number };
-
-      try {
-        // Filter TOC entries by textbook and optionally by level
-        let entries = mockTocEntries.filter(entry => entry.textbookId === textbookId);
-
-        if (level !== undefined) {
-          entries = entries.filter(entry => entry.level <= level);
-        }
-
-        // Sort by orderIndex
-        entries.sort((a, b) => a.orderIndex - b.orderIndex);
-
-        result = {
-          content: [
-            {
-              type: "text",
-              text: JSON.stringify({
-                textbookId,
-                entries: entries.map(entry => ({
-                  id: entry.id,
-                  title: entry.title,
-                  summary: entry.summary,
-                  pageNumber: entry.pageNumber,
-                  level: entry.level,
-                  importance: entry.importance,
-                  keywords: entry.keywords
-                }))
-              }, null, 2)
-            }
-          ]
-        };
-      } catch (error) {
-        result = {
-          content: [
-            {
-              type: "text",
-              text: `Error getting table of contents: ${error instanceof Error ? error.message : 'Unknown error'}`
-            }
-          ],
-          isError: true
-        };
-      }
-      break;
-    }
-
-    case "request_paragraph": {
-      const { topic, language, maxLength } = args as { topic: string; language?: string; maxLength?: number };
-
-      try {
-        // In real implementation, this would call the actual ParagraphService
-        // For demo, we'll return mock data or simulate a request
-
-        // Simulate finding existing paragraph or creating new request
-        const existingParagraph = mockParagraphs.find(p =>
-          p.title.toLowerCase().includes(topic.toLowerCase()) ||
-          p.content.toLowerCase().includes(topic.toLowerCase())
-        );
-
-        if (existingParagraph) {
-          result = {
-            content: [
-              {
-                type: "text",
-                text: JSON.stringify(existingParagraph, null, 2)
-              }
-            ]
-          };
-        } else {
-          // Simulate creating a new paragraph request
-          const newParagraph: ParagraphResponse = {
-            requestId: `req-${Date.now()}`,
-            title: `Параграф о теме: ${topic}`,
-            content: `Это сгенерированный контент по теме "${topic}". В реальной реализации здесь будет подключение к внешнему API для генерации содержимого.`,
-            source: "ai_generated",
-            language: language || "ru",
-            wordCount: 25,
-            estimatedReadTime: 1,
-            tags: [topic],
-            success: true
-          };
-
-          result = {
-            content: [
-              {
-                type: "text",
-                text: JSON.stringify(newParagraph, null, 2)
-              }
-            ]
-          };
-        }
-      } catch (error) {
-        result = {
-          content: [
-            {
-              type: "text",
-              text: `Error requesting paragraph: ${error instanceof Error ? error.message : 'Unknown error'}`
-            }
-          ],
-          isError: true
-        };
-      }
-      break;
-    }
-
-    case "search_content": {
-      const { query, textbookId, limit } = args as { query: string; textbookId?: string; limit?: number };
-
-      try {
-        // Search in TOC entries
-        let tocResults = mockTocEntries.filter(entry => {
-          if (textbookId && entry.textbookId !== textbookId) return false;
-
-          const searchText = `${entry.title} ${entry.summary || ''} ${entry.keywords.join(' ')}`.toLowerCase();
-          return searchText.includes(query.toLowerCase());
-        });
 
         // Search in paragraphs
         let paragraphResults = mockParagraphs.filter(p => {

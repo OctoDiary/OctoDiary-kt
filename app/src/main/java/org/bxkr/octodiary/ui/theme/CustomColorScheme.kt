@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.ui.theme
 
+
+import androidx.compose.material.icons.Icons
 import androidx.compose.material3.ColorScheme
 
 enum class CustomColorScheme(
@@ -35,3 +37,5 @@ enum class CustomColorScheme(
         org.bxkr.octodiary.ui.theme.yellow.DarkColorScheme
     )
 }
+
+

@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.components.settings
 
+
+import androidx.compose.material.icons.Icons
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.padding
@@ -126,3 +128,5 @@ fun Appearance() {
         }
     }
 }
+
+

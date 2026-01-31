@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.components.changelog
 
+
+import androidx.compose.material.icons.Icons
 import org.bxkr.octodiary.R
 
 
@@ -12,3 +14,5 @@ class Changelog32 : Changelog() {
         get() = R.string.c32_description
     override val elements = null
 }
+
+

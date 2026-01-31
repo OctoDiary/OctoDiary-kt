@@ -1,6 +1,8 @@
 package org.bxkr.octodiary.models.mark
 
 
+
+import androidx.compose.material.icons.Icons
 import com.google.gson.annotations.SerializedName
 
 data class MarkInfo(
@@ -45,3 +47,5 @@ data class MarkInfo(
     @SerializedName("weight")
     val weight: Int,
 )
+
+

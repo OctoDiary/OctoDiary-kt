@@ -1,9 +1,10 @@
 package org.bxkr.octodiary.screens
 
+
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -62,7 +63,7 @@ fun ParentReportsScreen() {
                             onClick = { },
                             modifier = Modifier.fillMaxWidth()
                         ) {
-                            Icon(Icons.Rounded.Share, null)
+                            Icon(Icons.Default.Share, null)
                             Spacer(Modifier.width(8.dp))
                             Text("Отправить родителям")
                         }
@@ -72,3 +73,6 @@ fun ParentReportsScreen() {
         }
     }
 }
+
+
+

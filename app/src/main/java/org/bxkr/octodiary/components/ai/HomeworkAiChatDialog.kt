@@ -1,8 +1,9 @@
 package org.bxkr.octodiary.components.ai
 
-import androidx.compose.foundation.layout.*
+
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Close
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -153,7 +154,7 @@ fun HomeworkAiChatDialog(
                     },
                     navigationIcon = {
                         IconButton(onClick = onDismiss) {
-                            Icon(Icons.Rounded.Close, "Закрыть")
+                            Icon(Icons.Default.Close, "Закрыть")
                         }
                     }
                 )
@@ -175,3 +176,6 @@ fun HomeworkAiChatDialog(
         }
     }
 }
+
+
+

@@ -1,5 +1,10 @@
 package org.bxkr.octodiary.screens.navsections.homeworks
 
+
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Chat
+import androidx.compose.material.icons.automirrored.filled.OpenInNew
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.layout.Arrangement
@@ -11,12 +16,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowBack
-import androidx.compose.material.icons.rounded.BugReport
-import androidx.compose.material.icons.rounded.Chat
-import androidx.compose.material.icons.rounded.AutoAwesome
-import androidx.compose.material.icons.automirrored.rounded.OpenInNew
 import androidx.compose.material3.Button
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.ButtonDefaults
@@ -77,7 +76,7 @@ fun HomeworkDetailScreen(entryStudentId: Long) {
                 title = { Text(hw?.subjectName ?: stringResource(R.string.homework)) },
                 navigationIcon = {
                     IconButton(onClick = { nav?.navigateUp() }) {
-                        Icon(Icons.AutoMirrored.Rounded.ArrowBack, stringResource(R.string.back))
+                        Icon(Icons.AutoMirrored.Default.ArrowBack, stringResource(R.string.back))
                     }
                 }
             )
@@ -87,7 +86,7 @@ fun HomeworkDetailScreen(entryStudentId: Long) {
                 FloatingActionButton(
                     onClick = { showAiChat = true }
                 ) {
-                    Icon(Icons.Rounded.Chat, "AI помощник")
+                    Icon(Icons.Default.Chat, "AI помощник")
                 }
             }
         }
@@ -155,7 +154,7 @@ fun HomeworkDetailScreen(entryStudentId: Long) {
                                 }
                             }
                         }, contentPadding = ButtonDefaults.ButtonWithIconContentPadding) {
-                            Icon(Icons.AutoMirrored.Rounded.OpenInNew, contentDescription = stringResource(R.string.open))
+                            Icon(Icons.AutoMirrored.Default.OpenInNew, contentDescription = stringResource(R.string.open))
                             Text("  " + stringResource(R.string.open))
                         }
                     }
@@ -194,7 +193,7 @@ fun HomeworkDetailScreen(entryStudentId: Long) {
                                 showWebView = true
                             }
                         }, contentPadding = ButtonDefaults.ButtonWithIconContentPadding) {
-                            Icon(Icons.AutoMirrored.Rounded.OpenInNew, contentDescription = label)
+                            Icon(Icons.AutoMirrored.Default.OpenInNew, contentDescription = label)
                             Text("  " + label)
                         }
                     }
@@ -238,3 +237,6 @@ private fun subjectSlugFromName(name: String): String = when {
     name.contains("франц", ignoreCase = true) -> "fr"
     else -> "math"
 }
+
+
+

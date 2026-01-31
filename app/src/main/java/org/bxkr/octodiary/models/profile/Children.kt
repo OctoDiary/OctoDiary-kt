@@ -1,6 +1,8 @@
 package org.bxkr.octodiary.models.profile
 
 
+
+import androidx.compose.material.icons.Icons
 import com.google.gson.annotations.SerializedName
 
 data class Children(
@@ -55,3 +57,5 @@ data class Children(
     @SerializedName("user_id")
     val userId: Long
 )
+
+

@@ -1,6 +1,8 @@
 package org.bxkr.octodiary.models.events.encoded
 
 
+
+import androidx.compose.material.icons.Icons
 import com.google.gson.annotations.SerializedName
 
 data class Material(
@@ -9,3 +11,5 @@ data class Material(
     @SerializedName("materialObj")
     val materialObj: List<MaterialObj>
 )
+
+

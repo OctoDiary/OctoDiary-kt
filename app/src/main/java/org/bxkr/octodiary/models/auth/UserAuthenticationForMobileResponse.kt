@@ -1,6 +1,8 @@
 package org.bxkr.octodiary.models.auth
 
 
+
+import androidx.compose.material.icons.Icons
 import com.google.gson.annotations.SerializedName
 
 data class UserAuthenticationForMobileResponse(
@@ -17,3 +19,5 @@ data class UserAuthenticationForMobileResponse(
     @SerializedName("user_authentication_result")
     val userAuthenticationResult: String
 )
+
+

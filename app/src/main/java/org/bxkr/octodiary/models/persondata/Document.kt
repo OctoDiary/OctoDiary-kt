@@ -1,6 +1,8 @@
 package org.bxkr.octodiary.models.persondata
 
 
+
+import androidx.compose.material.icons.Icons
 import com.google.gson.annotations.SerializedName
 import org.bxkr.octodiary.R
 
@@ -55,3 +57,5 @@ data class Document(
             R.string.subdivision_code to subdivisionCode
         )
 }
+
+

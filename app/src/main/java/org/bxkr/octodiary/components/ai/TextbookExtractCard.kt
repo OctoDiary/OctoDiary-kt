@@ -1,8 +1,15 @@
 package org.bxkr.octodiary.components.ai
 
-import androidx.compose.foundation.layout.*
+
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.*
+import androidx.compose.material.icons.filled.Assignment
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Help
+import androidx.compose.material.icons.filled.QuestionMark
+import androidx.compose.material.icons.filled.Schedule
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -49,10 +56,10 @@ fun TextbookExtractCard(
                 ) {
                     // Иконка типа
                     val (icon, color) = when (extract.extractType) {
-                        "question" -> Icons.Rounded.QuestionMark to MaterialTheme.colorScheme.primary
-                        "exercise" -> Icons.Rounded.Edit to MaterialTheme.colorScheme.secondary
-                        "assignment" -> Icons.Rounded.Assignment to MaterialTheme.colorScheme.tertiary
-                        else -> Icons.Rounded.Help to MaterialTheme.colorScheme.onSurfaceVariant
+                        "question" -> Icons.Default.QuestionMark to MaterialTheme.colorScheme.primary
+                        "exercise" -> Icons.Default.Edit to MaterialTheme.colorScheme.secondary
+                        "assignment" -> Icons.Default.Assignment to MaterialTheme.colorScheme.tertiary
+                        else -> Icons.Default.Help to MaterialTheme.colorScheme.onSurfaceVariant
                     }
 
                     Icon(
@@ -112,7 +119,7 @@ fun TextbookExtractCard(
                         horizontalArrangement = Arrangement.spacedBy(4.dp)
                     ) {
                         Icon(
-                            Icons.Rounded.Star,
+                            Icons.Default.Star,
                             contentDescription = null,
                             modifier = Modifier.size(16.dp),
                             tint = MaterialTheme.colorScheme.onSurfaceVariant
@@ -131,7 +138,7 @@ fun TextbookExtractCard(
                         horizontalArrangement = Arrangement.spacedBy(4.dp)
                     ) {
                         Icon(
-                            Icons.Rounded.Schedule,
+                            Icons.Default.Schedule,
                             contentDescription = null,
                             modifier = Modifier.size(16.dp),
                             tint = MaterialTheme.colorScheme.onSurfaceVariant
@@ -206,7 +213,7 @@ fun TextbookExtractInputCard(
                     Text("Извлечение...")
                 } else {
                     Icon(
-                        Icons.Rounded.Search,
+                        Icons.Default.Search,
                         contentDescription = null,
                         modifier = Modifier.size(16.dp)
                     )
@@ -217,3 +224,5 @@ fun TextbookExtractInputCard(
         }
     }
 }
+
+

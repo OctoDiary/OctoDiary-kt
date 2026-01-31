@@ -1,14 +1,15 @@
 package org.bxkr.octodiary.components.settings
 
+
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CreditCard
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Nfc
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.CreditCard
-import androidx.compose.material.icons.rounded.Delete
-import androidx.compose.material.icons.rounded.Nfc
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -107,7 +108,7 @@ fun NfcCard() {
                         },
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Icon(Icons.Rounded.Delete, contentDescription = null)
+                        Icon(Icons.Default.Delete, contentDescription = null)
                         Spacer(Modifier.size(ButtonDefaults.IconSpacing))
                         Text(stringResource(R.string.nfc_clear_card))
                     }
@@ -142,7 +143,7 @@ fun NfcCard() {
                     enabled = nfcAvailable
                 ) {
                     Icon(
-                        if (isScanning) Icons.Rounded.Nfc else Icons.Rounded.CreditCard,
+                        if (isScanning) Icons.Default.Nfc else Icons.Default.CreditCard,
                         contentDescription = null
                     )
                     Spacer(Modifier.size(ButtonDefaults.IconSpacing))
@@ -172,3 +173,6 @@ fun NfcCard() {
         }
     }
 }
+
+
+

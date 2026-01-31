@@ -1,6 +1,8 @@
 package org.bxkr.octodiary.models.mealbalance
 
 
+
+import androidx.compose.material.icons.Icons
 import com.google.gson.annotations.SerializedName
 
 data class Organization(
@@ -11,3 +13,5 @@ data class Organization(
     @SerializedName("type")
     val type: String
 )
+
+

@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.screens.navsections.daybook
 
+
+import androidx.compose.material.icons.Icons
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
@@ -25,3 +27,5 @@ fun EventIndicators(event: Event, modifier: Modifier = Modifier) {
         }
     }
 }
+
+

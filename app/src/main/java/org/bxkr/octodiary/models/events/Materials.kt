@@ -1,6 +1,8 @@
 package org.bxkr.octodiary.models.events
 
 
+
+import androidx.compose.material.icons.Icons
 import com.google.gson.annotations.SerializedName
 
 data class Materials(
@@ -9,3 +11,5 @@ data class Materials(
     @SerializedName("count_learn")
     val countLearn: Int
 )
+
+

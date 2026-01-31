@@ -1,6 +1,8 @@
 package org.bxkr.octodiary.models.sessionuser
 
 
+
+import androidx.compose.material.icons.Icons
 import com.google.gson.annotations.SerializedName
 
 data class SessionUser(val a: String) {
@@ -9,3 +11,5 @@ data class SessionUser(val a: String) {
         val accessToken: String,
     )
 }
+
+

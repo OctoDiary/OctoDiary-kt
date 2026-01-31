@@ -1,9 +1,10 @@
 package org.bxkr.octodiary.screens.navsections.profile.meal
 
-import androidx.annotation.StringRes
+
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.BakeryDining
 import androidx.compose.material.icons.outlined.LocalDining
+import androidx.annotation.StringRes
 import androidx.compose.ui.graphics.vector.ImageVector
 import org.bxkr.octodiary.models.daysbalanceinfo.Day
 
@@ -23,3 +24,5 @@ enum class FoodDayIndicators(
         condition = { it.transactions.any { it.type == "BUFFET"} }
     )
 }
+
+

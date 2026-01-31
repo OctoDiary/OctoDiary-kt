@@ -1,6 +1,8 @@
 package org.bxkr.octodiary.models.classmembers
 
 
+
+import androidx.compose.material.icons.Icons
 import com.google.gson.annotations.SerializedName
 
 data class User(
@@ -11,3 +13,5 @@ data class User(
     @SerializedName("middle_name")
     val middleName: String?
 )
+
+

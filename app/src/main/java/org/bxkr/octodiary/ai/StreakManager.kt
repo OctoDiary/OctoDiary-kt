@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.ai
 
+
+import androidx.compose.material.icons.Icons
 import android.content.Context
 import java.util.Calendar
 import java.util.concurrent.TimeUnit
@@ -114,3 +116,6 @@ object StreakManager {
         return cal.timeInMillis
     }
 }
+
+
+

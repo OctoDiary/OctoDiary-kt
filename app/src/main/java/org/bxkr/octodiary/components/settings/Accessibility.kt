@@ -1,8 +1,9 @@
 package org.bxkr.octodiary.components.settings
 
-import androidx.compose.foundation.layout.*
+
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.*
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -181,7 +182,7 @@ fun AccessibilitySettings() {
                     .fillMaxWidth()
             ) {
                 Icon(
-                    Icons.Rounded.Info,
+                    Icons.Default.Info,
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.padding(end = 12.dp)
@@ -203,3 +204,6 @@ fun AccessibilitySettings() {
         }
     }
 }
+
+
+

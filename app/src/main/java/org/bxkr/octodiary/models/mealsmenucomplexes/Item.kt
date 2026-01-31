@@ -1,6 +1,8 @@
 package org.bxkr.octodiary.models.mealsmenucomplexes
 
 
+
+import androidx.compose.material.icons.Icons
 import com.google.gson.annotations.SerializedName
 
 data class Item(
@@ -27,3 +29,5 @@ data class Item(
 ) {
     val humanPrice get() = "${price / 100f} ₽"
 }
+
+

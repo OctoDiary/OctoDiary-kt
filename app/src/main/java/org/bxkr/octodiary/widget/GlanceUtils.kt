@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.widget
 
+
+import androidx.compose.material.icons.Icons
 import androidx.compose.runtime.Composable
 import androidx.glance.GlanceModifier
 import androidx.glance.GlanceTheme
@@ -30,3 +32,5 @@ fun androidx.compose.ui.text.TextStyle.toGlanceStyle(): TextStyle = TextStyle(
         }
     },
 )
+
+

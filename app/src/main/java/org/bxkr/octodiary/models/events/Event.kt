@@ -1,6 +1,8 @@
 package org.bxkr.octodiary.models.events
 
 
+
+import androidx.compose.material.icons.Icons
 import com.google.gson.annotations.SerializedName
 
 data class Event(
@@ -143,3 +145,5 @@ data class Event(
     @SerializedName("visible_fake_group")
     val visibleFakeGroup: Any?
 )
+
+

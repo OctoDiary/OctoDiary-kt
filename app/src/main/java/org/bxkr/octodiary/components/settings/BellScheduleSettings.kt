@@ -1,8 +1,10 @@
 package org.bxkr.octodiary.components.settings
 
-import androidx.compose.foundation.layout.*
+
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.*
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Schedule
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -125,7 +127,7 @@ fun BellScheduleSettings() {
                                 },
                                 leadingIcon = {
                                     Icon(
-                                        Icons.Rounded.Schedule,
+                                        Icons.Default.Schedule,
                                         contentDescription = null
                                     )
                                 }
@@ -292,7 +294,7 @@ fun BellScheduleSettings() {
                             .fillMaxWidth()
                     ) {
                         Icon(
-                            Icons.Rounded.Info,
+                            Icons.Default.Info,
                             contentDescription = null,
                             tint = MaterialTheme.colorScheme.primary,
                             modifier = Modifier.padding(end = 12.dp)
@@ -318,3 +320,6 @@ fun BellScheduleSettings() {
         }
     }
 }
+
+
+

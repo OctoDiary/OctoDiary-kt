@@ -1,6 +1,8 @@
 package org.bxkr.octodiary.models.persondata
 
 
+
+import androidx.compose.material.icons.Icons
 import com.google.gson.annotations.SerializedName
 
 data class Attachment(
@@ -11,3 +13,5 @@ data class Attachment(
     @SerializedName("uploaded_at")
     val uploadedAt: String
 )
+
+

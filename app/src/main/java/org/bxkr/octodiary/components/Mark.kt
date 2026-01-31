@@ -1,5 +1,8 @@
 package org.bxkr.octodiary.components
 
+
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.TrendingUp
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -12,8 +15,6 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.TrendingUp
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.FilledTonalIconButton
@@ -199,9 +200,9 @@ fun BoxScope.MarkInfo(markInfo: MarkInfo, subject: MarkListSubjectItem?, mark: M
             .padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally
     ) {
         MarkComp(mark, enabled = false, subjectId = 0L, markConfig = getMarkConfig())
-        if (subject != null) {
-            RatingButton(subject)
-            AverageChip(subject)
+        subject?.let {
+            RatingButton(it)
+            AverageChip(it)
         }
     }
 }
@@ -325,12 +326,11 @@ fun RatingButton(subject: MarkListSubjectItem) {
                     Modifier.padding(top = 6.dp),
                     shape = CloverShape
                 ) {
-                    Text(
-                        it.rank.rankPlace.toString(),
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
+                                                Text(
+                                                    it.rank.rankPlace?.toString() ?: "?",
+                                                    style = MaterialTheme.typography.titleMedium,
+                                                    fontWeight = FontWeight.Bold
+                                                )                }
             }
     }
 }
@@ -358,11 +358,11 @@ fun AverageChip(subject: MarkListSubjectItem) {
         ) {
             val textStyle = MaterialTheme.typography.labelLarge
             Icon(
-                Icons.AutoMirrored.Rounded.TrendingUp,
+                Icons.AutoMirrored.Default.TrendingUp,
                 stringResource(R.string.average_mark),
                 Modifier
                     .padding(horizontal = 4.dp)
-                    .size(textStyle.fontSize.value.dp),
+                    .size(textStyle.fontSize.value.toInt().dp),
                 MaterialTheme.colorScheme.tertiary
             )
             Text(
@@ -379,3 +379,5 @@ fun defaultMarkClick(mark: Mark, subjectId: Long) {
     modalBottomSheetStateLive.postValue(true)
     modalBottomSheetContentLive.postValue { MarkSheetContent(mark, subjectId) }
 }
+
+

@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.components.ai
 
+
+import androidx.compose.material.icons.Icons
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.material3.*
@@ -278,3 +280,6 @@ private fun QuestionCard(
         }
     }
 }
+
+
+

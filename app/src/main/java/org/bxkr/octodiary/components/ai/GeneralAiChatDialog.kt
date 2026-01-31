@@ -5,17 +5,17 @@ import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Add
-import androidx.compose.material.icons.rounded.Close
-import androidx.compose.material.icons.rounded.ContentCopy
-import androidx.compose.material.icons.rounded.Delete
-import androidx.compose.material.icons.rounded.Edit
-import androidx.compose.material.icons.rounded.FileDownload
-import androidx.compose.material.icons.rounded.Settings
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.ContentCopy
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.FileDownload
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.google.gson.Gson
@@ -90,10 +90,10 @@ fun GeneralAiChatDialog(
                             selectedTabIndex = tabs.size - 1
                             Log.d("GeneralAiChatDialog", "New tab added: ${newTab.name}, selectedTabIndex set to $selectedTabIndex")
                         }) {
-                            Icon(Icons.Rounded.Add, "Новая вкладка")
+                            Icon(Icons.Default.Add, "Новая вкладка")
                         }
                         IconButton(onClick = onDismiss) {
-                            Icon(Icons.Rounded.Close, "Закрыть")
+                            Icon(Icons.Default.Close, "Закрыть")
                         }
                     }
                 )
@@ -134,7 +134,7 @@ fun GeneralAiChatDialog(
                                          modifier = Modifier.size(20.dp)
                                      ) {
                                          Icon(
-                                             Icons.Rounded.Settings,
+                                             Icons.Default.Settings,
                                              contentDescription = "Настройки вкладки",
                                              modifier = Modifier.size(16.dp)
                                          )
@@ -263,7 +263,7 @@ fun TabSettingsDialog(
                             horizontalArrangement = Arrangement.spacedBy(8.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Icon(Icons.Rounded.Edit, null, modifier = Modifier.size(16.dp))
+                            Icon(Icons.Default.Edit, null, modifier = Modifier.size(16.dp))
                             Text("Переименовать")
                         }
                     }
@@ -276,7 +276,7 @@ fun TabSettingsDialog(
                             horizontalArrangement = Arrangement.spacedBy(8.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Icon(Icons.Rounded.ContentCopy, null, modifier = Modifier.size(16.dp))
+                            Icon(Icons.Default.ContentCopy, null, modifier = Modifier.size(16.dp))
                             Text("Дублировать")
                         }
                     }
@@ -289,7 +289,7 @@ fun TabSettingsDialog(
                             horizontalArrangement = Arrangement.spacedBy(8.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Icon(Icons.Rounded.FileDownload, null, modifier = Modifier.size(16.dp))
+                            Icon(Icons.Default.FileDownload, null, modifier = Modifier.size(16.dp))
                             Text("Экспорт истории")
                         }
                     }
@@ -306,7 +306,7 @@ fun TabSettingsDialog(
                                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Icon(Icons.Rounded.Delete, null, modifier = Modifier.size(16.dp))
+                                Icon(Icons.Default.Delete, null, modifier = Modifier.size(16.dp))
                                 Text("Удалить")
                             }
                         }
@@ -321,7 +321,7 @@ fun TabSettingsDialog(
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Icon(Icons.Rounded.Add, null, modifier = Modifier.size(16.dp))
+                        Icon(Icons.Default.Add, null, modifier = Modifier.size(16.dp))
                         Text("Новая вкладка")
                     }
                 }
@@ -403,3 +403,6 @@ private fun saveChatTabs(context: Context, tabs: List<ChatTab>) {
 private fun getDefaultTabs() = listOf(
     ChatTab("default", "Основной чат")
 )
+
+
+

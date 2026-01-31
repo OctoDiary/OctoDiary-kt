@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.database.entity
 
+
+import androidx.compose.material.icons.Icons
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.util.Date
@@ -55,3 +57,6 @@ data class ExamPlanEntity(
     val relatedKnowledgeBaseIds: List<Long> = emptyList(),
     val relatedProgressIds: List<Long> = emptyList()
 )
+
+
+

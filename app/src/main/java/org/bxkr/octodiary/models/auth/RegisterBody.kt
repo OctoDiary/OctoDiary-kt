@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.models.auth
 
+
+import androidx.compose.material.icons.Icons
 import com.google.gson.annotations.SerializedName
 
 data class RegisterBody(
@@ -10,3 +12,5 @@ data class RegisterBody(
     @SerializedName("software_statement")
     val softwareStatement: String
 )
+
+

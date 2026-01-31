@@ -1,5 +1,9 @@
 package org.bxkr.octodiary.screens.navsections.marks
 
+
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowUpward
+import androidx.compose.material.icons.automirrored.filled.HelpOutline
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
@@ -10,9 +14,6 @@ import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.HelpOutline
-import androidx.compose.material.icons.rounded.ArrowUpward
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -149,7 +150,7 @@ fun MarkCalculator(
                                 textValue = ""
                             }) {
                                 Icon(
-                                    Icons.Rounded.ArrowUpward,
+                                    Icons.Default.ArrowUpward,
                                     stringResource(R.string.add)
                                 )
                             }
@@ -182,7 +183,7 @@ private fun Helper(choice: String, modifier: Modifier = Modifier) {
                 coroutineScope.launch { tooltipState.show() }
             }) {
                 Icon(
-                    Icons.AutoMirrored.Rounded.HelpOutline,
+                    Icons.AutoMirrored.Default.HelpOutline,
                     stringResource(R.string.help),
                     tint = MaterialTheme.colorScheme.secondary
                 )
@@ -215,3 +216,5 @@ private fun markFactory(string: String): List<Mark> {
     }
     return mutableList.toList()
 }
+
+

@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.offline
 
+
+import androidx.compose.material.icons.Icons
 import java.time.LocalDate
 import java.time.LocalDateTime
 
@@ -505,3 +507,5 @@ object ReadingPlanner {
         return "goal_${System.currentTimeMillis()}_${(0..9999).random()}"
     }
 }
+
+

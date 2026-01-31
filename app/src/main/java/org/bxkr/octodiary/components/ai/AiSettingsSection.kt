@@ -1,8 +1,13 @@
 package org.bxkr.octodiary.components.ai
 
-import androidx.compose.foundation.layout.*
+
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.*
+import androidx.compose.material.icons.filled.BatteryStd
+import androidx.compose.material.icons.filled.Bedtime
+import androidx.compose.material.icons.filled.Key
+import androidx.compose.material.icons.filled.Mic
+import androidx.compose.material.icons.filled.Power
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -47,7 +52,7 @@ fun AiSettingsSection() {
                 )
             },
             leadingContent = {
-                Icon(Icons.Rounded.Key, null)
+                Icon(Icons.Default.Key, null)
             },
             modifier = Modifier.fillMaxWidth(),
             trailingContent = {
@@ -64,7 +69,7 @@ fun AiSettingsSection() {
             headlineContent = { Text("Время отхода ко сну") },
             supportingContent = { Text("Для составления плана") },
             leadingContent = {
-                Icon(Icons.Rounded.Bedtime, null)
+                Icon(Icons.Default.Bedtime, null)
             },
             modifier = Modifier.fillMaxWidth(),
             trailingContent = {
@@ -79,7 +84,7 @@ fun AiSettingsSection() {
             headlineContent = { Text("Автозапись уроков") },
             supportingContent = { Text("Создавать конспекты автоматически") },
             leadingContent = {
-                Icon(Icons.Rounded.Mic, null)
+                Icon(Icons.Default.Mic, null)
             },
             modifier = Modifier.fillMaxWidth(),
             trailingContent = {
@@ -116,7 +121,7 @@ fun AiSettingsSection() {
                 headlineContent = { Text("Мин. уровень батареи") },
                 supportingContent = { Text("${batteryLevel}%") },
                 leadingContent = {
-                    Icon(Icons.Rounded.BatteryStd, null)
+                    Icon(Icons.Default.BatteryStd, null)
                 },
                 modifier = Modifier.fillMaxWidth(),
                 trailingContent = {
@@ -164,7 +169,7 @@ fun AiSettingsSection() {
                 headlineContent = { Text("Требуется зарядка") },
                 supportingContent = { Text("Записывать только при зарядке") },
                 leadingContent = {
-                    Icon(Icons.Rounded.Power, null)
+                    Icon(Icons.Default.Power, null)
                 },
                 modifier = Modifier.fillMaxWidth(),
                 trailingContent = {
@@ -217,3 +222,6 @@ fun AiSettingsSection() {
         )
     }
 }
+
+
+

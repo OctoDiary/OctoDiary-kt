@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.components
 
+
+import androidx.compose.material.icons.Icons
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -19,3 +21,5 @@ fun MigrationDialog(close: () -> Unit) {
         Text(stringResource(id = R.string.migration_description))
     })
 }
+
+

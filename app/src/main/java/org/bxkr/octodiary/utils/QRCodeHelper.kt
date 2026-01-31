@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.utils
 
+
+import androidx.compose.material.icons.Icons
 import android.graphics.Bitmap
 import android.graphics.Color
 import com.google.gson.Gson
@@ -51,3 +53,6 @@ object QRCodeHelper {
         }
     }
 }
+
+
+

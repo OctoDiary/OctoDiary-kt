@@ -1,5 +1,7 @@
 package org.bxkr.octodiary
 
+
+import androidx.compose.material.icons.Icons
 import android.app.Service
 import android.content.Context
 import android.content.Intent
@@ -89,3 +91,5 @@ class AutoUpdateService : Service() {
         return null
     }
 }
+
+

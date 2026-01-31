@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.database.entity
 
+
+import androidx.compose.material.icons.Icons
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.util.Date
@@ -40,3 +42,6 @@ data class FlashcardEntity(
     val sourceKnowledgeBaseId: Long? = null,
     val sourceAISolutionId: Long? = null
 )
+
+
+

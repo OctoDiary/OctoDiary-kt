@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.database.entity
 
+
+import androidx.compose.material.icons.Icons
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.util.Date
@@ -37,3 +39,6 @@ data class KnowledgeBaseEntity(
     val isSynced: Boolean = false,
     val syncedAt: Date? = null
 )
+
+
+

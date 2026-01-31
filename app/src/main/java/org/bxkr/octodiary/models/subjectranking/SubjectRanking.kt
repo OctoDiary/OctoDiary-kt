@@ -1,6 +1,8 @@
 package org.bxkr.octodiary.models.subjectranking
 
 
+
+import androidx.compose.material.icons.Icons
 import com.google.gson.annotations.SerializedName
 
 data class SubjectRanking(
@@ -11,3 +13,5 @@ data class SubjectRanking(
     @SerializedName("subjectName")
     val subjectName: String
 )
+
+

@@ -1,6 +1,8 @@
 package org.bxkr.octodiary.models.lesson2
 
 
+
+import androidx.compose.material.icons.Icons
 import com.google.gson.annotations.SerializedName
 import org.bxkr.octodiary.models.events.Mark
 
@@ -76,3 +78,5 @@ data class LessonResponse(
     @SerializedName("theme_mastery")
     val themeMastery: Any?
 )
+
+

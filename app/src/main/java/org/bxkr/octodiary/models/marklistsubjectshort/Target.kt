@@ -1,6 +1,8 @@
 package org.bxkr.octodiary.models.marklistsubjectshort
 
 
+
+import androidx.compose.material.icons.Icons
 import com.google.gson.annotations.SerializedName
 
 data class Target(
@@ -13,3 +15,5 @@ data class Target(
     @SerializedName("value")
     val value: Int,
 )
+
+

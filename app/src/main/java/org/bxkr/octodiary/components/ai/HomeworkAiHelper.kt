@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.components.ai
 
+
+import androidx.compose.material.icons.Icons
 import android.content.Context
 import org.bxkr.octodiary.managers.TextbookManager
 import org.bxkr.octodiary.models.homeworks2.Homework
@@ -54,14 +56,20 @@ object HomeworkAiHelper {
                 appendLine("Ты можешь ссылаться на учебник при объяснении")
             }
             
+            if (marks != null && marks.isNotEmpty()) {
+                appendLine()
+                appendLine("**Уровень знаний ученика (оценки):** $marks")
+                appendLine("Адаптируй сложность объяснения: если много 2/3 - объясняй максимально подробно и просто. Если 4/5 - можно давать более сложные задания.")
+            }
+            
             appendLine()
             appendLine("**Твоя задача:**")
             appendLine("1. Помогай школьнику понять задание")
-            appendLine("2. Объясняй решения пошагово")
+            appendLine("2. Объясняй решения пошагово, не давай готовый ответ сразу")
             appendLine("3. Проверяй правильность выполнения")
-            appendLine("4. Давай подсказки, но НЕ решай за ученика")
-            appendLine("5. Отвечай на русском языке")
-            appendLine("6. Будь дружелюбным и мотивирующим")
+            appendLine("4. Давай подсказки, наводящие вопросы")
+            appendLine("5. Отвечай на русском языке, используй дружелюбный тон и эмодзи 😊")
+            appendLine("6. Говори просто, избегай канцелярита и заумных фраз")
             appendLine()
             appendLine("**ВАЖНО: Если ученик просит тест/викторину/проверочную работу:**")
             appendLine()
@@ -154,3 +162,6 @@ object HomeworkAiHelper {
         }
     }
 }
+
+
+

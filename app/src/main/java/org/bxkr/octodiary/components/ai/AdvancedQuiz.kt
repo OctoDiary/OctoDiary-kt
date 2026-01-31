@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.components.ai
 
+
+import androidx.compose.material.icons.Icons
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectDragGestures
@@ -444,3 +446,6 @@ private fun buildReviewPrompt(quizData: AdvancedQuizData, userAnswers: Map<Int, 
         appendLine("Будь дружелюбным и мотивирующим!")
     }
 }
+
+
+

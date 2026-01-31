@@ -1,6 +1,8 @@
 package org.bxkr.octodiary.models.lesson2
 
 
+
+import androidx.compose.material.icons.Icons
 import com.google.gson.annotations.SerializedName
 import org.bxkr.octodiary.models.lessonschedule.AdditionalMaterialX
 
@@ -32,3 +34,5 @@ data class LessonHomework(
     @SerializedName("written_answer")
     val writtenAnswer: Any?
 )
+
+

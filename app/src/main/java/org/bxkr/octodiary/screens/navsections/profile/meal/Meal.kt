@@ -1,15 +1,16 @@
 package org.bxkr.octodiary.screens.navsections.profile.meal
 
+
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.History
+import androidx.compose.material.icons.filled.SetMeal
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowBack
-import androidx.compose.material.icons.rounded.History
-import androidx.compose.material.icons.rounded.SetMeal
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -55,7 +56,7 @@ fun MealDialog() {
                     navigationIcon = {
                         IconButton(onDismiss) {
                             Icon(
-                                Icons.AutoMirrored.Rounded.ArrowBack,
+                                Icons.AutoMirrored.Default.ArrowBack,
                                 stringResource(R.string.back)
                             )
                         }
@@ -94,14 +95,14 @@ private fun Meal() {
                 onClick = { currentScreen = MealScreens.CurrentMenu },
                 modifier = Modifier.clip(MaterialTheme.shapes.medium),
                 text = { Text(stringResource(R.string.meal_dining_menu)) },
-                icon = { Icon(Icons.Rounded.SetMeal, null) }
+                icon = { Icon(Icons.Default.SetMeal, null) }
             )
             Tab(
                 selected = currentScreen == MealScreens.DiningHistory,
                 onClick = { currentScreen = MealScreens.DiningHistory },
                 modifier = Modifier.clip(MaterialTheme.shapes.medium),
                 text = { Text(stringResource(R.string.food_history)) },
-                icon = { Icon(Icons.Rounded.History, null) }
+                icon = { Icon(Icons.Default.History, null) }
             )
         }
         Box {
@@ -145,3 +146,5 @@ private fun Meal() {
         }
     }
 }
+
+

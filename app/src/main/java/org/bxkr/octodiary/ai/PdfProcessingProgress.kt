@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.ai
 
+
+import androidx.compose.material.icons.Icons
 /**
  * Класс для отслеживания прогресса обработки PDF
  */
@@ -20,3 +22,5 @@ enum class ProcessingStatus {
     ERROR,
     COMPLETED
 }
+
+

@@ -1,6 +1,8 @@
 package org.bxkr.octodiary.models.schoolinfo
 
 
+
+import androidx.compose.material.icons.Icons
 import com.google.gson.annotations.SerializedName
 
 data class Branch(
@@ -15,3 +17,5 @@ data class Branch(
     @SerializedName("type")
     val type: String?
 )
+
+

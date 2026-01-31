@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.database.entity
 
+
+import androidx.compose.material.icons.Icons
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -12,3 +14,6 @@ data class StreakEntity(
     val longestStreak: Int,
     val lastActivityDate: Long
 )
+
+
+

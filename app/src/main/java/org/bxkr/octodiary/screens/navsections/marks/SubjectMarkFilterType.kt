@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.screens.navsections.marks
 
+
+import androidx.compose.material.icons.Icons
 import androidx.annotation.StringRes
 import org.bxkr.octodiary.R
 
@@ -11,3 +13,5 @@ enum class SubjectMarkFilterType(
     ByUpdated(R.string.mark_filter_by_last_update),
     Alphabetical(R.string.mark_filter_alphabetical)
 }
+
+

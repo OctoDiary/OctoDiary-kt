@@ -1,5 +1,9 @@
 package org.bxkr.octodiary.screens.navsections.profile
 
+
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Done
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.tween
@@ -18,9 +22,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowBack
-import androidx.compose.material.icons.rounded.Done
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.FilterChip
@@ -129,7 +130,7 @@ fun ExamList(onClickExam: (Exam) -> Unit) {
                 }, leadingIcon = {
                     AnimatedVisibility(it.value) {
                         Icon(
-                            imageVector = Icons.Rounded.Done,
+                            imageVector = Icons.Default.Done,
                             contentDescription = stringResource(R.string.select),
                             modifier = Modifier.size(FilterChipDefaults.IconSize)
                         )
@@ -148,7 +149,7 @@ fun ExamList(onClickExam: (Exam) -> Unit) {
             }, leadingIcon = {
                 AnimatedVisibility(showApprobation) {
                     Icon(
-                        imageVector = Icons.Rounded.Done,
+                        imageVector = Icons.Default.Done,
                         contentDescription = stringResource(R.string.select),
                         modifier = Modifier.size(FilterChipDefaults.IconSize)
                     )
@@ -216,7 +217,7 @@ fun ExamDetails(exam: Exam, onDismiss: () -> Unit) {
             .padding(bottom = 92.dp)
     ) {
         IconButton(onClick = onDismiss) {
-            Icon(Icons.AutoMirrored.Rounded.ArrowBack, stringResource(id = R.string.back))
+            Icon(Icons.AutoMirrored.Default.ArrowBack, stringResource(id = R.string.back))
         }
         Row(Modifier.padding(16.dp), horizontalArrangement = Arrangement.SpaceBetween) {
             Column(
@@ -277,3 +278,5 @@ fun ExamDetails(exam: Exam, onDismiss: () -> Unit) {
         }
     }
 }
+
+

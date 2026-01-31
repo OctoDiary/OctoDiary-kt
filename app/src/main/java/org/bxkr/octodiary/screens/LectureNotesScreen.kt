@@ -1,11 +1,13 @@
 package org.bxkr.octodiary.screens
 
+
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.FiberManualRecord
+import androidx.compose.material.icons.filled.Mic
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowBack
-import androidx.compose.material.icons.rounded.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -32,14 +34,14 @@ fun LectureNotesScreen() {
                 title = { Text("Конспекты") },
                 navigationIcon = {
                     IconButton(onClick = { nav?.navigateUp() }) {
-                        Icon(Icons.AutoMirrored.Rounded.ArrowBack, "Назад")
+                        Icon(Icons.AutoMirrored.Default.ArrowBack, "Назад")
                     }
                 }
             )
         },
         floatingActionButton = {
             FloatingActionButton(onClick = { showRecordDialog = true }) {
-                Icon(Icons.Rounded.Mic, "Записать")
+                Icon(Icons.Default.Mic, "Записать")
             }
         }
     ) { padding ->
@@ -49,7 +51,7 @@ fun LectureNotesScreen() {
                 contentAlignment = Alignment.Center
             ) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Icon(Icons.Rounded.Mic, null, Modifier.size(64.dp))
+                    Icon(Icons.Default.Mic, null, Modifier.size(64.dp))
                     Spacer(Modifier.height(16.dp))
                     Text("Нет конспектов", style = MaterialTheme.typography.titleLarge)
                     Text("Начните запись урока")
@@ -103,7 +105,7 @@ private fun RecordNoteDialog(
     
     AlertDialog(
         onDismissRequest = onDismiss,
-        icon = { Icon(Icons.Rounded.Mic, null) },
+        icon = { Icon(Icons.Default.Mic, null) },
         title = { Text("Записать урок") },
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -147,7 +149,7 @@ private fun RecordNoteDialog(
                 onClick = { onStartRecording(subjectName) },
                 enabled = subjectName.isNotBlank()
             ) {
-                Icon(Icons.Rounded.FiberManualRecord, null, Modifier.size(16.dp))
+                Icon(Icons.Default.FiberManualRecord, null, Modifier.size(16.dp))
                 Spacer(Modifier.width(4.dp))
                 Text("Начать запись")
             }
@@ -173,3 +175,6 @@ fun LectureNoteCard(note: Any) {
         }
     }
 }
+
+
+

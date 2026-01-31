@@ -1,5 +1,7 @@
 package org.bxkr.octodiary.offline
 
+
+import androidx.compose.material.icons.Icons
 /**
  * Генератор флеш-карт для повторения учебного материала.
  * Создаёт интерактивные карточки для эффективного запоминания.
@@ -509,3 +511,5 @@ object FlashcardGenerator {
         return "session_${System.currentTimeMillis()}_${(0..9999).random()}"
     }
 }
+
+
