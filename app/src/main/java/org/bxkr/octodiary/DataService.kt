@@ -226,7 +226,7 @@ object DataService {
 
         secondaryApi.events(
             "Bearer $token",
-            personIds = profile.children[currentProfile].contingentGuid,
+            personIds = profile.children.getOrNull(currentProfile)?.contingentGuid ?: "",
             beginDate = startDate.time.formatToDay(),
             endDate = endDate.time.formatToDay(),
             expandFields = "homework,marks"
