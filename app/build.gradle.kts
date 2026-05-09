@@ -23,8 +23,8 @@ android {
         applicationId = "org.bxkr.octodiary"
         minSdk = 26
         targetSdk = 36
-        versionCode = 35
-        versionName = "2.1.8"
+        versionCode = 36
+        versionName = "2.1.9"
         archivesName = gitLatestCommit
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -36,6 +36,7 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
