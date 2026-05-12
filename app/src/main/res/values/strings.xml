@@ -404,4 +404,5 @@
     <string name="debug_off">You just downgraded to a user!</string>
     <string name="week_starts_always_on_monday">Week always starts on Monday</string>
     <string name="week_starts_always_on_monday_desc">for some locales</string>
+    <string name="log_in_by_password">Log in by password</string>
 </resources>

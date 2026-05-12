@@ -1,26 +1,21 @@
 package org.bxkr.octodiary.network
 
 import android.content.Context
-import android.net.Uri
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.platform.LocalContext
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
+import androidx.core.net.toUri
 import org.bxkr.octodiary.Diary
-import org.bxkr.octodiary.R
 import org.bxkr.octodiary.Screen
 import org.bxkr.octodiary.authPrefs
 import org.bxkr.octodiary.baseEnqueue
-import org.bxkr.octodiary.extendedEnqueue
 import org.bxkr.octodiary.get
 import org.bxkr.octodiary.mainPrefs
-import org.bxkr.octodiary.models.auth.RegionalCredentialsResponse
+import org.bxkr.octodiary.network.NetworkService.MySchoolAPIConfig.LOGIN_PASSWORD_TEMPLATE
 import org.bxkr.octodiary.network.interfaces.SecondaryAPI
 import org.bxkr.octodiary.save
 import org.bxkr.octodiary.screenLive
-import org.bxkr.octodiary.snackbarHostStateLive
 import org.bxkr.octodiary.widget.StatusWidget.Companion.setUpdateFor
 import java.util.Date
 import java.util.UUID
@@ -31,13 +26,13 @@ object MySchoolLoginService {
     fun logInWithEsia(context: Context, diary: Diary) {
         this.diary = diary
         val tabIntent = CustomTabsIntent.Builder().build()
-        tabIntent.launchUrl(context, Uri.parse(NetworkService.MySchoolAPIConfig.run {
+        tabIntent.launchUrl(context, NetworkService.MySchoolAPIConfig.run {
             val guid = UUID.randomUUID().toString()
             context.authPrefs.save("state" to guid)
             ESIA_AUTH_URL_TEMPLATE.format(
                 SecondaryAPI.getBaseUrl(diary), REDIRECT_URI, guid
             )
-        }))
+        }.toUri())
     }
 
     @Composable
@@ -59,48 +54,28 @@ object MySchoolLoginService {
         }
     }
 
-    fun Context.logInWithPassword(
-        login: String,
-        password: String,
-        coroutineScope: CoroutineScope,
-        onError: () -> Unit,
+    fun logInWithPassword(
+        context: Context,
+        demo: Boolean = false
     ) {
-        if (login == "demousername" && password == "demopassword") {
-            authPrefs.save(
-                "auth" to true, "subsystem" to Diary.MES.ordinal, "access_token" to "gitgud"
-            )
-            mainPrefs.save(
-                "first_launch" to true,
-                "demo" to true
-            )
-            screenLive.postValue(Screen.MainNav)
-            return
+        this@MySchoolLoginService.diary = Diary.MySchool
+        if (demo) {
+            return context.logInDemo()
         }
-        val api = NetworkService.regionalAuthApi()
-        api.enterCredentials(
-            RegionalCredentialsResponse.Body(login, password)
-        ).baseEnqueue(errorFunction = { _, httpCode, _ ->
-            if (httpCode == 401) {
-                coroutineScope.launch {
-                    snackbarHostStateLive.value!!.showSnackbar(getString(R.string.wrong))
-                }
-                onError()
-            }
-        }) { session ->
-            api.exchangeToken(session.authenticationToken).extendedEnqueue {
-                val token =
-                    it.headers().values("Set-Cookie").first { it1 -> it1.contains("aupd_token") }
-                        .split(";").map { it1 -> it1.split("=") }
-                        .first { it1 -> it1.contains("aupd_token") }[1]
-                authPrefs.save(
-                    "auth" to true, "subsystem" to Diary.MySchool.ordinal, "access_token" to token
-                )
-                mainPrefs.save(
-                    "first_launch" to true
-                )
-                screenLive.postValue(Screen.MainNav)
-                setUpdateFor(Date())
-            }
-        }
+        val guid = UUID.randomUUID().toString()
+        context.authPrefs.save("state" to guid)
+        val tabIntent = CustomTabsIntent.Builder().build()
+        tabIntent.launchUrl(context, LOGIN_PASSWORD_TEMPLATE.format(guid).toUri())
+    }
+
+    private fun Context.logInDemo() {
+        authPrefs.save(
+            "auth" to true, "subsystem" to Diary.MES.ordinal, "access_token" to "gitgud"
+        )
+        mainPrefs.save(
+            "first_launch" to true,
+            "demo" to true
+        )
+        screenLive.postValue(Screen.MainNav)
     }
 }

@@ -208,7 +208,12 @@ object DataService {
         onUpdated()
     }
 
-    fun updateEventCalendar(weeksBefore: Int = 0, weeksAfter: Int = 0, weekStartsAlwaysMonday: Boolean = false, onUpdated: () -> Unit) {
+    fun updateEventCalendar(
+        weeksBefore: Int = 0,
+        weeksAfter: Int = 0,
+        weekStartsAlwaysMonday: Boolean = false,
+        onUpdated: () -> Unit
+    ) {
         assert(this::token.isInitialized)
         assert(this::profile.isInitialized)
 
@@ -238,7 +243,11 @@ object DataService {
         }
     }
 
-    fun getEventWeek(date: Date, weekStartsAlwaysMonday: Boolean = false, listener: (events: List<Event>, range: List<Long>) -> Unit) {
+    fun getEventWeek(
+        date: Date,
+        weekStartsAlwaysMonday: Boolean = false,
+        listener: (events: List<Event>, range: List<Long>) -> Unit
+    ) {
         assert(this::token.isInitialized)
         assert(this::profile.isInitialized)
 
@@ -308,10 +317,10 @@ object DataService {
 //            profile.children[currentProfile].studentId,
 //            profile.children[currentProfile].classUnitId
 //        ).baseEnqueue({ _, _, _ ->
-            classMembers = emptyList()
-            hasClassMembers = true
-            classMembersFinished = true
-            if (rankingFinished) onUpdated()
+        classMembers = emptyList()
+        hasClassMembers = true
+        classMembersFinished = true
+        if (rankingFinished) onUpdated()
 //        }, ::baseInternalExceptionFunction) {
 //            classMembers = it
 //            hasClassMembers = true
@@ -385,23 +394,23 @@ object DataService {
 
         val localContractId = contractId
         if (localContractId != null)
-        mainSchoolApi.visits(
-            token,
-            localContractId,
-            fromDate = Calendar.getInstance().apply {
-                time = Date()
-                set(Calendar.DAY_OF_YEAR, get(Calendar.DAY_OF_YEAR) - 61)
-            }.time.formatToDay(),
-            toDate = Date().formatToDay()
-        ).baseEnqueue(::baseErrorFunction, ::baseInternalExceptionFunction) { visitsResponse ->
-            visits = VisitsResponse(
-                payload = visitsResponse.payload.sortedByDescending {
-                    it.date.parseFromDay().toInstant().toEpochMilli()
-                }
-            )
-            hasVisits = true
-            onUpdated()
-        }
+            mainSchoolApi.visits(
+                token,
+                localContractId,
+                fromDate = Calendar.getInstance().apply {
+                    time = Date()
+                    set(Calendar.DAY_OF_YEAR, get(Calendar.DAY_OF_YEAR) - 61)
+                }.time.formatToDay(),
+                toDate = Date().formatToDay()
+            ).baseEnqueue(::baseErrorFunction, ::baseInternalExceptionFunction) { visitsResponse ->
+                visits = VisitsResponse(
+                    payload = visitsResponse.payload.sortedByDescending {
+                        it.date.parseFromDay().toInstant().toEpochMilli()
+                    }
+                )
+                hasVisits = true
+                onUpdated()
+            }
     }
 
     fun updateMarksDate(onUpdated: () -> Unit) {
@@ -600,11 +609,7 @@ object DataService {
                 onUpdated()
             }
         } else {
-            secondaryApi.refreshToken("Bearer $token")
-                .baseEnqueue(::baseErrorFunction) {
-                    token = it
-                    updateUserId { onUpdated() }
-                }
+            onUpdated()
         }
     }
 
@@ -729,7 +734,8 @@ object DataService {
                 updateProfile {
                     onSingleItemLoad(::profile.name)
                     updateEventCalendar(
-                        weekStartsAlwaysMonday=context?.mainPrefs?.get(CommonPrefs.weekStartsAlwaysMonday.prefKey) ?: false
+                        weekStartsAlwaysMonday = context?.mainPrefs?.get(CommonPrefs.weekStartsAlwaysMonday.prefKey)
+                            ?: false
                     ) {
                         onSingleItemLoad(::eventCalendar.name)
                         onSingleItemLoad(::eventsRange.name)

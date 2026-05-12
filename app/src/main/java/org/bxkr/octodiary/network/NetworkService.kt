@@ -41,6 +41,8 @@ object NetworkService {
             "%sv3/auth/esia/login?redirect_url=%s&state=%s"
         const val REDIRECT_URI = "dnevnik-mes://authRegionRedirect"
         const val FOOD_URI = "https://food.myschool.mosreg.ru/user/login/?oauth=mesh"
+        const val LOGIN_PASSWORD_TEMPLATE =
+            "https://authedu.mosreg.ru/v3/auth/kauth/login?redirect_url=dnevnik-mes://authRegionRedirect&state=%s"
     }
 
     /**
