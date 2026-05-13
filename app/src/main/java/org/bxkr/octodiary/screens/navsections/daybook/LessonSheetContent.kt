@@ -46,25 +46,18 @@ import org.bxkr.octodiary.getMarkConfig
 import org.bxkr.octodiary.isDemo
 import org.bxkr.octodiary.models.lesson2.LessonResponse
 import org.bxkr.octodiary.parseFromDay
+import org.bxkr.octodiary.webViewDialogLive
 
 @Composable
 fun LessonSheetContent(lessonId: Long) {
     var lessonInfo by remember { mutableStateOf<LessonResponse?>(null) }
     var errorText by remember { mutableStateOf<String?>(null) }
-    var openWebView by remember { mutableStateOf(false) }
-    var webViewUrl by remember { mutableStateOf("") }
     val context = LocalContext.current
     LaunchedEffect(Unit) {
         if (context.isDemo) {
             lessonInfo = context.getDemoProperty(R.raw.demo_lesson_info)
         } else DataService.getLessonInfo(lessonId, { errorText = it }) {
             lessonInfo = it
-        }
-    }
-
-    if (openWebView) {
-        WebViewDialog(url = webViewUrl) {
-            openWebView = false
         }
     }
 
@@ -119,8 +112,11 @@ fun LessonSheetContent(lessonId: Long) {
                                         homework.homeworkEntryId,
                                         material.uuid ?: "",
                                     ) {
-                                        webViewUrl = it
-                                        openWebView = true
+                                        webViewDialogLive.postValue {
+                                            WebViewDialog(it) {
+                                                webViewDialogLive.postValue(null)
+                                            }
+                                        }
                                     }
                                 }
                             }, contentPadding = ButtonDefaults.ButtonWithIconContentPadding) {

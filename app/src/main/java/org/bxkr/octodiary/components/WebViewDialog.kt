@@ -30,8 +30,6 @@ import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.viewinterop.AndroidView
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
 import org.bxkr.octodiary.DataService
 import org.bxkr.octodiary.Diary
 import org.bxkr.octodiary.R
@@ -40,60 +38,53 @@ import org.bxkr.octodiary.R
 @Composable
 fun WebViewDialog(url: String, onDismissRequest: () -> Unit) {
     var currentUrl = remember { url }
-    Dialog(
-        properties = DialogProperties(
-            usePlatformDefaultWidth = false
-        ),
-        onDismissRequest = { onDismissRequest() }
-    ) {
-        Scaffold(
-            topBar = {
-                TopAppBar(
-                    title = { Text(stringResource(R.string.mes_material)) },
-                    navigationIcon = {
-                        IconButton(onClick = { onDismissRequest() }) {
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text(stringResource(R.string.mes_material)) },
+                navigationIcon = {
+                    IconButton(onClick = { onDismissRequest() }) {
+                        Icon(
+                            Icons.AutoMirrored.Rounded.ArrowBack,
+                            stringResource(R.string.back)
+                        )
+                    }
+                },
+                actions = {
+                    val clipboardManager =
+                        LocalClipboardManager.current
+                    TooltipBox(
+                        positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(),
+                        tooltip = {
+                            PlainTooltip {
+                                Text(stringResource(id = R.string.copy_link))
+                            }
+                        },
+                        state = rememberTooltipState()
+                    ) {
+                        IconButton(onClick = {
+                            clipboardManager.setText(AnnotatedString(currentUrl))
+                        }) {
                             Icon(
-                                Icons.AutoMirrored.Rounded.ArrowBack,
-                                stringResource(R.string.back)
+                                Icons.Rounded.Link,
+                                stringResource(R.string.copy_link)
                             )
                         }
-                    },
-                    actions = {
-                        val clipboardManager =
-                            LocalClipboardManager.current
-                        TooltipBox(
-                            positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(),
-                            tooltip = {
-                                PlainTooltip {
-                                    Text(stringResource(id = R.string.copy_link))
-                                }
-                            },
-                            state = rememberTooltipState()
-                        ) {
-                            IconButton(onClick = {
-                                clipboardManager.setText(AnnotatedString(currentUrl))
-                            }) {
-                                Icon(
-                                    Icons.Rounded.Link,
-                                    stringResource(R.string.copy_link)
-                                )
-                            }
-                        }
                     }
-                )
-            }
-        ) { padding ->
-            Surface(
-                Modifier
-                    .padding(padding)
-                    .fillMaxSize()
-            ) {
-                Column {
-                    AndroidView(
-                        factory = { it.webViewFactory(url) { newUrl -> currentUrl = newUrl } },
-                        modifier = Modifier.fillMaxSize()
-                    )
                 }
+            )
+        }
+    ) { padding ->
+        Surface(
+            Modifier
+                .padding(padding)
+                .fillMaxSize()
+        ) {
+            Column {
+                AndroidView(
+                    factory = { it.webViewFactory(url) { newUrl -> currentUrl = newUrl } },
+                    modifier = Modifier.fillMaxSize()
+                )
             }
         }
     }

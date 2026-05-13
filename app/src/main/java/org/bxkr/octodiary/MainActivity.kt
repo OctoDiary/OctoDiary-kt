@@ -127,6 +127,7 @@ val darkThemeLive = MutableLiveData<Boolean>(null)
 val colorSchemeLive = MutableLiveData(-1)
 val launchUrlLive = MutableLiveData<Uri?>(null)
 val launchPickerLive = MutableLiveData<() -> Unit>({})
+val webViewDialogLive = MutableLiveData<(@Composable () -> Unit)?>(null)
 val LocalActivity = staticCompositionLocalOf<FragmentActivity> {
     error("No LocalActivity provided!")
 }
@@ -251,6 +252,7 @@ class MainActivity : FragmentActivity() {
         val pinFinished = remember { mutableStateOf(false) }
         val currentScreen = screenLive.observeAsState()
         val showBottomSheet by modalBottomSheetStateLive.observeAsState()
+        var hideBottomSheet by remember { mutableStateOf(false) } // lol
         val bottomSheetContent by modalBottomSheetContentLive.observeAsState()
         val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
         val snackbarHostState = snackbarHostStateLive.value!!
@@ -264,6 +266,7 @@ class MainActivity : FragmentActivity() {
         val dialogContent = modalDialogContentLive.observeAsState()
         val showFilter = showFilterLive.observeAsState(false)
         val launchUrl = launchUrlLive.observeAsState()
+        val webViewDialog by webViewDialogLive.observeAsState()
         if (authPrefs.get<String>("access_token") != null) {
             if ((mainPrefs.get<Int>("version") ?: 25) <= 25) {
                 modalDialogCloseListenerLive.value = {
@@ -314,218 +317,229 @@ class MainActivity : FragmentActivity() {
             snapshotFlow { DataService.loadedEverything.value }.onEach { localLoadedState = it }
                 .launchIn(this)
         }
-        CompositionLocalProvider(LocalActivity provides this) {
-            Scaffold(modifier, topBar = {
-                Column {
-                    TopAppBar(title = {
-                        AnimatedContent(targetState = title, label = "title_anim") {
-                            if ((currentScreen.value == Screen.MainNav && localLoadedState) || currentScreen.value != Screen.MainNav) {
-                                Text(stringResource(it))
-                            } else {
-                                Text(stringResource(R.string.app_name))
-                            }
-                        }
-                    }, actions = {
-                        if (BuildConfig.DEBUG || mainPrefs.get<Boolean>("force_debug") == true) {
-                            DebugMenu(this@MainActivity)
-                        }
-                        if (localLoadedState && currentScreen.value == Screen.MainNav) {
-                            val currentRoute =
-                                navController.value!!.currentBackStackEntryAsState().value?.destination?.route
-                            AnimatedVisibility(currentRoute == NavSection.Profile.route) {
-                                Row(Modifier) {
-                                    IconButton(onClick = {
-                                        modalDialogContentLive.value = { ProfileChooser() }
-                                        modalDialogStateLive.postValue(true)
-                                    }) {
-                                        Icon(
-                                            Icons.Rounded.Groups,
-                                            stringResource(id = R.string.choose_context_profile)
-                                        )
-                                    }
-                                    IconButton(onClick = { settingsShown = true }) {
-                                        Icon(
-                                            Icons.Rounded.Settings,
-                                            stringResource(id = R.string.settings)
-                                        )
-                                    }
-                                }
-                            }
-                            AnimatedVisibility(currentRoute == NavSection.Daybook.route) {
-                                Row {
-                                    IconButton(onClick = {
-                                        modalDialogContentLive.value = { DayChooser() }
-                                        modalDialogStateLive.postValue(true)
-                                    }) {
-                                        Icon(
-                                            Icons.Rounded.CalendarMonth,
-                                            stringResource(id = R.string.by_date)
-                                        )
-                                    }
-                                }
-                            }
-                            AnimatedVisibility(showFilter.value) {
-                                var expanded by remember {
-                                    mutableStateOf(false)
-                                }
-                                Box(contentAlignment = Alignment.Center) {
-                                    val icon =
-                                        contentDependentActionIconLive.observeAsState(Icons.Rounded.FilterAlt)
-                                    IconButton(onClick = { expanded = !expanded }) {
-                                        AnimatedContent(
-                                            targetState = icon.value,
-                                            label = "action_icon_anim"
-                                        ) {
-                                            Icon(it, "action")
-                                        }
-                                    }
-                                    DropdownMenu(expanded, { expanded = false }) {
-                                        contentDependentAction.value?.invoke()
-                                    }
 
-                                }
-                            }
-                        } else if (currentScreen.value == Screen.Login) {
-                            var expanded by remember { mutableStateOf(false) }
-                            var showAboutDialog by remember { mutableStateOf(false) }
-                            IconButton(onClick = { expanded = !expanded }) {
-                                Icon(
-                                    Icons.Rounded.MoreVert,
-                                    stringResource(R.string.menu)
-                                )
-                            }
-                            DropdownMenu(expanded, { expanded = false }) {
-                                DropdownMenuItem(
-                                    text = { Text(stringResource(R.string.log_in_by_token)) },
-                                    onClick = {
-                                        modalDialogContentLive.value = { TokenLogin() }
-                                        modalDialogStateLive.postValue(true)
+        LaunchedEffect(webViewDialog) {
+            hideBottomSheet = webViewDialog != null
+        }
+        CompositionLocalProvider(LocalActivity provides this) {
+            Box {
+                Scaffold(modifier, topBar = {
+                    Column {
+                        TopAppBar(
+                            title = {
+                                AnimatedContent(targetState = title, label = "title_anim") {
+                                    if ((currentScreen.value == Screen.MainNav && localLoadedState) || currentScreen.value != Screen.MainNav) {
+                                        Text(stringResource(it))
+                                    } else {
+                                        Text(stringResource(R.string.app_name))
                                     }
-                                )
-                                DropdownMenuItem(
-                                    text = { Text(stringResource(R.string.about)) },
-                                    onClick = { showAboutDialog = true })
-                            }
-                            AnimatedVisibility(showAboutDialog) {
-                                Dialog(
-                                    onDismissRequest = { showAboutDialog = false },
-                                    properties = DialogProperties(
-                                        usePlatformDefaultWidth = false
-                                    )
-                                ) {
-                                    Surface(Modifier.fillMaxSize()) {
-                                        Column(Modifier.verticalScroll(rememberScrollState())) {
-                                            IconButton(
-                                                onClick = { showAboutDialog = false },
-                                                Modifier.padding(8.dp)
-                                            ) {
+                                }
+                            }, actions = {
+                                if (BuildConfig.DEBUG || mainPrefs.get<Boolean>("force_debug") == true) {
+                                    DebugMenu(this@MainActivity)
+                                }
+                                if (localLoadedState && currentScreen.value == Screen.MainNav) {
+                                    val currentRoute =
+                                        navController.value!!.currentBackStackEntryAsState().value?.destination?.route
+                                    AnimatedVisibility(currentRoute == NavSection.Profile.route) {
+                                        Row(Modifier) {
+                                            IconButton(onClick = {
+                                                modalDialogContentLive.value = { ProfileChooser() }
+                                                modalDialogStateLive.postValue(true)
+                                            }) {
                                                 Icon(
-                                                    Icons.AutoMirrored.Rounded.ArrowBack,
-                                                    stringResource(R.string.back)
+                                                    Icons.Rounded.Groups,
+                                                    stringResource(id = R.string.choose_context_profile)
                                                 )
                                             }
-                                            About()
+                                            IconButton(onClick = { settingsShown = true }) {
+                                                Icon(
+                                                    Icons.Rounded.Settings,
+                                                    stringResource(id = R.string.settings)
+                                                )
+                                            }
+                                        }
+                                    }
+                                    AnimatedVisibility(currentRoute == NavSection.Daybook.route) {
+                                        Row {
+                                            IconButton(onClick = {
+                                                modalDialogContentLive.value = { DayChooser() }
+                                                modalDialogStateLive.postValue(true)
+                                            }) {
+                                                Icon(
+                                                    Icons.Rounded.CalendarMonth,
+                                                    stringResource(id = R.string.by_date)
+                                                )
+                                            }
+                                        }
+                                    }
+                                    AnimatedVisibility(showFilter.value) {
+                                        var expanded by remember {
+                                            mutableStateOf(false)
+                                        }
+                                        Box(contentAlignment = Alignment.Center) {
+                                            val icon =
+                                                contentDependentActionIconLive.observeAsState(Icons.Rounded.FilterAlt)
+                                            IconButton(onClick = { expanded = !expanded }) {
+                                                AnimatedContent(
+                                                    targetState = icon.value,
+                                                    label = "action_icon_anim"
+                                                ) {
+                                                    Icon(it, "action")
+                                                }
+                                            }
+                                            DropdownMenu(expanded, { expanded = false }) {
+                                                contentDependentAction.value?.invoke()
+                                            }
+
+                                        }
+                                    }
+                                } else if (currentScreen.value == Screen.Login) {
+                                    var expanded by remember { mutableStateOf(false) }
+                                    var showAboutDialog by remember { mutableStateOf(false) }
+                                    IconButton(onClick = { expanded = !expanded }) {
+                                        Icon(
+                                            Icons.Rounded.MoreVert,
+                                            stringResource(R.string.menu)
+                                        )
+                                    }
+                                    DropdownMenu(expanded, { expanded = false }) {
+                                        DropdownMenuItem(
+                                            text = { Text(stringResource(R.string.log_in_by_token)) },
+                                            onClick = {
+                                                modalDialogContentLive.value = { TokenLogin() }
+                                                modalDialogStateLive.postValue(true)
+                                            }
+                                        )
+                                        DropdownMenuItem(
+                                            text = { Text(stringResource(R.string.about)) },
+                                            onClick = { showAboutDialog = true })
+                                    }
+                                    AnimatedVisibility(showAboutDialog) {
+                                        Dialog(
+                                            onDismissRequest = { showAboutDialog = false },
+                                            properties = DialogProperties(
+                                                usePlatformDefaultWidth = false
+                                            )
+                                        ) {
+                                            Surface(Modifier.fillMaxSize()) {
+                                                Column(Modifier.verticalScroll(rememberScrollState())) {
+                                                    IconButton(
+                                                        onClick = { showAboutDialog = false },
+                                                        Modifier.padding(8.dp)
+                                                    ) {
+                                                        Icon(
+                                                            Icons.AutoMirrored.Rounded.ArrowBack,
+                                                            stringResource(R.string.back)
+                                                        )
+                                                    }
+                                                    About()
+                                                }
+                                            }
                                         }
                                     }
                                 }
-                            }
-                        }
-                    }, colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = topAppBarColor
-                    )
-                    )
-                }
-            }, snackbarHost = { SnackbarHost(hostState = snackbarHostState) }, bottomBar = {
-                if ((currentScreen.value != Screen.MainNav) || !localLoadedState) return@Scaffold
-                NavigationBar {
-                    val navBackStackEntry by navController.value!!.currentBackStackEntryAsState()
-                    val currentDestination = navBackStackEntry?.destination
-                    NavSection.values().forEach {
-                        val selected =
-                            currentDestination?.hierarchy?.any { destination -> destination.route == it.route } == true
-                        NavigationBarItem(
-                            selected = selected,
-                            onClick = {
-                                if (it == NavSection.Homeworks) {
-                                    showFilterLive.postValue(true)
-                                } else {
-                                    showFilterLive.postValue(false)
-                                }
-                                navController.value!!.navigate(it.route) {
-                                    popUpTo(navController.value!!.graph.findStartDestination().id) {
-                                        saveState = true
+                            }, colors = TopAppBarDefaults.topAppBarColors(
+                                containerColor = topAppBarColor
+                            )
+                        )
+                    }
+                }, snackbarHost = { SnackbarHost(hostState = snackbarHostState) }, bottomBar = {
+                    if ((currentScreen.value != Screen.MainNav) || !localLoadedState) return@Scaffold
+                    NavigationBar {
+                        val navBackStackEntry by navController.value!!.currentBackStackEntryAsState()
+                        val currentDestination = navBackStackEntry?.destination
+                        NavSection.values().forEach {
+                            val selected =
+                                currentDestination?.hierarchy?.any { destination -> destination.route == it.route } == true
+                            NavigationBarItem(
+                                selected = selected,
+                                onClick = {
+                                    if (it == NavSection.Homeworks) {
+                                        showFilterLive.postValue(true)
+                                    } else {
+                                        showFilterLive.postValue(false)
                                     }
-                                    launchSingleTop = true
-                                    restoreState = true
-                                }
-                            },
-                            icon = {
-                                Icon(it.icon, stringResource(id = it.title))
-                            },
-                            label = {
-                                Text(stringResource(id = it.title),
-                                    maxLines = 1,
-                                    overflow = TextOverflow.Ellipsis
-                                )
-                            })
-                    }
-                }
-            }) { padding ->
-                Surface {
-                    title = when (currentScreen.value!!) {
-                        Screen.Login -> {
-                            LoginScreen(Modifier.padding(padding))
-                            R.string.log_in
+                                    navController.value!!.navigate(it.route) {
+                                        popUpTo(navController.value!!.graph.findStartDestination().id) {
+                                            saveState = true
+                                        }
+                                        launchSingleTop = true
+                                        restoreState = true
+                                    }
+                                },
+                                icon = {
+                                    Icon(it.icon, stringResource(id = it.title))
+                                },
+                                label = {
+                                    Text(
+                                        stringResource(id = it.title),
+                                        maxLines = 1,
+                                        overflow = TextOverflow.Ellipsis
+                                    )
+                                })
                         }
-
-                        Screen.Callback -> {
-                            val uri = Uri.parse(intentData)
-                            val callbackType =
-                                CallbackType.values().firstOrNull { it.host == uri.host }
-                            val code = uri.getQueryParameter("code")
-                            val subsystem = uri.getQueryParameter("system")?.toIntOrNull()
-                            if (code != null && callbackType != null) {
-                                CallbackScreen(code, callbackType, subsystem)
-                            } else {
-                                screenLive.postValue(Screen.Login)
+                    }
+                }) { padding ->
+                    Surface {
+                        title = when (currentScreen.value!!) {
+                            Screen.Login -> {
+                                LoginScreen(Modifier.padding(padding))
+                                R.string.log_in
                             }
-                            R.string.log_in
-                        }
 
-                        Screen.MainNav -> {
-                            NavScreen(Modifier.padding(padding), pinFinished)
-                            val navBackStackEntry by navController.value!!.currentBackStackEntryAsState()
-                            val currentRoute = navBackStackEntry?.destination?.route
-                            NavSection.values().firstOrNull { it.route == currentRoute }?.title
-                                ?: R.string.app_name
+                            Screen.Callback -> {
+                                val uri = Uri.parse(intentData)
+                                val callbackType =
+                                    CallbackType.values().firstOrNull { it.host == uri.host }
+                                val code = uri.getQueryParameter("code")
+                                val subsystem = uri.getQueryParameter("system")?.toIntOrNull()
+                                if (code != null && callbackType != null) {
+                                    CallbackScreen(code, callbackType, subsystem)
+                                } else {
+                                    screenLive.postValue(Screen.Login)
+                                }
+                                R.string.log_in
+                            }
+
+                            Screen.MainNav -> {
+                                NavScreen(Modifier.padding(padding), pinFinished)
+                                val navBackStackEntry by navController.value!!.currentBackStackEntryAsState()
+                                val currentRoute = navBackStackEntry?.destination?.route
+                                NavSection.values().firstOrNull { it.route == currentRoute }?.title
+                                    ?: R.string.app_name
+                            }
                         }
                     }
-                }
-                if (showBottomSheet == true) {
-                    ModalBottomSheet(
-                        onDismissRequest = { modalBottomSheetStateLive.postValue(false) },
-                        sheetState = sheetState
-                    ) {
-                        bottomSheetContent?.invoke()
-                    }
-                }
-                if (showDialog.value == true) {
-                    Dialog(onDismissRequest = {
-                        modalDialogStateLive.postValue(false)
-                        modalDialogCloseListenerLive.value?.invoke()
-                        modalDialogCloseListenerLive.value = {}
-                    }) {
-                        Card(
-                            Modifier.fillMaxWidth(),
-                            shape = MaterialTheme.shapes.extraLarge,
-                            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh)
+                    if (showBottomSheet == true && !hideBottomSheet) {
+                        ModalBottomSheet(
+                            onDismissRequest = { modalBottomSheetStateLive.postValue(false) },
+                            sheetState = sheetState
                         ) {
-                            dialogContent.value?.invoke()
+                            bottomSheetContent?.invoke()
                         }
                     }
+                    if (showDialog.value == true) {
+                        Dialog(onDismissRequest = {
+                            modalDialogStateLive.postValue(false)
+                            modalDialogCloseListenerLive.value?.invoke()
+                            modalDialogCloseListenerLive.value = {}
+                        }) {
+                            Card(
+                                Modifier.fillMaxWidth(),
+                                shape = MaterialTheme.shapes.extraLarge,
+                                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh)
+                            ) {
+                                dialogContent.value?.invoke()
+                            }
+                        }
+                    }
+                    AnimatedVisibility(visible = settingsShown) {
+                        SettingsDialog { settingsShown = false }
+                    }
                 }
-                AnimatedVisibility(visible = settingsShown) {
-                    SettingsDialog { settingsShown = false }
+                if (webViewDialog != null) {
+                    webViewDialog?.invoke()
                 }
             }
         }
